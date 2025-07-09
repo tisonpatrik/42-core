@@ -1,4 +1,6 @@
 
+#include "get_next_line.h"
+#include "unistd.h"
 #include <stddef.h>
 #include <stdlib.h>
 
@@ -38,4 +40,38 @@ void	*ft_realloc(void *ptr, size_t old_size, size_t new_size)
 	ft_memcpy(new_ptr, ptr, old_size < new_size ? old_size : new_size);
 	free(ptr);
 	return (new_ptr);
+}
+
+int	read_to_buffer(int fd, t_buffer *buffer)
+{
+	ssize_t	bytes_read;
+
+	bytes_read = read(fd, buffer->data, BUFFER_SIZE);
+	if (bytes_read <= 0)
+		return (0);
+	buffer->size = bytes_read;
+	buffer->pos = 0;
+	return (1);
+}
+
+size_t	find_newline_in_buffer(char *buffer, size_t start, size_t end)
+{
+	size_t	i;
+
+	i = start;
+	while (i < end && buffer[i] != '\n')
+		i++;
+	return (i);
+}
+
+void	copy_chunk_to_line(t_line *line, t_buffer *buffer, size_t chunk_size)
+{
+	size_t	j;
+
+	j = 0;
+	while (j < chunk_size)
+	{
+		line->data[line->pos + j] = buffer->data[buffer->pos + j];
+		j++;
+	}
 }
