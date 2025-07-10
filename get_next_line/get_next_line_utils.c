@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/10 17:45:13 by ptison            #+#    #+#             */
-/*   Updated: 2025/07/10 17:49:44 by ptison           ###   ########.fr       */
+/*   Created: 2025/07/10 18:18:20 by ptison            #+#    #+#             */
+/*   Updated: 2025/07/10 18:37:46 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,8 @@ void	*ft_realloc(void *ptr, size_t old_size, size_t new_size)
 	new_ptr = malloc(new_size);
 	if (new_ptr == NULL)
 		return (NULL);
-	if (old_size < new_size)
-		copy_size = old_size;
-	else
+	copy_size = old_size;
+	if (new_size < old_size)
 		copy_size = new_size;
 	ft_memcpy(new_ptr, ptr, copy_size);
 	free(ptr);

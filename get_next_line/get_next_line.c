@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/10 17:46:32 by ptison            #+#    #+#             */
-/*   Updated: 2025/07/10 17:47:32 by ptison           ###   ########.fr       */
+/*   Created: 2025/07/10 18:18:16 by ptison            #+#    #+#             */
+/*   Updated: 2025/07/10 18:36:24 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,12 @@ static int	process_buffer_chunk(t_line *line, t_buffer *buffer)
 
 char	*get_next_line(int fd)
 {
-	static t_buffer	buffer = {0};
+	static t_buffer	buffer;
 	t_line			line;
 
+	line.data = NULL;
+	line.size = 0;
+	line.pos = 0;
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	while (1)
