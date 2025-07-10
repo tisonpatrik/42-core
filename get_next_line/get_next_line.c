@@ -1,12 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/10 17:46:32 by ptison            #+#    #+#             */
+/*   Updated: 2025/07/10 17:47:32 by ptison           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "get_next_line.h"
 #include <stdlib.h>
 #include <unistd.h>
-#include "get_next_line.h"
 
-void	*ft_realloc(void *ptr, size_t old_size, size_t new_size);
-int	read_to_buffer(int fd, t_buffer *buffer);
-size_t	find_newline_in_buffer(char *buffer, size_t start, size_t end);
-void	copy_chunk_to_line(t_line *line, t_buffer *buffer, size_t chunk_size);
-
+void		*ft_realloc(void *ptr, size_t old_size, size_t new_size);
+int			read_to_buffer(int fd, t_buffer *buffer);
+size_t		find_newline_in_buffer(char *buffer, size_t start, size_t end);
+void		copy_chunk_to_line(t_line *line, t_buffer *buffer,
+				size_t chunk_size);
 
 static int	expand_line_buffer(t_line *line, size_t needed_size)
 {
@@ -35,7 +47,8 @@ static int	process_buffer_chunk(t_line *line, t_buffer *buffer)
 	size_t	newline_pos;
 	size_t	chunk_size;
 
-	newline_pos = find_newline_in_buffer(buffer->data, buffer->pos, buffer->size);
+	newline_pos = find_newline_in_buffer(buffer->data, buffer->pos,
+			buffer->size);
 	chunk_size = newline_pos - buffer->pos;
 	if (newline_pos < buffer->size && buffer->data[newline_pos] == '\n')
 		chunk_size++;
@@ -54,11 +67,10 @@ static int	process_buffer_chunk(t_line *line, t_buffer *buffer)
 char	*get_next_line(int fd)
 {
 	static t_buffer	buffer = {0};
-	t_line			line = {0};
+	t_line			line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	
 	while (1)
 	{
 		if (buffer.pos >= buffer.size)
