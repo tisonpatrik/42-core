@@ -1,8 +1,8 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <libft.h>
 
+
+#include "lib/libft/libft.h"
+#include <limits.h>
+#include <stdio.h>
 
 int	exit_with_error(void)
 {
@@ -62,31 +62,18 @@ t_list	*ft_init(char **ag, int ac)
 	return (res);
 }
 
-
-int	main(int ac, char **av)
+int	main(int ac, char **ag)
 {
-	int	count;
-	int	*inputs;
+	t_swap *tab;
+	char **args;
 
-	if (ac < 2)
-	{
-		return (exit_with_error());
-	}
-	count = ac - 1;
-	inputs = malloc(count * sizeof(int));
-	if (inputs == NULL)
-	{
-		return (exit_with_error());
-	}
-	if (validate_inputs(count, av, inputs) != 0)
-	{
-		return (exit_with_error());
-	}
-	for (int i = 0; i < count; i++)
-	{
-		printf("%d ", inputs[i]);
-	}
-	printf("\n");
-	free(inputs);
-	return (0);
-}
+	if (ac == 1)
+		return (0);
+	tab = malloc(sizeof(t_swap));
+	if (!tab)
+		return (-1);
+	if (ac == 2)
+		args = ft_split(ag[1], ' ');
+	else
+		args = ag;
+	tab->stack_a = ft_init(args, ac);
