@@ -1,90 +1,121 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   push_swap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 20:16:34 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/14 20:19:21 by ptison           ###   ########.fr       */
+/*   Updated: 2025/08/14 21:30:20 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../lib/libft/libft.h"
+#include "../include/push_swap.h"
+#include "../libft/libft.h"
 #include <limits.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 int	exit_with_error(void)
 {
 	fprintf(stderr, "Error\n");
 	return (-1);
 }
-
-int	ft_check(t_list *lst, int n, char *nbr)
+int	ft_check(t_list *lst, int n, const char *nbr)
 {
-	t_list	*tmp;
-	int		i;
+	int	i;
 
-	tmp = lst;
 	i = 0;
-	while (nbr[i])
-	{
-		if (!(((nbr[i] == '-' || nbr[i] == '+') && ft_isdigit(nbr[i + 1])
-					&& (i == 0 || !ft_isdigit(nbr[i - 1])))
-				|| ft_isdigit(nbr[i])))
-			return (0);
+	if (nbr[i] == '+' || nbr[i] == '-')
 		i++;
-	}
-	while (tmp)
-	{
-		if (tmp->content == n)
+	if (!nbr[i])
+		return (0);
+	for (; nbr[i]; i++)
+		if (!ft_isdigit((unsigned char)nbr[i]))
 			return (0);
-		tmp = tmp->next;
-	}
+	for (t_list *tmp = lst; tmp; tmp = tmp->next)
+		if (*(int *)tmp->content == n)
+			return (0);
 	return (1);
 }
-
 t_list	*ft_init(char **ag, int ac)
 {
-	t_list	*tmp;
 	t_list	*res;
+	t_list	*tmp;
 	int		i;
 	long	nbr;
+	int		*val;
 
-	if (ac == 2)
-		i = 0;
-	else
-		i = 1;
 	res = NULL;
+	i = (ac == 2) ? 0 : 1;
 	while (ag[i])
 	{
 		nbr = ft_atoi(ag[i]);
-		if (nbr > INT_MAX || nbr < INT_MIN || ft_check(res, nbr, ag[i]) == 0)
+		if (nbr > INT_MAX || nbr < INT_MIN || ft_check(res, (int)nbr,
+				ag[i]) == 0)
 		{
-			ft_putstr_fd("Error\n", 2);
+			ft_lstclear(&res, free);
 			return (NULL);
 		}
-		tmp = ft_lstnew(nbr);
+		val = malloc(sizeof *val);
+		if (!val)
+		{
+			ft_lstclear(&res, free);
+			return (NULL);
+		}
+		*val = (int)nbr;
+		tmp = ft_lstnew(val);
+		if (!tmp)
+		{
+			free(val);
+			ft_lstclear(&res, free);
+			return (NULL);
+		}
 		ft_lstadd_back(&res, tmp);
-		tmp->index = -1;
 		i++;
 	}
 	return (res);
 }
 
-int	main(int ac, char **ag)
+static void	free_split(char **ss)
 {
-	t_swap *tab;
-	char **args;
+	if (!ss)
+		return ;
+	for (int i = 0; ss[i]; i++)
+		free(ss[i]);
+	free(ss);
+}
+int main(int ac, char **ag)
+{
+    t_swap *tab = NULL;
+    char   **args = NULL;
+    int     split_used = 0;
 
-	if (ac == 1)
-		return (0);
-	tab = malloc(sizeof(t_swap));
-	if (!tab)
-		return (-1);
-	if (ac == 2)
-		args = ft_split(ag[1], ' ');
-	else
-		args = ag;
-	tab->stack_a = ft_init(args, ac);
+    if (ac == 1)
+        return (0);
+
+    tab = malloc(sizeof *tab);
+    if (!tab)
+        return (exit_with_error());
+
+    if (ac == 2) {
+        args = ft_split(ag[1], ' ');
+        if (!args) { free(tab); return (exit_with_error()); }
+        split_used = 1;
+    } else {
+        args = ag;
+    }
+
+    tab->stack_a = ft_init(args, ac);
+    if (!tab->stack_a) {
+        if (split_used) free_split(args);
+        free(tab);
+        return (exit_with_error());
+    }
+
+    ft_lstclear(&tab->stack_a, free);
+    if (split_used) free_split(args);
+    free(tab);
+    return (0);
+}
 
