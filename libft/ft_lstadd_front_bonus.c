@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 19:23:06 by patrik            #+#    #+#             */
-/*   Updated: 2025/05/26 19:33:00 by patrik           ###   ########.fr       */
+/*   Updated: 2025/08/15 14:22:26 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,14 @@
  * The new node becomes the first node of the list.
  *
  * @param lst The address of a pointer to the first node of a list
- * @param new The address of a pointer to the node to be added
+ * @param node The address of a pointer to the node to be added
  */
-void	ft_lstadd_front(t_list **lst, t_list *new)
+void	ft_lstadd_front(t_list **lst, t_list *node)
 {
-	if (!lst || !new)
+	if (!lst || !node)
 		return ;
-	(*new).next = *lst;
-	*lst = new;
+	(*node).next = *lst;
+	*lst = node;
 }
 
 /*
