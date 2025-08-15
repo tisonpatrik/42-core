@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 20:16:34 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/15 16:08:05 by patrik           ###   ########.fr       */
+/*   Updated: 2025/08/15 16:13:40 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,19 @@ int	exit_with_error(void)
 	fprintf(stderr, "Error\n");
 	return (-1);
 }
+
+// Pomocná funkce pro kontrolu overflow
+int	ft_check_overflow(const char *nbr, long atoi_result)
+{
+	return (atoi_result == 0 && (nbr[0] != '0' || 
+		(nbr[0] == '-' && nbr[1] != '0') || 
+		(nbr[0] == '+' && nbr[1] != '0')));
+}
+
 int	ft_check(t_list *lst, int n, const char *nbr)
 {
-	int	i;
-	long long check;
+	int			i;
+	long long	check;
 
 	i = 0;
 	if (nbr[i] == '+' || nbr[i] == '-')
@@ -34,12 +43,9 @@ int	ft_check(t_list *lst, int n, const char *nbr)
 	for (; nbr[i]; i++)
 		if (!ft_isdigit((unsigned char)nbr[i]))
 			return (0);
-	
-	// Kontrola overflow - pokud atoi vrací 0 ale string není "0"
 	check = ft_atoi(nbr);
-	if (check == 0 && (nbr[0] != '0' || (nbr[0] == '-' && nbr[1] != '0') || (nbr[0] == '+' && nbr[1] != '0')))
+	if (ft_check_overflow(nbr, check))
 		return (0);
-	
 	for (t_list *tmp = lst; tmp; tmp = tmp->next)
 		if (*(int *)tmp->content == n)
 			return (0);
@@ -58,13 +64,13 @@ t_list	*ft_init(char **ag)
 	while (ag[i])
 	{
 		nbr = ft_atoi(ag[i]);
-		// Kontrola overflow - pokud atoi vrací 0 ale string není "0"
-		if (nbr == 0 && (ag[i][0] != '0' || (ag[i][0] == '-' && ag[i][1] != '0') || (ag[i][0] == '+' && ag[i][1] != '0')))
+		if (ft_check_overflow(ag[i], nbr))
 		{
 			ft_lstclear(&res, free);
 			return (NULL);
 		}
-		if (nbr > INT_MAX || nbr < INT_MIN || ft_check(res, (int)nbr, ag[i]) == 0)
+		if (ft_check(res, (int)nbr,
+				ag[i]) == 0)
 		{
 			ft_lstclear(&res, free);
 			return (NULL);
@@ -105,9 +111,6 @@ int	main(int ac, char **args)
 		free(tab);
 		return (exit_with_error());
 	}
-	for (t_list *tmp = tab->stack_a; tmp; tmp = tmp->next)
-		printf("%d ", *(int *)tmp->content);
-	printf("\n");
 	ft_lstclear(&tab->stack_a, free);
 	free(tab);
 	return (0);
