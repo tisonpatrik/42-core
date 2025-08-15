@@ -1,2 +1,42 @@
 *.pdf
 *.out
+
+# Binaries and executables
+push_swap
+push_swap_bonus
+
+# Static libraries
+*.a
+libft.a
+libftprintf.a
+
+# Object files
+*.o
+
+# Build directories and artifacts
+**/obj/
+**/build/
+**/dist/
+
+# Temporary files
+*.tmp
+*.temp
+*~
+
+# Linux
+*~
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Backup files
+*.bak
+*.backup
+
+# Test files
+test_*
+*_test
