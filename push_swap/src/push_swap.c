@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 20:16:34 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/15 14:21:47 by patrik           ###   ########.fr       */
+/*   Updated: 2025/08/15 14:58:04 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,9 @@ t_list	*ft_init(char **ag, int ac)
 	int		*val;
 
 	res = NULL;
-	i = (ac == 2) ? 0 : 1;
+	if (ac < 2)
+		return (NULL);
+	i = 1;
 	while (ag[i])
 	{
 		nbr = ft_atoi(ag[i]);
@@ -77,45 +79,26 @@ t_list	*ft_init(char **ag, int ac)
 	return (res);
 }
 
-static void	free_split(char **ss)
+int	main(int ac, char **ag)
 {
-	if (!ss)
-		return ;
-	for (int i = 0; ss[i]; i++)
-		free(ss[i]);
-	free(ss);
+	t_swap	*tab;
+	char	**args;
+
+	tab = NULL;
+	args = NULL;
+	if (ac < 2)
+		return (exit_with_error());
+	tab = malloc(sizeof *tab);
+	if (!tab)
+		return (exit_with_error());
+	args = ag;
+	tab->stack_a = ft_init(args, ac);
+	if (!tab->stack_a)
+	{
+		free(tab);
+		return (exit_with_error());
+	}
+	ft_lstclear(&tab->stack_a, free);
+	free(tab);
+	return (0);
 }
-int main(int ac, char **ag)
-{
-    t_swap *tab = NULL;
-    char   **args = NULL;
-    int     split_used = 0;
-
-    if (ac == 1)
-        return (0);
-
-    tab = malloc(sizeof *tab);
-    if (!tab)
-        return (exit_with_error());
-
-    if (ac == 2) {
-        args = ft_split(ag[1], ' ');
-        if (!args) { free(tab); return (exit_with_error()); }
-        split_used = 1;
-    } else {
-        args = ag;
-    }
-
-    tab->stack_a = ft_init(args, ac);
-    if (!tab->stack_a) {
-        if (split_used) free_split(args);
-        free(tab);
-        return (exit_with_error());
-    }
-
-    ft_lstclear(&tab->stack_a, free);
-    if (split_used) free_split(args);
-    free(tab);
-    return (0);
-}
-
