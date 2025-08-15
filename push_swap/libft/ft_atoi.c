@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 21:49:31 by ptison            #+#    #+#             */
-/*   Updated: 2025/05/26 07:48:03 by patrik           ###   ########.fr       */
+/*   Updated: 2025/08/15 16:01:08 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,15 @@ int	skip_whitespace(const char *str, int idx)
 int	convert_number(const char *str, int idx)
 {
 	int	res;
+	int	digit;
 
 	res = 0;
 	while (str[idx] >= '0' && str[idx] <= '9')
 	{
-		res = res * 10 + (str[idx] - '0');
+		digit = str[idx] - '0';
+		if (res > 2147483647 / 10 || (res == 2147483647 / 10 && digit > 7))
+			return (0);
+		res = res * 10 + digit;
 		idx++;
 	}
 	return (res);
@@ -40,11 +44,12 @@ int	convert_number(const char *str, int idx)
  * 1. Skips leading whitespace
  * 2. Handles optional '+' or '-' sign
  * 3. Converts consecutive digits to integer
- * 4. Ignores any trailing non-digit characters
+ * 4. Checks for integer overflow and returns 0 if overflow occurs
+ * 5. Ignores any trailing non-digit characters
  *
  * @param str The string to convert
  * @return The converted integer value
- *         0 if the string doesn't start with a valid number
+ *         0 if the string doesn't start with a valid number or if overflow occurs
  */
 int	ft_atoi(const char *str)
 {
@@ -63,6 +68,10 @@ int	ft_atoi(const char *str)
 		idx++;
 	}
 	res = convert_number(str, idx);
+	if (res == 0 && str[idx] >= '0' && str[idx] <= '9')
+		return (0);
+	if (sign == -1 && res > 2147483647)
+		return (0);
 	return (res * sign);
 }
 
