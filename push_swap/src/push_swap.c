@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/16 16:13:20 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/16 16:57:53 by ptison           ###   ########.fr       */
+/*   Updated: 2025/08/16 19:58:55 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,36 +44,28 @@ t_list	*get_input_values(char **ag)
 	return (list);
 }
 
-t_swap	*get_init_swap(void)
+void    print_list(const t_list *lst)
 {
-	t_swap	*input;
-
-	input = malloc(sizeof * input);
-	if (!input)
-		return (NULL);
-	input->stack_a = NULL;
-	input->stack_b = NULL;
-	input->asize = 0;
-	input->bsize = 0;
-	return (input);
+    while (lst)
+    {
+        printf("%d\n", *(int *)lst->content);
+        lst = lst->next;
+    }
 }
-
 int	main(int ac, char **args)
 {
-	t_swap	*input;
+	t_list	*input;
 
 	if (ac < 2)
 		return (0);
-	input = get_init_swap();
+	input = get_input_values(args);
 	if (!input)
-		return (exit_with_error());
-	input->stack_a = get_input_values(args);
-	if (!input->stack_a)
 	{
 		free(input);
 		return (exit_with_error());
 	}
-	ft_lstclear(&input->stack_a, free);
+	print_list(input);
+	ft_lstclear(&input, free);
 	free(input);
 	return (0);
 }

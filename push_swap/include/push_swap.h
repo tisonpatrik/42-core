@@ -14,18 +14,3 @@
 
 t_list	*get_node(t_list *list, t_list *node, char *str);
 
-typedef struct s_push
-{
-	int		next;
-	int		max;
-	int		mid;
-	int		flag;
-}			t_push;
-
-typedef struct s_swap
-{
-	t_list	*stack_a;
-	t_list	*stack_b;
-	int		asize;
-	int		bsize;
-}			t_swap;
