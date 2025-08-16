@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 20:13:12 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/15 14:51:38 by patrik           ###   ########.fr       */
+/*   Updated: 2025/08/16 16:57:17 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft/libft.h"
 
-void	free_split(char **ss);
+t_list	*get_node(t_list *list, t_list *node, char *str);
 
 typedef struct s_push
 {
