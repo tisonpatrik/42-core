@@ -1,10 +1,6 @@
 *.pdf
 *.out
 
-# Binaries and executables
-push_swap
-push_swap_bonus
-
 # Static libraries
 *.a
 libft.a

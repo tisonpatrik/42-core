@@ -1,47 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   swap.c                                             :+:      :+:    :+:   */
+/*   push.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/16 18:25:04 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/17 10:35:02 by ptison           ###   ########.fr       */
+/*   Created: 2025/08/17 10:21:27 by ptison            #+#    #+#             */
+/*   Updated: 2025/08/17 10:33:36 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft/libft.h"
 #include <unistd.h>
 
-void	swap(t_list **stack)
+void	push(t_list **source, t_list **target)
 {
-	t_list	*first;
-	t_list	*second;
+	t_list	*node;
 
-	if (!stack || !*stack || !(*stack)->next)
+	if (!source || !*source)
 		return ;
-	first = *stack;
-	second = first->next;
-	first->next = second->next;
-	second->next = first;
-	*stack = second;
+	node = *source;
+	*source = node->next;
+	node->next = *target;
+	*target = node;
 }
 
-void swap_a(t_list **stack)
+
+void push_a(t_list **a, t_list **b)
 {
-	swap(stack);
-	write(1, "sa\n", 3);
+    push(b, a);
+    write(1, "pa\n", 3);
 }
 
-void swap_b(t_list **stack)
+void push_b(t_list **a, t_list **b)
 {
-	swap(stack);
-	write(1, "sb\n", 3);
-}
-
-void swap_ab(t_list **a, t_list **b)
-{
-	swap(a);
-	swap(b);
-	write(1, "ss\n", 3);
+    push(a, b);
+    write(1, "pb\n", 3);
 }

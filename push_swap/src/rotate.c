@@ -1,47 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   swap.c                                             :+:      :+:    :+:   */
+/*   rotate.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/16 18:25:04 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/17 10:35:02 by ptison           ###   ########.fr       */
+/*   Created: 2025/08/17 10:22:03 by ptison            #+#    #+#             */
+/*   Updated: 2025/08/17 10:37:23 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft/libft.h"
 #include <unistd.h>
 
-void	swap(t_list **stack)
+void	rotate(t_list **stack)
 {
 	t_list	*first;
-	t_list	*second;
+	t_list	*last;
 
 	if (!stack || !*stack || !(*stack)->next)
 		return ;
 	first = *stack;
-	second = first->next;
-	first->next = second->next;
-	second->next = first;
-	*stack = second;
+	last = ft_lstlast(*stack);
+	*stack = first->next;
+	first->next = NULL;
+	last->next = first;
 }
 
-void swap_a(t_list **stack)
+void	rotate_a(t_list **stack)
 {
-	swap(stack);
+	rotate(stack);
 	write(1, "sa\n", 3);
 }
 
-void swap_b(t_list **stack)
+void	rotate_b(t_list **stack)
 {
-	swap(stack);
+	rotate(stack);
 	write(1, "sb\n", 3);
 }
 
-void swap_ab(t_list **a, t_list **b)
+void	rotate_ab(t_list **a, t_list **b)
 {
-	swap(a);
-	swap(b);
-	write(1, "ss\n", 3);
+	rotate(a);
+	rotate(b);
+	write(1, "rr\n", 3);
 }
