@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   rotate.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 10:22:03 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/17 10:37:23 by ptison           ###   ########.fr       */
+/*   Updated: 2025/08/17 13:56:53 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft/libft.h"
+#include "../include/push_swap.h"
 #include <unistd.h>
 
 void	rotate(t_list **stack)
@@ -30,18 +30,18 @@ void	rotate(t_list **stack)
 void	rotate_a(t_list **stack)
 {
 	rotate(stack);
-	write(1, "sa\n", 3);
+	ft_printf("ra\n");
 }
 
 void	rotate_b(t_list **stack)
 {
 	rotate(stack);
-	write(1, "sb\n", 3);
+	ft_printf("rb\n");
 }
 
 void	rotate_ab(t_list **a, t_list **b)
 {
 	rotate(a);
 	rotate(b);
-	write(1, "rr\n", 3);
+	ft_printf("rr\n");
 }

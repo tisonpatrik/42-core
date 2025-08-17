@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   reverse_rotate.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 10:22:53 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/17 11:17:20 by ptison           ###   ########.fr       */
+/*   Updated: 2025/08/17 13:57:04 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft/libft.h"
+#include "../include/push_swap.h"
 #include <unistd.h>
 
 void	reverse_rotate(t_list **stack)
@@ -35,18 +35,18 @@ void	reverse_rotate(t_list **stack)
 void reverse_rotate_a(t_list **stack)
 {
 	reverse_rotate(stack);
-	write(1, "rra\n", 3);
+	ft_printf("rra\n");
 }
 
 void reverse_rotate_b(t_list **stack)
 {
 	reverse_rotate(stack);
-	write(1, "rrb\n", 3);
+	ft_printf("rrb\n");
 }
 
 void reverse_rotate_ab(t_list **a, t_list **b)
 {
     reverse_rotate_a(a);
 	reverse_rotate_b(b);
-    write(1, "rrr\n", 4);
+    ft_printf("rrr\n");
 }

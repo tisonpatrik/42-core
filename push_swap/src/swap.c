@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   swap.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/16 18:25:04 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/17 10:35:02 by ptison           ###   ########.fr       */
+/*   Updated: 2025/08/17 13:56:44 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft/libft.h"
+#include "../include/push_swap.h"
 #include <unistd.h>
 
 void	swap(t_list **stack)
@@ -30,18 +30,18 @@ void	swap(t_list **stack)
 void swap_a(t_list **stack)
 {
 	swap(stack);
-	write(1, "sa\n", 3);
+	ft_printf("sa\n");
 }
 
 void swap_b(t_list **stack)
 {
 	swap(stack);
-	write(1, "sb\n", 3);
+	ft_printf("sb\n");
 }
 
 void swap_ab(t_list **a, t_list **b)
 {
 	swap(a);
 	swap(b);
-	write(1, "ss\n", 3);
+	ft_printf("ss\n");
 }

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   push.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 10:21:27 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/17 10:33:36 by ptison           ###   ########.fr       */
+/*   Updated: 2025/08/17 13:57:13 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft/libft.h"
+#include "../include/push_swap.h"
 #include <unistd.h>
 
 void	push(t_list **source, t_list **target)
@@ -29,11 +29,11 @@ void	push(t_list **source, t_list **target)
 void push_a(t_list **a, t_list **b)
 {
     push(b, a);
-    write(1, "pa\n", 3);
+    ft_printf("pa\n");
 }
 
 void push_b(t_list **a, t_list **b)
 {
     push(a, b);
-    write(1, "pb\n", 3);
+    ft_printf("pb\n");
 }

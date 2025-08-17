@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
+/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/16 16:13:20 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/16 19:58:55 by ptison           ###   ########.fr       */
+/*   Updated: 2025/08/17 13:58:07 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/push_swap.h"
-#include "../libft/libft.h"
 #include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -48,7 +47,7 @@ void	print_list(const t_list *lst)
 {
 	while (lst)
 	{
-		printf("%d\n", *(int *)lst->content);
+		ft_printf("%d\n", *(int *)lst->content);
 		lst = lst->next;
 	}
 }

@@ -3,13 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
+/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 20:13:12 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/16 16:57:17 by ptison           ###   ########.fr       */
+/*   Updated: 2025/08/17 13:50:51 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft/libft.h"
+#include "../libft/include/libft.h"
 
 t_list	*get_node(t_list *list, t_list *node, char *str);
