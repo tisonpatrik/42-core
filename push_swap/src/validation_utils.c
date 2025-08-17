@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/16 16:48:27 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/17 13:53:51 by patrik           ###   ########.fr       */
+/*   Updated: 2025/08/17 18:10:32 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,20 @@
 int	is_valid_input(char *original, int number)
 {
 	int		len;
-	char	*reverse_int;
-	int		reverse_len;
+	char	*normal;
+	int		normal_len;
 	int		ok;
 
 	len = ft_strlen(original);
-	if ((number == 0) && (ft_strncmp(original, "0", len) != 0))
-	{
+	if (number == 0)
+		return (len == 1 && original[0] == '0');
+	normal = ft_itoa(number);
+	if (!normal)
 		return (0);
-	}
-	reverse_int = ft_itoa(number);
-	reverse_len = ft_strlen(reverse_int);
-	ok = (reverse_len == len) && (ft_strncmp(reverse_int, original, len) == 0);
-	free(reverse_int);
-	if (!ok)
-		return (0);
-	return (1);
+	normal_len = ft_strlen(normal);
+	ok = (normal_len == len) && (ft_strncmp(normal, original, len) == 0);
+	free(normal);
+	return (ok);
 }
 
 t_list	*new_int_node(int number)
@@ -53,30 +51,37 @@ t_list	*new_int_node(int number)
 	return (node);
 }
 
-int	is_duplicate(t_list *list, int value)
+int	is_duplicate(const int *array, int used_len, int value)
 {
-	while (list)
+	int	i;
+
+	i = 0;
+	while (i < used_len)
 	{
-		if (*(int *)list->content == value)
+		if (array[i] == value)
 			return (1);
-		list = list->next;
+		i++;
 	}
 	return (0);
 }
 
-t_list	*get_node(t_list *list, t_list *node, char *str)
+t_parse_result	get_input_number(char *str, const int *array, int used_len)
 {
-	int	number;
+	t_parse_result	result;
+	int				number;
 
 	number = ft_atoi(str);
 	if (!is_valid_input(str, number))
 	{
-		return (NULL);
+		result.ok = 0;
+		return (result);
 	}
-	if (is_duplicate(list, number))
+	if (is_duplicate(array, used_len, number))
 	{
-		return (NULL);
+		result.ok = 0;
+		return (result);
 	}
-	node = new_int_node(number);
-	return (node);
+	result.value = number;
+	result.ok = 1;
+	return (result);
 }

@@ -6,66 +6,69 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/16 16:13:20 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/17 13:58:07 by patrik           ###   ########.fr       */
+/*   Updated: 2025/08/17 18:10:51 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/push_swap.h"
-#include <limits.h>
-#include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 int	exit_with_error(void)
 {
-	fprintf(stderr, "Error\n");
-	return (-1);
+	write(2, "Error\n", 6);
+	return (1);
 }
 
-t_list	*get_input_values(char **ag)
+void	print_array(const int *array, int size)
 {
-	t_list	*list;
-	int		i;
-	t_list	*node;
+	int	i;
 
-	list = NULL;
-	i = 1;
-	while (ag[i])
+	i = 0;
+	while (i < size)
 	{
-		node = get_node(list, node, ag[i]);
-		if (!node)
-		{
-			ft_lstclear(&list, free);
-			return (NULL);
-		}
-		ft_lstadd_back(&list, node);
+		ft_printf("%d\n", array[i]);
 		i++;
 	}
-	return (list);
 }
 
-void	print_list(const t_list *lst)
+int	*get_input_values(int ac, char **av)
 {
-	while (lst)
+	const int		count_of_arguments = ac - 1;
+	int				*array;
+	int				i;
+	t_parse_result	result;
+
+	array = (int *)malloc(count_of_arguments * sizeof(*array));
+	if (array == NULL)
+		return (NULL);
+	i = 1;
+	while (i <= count_of_arguments)
 	{
-		ft_printf("%d\n", *(int *)lst->content);
-		lst = lst->next;
+		result = get_input_number(av[i], array, i - 1);
+		if (!result.ok)
+		{
+			free(array);
+			return (NULL);
+		}
+		array[i - 1] = result.value;
+		i++;
 	}
+	return (array);
 }
 
-int	main(int ac, char **args)
+int	main(int ac, char **av)
 {
-	t_list	*input;
+	int	*input;
+	int	*array;
 
 	if (ac < 2)
 		return (0);
-	input = get_input_values(args);
-	if (!input)
-	{
-		free(input);
+	input = get_input_values(ac, av);
+	if (input == NULL)
 		return (exit_with_error());
-	}
-	print_list(input);
-	ft_lstclear(&input, free);
+	array = indexize_array(input, ac - 1);
+	print_array(array, ac - 1);
 	free(input);
 	return (0);
 }
