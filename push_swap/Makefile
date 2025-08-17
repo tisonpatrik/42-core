@@ -10,7 +10,8 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME        := push_swap
+NAME        := bin/push_swap   
+BIN_DIR     := bin              
 
 CC          := cc
 CFLAGS      := -Wall -Wextra -Werror -Iinclude -Ilibft -Isrc
@@ -19,6 +20,7 @@ CPPFLAGS    := -MMD -MP
 AR          := ar
 ARFLAGS     := rcs
 RM          := rm -f
+MKDIR_P     := mkdir -p          
 
 SRC_DIR     := src
 LIBFT_DIR   := libft
@@ -39,13 +41,14 @@ endif
 
 DEPS        := $(OBJS:.o=.d)
 
-
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(OBJS)
+$(NAME): $(LIBFT) $(OBJS) | $(BIN_DIR)
 	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
 	@echo "Built executable: $(NAME)"
 
+$(BIN_DIR):    
+	$(MKDIR_P) $(BIN_DIR)
 
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR) bonus
@@ -63,6 +66,7 @@ clean:
 fclean: clean
 	$(RM) $(NAME)
 	$(MAKE) -C $(LIBFT_DIR) fclean
+	@rmdir $(BIN_DIR) 2>/dev/null || true  
 
 re: fclean all
 
