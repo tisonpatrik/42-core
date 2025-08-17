@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:12:25 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/17 12:34:56 by patrik           ###   ########.fr       */
+/*   Updated: 2025/08/17 13:29:12 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	*ft_strdup(const char *s)
 	char	*new_string;
 
 	len = ft_strlen(s);
-	new_string = malloc(len + 1 * sizeof(char));
+	new_string = malloc((len + 1) * sizeof(char));
 	if (new_string == NULL)
 	{
 		return (NULL);

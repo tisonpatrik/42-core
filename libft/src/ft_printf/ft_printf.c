@@ -6,13 +6,14 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:12:25 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/17 12:38:54 by patrik           ###   ########.fr       */
+/*   Updated: 2025/08/17 13:30:35 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/ft/printf.h"
 #include "../../include/ft/io.h"
 #include <stdarg.h>
+#include <unistd.h>
 
 int		dispatch_conversion(char type, va_list args);
 char	parse_format(const char *format, int *i);
@@ -37,7 +38,7 @@ int	ft_printf(const char *format, ...)
 		}
 		else
 		{
-			ft_putchar_fd(format[i], 1);
+			ft_putchar_fd(format[i], STDOUT_FILENO);
 			total++;
 			i++;
 		}
