@@ -6,9 +6,11 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 20:08:37 by ptison            #+#    #+#             */
-/*   Updated: 2025/05/26 18:58:50 by patrik           ###   ########.fr       */
+/*   Updated: 2025/08/17 12:34:25 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "../../include/ft/core.h"
 
 /**
  * @brief Tests if a character is alphanumeric
@@ -20,7 +22,7 @@
  * @param c The character to test
  * @return Non-zero if character is alphanumeric, zero otherwise
  */
-int	ft_isalnum(unsigned char c)
+int	ft_isalnum(int c)
 {
 	if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
 	{

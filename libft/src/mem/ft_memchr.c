@@ -5,12 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/24 20:41:13 by ptison            #+#    #+#             */
-/*   Updated: 2025/05/26 19:01:30 by patrik           ###   ########.fr       */
+/*   Created: 2025/05/21 21:24:11 by ptison            #+#    #+#             */
+/*   Updated: 2025/08/17 12:34:50 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stddef.h>
+#include "../../include/ft/mem.h"
 
 /**
  * @brief Searches for a character in a memory area

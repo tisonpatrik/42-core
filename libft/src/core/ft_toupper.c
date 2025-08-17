@@ -5,10 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/24 18:52:06 by ptison            #+#    #+#             */
-/*   Updated: 2025/05/26 18:58:50 by patrik           ###   ########.fr       */
+/*   Created: 2025/05/21 20:08:37 by ptison            #+#    #+#             */
+/*   Updated: 2025/08/17 12:34:42 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "../../include/ft/core.h"
 
 /**
  * @brief Converts a character to uppercase
@@ -20,13 +22,13 @@
  * @param ch The character to convert
  * @return The uppercase equivalent if ch is lowercase, ch otherwise
  */
-int	ft_toupper(int ch)
+int	ft_toupper(int c)
 {
-	if (ch >= 'a' && ch <= 'z')
+	if (c >= 'a' && c <= 'z')
 	{
-		return (ch - 32);
+		return (c - 32);
 	}
-	return (ch);
+	return (c);
 }
 
 /*

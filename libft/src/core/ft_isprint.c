@@ -5,10 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/21 21:04:54 by ptison            #+#    #+#             */
-/*   Updated: 2025/05/26 07:59:47 by patrik           ###   ########.fr       */
+/*   Created: 2025/05/21 20:08:37 by ptison            #+#    #+#             */
+/*   Updated: 2025/08/17 12:34:37 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "../../include/ft/core.h"
 
 /**
  * @brief Tests if a character is printable
@@ -20,9 +22,9 @@
  * @param i The character to test
  * @return Non-zero if character is printable, zero otherwise
  */
-int	ft_isprint(unsigned char i)
+int	ft_isprint(int c)
 {
-	if (i >= ' ' && i <= '~')
+	if (c >= 32 && c <= 126)
 	{
 		return (16384);
 	}

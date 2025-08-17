@@ -6,9 +6,11 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 21:49:31 by ptison            #+#    #+#             */
-/*   Updated: 2025/05/26 07:48:03 by patrik           ###   ########.fr       */
+/*   Updated: 2025/08/17 12:20:11 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "../../include/ft/core.h"
 
 int	skip_whitespace(const char *str, int idx)
 {

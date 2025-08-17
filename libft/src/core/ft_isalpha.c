@@ -5,10 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/21 16:45:34 by ptison            #+#    #+#             */
-/*   Updated: 2025/05/26 18:58:50 by patrik           ###   ########.fr       */
+/*   Created: 2025/05/21 20:08:37 by ptison            #+#    #+#             */
+/*   Updated: 2025/08/17 12:34:30 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "../../include/ft/core.h"
 
 /**
  * @brief Tests if a character is alphabetic
@@ -20,7 +22,7 @@
  * @param c The character to test
  * @return Non-zero if character is alphabetic, zero otherwise
  */
-int	ft_isalpha(unsigned char c)
+int	ft_isalpha(int c)
 {
 	if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
 	{

@@ -5,11 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/25 22:52:23 by patrik            #+#    #+#             */
-/*   Updated: 2025/05/26 19:00:23 by patrik           ###   ########.fr       */
+/*   Created: 2025/05/21 21:12:25 by ptison            #+#    #+#             */
+/*   Updated: 2025/08/17 12:35:13 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../include/ft/conv.h"
 #include <stdlib.h>
 
 static int	get_len(int n)

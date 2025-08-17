@@ -5,11 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/25 01:07:06 by ptison            #+#    #+#             */
-/*   Updated: 2025/05/26 19:04:43 by patrik           ###   ########.fr       */
+/*   Created: 2025/05/21 21:12:25 by ptison            #+#    #+#             */
+/*   Updated: 2025/08/17 12:35:08 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../include/ft/str.h"
 #include <stdlib.h>
 
 static int	count_words(const char *str, char c)

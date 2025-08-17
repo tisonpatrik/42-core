@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
+/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/15 14:25:51 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/17 11:00:29 by ptison           ###   ########.fr       */
+/*   Created: 2025/05/21 21:12:25 by ptison            #+#    #+#             */
+/*   Updated: 2025/08/17 12:38:54 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft/libft.h"
+#include "../../include/ft/printf.h"
+#include "../../include/ft/io.h"
 #include <stdarg.h>
 
 int		dispatch_conversion(char type, va_list args);

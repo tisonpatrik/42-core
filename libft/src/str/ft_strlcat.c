@@ -5,12 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/23 18:42:24 by ptison            #+#    #+#             */
-/*   Updated: 2025/05/26 18:58:50 by patrik           ###   ########.fr       */
+/*   Created: 2025/05/21 21:12:25 by ptison            #+#    #+#             */
+/*   Updated: 2025/08/17 12:34:59 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stddef.h>
+#include "../../include/ft/str.h"
 
 size_t	ft_strlen(const char *s);
 

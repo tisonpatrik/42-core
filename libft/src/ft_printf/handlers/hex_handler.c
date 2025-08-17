@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   hex_handler.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
+/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/19 19:32:13 by ptison            #+#    #+#             */
-/*   Updated: 2025/06/19 19:33:00 by ptison           ###   ########.fr       */
+/*   Created: 2025/05/21 21:12:25 by ptison            #+#    #+#             */
+/*   Updated: 2025/08/17 12:46:19 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../../../include/ft/printf.h"
+#include "../../../include/ft/io.h"
+#include "../../../include/ft/conv.h"
 #include <stdarg.h>
-
-void	ft_putnbr_hex(unsigned int n, int uppercase);
 
 int	handle_hex(char type, va_list args)
 {

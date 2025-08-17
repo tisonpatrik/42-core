@@ -5,11 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/23 11:42:23 by ptison            #+#    #+#             */
-/*   Updated: 2025/05/26 19:08:40 by patrik           ###   ########.fr       */
+/*   Created: 2025/05/21 21:24:11 by ptison            #+#    #+#             */
+/*   Updated: 2025/08/17 12:34:44 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../include/ft/mem.h"
 #include <stddef.h>
 #include <strings.h>
 

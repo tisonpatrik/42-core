@@ -6,11 +6,11 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 19:15:00 by patrik            #+#    #+#             */
-/*   Updated: 2025/05/26 19:34:15 by patrik           ###   ########.fr       */
+/*   Updated: 2025/08/17 12:37:15 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../../include/ft/list.h"
 #include <stdlib.h>
 
 /**

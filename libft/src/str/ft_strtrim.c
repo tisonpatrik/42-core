@@ -5,17 +5,15 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/25 17:23:42 by ptison            #+#    #+#             */
-/*   Updated: 2025/05/26 18:58:50 by patrik           ###   ########.fr       */
+/*   Created: 2025/05/21 21:12:25 by ptison            #+#    #+#             */
+/*   Updated: 2025/08/17 12:35:07 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../include/ft/str.h"
+#include "../../include/ft/mem.h"
 #include <stddef.h>
 #include <stdlib.h>
-
-void	*ft_memcpy(void *dst, const void *src, size_t n);
-size_t	ft_strlen(const char *s);
-char	*ft_strdup(char *src);
 
 char	is_in_set(char c, const char *set)
 {

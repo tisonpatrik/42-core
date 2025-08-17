@@ -5,15 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/15 14:30:00 by patrik            #+#    #+#             */
-/*   Updated: 2025/06/19 17:41:34 by patrik           ###   ########.fr       */
+/*   Created: 2025/05/21 21:12:25 by ptison            #+#    #+#             */
+/*   Updated: 2025/08/17 13:07:49 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include <stdarg.h>
 
-void	ft_putnbr_unsigned(unsigned int n);
+#include "../../../include/ft/printf.h"
+#include <stdarg.h>
 
 int	handle_unsigned(va_list args)
 {

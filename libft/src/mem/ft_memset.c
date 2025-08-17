@@ -6,11 +6,11 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:24:11 by ptison            #+#    #+#             */
-/*   Updated: 2025/05/26 19:02:40 by patrik           ###   ########.fr       */
+/*   Updated: 2025/08/17 12:20:41 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stddef.h>
+#include "../../include/ft/mem.h"
 
 /**
  * @brief Fills memory with a constant byte

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   char_handler.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
+/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/10 10:24:00 by patrik            #+#    #+#             */
-/*   Updated: 2025/08/17 11:02:27 by ptison           ###   ########.fr       */
+/*   Created: 2025/05/21 21:12:25 by ptison            #+#    #+#             */
+/*   Updated: 2025/08/17 12:39:42 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../../../include/ft/io.h"
 #include <stdarg.h>
 
 int	handle_char(va_list args)

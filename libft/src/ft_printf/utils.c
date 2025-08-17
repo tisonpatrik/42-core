@@ -6,12 +6,11 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 19:49:37 by ptison            #+#    #+#             */
-/*   Updated: 2025/06/19 17:42:40 by patrik           ###   ########.fr       */
+/*   Updated: 2025/08/17 12:39:29 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft/libft.h"
-#include <unistd.h>
+#include "../../include/ft/io.h"
 
 void	ft_putnbr_unsigned(unsigned int n)
 {

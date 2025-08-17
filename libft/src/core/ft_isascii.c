@@ -5,10 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/21 20:32:23 by ptison            #+#    #+#             */
-/*   Updated: 2025/05/26 18:58:50 by patrik           ###   ########.fr       */
+/*   Created: 2025/05/21 20:08:37 by ptison            #+#    #+#             */
+/*   Updated: 2025/08/17 12:34:32 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "../../include/ft/core.h"
 
 /**
  * @brief Tests if a character is ASCII
@@ -20,9 +22,9 @@
  * @param c The character to test
  * @return Non-zero if character is ASCII, zero otherwise
  */
-int	ft_isascii(unsigned char c)
+int	ft_isascii(int c)
 {
-	if (c <= 127)
+	if (c >= 0 && c <= 127)
 	{
 		return (1);
 	}
