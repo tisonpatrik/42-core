@@ -1,4 +1,4 @@
-# **************************************************************************** #
+#**************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
@@ -10,67 +10,58 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = libftprintf.a
+NAME        := libftprintf.a
 
-# Libft
-LIBFT_DIR = libft
-LIBFT = $(LIBFT_DIR)/libft.a
+CC          := cc
+CFLAGS      := -Wall -Wextra -Werror -Iinclude -Ilibft -Isrc
+CPPFLAGS    := -MMD -MP
 
-# Mandatory source files
-SOURCES = src/ft_printf.c \
-          src/parser.c \
-          src/dispatcher.c \
-          src/utils.c \
-          src/handlers/char_handler.c \
-          src/handlers/string_handler.c \
-          src/handlers/pointer_handler.c \
-          src/handlers/decimal_handler.c \
-          src/handlers/unsigned_handler.c \
-          src/handlers/hex_handler.c \
-          src/handlers/percent_handler.c
+AR          := ar
+ARFLAGS     := rcs
+RM          := rm -f
 
-# Object files
-OBJECTS = src/ft_printf.o \
-          src/parser.o \
-          src/dispatcher.o \
-          src/utils.o \
-          src/handlers/char_handler.o \
-          src/handlers/string_handler.o \
-          src/handlers/pointer_handler.o \
-          src/handlers/decimal_handler.o \
-          src/handlers/unsigned_handler.o \
-          src/handlers/hex_handler.o \
-          src/handlers/percent_handler.o
+SRC_DIR     := src
+LIBFT_DIR   := libft
+LIBFT       := $(LIBFT_DIR)/libft.a
 
-# Header files
-HEADERS = ft_printf.h src/parser.h src/handlers/handlers.h
+SRCS_BASE   := $(wildcard $(SRC_DIR)/*.c) \
+               $(wildcard $(SRC_DIR)/*/*.c)
 
-# Rules
-all: $(LIBFT) $(NAME)
+SRCS        := $(filter-out %_bonus.c,$(SRCS_BASE))
+SRCS_BONUS  := $(filter %_bonus.c,$(SRCS_BASE))
+
+OBJS        := $(SRCS:.c=.o)
+OBJS_BONUS  := $(SRCS_BONUS:.c=.o)
+
+ifdef BONUS
+  OBJS      += $(OBJS_BONUS)
+endif
+
+DEPS        := $(OBJS:.o=.d)
+
+all: $(NAME)
+
+$(NAME): $(LIBFT) $(OBJS)
+	@cp $(LIBFT) $(NAME)
+	$(AR) $(ARFLAGS) $(NAME) $(OBJS)
+	@echo "Archive created: $(NAME)"
 
 $(LIBFT):
-	make -C $(LIBFT_DIR)
+	$(MAKE) -C $(LIBFT_DIR) bonus
 
-$(NAME): $(OBJECTS)
-	cp $(LIBFT) $(NAME)
-	ar rcs $(NAME) $(OBJECTS)
+%.o: %.c
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
-# For now, bonus just rebuilds the mandatory part
-bonus: $(LIBFT) $(NAME)
-
-# Compilation rule
-src/%.o: src/%.c $(HEADERS)
-	cc -Wall -Wextra -Werror -I. -I src -I $(LIBFT_DIR) -c $< -o $@
-
-# Clean rules
 clean:
-	rm -f $(OBJECTS)
-	make -C $(LIBFT_DIR) clean
+	$(RM) $(OBJS) $(OBJS_BONUS) $(DEPS)
+	$(MAKE) -C $(LIBFT_DIR) clean
 
 fclean: clean
-	rm -f $(NAME)
-	make -C $(LIBFT_DIR) fclean
+	$(RM) $(NAME)
+	$(MAKE) -C $(LIBFT_DIR) fclean
 
 re: fclean all
 
-.PHONY: all bonus clean fclean re
+
+
+.PHONY: all clean fclean re

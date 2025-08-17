@@ -1,38 +1,63 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2025/08/17 11:16:00 by ptison            #+#    #+#              #
+#    Updated: 2025/08/17 11:16:48 by ptison           ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 NAME        := push_swap
+
 CC          := cc
-CFLAGS      := -Wall -Wextra -Werror -Iinclude -Ilibft
+CFLAGS      := -Wall -Wextra -Werror -Iinclude -Ilibft -Isrc
+CPPFLAGS    := -MMD -MP
+
+AR          := ar
+ARFLAGS     := rcs
+RM          := rm -f
+
 SRC_DIR     := src
 LIBFT_DIR   := libft
 LIBFT       := $(LIBFT_DIR)/libft.a
 
-SRCS        := $(filter-out %_bonus.c, $(wildcard $(SRC_DIR)/*.c))
-OBJS        := $(SRCS:.c=.o)
+SRCS_BASE   := $(wildcard $(SRC_DIR)/*.c) \
+               $(wildcard $(SRC_DIR)/*/*.c)
 
-SRCS_BONUS  := $(wildcard $(SRC_DIR)/*_bonus.c)
+SRCS        := $(filter-out %_bonus.c,$(SRCS_BASE))
+SRCS_BONUS  := $(filter %_bonus.c,$(SRCS_BASE))
+
+OBJS        := $(SRCS:.c=.o)
 OBJS_BONUS  := $(SRCS_BONUS:.c=.o)
 
 ifdef BONUS
-SRCS        += $(SRCS_BONUS)
-OBJS        := $(SRCS:.c=.o)
+  OBJS      += $(OBJS_BONUS)
 endif
+
+DEPS        := $(OBJS:.o=.d)
+
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(LIBFT)
+$(NAME): $(LIBFT) $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
+	@echo "Built executable: $(NAME)"
+
 
 $(LIBFT):
-	$(MAKE) -C $(LIBFT_DIR) fclean
 	$(MAKE) -C $(LIBFT_DIR) bonus
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 bonus:
 	$(MAKE) BONUS=1 all
 
 clean:
-	$(RM) $(OBJS) $(OBJS_BONUS)
+	$(RM) $(OBJS) $(OBJS_BONUS) $(DEPS)
 	$(MAKE) -C $(LIBFT_DIR) clean
 
 fclean: clean
@@ -41,5 +66,6 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re bonus
+-include $(DEPS)
 
+.PHONY: all clean fclean re bonus

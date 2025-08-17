@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 10:22:53 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/17 10:43:48 by ptison           ###   ########.fr       */
+/*   Updated: 2025/08/17 11:17:20 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,4 @@ void reverse_rotate_ab(t_list **a, t_list **b)
     reverse_rotate_a(a);
 	reverse_rotate_b(b);
     write(1, "rrr\n", 4);
-}
 }

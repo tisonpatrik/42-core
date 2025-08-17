@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   percent_handler.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 14:30:00 by patrik            #+#    #+#             */
-/*   Updated: 2025/06/19 15:17:11 by patrik           ###   ########.fr       */
+/*   Updated: 2025/08/17 11:02:47 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdarg.h>
 
 int	handle_percent(void)
 {
