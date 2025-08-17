@@ -6,14 +6,13 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 13:28:28 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/17 12:18:11 by patrik           ###   ########.fr       */
+/*   Updated: 2025/08/17 13:37:32 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_CONV_H
-# define FT_CONV_H
+#ifndef CONV_H
+# define CONV_H
 
-/* Conversion functions */
 char	*ft_itoa(int n);
 
 #endif

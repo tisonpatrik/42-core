@@ -6,12 +6,12 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 13:28:28 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/17 12:17:49 by patrik           ###   ########.fr       */
+/*   Updated: 2025/08/17 13:38:24 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_CORE_H
-# define FT_CORE_H
+#ifndef CORE_H
+# define CORE_H
 
 # include <stddef.h>
 
