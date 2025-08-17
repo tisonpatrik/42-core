@@ -44,14 +44,15 @@ t_list	*get_input_values(char **ag)
 	return (list);
 }
 
-void    print_list(const t_list *lst)
+void	print_list(const t_list *lst)
 {
-    while (lst)
-    {
-        printf("%d\n", *(int *)lst->content);
-        lst = lst->next;
-    }
+	while (lst)
+	{
+		printf("%d\n", *(int *)lst->content);
+		lst = lst->next;
+	}
 }
+
 int	main(int ac, char **args)
 {
 	t_list	*input;

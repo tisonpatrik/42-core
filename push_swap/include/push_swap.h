@@ -13,4 +13,3 @@
 #include "../libft/libft.h"
 
 t_list	*get_node(t_list *list, t_list *node, char *str);
-
