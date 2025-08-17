@@ -27,19 +27,19 @@ void	swap(t_list **stack)
 	*stack = second;
 }
 
-void swap_a(t_list **stack)
+void	swap_a(t_list **stack)
 {
 	swap(stack);
 	ft_printf("sa\n");
 }
 
-void swap_b(t_list **stack)
+void	swap_b(t_list **stack)
 {
 	swap(stack);
 	ft_printf("sb\n");
 }
 
-void swap_ab(t_list **a, t_list **b)
+void	swap_ab(t_list **a, t_list **b)
 {
 	swap(a);
 	swap(b);

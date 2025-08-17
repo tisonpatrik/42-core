@@ -25,15 +25,14 @@ void	push(t_list **source, t_list **target)
 	*target = node;
 }
 
-
-void push_a(t_list **a, t_list **b)
+void	push_a(t_list **a, t_list **b)
 {
-    push(b, a);
-    ft_printf("pa\n");
+	push(b, a);
+	ft_printf("pa\n");
 }
 
-void push_b(t_list **a, t_list **b)
+void	push_b(t_list **a, t_list **b)
 {
-    push(a, b);
-    ft_printf("pb\n");
+	push(a, b);
+	ft_printf("pb\n");
 }

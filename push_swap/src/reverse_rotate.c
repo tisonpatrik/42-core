@@ -32,21 +32,21 @@ void	reverse_rotate(t_list **stack)
 	*stack = last;
 }
 
-void reverse_rotate_a(t_list **stack)
+void	reverse_rotate_a(t_list **stack)
 {
 	reverse_rotate(stack);
 	ft_printf("rra\n");
 }
 
-void reverse_rotate_b(t_list **stack)
+void	reverse_rotate_b(t_list **stack)
 {
 	reverse_rotate(stack);
 	ft_printf("rrb\n");
 }
 
-void reverse_rotate_ab(t_list **a, t_list **b)
+void	reverse_rotate_ab(t_list **a, t_list **b)
 {
-    reverse_rotate_a(a);
+	reverse_rotate_a(a);
 	reverse_rotate_b(b);
-    ft_printf("rrr\n");
+	ft_printf("rrr\n");
 }
