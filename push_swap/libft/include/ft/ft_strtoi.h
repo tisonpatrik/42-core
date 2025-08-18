@@ -21,6 +21,6 @@ struct s_parse_result
 	int		digits_found;		
 };
 
-int		strtoi10(const char *nptr, char **endptr);
+int		ft_strtoi10(const char *nptr, char **endptr);
 
 #endif

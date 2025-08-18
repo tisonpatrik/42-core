@@ -6,11 +6,12 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/16 16:48:27 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/17 18:10:32 by ptison           ###   ########.fr       */
+/*   Updated: 2025/08/18 16:57:25 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/push_swap.h"
+#include "../libft/include/ft/ft_strtoi.h"
 #include <limits.h>
 #include <stdlib.h>
 
@@ -65,23 +66,26 @@ int	is_duplicate(const int *array, int used_len, int value)
 	return (0);
 }
 
-t_parse_result	get_input_number(char *str, const int *array, int used_len)
+struct s_parse_result	get_input_number(char *str, const int *array, int used_len)
 {
-	t_parse_result	result;
+	struct s_parse_result	result;
 	int				number;
 
 	number = ft_atoi(str);
 	if (!is_valid_input(str, number))
 	{
-		result.ok = 0;
+		result.overflow_detected = 1;
+		result.digits_found = 0;
 		return (result);
 	}
 	if (is_duplicate(array, used_len, number))
 	{
-		result.ok = 0;
+		result.overflow_detected = 1;
+		result.digits_found = 0;
 		return (result);
 	}
-	result.value = number;
-	result.ok = 1;
+	result.accumulated_value = number;
+	result.overflow_detected = 0;
+	result.digits_found = 1;
 	return (result);
 }

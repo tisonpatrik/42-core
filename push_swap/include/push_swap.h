@@ -6,19 +6,13 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 20:13:12 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/17 18:08:31 by ptison           ###   ########.fr       */
+/*   Updated: 2025/08/18 16:54:17 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft/include/libft.h"
 
-typedef struct s_parse_result
-{
-	int			value;
-	int			ok;
-}				t_parse_result;
 
-t_parse_result	get_input_number(char *str, const int *array, int used_len);
 int				*indexize_array(const int *array, int len_of_array);
 
 void			push_a(t_list **a, t_list **b);

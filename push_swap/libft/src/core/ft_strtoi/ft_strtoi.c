@@ -133,7 +133,7 @@ int	handle_overflow(int is_negative)
 		return (INT_MAX);
 }
 
-int	strtoi10(const char *nptr, char **endptr)
+int	ft_strtoi10(const char *nptr, char **endptr)
 {
 	const char		*current_position;
 	int			is_negative;

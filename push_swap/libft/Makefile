@@ -6,7 +6,7 @@
 #    By: patrik <patrik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/17 11:24:23 by ptison            #+#    #+#              #
-#    Updated: 2025/08/18 15:00:54 by patrik           ###   ########.fr        #
+#    Updated: 2025/08/18 16:41:24 by patrik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ AR          := ar
 ARFLAGS     := rcs
 RM          := rm -f
 
-SRC_DIRS    := src/core src/mem src/str src/io src/conv src/ft_printf src/ft_printf/handlers
+SRC_DIRS    := src/core src/core/ft_strtoi src/mem src/str src/io src/conv src/ft_printf src/ft_printf/handlers
 
 ifdef BONUS
   SRC_DIRS  += src/list

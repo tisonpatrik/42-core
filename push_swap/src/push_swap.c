@@ -1,74 +1,98 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   push_swap.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/16 16:13:20 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/17 18:10:51 by ptison           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "../include/push_swap.h"
+#include <stdio.h>
+#include <errno.h>
 #include <stdlib.h>
-#include <unistd.h>
+#include "../include/push_swap.h"
 
-int	exit_with_error(void)
-{
-	write(2, "Error\n", 6);
-	return (1);
+int parse_args(int argc, char *argv[], int *out) {
+    int out_index = 0;
+    
+    for (int i = 1; i < argc; i++) {
+        // Check if the argument contains spaces
+        if (ft_strchr(argv[i], ' ') != NULL) {
+            // Split the argument by spaces
+            char **split_nums = ft_split(argv[i], ' ');
+            if (!split_nums) {
+                printf("Error\n");
+                return -1;
+            }
+            
+            // Process each split number
+            int j = 0;
+            while (split_nums[j] != NULL) {
+                char *endptr;
+                errno = 0;
+                int val = ft_strtoi10(split_nums[j], &endptr);
+                
+                if (*endptr != '\0') {
+                    // Free allocated memory before returning error
+                    for (int k = 0; split_nums[k] != NULL; k++) {
+                        free(split_nums[k]);
+                    }
+                    free(split_nums);
+                    printf("Error\n");
+                    return -1;
+                }
+                
+                if (errno == ERANGE) {
+                    // Free allocated memory before returning error
+                    for (int k = 0; split_nums[k] != NULL; k++) {
+                        free(split_nums[k]);
+                    }
+                    free(split_nums);
+                    printf("Error\n");
+                    return -1;
+                }
+                
+                out[out_index++] = val;
+                j++;
+            }
+            
+            // Free the split array
+            for (int k = 0; split_nums[k] != NULL; k++) {
+                free(split_nums[k]);
+            }
+            free(split_nums);
+        } else {
+            // Single number argument
+            char *endptr;
+            errno = 0;
+            int val = ft_strtoi10(argv[i], &endptr);
+            
+            if (*endptr != '\0') {
+                printf("Error\n");
+                return -1;
+            }
+            
+            if (errno == ERANGE) {
+                printf("Error\n");
+                return -1;
+            }
+            
+            out[out_index++] = val;
+        }
+    }
+    
+    return out_index;
 }
 
-void	print_array(const int *array, int size)
-{
-	int	i;
+int main(int argc, char *argv[]) {
+    if (argc < 2) {
+        printf("Error\n");
+        return 1;
+    }
 
-	i = 0;
-	while (i < size)
-	{
-		ft_printf("%d\n", array[i]);
-		i++;
-	}
-}
+    int numbers[argc - 1];
+    int count = parse_args(argc, argv, numbers);
 
-int	*get_input_values(int ac, char **av)
-{
-	const int		count_of_arguments = ac - 1;
-	int				*array;
-	int				i;
-	t_parse_result	result;
+    if (count < 0) {
+        return 1;
+    }
 
-	array = (int *)malloc(count_of_arguments * sizeof(*array));
-	if (array == NULL)
-		return (NULL);
-	i = 1;
-	while (i <= count_of_arguments)
-	{
-		result = get_input_number(av[i], array, i - 1);
-		if (!result.ok)
-		{
-			free(array);
-			return (NULL);
-		}
-		array[i - 1] = result.value;
-		i++;
-	}
-	return (array);
-}
+    printf("Načteno %d čísel:\n", count);
+    for (int i = 0; i < count; i++) {
+        printf("%d ", numbers[i]);
+    }
+    printf("\n");
 
-int	main(int ac, char **av)
-{
-	int	*input;
-	int	*array;
-
-	if (ac < 2)
-		return (0);
-	input = get_input_values(ac, av);
-	if (input == NULL)
-		return (exit_with_error());
-	array = indexize_array(input, ac - 1);
-	print_array(array, ac - 1);
-	free(input);
-	return (0);
+    return 0;
 }
