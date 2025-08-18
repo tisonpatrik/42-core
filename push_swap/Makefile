@@ -6,7 +6,7 @@
 #    By: patrik <patrik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/17 11:16:00 by ptison            #+#    #+#              #
-#    Updated: 2025/08/17 13:59:11 by patrik           ###   ########.fr        #
+#    Updated: 2025/08/18 15:05:01 by patrik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,6 @@ BIN_DIR     := bin
 
 CC          := cc
 CFLAGS      := -Wall -Wextra -Werror -Iinclude -Ilibft -Isrc
-CPPFLAGS    := -MMD -MP
 
 AR          := ar
 ARFLAGS     := rcs
@@ -44,28 +43,28 @@ DEPS        := $(OBJS:.o=.d)
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJS) | $(BIN_DIR)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
 	@echo "Built executable: $(NAME)"
 
 $(BIN_DIR):    
-	$(MKDIR_P) $(BIN_DIR)
+	@$(MKDIR_P) $(BIN_DIR)
 
 $(LIBFT):
-	$(MAKE) -C $(LIBFT_DIR) bonus
+	@$(MAKE) -C $(LIBFT_DIR) bonus
 
 %.o: %.c
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 bonus:
-	$(MAKE) BONUS=1 all
+	@$(MAKE) BONUS=1 all
 
 clean:
-	$(RM) $(OBJS) $(OBJS_BONUS) $(DEPS)
-	$(MAKE) -C $(LIBFT_DIR) clean
+	@$(RM) $(OBJS) $(OBJS_BONUS) $(DEPS)
+	@$(MAKE) -C $(LIBFT_DIR) clean
 
 fclean: clean
-	$(RM) $(NAME)
-	$(MAKE) -C $(LIBFT_DIR) fclean
+	@$(RM) $(NAME)
+	@$(MAKE) -C $(LIBFT_DIR) fclean
 	@rmdir $(BIN_DIR) 2>/dev/null || true  
 
 re: fclean all

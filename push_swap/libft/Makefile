@@ -6,7 +6,7 @@
 #    By: patrik <patrik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/17 11:24:23 by ptison            #+#    #+#              #
-#    Updated: 2025/08/17 13:53:04 by patrik           ###   ########.fr        #
+#    Updated: 2025/08/18 15:00:54 by patrik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,20 +33,24 @@ DEPS        := $(OBJS:.o=.d)
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(AR) $(ARFLAGS) $@ $^
+	@$(AR) $(ARFLAGS) $@ $^
 	@echo "Built $@"
 
 %.o: %.c
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 bonus:
 	$(MAKE) BONUS=1 all
 
 clean:
-	$(RM) $(OBJS) $(DEPS)
+	@$(RM) $(OBJS) $(DEPS)
+	@$(RM) $(wildcard src/**/*.o)
+	@$(RM) $(wildcard src/**/*.d)
 
 fclean: clean
-	$(RM) $(NAME)
+	@$(RM) $(NAME)
+
+
 
 re: fclean all
 
