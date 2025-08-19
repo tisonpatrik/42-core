@@ -3,8 +3,19 @@
 #include <stdlib.h>
 #include "../include/push_swap.h"
 
-int parse_args(int argc, char *argv[], int *out) {
-    int out_index = 0;
+
+typedef struct s_parser_result
+{
+	int*	input;
+	int	count;
+}			t_parser_result;
+
+t_parser_result parse_args(int argc, char *argv[]) {
+    if (argc < 2) {
+        ft_printf("Error\n");
+        return 1;
+    }
+	int out_index = 0;
     
     for (int i = 1; i < argc; i++) {
         // Check if the argument contains spaces
@@ -76,21 +87,12 @@ int parse_args(int argc, char *argv[], int *out) {
 }
 
 int main(int argc, char *argv[]) {
-    if (argc < 2) {
-        printf("Error\n");
-        return 1;
-    }
 
-    int numbers[argc - 1];
-    int count = parse_args(argc, argv, numbers);
+	t_parser_result result;
+    result = parse_args(argc, argv);
 
-    if (count < 0) {
-        return 1;
-    }
-
-    printf("Načteno %d čísel:\n", count);
-    for (int i = 0; i < count; i++) {
-        printf("%d ", numbers[i]);
+    for (int i = 0; i < result.count; i++) {
+        printf("%d ", result.input[i]);
     }
     printf("\n");
 
