@@ -14,20 +14,22 @@
 
 typedef struct s_parser_result
 {
-	int	*input;
-	int	count;
-}		t_parser_result;
+	int			*input;
+	int			count;
+}				t_parser_result;
 
-int		*indexize_array(const int *array, int len_of_array);
+t_parser_result	parse_args(int argc, char *argv[]);
 
-void	push_a(t_list **a, t_list **b);
-void	push_b(t_list **a, t_list **b);
-void	swap_a(t_list **a);
-void	swap_b(t_list **b);
-void	swap_ab(t_list **a, t_list **b);
-void	rotate_a(t_list **a);
-void	rotate_b(t_list **b);
-void	rotate_ab(t_list **a, t_list **b);
-void	reverse_rotate_a(t_list **a);
-void	reverse_rotate_b(t_list **b);
-void	reverse_rotate_aa(t_list **a, t_list **b);
+int				*indexize_array(const int *array, int len_of_array);
+
+void			push_a(t_list **a, t_list **b);
+void			push_b(t_list **a, t_list **b);
+void			swap_a(t_list **a);
+void			swap_b(t_list **b);
+void			swap_ab(t_list **a, t_list **b);
+void			rotate_a(t_list **a);
+void			rotate_b(t_list **b);
+void			rotate_ab(t_list **a, t_list **b);
+void			reverse_rotate_a(t_list **a);
+void			reverse_rotate_b(t_list **b);
+void			reverse_rotate_aa(t_list **a, t_list **b);

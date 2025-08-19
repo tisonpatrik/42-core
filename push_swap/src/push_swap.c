@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../include/push_swap.h"
+#include <stdlib.h>
 #include <unistd.h>
 
 t_parser_result	parse_args(int argc, char *argv[]);
@@ -18,15 +19,12 @@ t_parser_result	parse_args(int argc, char *argv[]);
 int	main(int argc, char *argv[])
 {
 	t_parser_result	result;
-	int				i;
 
 	result = parse_args(argc, argv);
-	i = 0;
-	while (i < result.count)
+	if (result.input == NULL)
 	{
-		ft_printf("%d ", result.input[i]);
-		i++;
+		return (1);
 	}
-	ft_printf("\n");
+	free(result.input);
 	return (0);
 }
