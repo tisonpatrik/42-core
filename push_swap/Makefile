@@ -6,7 +6,7 @@
 #    By: patrik <patrik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/17 11:16:00 by ptison            #+#    #+#              #
-#    Updated: 2025/08/18 15:05:01 by patrik           ###   ########.fr        #
+#    Updated: 2025/08/19 12:01:58 by patrik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,11 +25,17 @@ SRC_DIR     := src
 LIBFT_DIR   := libft
 LIBFT       := $(LIBFT_DIR)/libft.a
 
-SRCS_BASE   := $(wildcard $(SRC_DIR)/*.c) \
-               $(wildcard $(SRC_DIR)/*/*.c)
+# Main source files
+SRCS        := src/normalisation.c \
+               src/push.c \
+               src/push_swap.c \
+               src/reverse_rotate.c \
+               src/rotate.c \
+               src/swap.c \
+               src/validation_utils.c
 
-SRCS        := $(filter-out %_bonus.c,$(SRCS_BASE))
-SRCS_BONUS  := $(filter %_bonus.c,$(SRCS_BASE))
+# Bonus source files (if any)
+SRCS_BONUS  :=
 
 OBJS        := $(SRCS:.c=.o)
 OBJS_BONUS  := $(SRCS_BONUS:.c=.o)
@@ -65,7 +71,7 @@ clean:
 fclean: clean
 	@$(RM) $(NAME)
 	@$(MAKE) -C $(LIBFT_DIR) fclean
-	@rmdir $(BIN_DIR) 2>/dev/null || true  
+	@$(RM) $(BIN_DIR)
 
 re: fclean all
 
