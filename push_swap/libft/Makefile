@@ -59,7 +59,8 @@ IO_SRCS     :=  src/io/ft_putchar_fd.c \
 
 CONV_SRCS   :=  src/conv/ft_atoi.c \
                 src/conv/ft_itoa.c \
-                src/conv/ft_strtoi/ft_strtoi.c
+				src/conv/ft_strtoi/utils.c \
+				src/conv/ft_strtoi/ft_strtoi.c
 
 UTILS_SRCS  :=  src/utils/ft_parse_sign.c \
                 src/utils/ft_skip_whitespace.c

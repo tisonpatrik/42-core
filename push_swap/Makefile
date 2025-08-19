@@ -20,19 +20,22 @@ AR          := ar
 ARFLAGS     := rcs
 RM          := rm -f
 MKDIR_P     := mkdir -p          
+RM_RF		:= rm -rf
 
 SRC_DIR     := src
 LIBFT_DIR   := libft
 LIBFT       := $(LIBFT_DIR)/libft.a
 
 # Main source files
-SRCS        := src/normalisation.c \
-               src/push.c \
-               src/push_swap.c \
+SRCS        := src/input_parser.c \
+			   src/normalization.c \
+			   src/push.c \
+			   src/push_swap.c \
                src/reverse_rotate.c \
                src/rotate.c \
                src/swap.c \
-               src/validation_utils.c
+			   src/tokenizer.c \
+			   src/utils.c
 
 # Bonus source files (if any)
 SRCS_BONUS  :=
@@ -71,7 +74,7 @@ clean:
 fclean: clean
 	@$(RM) $(NAME)
 	@$(MAKE) -C $(LIBFT_DIR) fclean
-	@$(RM) $(BIN_DIR)
+	@$(RM_RF) $(BIN_DIR)
 
 re: fclean all
 

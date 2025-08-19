@@ -1,32 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push_swap.c                                        :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/19 20:56:32 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/19 21:11:06 by ptison           ###   ########.fr       */
+/*   Created: 2025/08/19 21:00:44 by ptison            #+#    #+#             */
+/*   Updated: 2025/08/19 21:02:43 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/push_swap.h"
+#include <stdlib.h>
 #include <unistd.h>
 
-t_parser_result	parse_args(int argc, char *argv[]);
-
-int	main(int argc, char *argv[])
+void	free_array(char **splitted)
 {
-	t_parser_result	result;
-	int				i;
+	int	i;
 
-	result = parse_args(argc, argv);
 	i = 0;
-	while (i < result.count)
+	if (!splitted)
 	{
-		ft_printf("%d ", result.input[i]);
+		return ;
+	}
+	while (splitted[i] != NULL)
+	{
+		free(splitted[i]);
 		i++;
 	}
-	ft_printf("\n");
-	return (0);
+	free(splitted);
+}
+
+void	fatal_cleanup_and_exit(int *buf, char **tmp)
+{
+	if (tmp)
+		free_array(tmp);
+	free(buf);
+	write(2, "Error\n", 6);
+	exit(1);
 }

@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 13:28:28 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/19 11:53:09 by patrik           ###   ########.fr       */
+/*   Updated: 2025/08/19 20:49:46 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,26 +16,27 @@
 # include <stddef.h>
 
 /* Character classification functions */
-int		ft_isalnum(int c);
-int		ft_isalpha(int c);
-int		ft_isascii(int c);
-int		ft_isdigit(int c);
-int		ft_isprint(int c);
+int	ft_isalnum(int c);
+int	ft_isalpha(int c);
+int	ft_isascii(int c);
+int	ft_isdigit(int c);
+int	ft_isprint(int c);
 
 /**
  * @brief Check if character is a whitespace character
  *
  * This function checks if the given character is a whitespace character.
  * It mimics the behavior of the standard isspace function.
- * Returns non-zero for space, tab, newline, carriage return, vertical tab, and form feed.
+ * Returns non-zero for space, tab, newline, carriage return, vertical tab,
+	and form feed.
  *
  * @param c The character to test
  * @return Non-zero if character is whitespace, zero otherwise
  */
-int		ft_isspace(int c);
+int	ft_isspace(int c);
 
 /* Character transformation functions */
-int		ft_tolower(int c);
-int		ft_toupper(int c);
+int	ft_tolower(int c);
+int	ft_toupper(int c);
 
 #endif

@@ -11,8 +11,8 @@
 /* ************************************************************************** */
 
 #include "../../include/ft/conv.h"
-#include "../../include/ft/utils.h"
 #include "../../include/ft/core.h"
+#include "../../include/ft/utils.h"
 
 int	convert_number(const char *str, int idx)
 {
@@ -25,6 +25,26 @@ int	convert_number(const char *str, int idx)
 		idx++;
 	}
 	return (res);
+}
+
+int	get_sign(const char *current_position)
+{
+	int	sign;
+
+	sign = 0;
+	if (*current_position == '-')
+	{
+		sign = -1;
+		current_position++;
+	}
+	else if (*current_position == '+')
+	{
+		sign = 1;
+		current_position++;
+	}
+	else
+		sign = 1;
+	return (sign);
 }
 
 /**
@@ -51,11 +71,10 @@ int	ft_atoi(const char *str)
 	current_position = str;
 	res = 0;
 	ft_skip_whitespace(&current_position);
-	sign = ft_parse_sign(&current_position);
+	sign = get_sign(current_position);
 	res = convert_number(current_position, 0);
-	return (res * (sign ? -1 : 1));
+	return (res * sign);
 }
-
 /*
 #include <assert.h>
 #include <stdio.h>

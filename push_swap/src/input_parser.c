@@ -1,91 +1,126 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   validation_utils.c                                 :+:      :+:    :+:   */
+/*   input_parser.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/16 16:48:27 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/18 16:57:25 by patrik           ###   ########.fr       */
+/*   Created: 2025/08/19 21:00:04 by ptison            #+#    #+#             */
+/*   Updated: 2025/08/19 21:20:24 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/push_swap.h"
-#include "../libft/include/ft/ft_strtoi.h"
-#include <limits.h>
 #include <stdlib.h>
+#include <unistd.h>
 
-int	is_valid_input(char *original, int number)
+void			free_array(char **splitted);
+void			fatal_cleanup_and_exit(int *buf, char **tmp);
+
+void			store_token(const char *tok, int *out, int *out_index,
+					char **parts_for_cleanup);
+int				count_parts(char **parts);
+
+int	get_count_of_arguments(int argc, char *argv[])
 {
-	int		len;
-	char	*normal;
-	int		normal_len;
-	int		ok;
+	int		total;
+	int		i;
+	char	**parts;
 
-	len = ft_strlen(original);
-	if (number == 0)
-		return (len == 1 && original[0] == '0');
-	normal = ft_itoa(number);
-	if (!normal)
-		return (0);
-	normal_len = ft_strlen(normal);
-	ok = (normal_len == len) && (ft_strncmp(normal, original, len) == 0);
-	free(normal);
-	return (ok);
-}
-
-t_list	*new_int_node(int number)
-{
-	int		*value;
-	t_list	*node;
-
-	value = malloc(sizeof * value);
-	if (!value)
-		return (NULL);
-	*value = number;
-	node = ft_lstnew(value);
-	if (!node)
+	total = 0;
+	i = 1;
+	while (i < argc)
 	{
-		free(value);
-		return (NULL);
-	}
-	return (node);
-}
-
-int	is_duplicate(const int *array, int used_len, int value)
-{
-	int	i;
-
-	i = 0;
-	while (i < used_len)
-	{
-		if (array[i] == value)
-			return (1);
+		if (!argv[i] || argv[i][0] == '\0')
+			fatal_cleanup_and_exit(NULL, NULL);
+		if (ft_strchr(argv[i], ' '))
+		{
+			parts = ft_split(argv[i], ' ');
+			total += count_parts(parts);
+			free_array(parts);
+		}
+		else
+		{
+			total++;
+		}
 		i++;
 	}
-	return (0);
+	return (total);
 }
 
-struct s_parse_result	get_input_number(char *str, const int *array, int used_len)
+void	fill_from_parts(char **parts, int *out, int *out_index)
 {
-	struct s_parse_result	result;
-	int				number;
+	int	j;
 
-	number = ft_atoi(str);
-	if (!is_valid_input(str, number))
+	j = 0;
+	if (!parts)
+		fatal_cleanup_and_exit(out, NULL);
+	while (parts[j])
 	{
-		result.overflow_detected = 1;
-		result.digits_found = 0;
-		return (result);
+		store_token(parts[j], out, out_index, parts);
+		j++;
 	}
-	if (is_duplicate(array, used_len, number))
+	free_array(parts);
+}
+
+void	fill_numbers(int argc, char *argv[], int *out)
+{
+	int		out_index;
+	int		i;
+	char	**parts;
+
+	out_index = 0;
+	i = 1;
+	while (i < argc)
 	{
-		result.overflow_detected = 1;
-		result.digits_found = 0;
-		return (result);
+		if (ft_strchr(argv[i], ' '))
+		{
+			parts = ft_split(argv[i], ' ');
+			fill_from_parts(parts, out, &out_index);
+		}
+		else
+		{
+			store_token(argv[i], out, &out_index, NULL);
+		}
+		i++;
 	}
-	result.accumulated_value = number;
-	result.overflow_detected = 0;
-	result.digits_found = 1;
-	return (result);
+}
+
+void	check_duplicates(int *arr, int n)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 1;
+	while (i < n - 1)
+	{
+		j = i + 1;
+		while (j < n)
+		{
+			if (arr[i] == arr[j])
+				fatal_cleanup_and_exit(arr, NULL);
+			j++;
+		}
+		i++;
+	}
+}
+
+t_parser_result	parse_args(int argc, char *argv[])
+{
+	t_parser_result	res;
+	int				total;
+	int				*buf;
+
+	if (argc < 2)
+		exit(0);
+	total = get_count_of_arguments(argc, argv);
+	buf = (int *)malloc(sizeof(int) * total);
+	if (!buf)
+		fatal_cleanup_and_exit(NULL, NULL);
+	fill_numbers(argc, argv, buf);
+	check_duplicates(buf, total);
+	res.input = buf;
+	res.count = total;
+	return (res);
 }
