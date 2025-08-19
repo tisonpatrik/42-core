@@ -1,18 +1,9 @@
 #include <errno.h>
 #include <limits.h>
 #include "../../../include/ft/core.h"
+#include "../../../include/ft/conv.h"
+#include "../../../include/ft/utils.h"
 #include "../../../include/ft/ft_strtoi.h"
-
-/**
- * @brief Skip whitespace characters
- *
- * @param current_position Pointer to current position in string
- */
-void	skip_whitespace(const char **current_position)
-{
-	while (ft_isspace((unsigned char)**current_position))
-		(*current_position)++;
-}
 
 /**
  * @brief Calculate cutoff value for overflow detection
@@ -143,7 +134,7 @@ int	ft_strtoi10(const char *nptr, char **endptr)
 
 	current_position = nptr;
 	is_negative = 0;
-	skip_whitespace(&current_position);
+	ft_skip_whitespace(&current_position);
 	is_negative = ft_parse_sign(&current_position);
 	overflow_threshold = calculate_cutoff(is_negative);
 	last_digit_limit = calculate_cutlim(&overflow_threshold);

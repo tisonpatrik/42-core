@@ -1,20 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   conv.h                                             :+:      :+:    :+:   */
+/*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/25 13:28:28 by ptison            #+#    #+#             */
+/*   Created: 2025/08/19 11:50:00 by patrik            #+#    #+#             */
 /*   Updated: 2025/08/19 11:53:09 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CONV_H
-# define CONV_H
+#ifndef UTILS_H
+# define UTILS_H
 
-char	*ft_itoa(int n);
-int		ft_atoi(const char *str);
-int		ft_strtoi10(const char *nptr, char **endptr);
+void	ft_skip_whitespace(const char **current_position);
+int		ft_parse_sign(const char **p);
 
 #endif

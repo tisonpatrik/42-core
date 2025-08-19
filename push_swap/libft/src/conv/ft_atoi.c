@@ -6,26 +6,20 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 21:49:31 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/18 16:44:11 by patrik           ###   ########.fr       */
+/*   Updated: 2025/08/19 11:53:09 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../include/ft/conv.h"
+#include "../../include/ft/utils.h"
 #include "../../include/ft/core.h"
-
-int	skip_whitespace(const char *str, int idx)
-{
-	while (str[idx] == ' ' || str[idx] == '\t' || str[idx] == '\n'
-		|| str[idx] == '\v' || str[idx] == '\f' || str[idx] == '\r')
-		idx++;
-	return (idx);
-}
 
 int	convert_number(const char *str, int idx)
 {
 	int	res;
 
 	res = 0;
-	while (str[idx] >= '0' && str[idx] <= '9')
+	while (ft_isdigit(str[idx]))
 	{
 		res = res * 10 + (str[idx] - '0');
 		idx++;
@@ -50,22 +44,16 @@ int	convert_number(const char *str, int idx)
  */
 int	ft_atoi(const char *str)
 {
-	int	idx;
-	int	sign;
-	int	res;
+	const char	*current_position;
+	int			sign;
+	int			res;
 
-	idx = 0;
-	sign = 1;
+	current_position = str;
 	res = 0;
-	idx = skip_whitespace(str, idx);
-	if (str[idx] == '-' || str[idx] == '+')
-	{
-		if (str[idx] == '-')
-			sign = -1;
-		idx++;
-	}
-	res = convert_number(str, idx);
-	return (res * sign);
+	ft_skip_whitespace(&current_position);
+	sign = ft_parse_sign(&current_position);
+	res = convert_number(current_position, 0);
+	return (res * (sign ? -1 : 1));
 }
 
 /*
