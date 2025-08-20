@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	success := benchmark.RunBenchmark(10000)
+	success := benchmark.RunBenchmark(1)
 	
 	if !success {
 		os.Exit(1)

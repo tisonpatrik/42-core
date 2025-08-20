@@ -26,17 +26,7 @@ func (ps *PushSwapStacks) SA() bool {
 	return ps.A.SwapTop()
 }
 
-// SB swaps the first 2 elements at the top of stack B
-func (ps *PushSwapStacks) SB() bool {
-	return ps.B.SwapTop()
-}
 
-// SS swaps the first 2 elements at the top of both stacks
-func (ps *PushSwapStacks) SS() bool {
-	aOk := ps.A.SwapTop()
-	bOk := ps.B.SwapTop()
-	return aOk || bOk
-}
 
 // PA pushes the first element of B to A
 func (ps *PushSwapStacks) PA() bool {
@@ -82,42 +72,6 @@ func (ps *PushSwapStacks) RRR() bool {
 	return aOk || bOk
 }
 
-// ExecuteOperation executes a push swap operation by name
-func (ps *PushSwapStacks) ExecuteOperation(op string) bool {
-	switch op {
-	case "sa":
-		return ps.SA()
-	case "sb":
-		return ps.SB()
-	case "ss":
-		return ps.SS()
-	case "pa":
-		return ps.PA()
-	case "pb":
-		return ps.PB()
-	case "ra":
-		return ps.RA()
-	case "rb":
-		return ps.RB()
-	case "rr":
-		return ps.RR()
-	case "rra":
-		return ps.RRA()
-	case "rrb":
-		return ps.RRB()
-	case "rrr":
-		return ps.RRR()
-	default:
-		return false
-	}
-}
 
-// GetStackASlice returns stack A as a slice
-func (ps *PushSwapStacks) GetStackASlice() []int {
-	return ps.A.ToSlice()
-}
 
-// GetStackBSlice returns stack B as a slice
-func (ps *PushSwapStacks) GetStackBSlice() []int {
-	return ps.B.ToSlice()
-}
+

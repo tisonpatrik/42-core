@@ -4,26 +4,61 @@ import (
 	"push_swap_prototype/internal/operations"
 )
 
-// SolvePushSwap solves the push swap problem using linked list stacks
-// Returns the operations and final array
-func SolvePushSwap(arr []int) ([]string, []int) {
+// SolvePushSwap solves the push_swap puzzle using the simplest approach
+func SolvePushSwap(numbers []int) ([]string, []int) {
+	if len(numbers) <= 1 {
+		return []string{}, numbers
+	}
+
+	// Initialize stacks
 	stacks := operations.NewPushSwapStacks()
-	stacks.InitializeFromSlice(arr)
+	stacks.InitializeFromSlice(numbers)
 	
-	// Phase 1: Find LIS and send non-LIS to B
-	ops1 := ProcessLISPhase(arr, stacks)
+	operations := []string{}
 	
-	// Phase 2: Greedy return from B to A
-	ops2 := ProcessGreedyPhase(stacks)
+	// The simplest approach:
+	// 1. While stack A is not empty, find the minimum and push it to B
+	for stacks.A.Size() > 0 {
+		// Find the minimum element in stack A
+		minValue := findMinInA(stacks)
+		
+		// Rotate stack A until the minimum is at the top
+		for stacks.A.PeekValue() != minValue {
+			stacks.RA()
+			operations = append(operations, "ra")
+		}
+		
+		// Push the minimum to stack B
+		stacks.PB()
+		operations = append(operations, "pb")
+	}
 	
-	// Phase 3: Final rotate - put minimum at top
-	ops3 := ProcessFinalPhase(stacks)
+	// 2. Push everything back from B to A (they're already in sorted order)
+	for stacks.B.Size() > 0 {
+		stacks.PA()
+		operations = append(operations, "pa")
+	}
 	
-	// Combine all operations
-	allOps := make([]string, 0, len(ops1)+len(ops2)+len(ops3))
-	allOps = append(allOps, ops1...)
-	allOps = append(allOps, ops2...)
-	allOps = append(allOps, ops3...)
+	// Get final sorted result
+	result := stacks.A.ToSlice()
 	
-	return allOps, stacks.GetStackASlice()
+	return operations, result
+}
+
+// findMinInA finds the minimum value in stack A
+func findMinInA(stacks *operations.PushSwapStacks) int {
+	if stacks.A.Size() == 0 {
+		return 0
+	}
+	
+	minValue := stacks.A.GetValueAtPosition(0)
+	
+	for i := 1; i < stacks.A.Size(); i++ {
+		value := stacks.A.GetValueAtPosition(i)
+		if value < minValue {
+			minValue = value
+		}
+	}
+	
+	return minValue
 }
