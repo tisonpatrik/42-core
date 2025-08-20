@@ -4,8 +4,8 @@ import (
 	"sort"
 )
 
-// LISIndices finds indices of elements belonging to LIS (Longest Increasing Subsequence)
-func LISIndices(arr []int) map[int]bool {
+// FindLISIndices finds indices of elements belonging to LIS (Longest Increasing Subsequence)
+func FindLISIndices(arr []int) map[int]bool {
 	n := len(arr)
 	parent := make([]int, n)
 	for i := range parent {

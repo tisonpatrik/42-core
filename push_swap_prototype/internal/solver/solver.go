@@ -1,18 +1,19 @@
-package main
+package solver
 
 import (
-	"push_swap_prototype/cmd/algo"
-	"push_swap_prototype/cmd/utils"
+	"push_swap_prototype/internal/algo"
+	"push_swap_prototype/internal/utils"
 )
 
-func Solver(arr []int) ([]string, []int) {
+// SolvePushSwap solves the push swap problem and returns the operations and final array
+func SolvePushSwap(arr []int) ([]string, []int) {
 	ops := make([]string, 0)
 	a := make([]int, len(arr))
 	copy(a, arr)
 	b := make([]int, 0)
 	
 	// 1) Find LIS and send non-LIS to B
-	keep := algo.LISIndices(a)
+	keep := algo.FindLISIndices(a)
 	i := 0
 	for i < len(a) {
 		if keep[i] {
@@ -34,7 +35,7 @@ func Solver(arr []int) ([]string, []int) {
 		bestPosB := -1
 		
 		for posB, val := range b {
-			posA := algo.TargetPos(a, val)
+			posA := algo.FindTargetPosition(a, val)
 			cost, typ := utils.ComputeCost(posA, len(a), posB, len(b))
 			
 			if bestCost == -1 || cost < bestCost {

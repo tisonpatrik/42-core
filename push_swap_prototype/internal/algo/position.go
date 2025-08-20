@@ -1,7 +1,7 @@
 package algo
 
-// TargetPos finds position in A where val should go (first position greater than val)
-func TargetPos(a []int, val int) int {
+// FindTargetPosition finds position in A where val should go (first position greater than val)
+func FindTargetPosition(a []int, val int) int {
 	if len(a) == 0 {
 		return 0
 	}
