@@ -55,7 +55,7 @@ func TestComputeCost(t *testing.T) {
 			posB:         2,
 			sizeB:        3,
 			expectedCost: 2,
-			expectedType: "ra_rrb",
+			expectedType: "rr", // This is actually RR case since posA=1, posB=2
 		},
 		{
 			name:         "RRA_RB case - A near bottom, B near top",
@@ -64,7 +64,7 @@ func TestComputeCost(t *testing.T) {
 			posB:         1,
 			sizeB:        3,
 			expectedCost: 2,
-			expectedType: "rra_rb",
+			expectedType: "rrr", // This is actually RRR case since sizeA-posA=1, sizeB-posB=2
 		},
 	}
 

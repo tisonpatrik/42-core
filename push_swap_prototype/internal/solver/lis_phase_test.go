@@ -35,7 +35,7 @@ func TestProcessLISPhase(t *testing.T) {
 		{
 			name:     "Mixed array",
 			input:    []int{3, 1, 4, 1, 5, 9, 2, 6},
-			expected: []string{"ra", "pb", "ra", "pb", "ra", "ra", "pb", "ra"},
+			expected: []string{"ra", "pb", "ra", "pb", "ra", "ra", "pb", "pb"}, // Based on actual LIS output
 		},
 	}
 
@@ -75,6 +75,16 @@ func TestProcessLISPhaseStackState(t *testing.T) {
 		totalElements := len(stackA) + len(stackB)
 		if totalElements != len(input) {
 			t.Errorf("Total elements mismatch: got %d, want %d", totalElements, len(input))
+		}
+		
+		// Verify LIS elements are in correct order in stack A
+		if len(stackA) > 1 {
+			for i := 1; i < len(stackA); i++ {
+				if stackA[i] <= stackA[i-1] {
+					t.Errorf("Stack A should contain LIS elements in increasing order, but found %d <= %d at positions %d, %d", 
+						stackA[i], stackA[i-1], i, i-1)
+				}
+			}
 		}
 	})
 }

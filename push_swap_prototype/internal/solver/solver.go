@@ -27,20 +27,3 @@ func SolvePushSwap(arr []int) ([]string, []int) {
 	
 	return allOps, stacks.GetStackASlice()
 }
-
-// findMinPosition finds the position of the minimum element
-func findMinPosition(arr []int) int {
-	if len(arr) == 0 {
-		return 0
-	}
-	
-	minPos := 0
-	minVal := arr[0]
-	for i, val := range arr {
-		if val < minVal {
-			minVal = val
-			minPos = i
-		}
-	}
-	return minPos
-}

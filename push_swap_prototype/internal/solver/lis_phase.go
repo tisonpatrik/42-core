@@ -10,6 +10,9 @@ import (
 func ProcessLISPhase(arr []int, stacks *operations.PushSwapStacks) []string {
 	ops := make([]string, 0)
 	
+	// Initialize stack A with the input array
+	stacks.InitializeFromSlice(arr)
+	
 	// Find LIS and send non-LIS to B
 	keep := algo.FindLISIndices(arr)
 	

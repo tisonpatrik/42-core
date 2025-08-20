@@ -40,7 +40,7 @@ func TestProcessFinalPhase(t *testing.T) {
 		{
 			name:     "Minimum at bottom - rotate down",
 			input:    []int{5, 4, 3, 2, 1},
-			expected: []string{"rra", "rra", "rra", "rra"},
+			expected: []string{"rra"}, // Only 1 rra needed: 5-4 = 1
 		},
 	}
 
@@ -91,7 +91,7 @@ func TestProcessFinalPhaseStackState(t *testing.T) {
 		result := ProcessFinalPhase(stacks)
 		
 		// Should use rra operations for efficiency
-		expectedOps := []string{"rra", "rra", "rra", "rra"}
+		expectedOps := []string{"rra"} // Only 1 rra needed
 		if !reflect.DeepEqual(result, expectedOps) {
 			t.Errorf("Expected efficient operations %v, got %v", expectedOps, result)
 		}
