@@ -1,46 +1,65 @@
 package algo
 
-import (
-	"sort"
-)
-
 // FindLISIndices finds indices of elements belonging to LIS (Longest Increasing Subsequence)
 func FindLISIndices(arr []int) map[int]bool {
+	if len(arr) == 0 {
+		return make(map[int]bool)
+	}
+	
+	// Use a simpler, more reliable LIS algorithm
+	lis := findLISIndices(arr)
+	return convertToIndexSet(lis)
+}
+
+// findLISIndices finds the indices of the longest increasing subsequence
+func findLISIndices(arr []int) []int {
 	n := len(arr)
-	parent := make([]int, n)
-	for i := range parent {
-		parent[i] = -1
+	if n == 0 {
+		return []int{}
 	}
 	
-	tails := make([]int, 0)
-	tailsVal := make([]int, 0)
+	// dp[i] stores the length of LIS ending at index i
+	dp := make([]int, n)
+	// prev[i] stores the previous index in the LIS ending at index i
+	prev := make([]int, n)
 	
-	for i, x := range arr {
-		j := sort.SearchInts(tailsVal, x)
-		if j == len(tailsVal) {
-			tailsVal = append(tailsVal, x)
-			tails = append(tails, i)
-		} else {
-			tailsVal[j] = x
-			tails[j] = i
+	// Initialize
+	for i := range dp {
+		dp[i] = 1
+		prev[i] = -1
+	}
+	
+	maxLen := 1
+	maxEnd := 0
+	
+	// Fill dp array
+	for i := 1; i < n; i++ {
+		for j := 0; j < i; j++ {
+			if arr[i] > arr[j] && dp[j]+1 > dp[i] {
+				dp[i] = dp[j] + 1
+				prev[i] = j
+			}
 		}
-		if j > 0 {
-			parent[i] = tails[j-1]
+		if dp[i] > maxLen {
+			maxLen = dp[i]
+			maxEnd = i
 		}
 	}
 	
-	// reconstruct LIS
+	// Reconstruct the LIS
 	lis := make([]int, 0)
-	k := tails[len(tails)-1]
-	for k != -1 {
-		lis = append(lis, k)
-		k = parent[k]
+	for i := maxEnd; i != -1; i = prev[i] {
+		lis = append([]int{i}, lis...)
 	}
 	
-	// reverse and convert to set
+	return lis
+}
+
+// convertToIndexSet converts a slice of indices to a map for O(1) lookup
+func convertToIndexSet(indices []int) map[int]bool {
 	result := make(map[int]bool)
-	for i := len(lis) - 1; i >= 0; i-- {
-		result[lis[i]] = true
+	for _, idx := range indices {
+		result[idx] = true
 	}
 	return result
 }

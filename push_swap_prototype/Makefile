@@ -15,4 +15,12 @@ run:
 clean:
 	@rm -f $(bin_dir)/$(name)
 
-.PHONY: build clean run tidy
+
+test:
+	@echo "🧪 Running tests..."
+	@go test ./internal/... -count=1
+
+test-verbose:
+	@go test -v ./internal/...
+
+.PHONY: build clean run tidy test test-verbose
