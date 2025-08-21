@@ -18,19 +18,20 @@ func locToStack(ps *operations.PushSwapData, loc operations.Loc) *stack.Stack {
 func chunkValue(ps *operations.PushSwapData, chunk *operations.Chunk, n int) int {
 	stk := locToStack(ps, chunk.Loc)
 	
+	// Check bounds: position must be within chunk size and stack must have enough elements
+	if n < 1 || n > chunk.Size || n > stk.Size() {
+		return 0
+	}
+	
 	// For our linear stack implementation, we need to handle this differently
 	// TOP means from the beginning of the slice, BOTTOM means from the end
 	switch chunk.Loc {
 	case operations.TOP_A, operations.TOP_B:
 		// For TOP, position 1 is index 0, position 2 is index 1, etc.
-		if n >= 1 && n <= stk.Size() {
-			return stk.GetValueAtPosition0(n - 1)
-		}
+		return stk.GetValueAtPosition0(n - 1)
 	case operations.BOTTOM_A, operations.BOTTOM_B:
 		// For BOTTOM, position 1 is the last element, position 2 is second-to-last, etc.
-		if n >= 1 && n <= stk.Size() {
-			return stk.GetValueAtPosition0(stk.Size() - n)
-		}
+		return stk.GetValueAtPosition0(stk.Size() - n)
 	}
 	
 	return 0
@@ -69,7 +70,8 @@ func aPartlySort(ps *operations.PushSwapData, from int) bool {
 
 // isConsecutive checks if four numbers are consecutive
 func isConsecutive(a, b, c, d int) bool {
-	sortThreeNumbers(&a, &b, &c)
+	// Sort all four numbers to check if they're consecutive
+	sortFourNumbers(&a, &b, &c, &d)
 	return (b-a == 1) && (c-b == 1) && (d-c == 1)
 }
 
@@ -84,4 +86,20 @@ func sortThreeNumbers(a, b, c *int) {
 	if *b > *c {
 		*b, *c = *c, *b
 	}
+}
+
+// sortFourNumbers sorts four numbers in ascending order
+func sortFourNumbers(a, b, c, d *int) {
+	// First sort the first three numbers
+	sortThreeNumbers(a, b, c)
+	
+	// Then insert the fourth number in the correct position
+	if *d < *a {
+		*a, *b, *c, *d = *d, *a, *b, *c
+	} else if *d < *b {
+		*b, *c, *d = *d, *b, *c
+	} else if *d < *c {
+		*c, *d = *d, *c
+	}
+	// If *d >= *c, it's already in the right position
 }

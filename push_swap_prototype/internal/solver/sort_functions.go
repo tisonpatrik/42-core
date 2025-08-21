@@ -12,7 +12,8 @@ func sortOne(ps *operations.PushSwapData, chunk *operations.Chunk) {
 		case operations.BOTTOM_A:
 			operations.R_rotate_a(ps)
 		case operations.BOTTOM_B:
-			operations.R_rotate_b(ps)
+			operations.R_rotate_b(ps) // Bring bottom element to top
+			operations.Push_a(ps)     // Push top element to A
 		case operations.TOP_B:
 			operations.Push_a(ps)
 		}
@@ -98,8 +99,7 @@ func sortThreeTopA(ps *operations.PushSwapData, chunk *operations.Chunk) {
 			operations.R_rotate_a(ps)
 		}
 		
-		// Mark chunk as sorted
-		chunk.Size = 0
+		// Chunk is sorted, but don't modify size (like C implementation)
 		return
 	}
 	

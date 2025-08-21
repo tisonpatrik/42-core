@@ -73,7 +73,7 @@ func setThirdPivots(loc operations.Loc, crtSize int, pivot1, pivot2 *int) {
 	if loc == operations.TOP_A || loc == operations.BOTTOM_A {
 		*pivot1 = 2 * crtSize / 3
 		if crtSize < 15 {
-			*pivot1 = crtSize - 1 // Ensure we don't create infinite loops
+			*pivot1 = crtSize // Exactly like C implementation
 		}
 	}
 	if loc == operations.TOP_B || loc == operations.BOTTOM_B {
