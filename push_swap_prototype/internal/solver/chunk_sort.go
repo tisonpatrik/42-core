@@ -45,13 +45,29 @@ func recChunkSort(ps *operations.PushSwapData, toSort *operations.Chunk) {
 	recChunkSort(ps, &dest.Min)
 }
 
-// chunkToTheTop moves the chunk to the top of its stack
-func chunkToTheTop(ps *operations.PushSwapData, chunk *operations.Chunk) {
-	// Exactly like C implementation - just update location, don't move elements
-	if chunk.Loc == operations.BOTTOM_B && ps.B.CurrentSize() == chunk.Size {
-		chunk.Loc = operations.TOP_B
+// sortTwo sorts two elements in a chunk
+func sortTwo(ps *operations.PushSwapData, chunk *operations.Chunk) {
+	// Move elements to TOP_A if they're not already there (exactly like C implementation)
+	if chunk.Loc == operations.BOTTOM_A || chunk.Loc == operations.BOTTOM_B || chunk.Loc == operations.TOP_B {
+		moveFromTo(ps, chunk.Loc, operations.TOP_A)
+		moveFromTo(ps, chunk.Loc, operations.TOP_A)
 	}
-	if chunk.Loc == operations.BOTTOM_A && ps.A.CurrentSize() == chunk.Size {
-		chunk.Loc = operations.TOP_A
+	
+	// If the top element is greater than the second element, swap them
+	// Use 1-based indexing like C implementation
+	if ps.A.GetValueAtPosition(1) > ps.A.GetValueAtPosition(2) {
+		operations.Swap_a(ps)
 	}
+	
+	chunk.Size -= 2
 }
+
+// sortOne handles a single element in a chunk
+func sortOne(ps *operations.PushSwapData, chunk *operations.Chunk) {
+	// Move element to TOP_A if it's not already there
+	if chunk.Loc == operations.BOTTOM_A || chunk.Loc == operations.BOTTOM_B || chunk.Loc == operations.TOP_B {
+		moveFromTo(ps, chunk.Loc, operations.TOP_A)
+	}
+	chunk.Size--
+}
+

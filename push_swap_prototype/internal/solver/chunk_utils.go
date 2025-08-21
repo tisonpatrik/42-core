@@ -55,63 +55,6 @@ func chunkMaxValue(ps *operations.PushSwapData, chunk *operations.Chunk) int {
 	return maxValue
 }
 
-// aPartlySort checks if stack A is partially sorted from a given position (exactly like C implementation)
-func aPartlySort(ps *operations.PushSwapData, from int) bool {
-	a := ps.A
-	
-	// Start from the given position (1-based like C implementation)
-	i := from
-	for i <= a.Size() {
-		current := a.GetValueAtPosition(i)
-		// Continue until we find the maximum value (which is a.Size())
-		if current == a.Size() {
-			return true
-		}
-		
-		// Check if the next value is exactly current + 1
-		if i+1 <= a.Size() {
-			next := a.GetValueAtPosition(i + 1)
-			if next != current+1 {
-				return false
-			}
-		}
-		i++
-	}
-	return true
-}
 
-// isConsecutive checks if four numbers are consecutive (exactly like C implementation)
-func isConsecutive(a, b, c, d int) bool {
-	// Sort only the first three numbers, like C implementation
-	sortThreeNumbers(&a, &b, &c)
-	return (b-a == 1) && (c-b == 1) && (d-c == 1)
-}
 
-// sortThreeNumbers sorts three numbers in ascending order
-func sortThreeNumbers(a, b, c *int) {
-	if *a > *b {
-		*a, *b = *b, *a
-	}
-	if *a > *c {
-		*a, *c = *c, *a
-	}
-	if *b > *c {
-		*b, *c = *c, *b
-	}
-}
 
-// sortFourNumbers sorts four numbers in ascending order
-func sortFourNumbers(a, b, c, d *int) {
-	// First sort the first three numbers
-	sortThreeNumbers(a, b, c)
-	
-	// Then insert the fourth number in the correct position
-	if *d < *a {
-		*a, *b, *c, *d = *d, *a, *b, *c
-	} else if *d < *b {
-		*b, *c, *d = *d, *b, *c
-	} else if *d < *c {
-		*c, *d = *d, *c
-	}
-	// If *d >= *c, it's already in the right position
-}

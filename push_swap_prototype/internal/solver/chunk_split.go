@@ -14,9 +14,9 @@ func chunk_split(ps *operations.PushSwapData, to_split *operations.Chunk, dest *
 	setSplitLoc(to_split.Loc, &dest.Min, &dest.Mid, &dest.Max)
 	setThirdPivots(to_split.Loc, to_split.Size, &pivot1, &pivot2)
 	maxValue = chunkMaxValue(ps, to_split)
-	
 	// Exactly like C implementation: while (to_split->size--)
 	for to_split.Size > 0 {
+		to_split.Size--
 		nextValue := chunkValue(ps, to_split, 1)
 		
 		if nextValue > maxValue-pivot2 {
@@ -30,7 +30,6 @@ func chunk_split(ps *operations.PushSwapData, to_split *operations.Chunk, dest *
 		} else {
 			dest.Min.Size += moveFromTo(ps, to_split.Loc, dest.Min.Loc)
 		}
-		to_split.Size-- // Decrement size like C implementation
 	}
 }
 
@@ -42,6 +41,7 @@ func initSize(min, mid, max *operations.Chunk) {
 }
 
 // setSplitLoc sets the location for each destination chunk based on the source location
+// Exactly like C implementation
 func setSplitLoc(loc operations.Loc, min, mid, max *operations.Chunk) {
 	switch loc {
 	case operations.TOP_A:
@@ -68,37 +68,24 @@ func setSplitLoc(loc operations.Loc, min, mid, max *operations.Chunk) {
 func setThirdPivots(loc operations.Loc, crtSize int, pivot1, pivot2 *int) {
 	*pivot2 = crtSize / 3
 	
-	if loc == operations.TOP_A || loc == operations.BOTTOM_A {
+	switch loc {
+	case operations.TOP_A, operations.BOTTOM_A:
 		*pivot1 = 2 * crtSize / 3
-	}
-	if loc == operations.TOP_B || loc == operations.BOTTOM_B {
+	case operations.TOP_B, operations.BOTTOM_B:
 		*pivot1 = crtSize / 2
+	default:
+		*pivot1 = crtSize / 2 // Default case to ensure pivot1 is always set
+	}
+	
+	if (loc == operations.TOP_A || loc == operations.BOTTOM_A) && crtSize < 15 {
+		*pivot1 = crtSize
+	}
+	if loc == operations.BOTTOM_B && crtSize < 8 {
+		*pivot2 = crtSize / 2
 	}
 }
 
-// splitMaxReduction reduces the max chunk size when elements are moved
-func splitMaxReduction(ps *operations.PushSwapData, max *operations.Chunk) {
-	a := ps.A
-	
-	// Use 1-based indexing like C implementation
-	if max.Loc == operations.TOP_A && max.Size == 3 && isConsecutive(
-		a.GetValueAtPosition(1), a.GetValueAtPosition(2), 
-		a.GetValueAtPosition(3), a.GetValueAtPosition(4)) && 
-		aPartlySort(ps, 4) {
-		sortThree(ps, max)
-		return
-	}
-	
-	if max.Loc == operations.TOP_A && a.GetValueAtPosition(1) == a.GetValueAtPosition(3)-1 && 
-		aPartlySort(ps, 3) {
-		operations.Swap_a(ps)
-		max.Size--
-	}
-	
-	if max.Loc == operations.TOP_A && aPartlySort(ps, 1) {
-		max.Size--
-	}
-}
+
 
 
 

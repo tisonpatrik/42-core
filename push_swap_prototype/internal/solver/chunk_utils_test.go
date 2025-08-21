@@ -294,37 +294,6 @@ func TestSortThreeNumbers(t *testing.T) {
 	}
 }
 
-// TestSortFourNumbers tests sortFourNumbers function
-func TestSortFourNumbers(t *testing.T) {
-	a, b, c, d := 4, 2, 1, 3
-	
-	sortFourNumbers(&a, &b, &c, &d)
-	
-	if a != 1 || b != 2 || c != 3 || d != 4 {
-		t.Errorf("Expected sorted values 1,2,3,4, got %d,%d,%d,%d", a, b, c, d)
-	}
-	
-	// Test with already sorted numbers
-	a, b, c, d = 1, 2, 3, 4
-	sortFourNumbers(&a, &b, &c, &d)
-	if a != 1 || b != 2 || c != 3 || d != 4 {
-		t.Errorf("Already sorted values should remain unchanged, got %d,%d,%d,%d", a, b, c, d)
-	}
-	
-	// Test with reverse order
-	a, b, c, d = 4, 3, 2, 1
-	sortFourNumbers(&a, &b, &c, &d)
-	if a != 1 || b != 2 || c != 3 || d != 4 {
-		t.Errorf("Expected sorted values 1,2,3,4, got %d,%d,%d,%d", a, b, c, d)
-	}
-	
-	// Test with mixed order
-	a, b, c, d = 3, 1, 4, 2
-	sortFourNumbers(&a, &b, &c, &d)
-	if a != 1 || b != 2 || c != 3 || d != 4 {
-		t.Errorf("Expected sorted values 1,2,3,4, got %d,%d,%d,%d", a, b, c, d)
-	}
-}
 
 // TestChunkValueEdgeCases tests edge cases for chunkValue
 func TestChunkValueEdgeCases(t *testing.T) {

@@ -4,41 +4,6 @@ import (
 	"push_swap_prototype/internal/operations"
 )
 
-// sortOne handles a single element in a chunk
-func sortOne(ps *operations.PushSwapData, chunk *operations.Chunk) {
-	// Move element to TOP_A if it's not already there
-	if chunk.Loc == operations.BOTTOM_A || chunk.Loc == operations.BOTTOM_B || chunk.Loc == operations.TOP_B {
-		switch chunk.Loc {
-		case operations.BOTTOM_A:
-			operations.R_rotate_a(ps)
-		case operations.BOTTOM_B:
-			operations.R_rotate_b(ps) // Bring bottom element to top
-			operations.Push_a(ps)     // Push top element to A
-		case operations.TOP_B:
-			operations.Push_a(ps)
-		}
-	}
-	
-	chunk.Size--
-}
-
-// sortTwo sorts two elements in a chunk
-func sortTwo(ps *operations.PushSwapData, chunk *operations.Chunk) {
-	// Move elements to TOP_A if they're not already there (exactly like C implementation)
-	if chunk.Loc == operations.BOTTOM_A || chunk.Loc == operations.BOTTOM_B || chunk.Loc == operations.TOP_B {
-		moveFromTo(ps, chunk.Loc, operations.TOP_A)
-		moveFromTo(ps, chunk.Loc, operations.TOP_A)
-	}
-	
-	// If the top element is greater than the second element, swap them
-	// Use 1-based indexing like C implementation
-	if ps.A.GetValueAtPosition(1) > ps.A.GetValueAtPosition(2) {
-		operations.Swap_a(ps)
-	}
-	
-	chunk.Size -= 2
-}
-
 // sortThree sorts three elements in a chunk
 func sortThree(ps *operations.PushSwapData, chunk *operations.Chunk) {
 	switch chunk.Loc {
