@@ -1,137 +1,225 @@
 package stack
 
-// Node represents a node in the circular doubly-linked list
-type Node struct {
-	Val  int  // The value stored in the node
-	Idx  int  // The original index in the array
-	Keep bool // Whether this element should be kept in stack A (part of LIS)
-	Next *Node
-	Prev *Node
-}
-
-// Stack represents a circular doubly-linked list stack
+// Stack represents a circular buffer stack like the C implementation
 type Stack struct {
-	head   *Node
-	length int
+	stack  []int
+	size   int  // capacity of the buffer
+	top    int  // index of top element
+	bottom int  // index of bottom element
 }
 
 // New creates a new empty stack
 func New() *Stack {
-	return &Stack{nil, 0}
+	return &Stack{
+		stack:  []int{},
+		size:   0,
+		top:    0,
+		bottom: 0,
+	}
 }
 
-// Size returns the number of elements in the stack
+// Size returns the current number of elements in the stack
 func (s *Stack) Size() int {
-	return s.length
+	return s.CurrentSize()
 }
 
 // Peek returns the top element without removing it
-func (s *Stack) Peek() *Node {
-	if s.length == 0 {
-		return nil
+func (s *Stack) Peek() int {
+	if s.CurrentSize() == 0 {
+		return 0
 	}
-	return s.head
-}
-
-// IsEmpty returns true if the stack is empty
-func (s *Stack) IsEmpty() bool {
-	return s.length == 0
+	return s.stack[s.top]
 }
 
 // PeekValue returns the value of the top element
 func (s *Stack) PeekValue() int {
-	if s.length == 0 {
-		return 0
-	}
-	return s.head.Val
+	return s.Peek()
 }
 
-// PeekIdx returns the index of the top element
-func (s *Stack) PeekIdx() int {
-	if s.length == 0 {
-		return -1
-	}
-	return s.head.Idx
+// IsEmpty returns true if the stack is empty
+func (s *Stack) IsEmpty() bool {
+	return s.CurrentSize() == 0
 }
-
 
 // Push adds a new element to the top of the stack
-func (s *Stack) Push(val, idx int, keep bool) {
-	node := &Node{Val: val, Idx: idx, Keep: keep}
-	
-	if s.length == 0 {
-		node.Next = node
-		node.Prev = node
-		s.head = node
+func (s *Stack) Push(val int) {
+	if s.size == 0 {
+		// Initialize with first element
+		s.stack = []int{val}
+		s.size = 1
+		s.top = 0
+		s.bottom = 0
+	} else if s.IsFull() {
+		// Need to expand - add element at the end
+		s.stack = append(s.stack, val)
+		s.size = len(s.stack)
+		s.top = s.size - 1
 	} else {
-		node.Next = s.head
-		node.Prev = s.head.Prev
-		s.head.Prev.Next = node
-		s.head.Prev = node
-		s.head = node
+		// Add element by moving top pointer up
+		s.top = s.NextUp(s.top)
+		s.stack[s.top] = val
 	}
-	s.length++
 }
 
-// PushNode adds an existing node to the top of the stack
-func (s *Stack) PushNode(node *Node) {
-	// Ensure the node has clean pointers
-	node.Next = nil
-	node.Prev = nil
-	
-	if s.length == 0 {
-		node.Next = node
-		node.Prev = node
-		s.head = node
-	} else {
-		node.Next = s.head
-		node.Prev = s.head.Prev
-		if s.head.Prev != nil {
-			s.head.Prev.Next = node
-		}
-		s.head.Prev = node
-		s.head = node
+// Pop removes and returns the top element
+func (s *Stack) Pop() int {
+	if s.CurrentSize() == 0 {
+		return 0
 	}
-	s.length++
+	
+	val := s.stack[s.top]
+	s.stack[s.top] = 0 // clear the position
+	
+	if s.top == s.bottom {
+		// Last element - reset to empty state
+		s.top = 0
+		s.bottom = 0
+	} else {
+		// Move top pointer down
+		s.top = s.NextDown(s.top)
+	}
+	
+	return val
 }
 
 // ToSlice returns a slice representation of the stack (top to bottom)
 func (s *Stack) ToSlice() []int {
-	if s.length == 0 {
+	if s.CurrentSize() == 0 {
 		return []int{}
 	}
 	
-	result := make([]int, s.length)
-	current := s.head
-	for i := 0; i < s.length; i++ {
-		result[i] = current.Val
-		current = current.Next
+	result := make([]int, s.CurrentSize())
+	index := s.top
+	for i := 0; i < s.CurrentSize(); i++ {
+		result[i] = s.stack[index]
+		index = s.NextDown(index)
 	}
 	return result
 }
 
-// ToNodeSlice returns a slice of nodes (top to bottom)
-func (s *Stack) ToNodeSlice() []*Node {
-	if s.length == 0 {
-		return []*Node{}
-	}
-	
-	result := make([]*Node, s.length)
-	current := s.head
-	for i := 0; i < s.length; i++ {
-		result[i] = current
-		current = current.Next
-	}
-	return result
-}
-
-// FromSlice creates a stack from a slice (first element becomes top)
+// FromSlice creates a stack from a slice (exactly like C fill_stack)
 func FromSlice(values []int) *Stack {
 	s := New()
-	// Push in reverse order so first element becomes top
-	for i := len(values) - 1; i >= 0; i-- {
-		s.Push(values[i], i, false) // Keep will be set later by LIS algorithm
+	if len(values) == 0 {
+		return s
 	}
+	
+	// Initialize stack with capacity and zero it out (like C init_stack)
+	s.stack = make([]int, len(values))
+	s.size = len(values)
+	
+	// Fill the stack with values (like C fill_stack)
+	copy(s.stack, values)
+	
+	// Set pointers: first element is at top, last element is at bottom
+	s.top = 0
+	s.bottom = len(values) - 1
+	
 	return s
+}
+
+// GetValueAtPosition returns the value at a specific position (1-based like C)
+func (s *Stack) GetValueAtPosition(pos int) int {
+	if pos < 1 || pos > s.CurrentSize() {
+		return 0
+	}
+	
+	// Convert 1-based to 0-based index
+	index := s.top
+	for i := 1; i < pos; i++ {
+		index = s.NextDown(index)
+	}
+	return s.stack[index]
+}
+
+// GetValueAtPosition0 returns the value at a specific position (0-based)
+func (s *Stack) GetValueAtPosition0(pos int) int {
+	if pos < 0 || pos >= s.CurrentSize() {
+		return 0
+	}
+	
+	index := s.top
+	for i := 0; i < pos; i++ {
+		index = s.NextDown(index)
+	}
+	return s.stack[index]
+}
+
+// GetTop returns the top index (like C implementation)
+func (s *Stack) GetTop() int {
+	return s.top
+}
+
+// GetStack returns the stack array (like C implementation)
+func (s *Stack) GetStack() []int {
+	return s.stack
+}
+
+// IsFull returns true if the stack is at maximum capacity (like C is_full)
+func (s *Stack) IsFull() bool {
+	if s.size == 0 {
+		return false
+	}
+	return s.size == s.CurrentSize()
+}
+
+// CurrentSize returns the current number of elements in the stack
+func (s *Stack) CurrentSize() int {
+	if s.size == 0 {
+		return 0
+	}
+	
+	// Handle empty stack case like C implementation
+	if s.top == s.bottom && s.stack[s.top] == 0 {
+		return 0
+	}
+	
+	// For non-empty stacks, use C logic
+	if s.top > s.bottom {
+		return ((s.size - s.top) + (s.bottom + 1))
+	} else {
+		return (s.bottom - s.top + 1)
+	}
+}
+
+// NextUp returns the next index going up in the stack (like C implementation)
+func (s *Stack) NextUp(index int) int {
+	if s.CurrentSize() == 0 {
+		return index
+	}
+	if index == 0 {
+		return s.size - 1
+	} else {
+		return index - 1
+	}
+}
+
+// NextDown returns the next index going down in the stack (like C implementation)
+func (s *Stack) NextDown(index int) int {
+	if s.CurrentSize() == 0 {
+		return index
+	}
+	if index == s.size-1 {
+		return 0
+	} else {
+		return index + 1
+	}
+}
+
+// Value returns the value at a specific index (like C implementation)
+func (s *Stack) Value(index int) int {
+	if index < 0 || index >= s.size {
+		return 0
+	}
+	return s.stack[index]
+}
+
+// SetValue sets the value at a specific index
+func (s *Stack) SetValue(index int, val int) bool {
+	if index < 0 || index >= s.size {
+		return false
+	}
+	s.stack[index] = val
+	return true
 }
 

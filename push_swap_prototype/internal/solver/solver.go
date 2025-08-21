@@ -2,63 +2,66 @@ package solver
 
 import (
 	"push_swap_prototype/internal/operations"
+	"push_swap_prototype/internal/utils"
 )
 
-// SolvePushSwap solves the push_swap puzzle using the simplest approach
-func SolvePushSwap(numbers []int) ([]string, []int) {
-	if len(numbers) <= 1 {
-		return []string{}, numbers
-	}
+func SolvePushSwap(numbers []int) ([]operations.Operation, []int) {
+	ps := operations.NewPushSwapData()
+	operations.InitializeFromSlice(ps, numbers)
 
-	// Initialize stacks
-	stacks := operations.NewPushSwapStacks()
-	stacks.InitializeFromSlice(numbers)
-	
-	operations := []string{}
-	
-	// The simplest approach:
-	// 1. While stack A is not empty, find the minimum and push it to B
-	for stacks.A.Size() > 0 {
-		// Find the minimum element in stack A
-		minValue := findMinInA(stacks)
-		
-		// Rotate stack A until the minimum is at the top
-		for stacks.A.PeekValue() != minValue {
-			stacks.RA()
-			operations = append(operations, "ra")
-		}
-		
-		// Push the minimum to stack B
-		stacks.PB()
-		operations = append(operations, "pb")
+	if ps.A.Size() <= 1 || utils.IsSorted(ps.A.ToSlice()) {
+		return []operations.Operation{}, ps.A.ToSlice()
+	} else if ps.A.Size() == 3 {
+		sort_three_a(ps)
+	} else if ps.A.Size() == 5 {
+		sort_five_a(ps)
+	} else {
+		chunk_sort(ps)
 	}
-	
-	// 2. Push everything back from B to A (they're already in sorted order)
-	for stacks.B.Size() > 0 {
-		stacks.PA()
-		operations = append(operations, "pa")
-	}
-	
-	// Get final sorted result
-	result := stacks.A.ToSlice()
-	
-	return operations, result
+	return ps.GetOperations(), ps.A.ToSlice()
 }
 
-// findMinInA finds the minimum value in stack A
-func findMinInA(stacks *operations.PushSwapStacks) int {
-	if stacks.A.Size() == 0 {
-		return 0
+func sort_three_a(ps *operations.PushSwapData) {
+	// Use 1-based indexing like C implementation
+	first := ps.A.GetValueAtPosition(1)
+	second := ps.A.GetValueAtPosition(2)
+	third := ps.A.GetValueAtPosition(3)
+
+	if first > second && third > second && third > first {
+		operations.Swap_a(ps)
+	} else if first > second && third > second && first > third {
+		operations.Rotate_a(ps)
+	} else if second > first && second > third && first > third {
+		operations.R_rotate_a(ps)
+	} else if second > first && second > third && third > first {
+		operations.Swap_a(ps)
+		operations.Rotate_a(ps)
+	} else if first > second && second > third && first > third {
+		operations.Swap_a(ps)
+		operations.R_rotate_a(ps)
 	}
-	
-	minValue := stacks.A.GetValueAtPosition(0)
-	
-	for i := 1; i < stacks.A.Size(); i++ {
-		value := stacks.A.GetValueAtPosition(i)
-		if value < minValue {
-			minValue = value
+}
+
+func sort_five_a(ps *operations.PushSwapData) {
+	for ps.A.Size() > 3 {
+		if ps.A.PeekValue() == 1 || ps.A.PeekValue() == 2 {
+			operations.Push_b(ps)
+		} else {
+			operations.Rotate_a(ps)
 		}
 	}
 	
-	return minValue
+	if ps.B.Size() >= 2 {
+		val1 := ps.B.GetValueAtPosition(0)
+		val2 := ps.B.GetValueAtPosition(1)
+		if val1 > val2 {
+			operations.Swap_b(ps)
+		}
+	}
+	
+	sort_three_a(ps)
+	
+	for ps.B.Size() > 0 {
+		operations.Push_a(ps)
+	}
 }

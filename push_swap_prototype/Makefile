@@ -15,27 +15,8 @@ run:
 clean:
 	@rm -f $(bin_dir)/$(name)
 
-
 test:
-	@echo "🧪 Running all tests..."
-	@go test ./... -count=1
+	@echo "🧪 Running all Go tests..."
+	@go test ./... 2>&1 | awk '/^ok/ {print "✅ " $$0} /^FAIL/ {print "❌ " $$0} /^=== RUN/ {print "▶️  " $$0} /^--- PASS/ {print "✅ " $$0} /^--- FAIL/ {print "❌ " $$0}'
 
-test-solver:
-	@echo "🎯 Running solver tests (main functionality)..."
-	@go test -v ./internal/solver/...
-
-test-verbose:
-	@echo "🔍 Running all tests with verbose output..."
-	@go test -v ./...
-
-test-coverage:
-	@echo "📊 Running tests with coverage..."
-	@go test -v -coverprofile=coverage.out ./...
-	@go tool cover -html=coverage.out -o coverage.html
-	@echo "📈 Coverage report generated: coverage.html"
-
-test-short:
-	@echo "⚡ Running tests in short mode..."
-	@go test -short ./...
-
-.PHONY: build clean run tidy test test-solver test-verbose test-coverage test-short
+.PHONY: build clean run tidy test 

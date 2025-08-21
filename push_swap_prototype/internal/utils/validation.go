@@ -13,3 +13,22 @@ func IsSorted(arr []int) bool {
 	}
 	return true
 }
+
+// RandomToRank converts numbers to ranks (1 to n) like the C implementation
+func RandomToRank(numbers []int) []int {
+	size := len(numbers)
+	rank := make([]int, size)
+	
+	// Exactly like C implementation: count how many numbers are <= current number
+	for i := 0; i < size; i++ {
+		countSmaller := 0
+		for j := 0; j < size; j++ {
+			if numbers[j] <= numbers[i] {
+				countSmaller++
+			}
+		}
+		rank[i] = countSmaller
+	}
+	
+	return rank
+}
