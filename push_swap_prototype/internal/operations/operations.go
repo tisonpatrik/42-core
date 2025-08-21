@@ -23,6 +23,22 @@ func NewPushSwapData() *PushSwapData {
 	}
 }
 
+// NewPushSwapDataWithCapacity creates new push swap data structure with specific capacity (like C init_data)
+func NewPushSwapDataWithCapacity(capacity int) *PushSwapData {
+	// Like C init_data: both stacks get the same capacity
+	a := stack.New()
+	a.InitWithCapacity(capacity)
+	b := stack.New()
+	b.InitWithCapacity(capacity)
+	
+	return &PushSwapData{
+		A:           a,
+		B:           b,
+		OpList:      []Operation{},
+		WritingMode: true,
+	}
+}
+
 // saveOp saves an operation to the operation list (like C save_op)
 func saveOp(data *PushSwapData, op Operation) {
 	if data == nil || !data.WritingMode {

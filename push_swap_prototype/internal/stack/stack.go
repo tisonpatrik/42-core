@@ -18,6 +18,32 @@ func New() *Stack {
 	}
 }
 
+// InitWithCapacity initializes a stack with specific capacity (like C init_stack)
+func (s *Stack) InitWithCapacity(capacity int) {
+	s.stack = make([]int, capacity)
+	s.size = capacity
+	s.top = 0
+	s.bottom = 0
+	// Zero out the array like C memset
+	for i := range s.stack {
+		s.stack[i] = 0
+	}
+}
+
+// FillFromSlice fills a stack with values from a slice (like C fill_stack)
+func (s *Stack) FillFromSlice(values []int) {
+	if len(values) > s.size {
+		return // Cannot fit more elements than capacity
+	}
+	
+	// Copy values to stack array
+	copy(s.stack, values)
+	
+	// Set pointers like C fill_stack
+	s.top = 0
+	s.bottom = len(values) - 1
+}
+
 // Size returns the current number of elements in the stack
 func (s *Stack) Size() int {
 	return s.CurrentSize()
@@ -104,7 +130,8 @@ func FromSlice(values []int) *Stack {
 		return s
 	}
 	
-	// Initialize stack with capacity and zero it out (like C init_stack)
+	// Initialize stack with exact capacity (like C init_stack)
+	// In C, both stacks get capacity equal to the number of input arguments
 	s.stack = make([]int, len(values))
 	s.size = len(values)
 	
@@ -148,6 +175,11 @@ func (s *Stack) GetValueAtPosition0(pos int) int {
 // GetTop returns the top index (like C implementation)
 func (s *Stack) GetTop() int {
 	return s.top
+}
+
+// GetBottom returns the bottom index (like C implementation)
+func (s *Stack) GetBottom() int {
+	return s.bottom
 }
 
 // GetStack returns the stack array (like C implementation)

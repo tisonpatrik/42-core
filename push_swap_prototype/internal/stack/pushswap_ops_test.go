@@ -168,8 +168,8 @@ func TestPushFrom(t *testing.T) {
 	dest := New()
 	
 	// Test push from empty source
-	if dest.PushFrom(source) {
-		t.Error("PushFrom should fail when source is empty")
+	if !dest.PushFrom(source) {
+		t.Error("PushFrom should succeed (return true) when source is empty, like C implementation")
 	}
 	
 	// Test push from source with elements

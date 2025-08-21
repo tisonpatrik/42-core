@@ -240,11 +240,11 @@ func TestIsFull(t *testing.T) {
 		t.Error("Empty stack should not be full")
 	}
 	
-	// Stack created with FromSlice should be full
+	// Stack created with FromSlice should be full (like C implementation)
 	values := []int{5}
 	s = FromSlice(values)
 	if !s.IsFull() {
-		t.Error("Stack created with FromSlice should be full")
+		t.Error("Stack created with FromSlice should be full (like C implementation)")
 	}
 }
 
@@ -272,14 +272,15 @@ func TestNextUp(t *testing.T) {
 	s := FromSlice(values)
 	
 	// Test next up from various positions
+	// With exact capacity allocation (size = 3), NextUp(0) = 2
 	if s.NextUp(0) != 2 {
-		t.Error("NextUp(0) should return 2")
+		t.Errorf("NextUp(0) should return 2, got %d", s.NextUp(0))
 	}
 	if s.NextUp(1) != 0 {
-		t.Error("NextUp(1) should return 0")
+		t.Errorf("NextUp(1) should return 0, got %d", s.NextUp(1))
 	}
 	if s.NextUp(2) != 1 {
-		t.Error("NextUp(2) should return 1")
+		t.Errorf("NextUp(2) should return 1, got %d", s.NextUp(2))
 	}
 }
 
@@ -290,13 +291,13 @@ func TestNextDown(t *testing.T) {
 	
 	// Test next down from various positions
 	if s.NextDown(0) != 1 {
-		t.Error("NextDown(0) should return 1")
+		t.Errorf("NextDown(0) should return 1, got %d", s.NextDown(0))
 	}
 	if s.NextDown(1) != 2 {
-		t.Error("NextDown(1) should return 2")
+		t.Errorf("NextDown(1) should return 2, got %d", s.NextDown(1))
 	}
 	if s.NextDown(2) != 0 {
-		t.Error("NextDown(2) should return 0 (wrap around)")
+		t.Errorf("NextDown(2) should return 0 (wrap around), got %d", s.NextDown(2))
 	}
 }
 
