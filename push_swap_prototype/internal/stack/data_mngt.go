@@ -1,12 +1,8 @@
-package solver
-
-import (
-	"push_swap_prototype/internal/operations"
-)
+package stack
 
 // is_sorted checks if stack A is sorted by checking if each element equals its rank (1, 2, 3, ...)
 // This is exactly like the C implementation: is_sorted(t_ps *data)
-func is_sorted(ps *operations.PushSwapData) bool {
+func IsSorted(ps *PushSwapData) bool {
 	if ps.A.Size() <= 1 {
 		return true
 	}

@@ -5,7 +5,6 @@ import (
 	"math/rand"
 	"push_swap_prototype/internal/generator"
 	"push_swap_prototype/internal/solver"
-	"push_swap_prototype/internal/utils"
 	"sort"
 	"strings"
 	"time"
@@ -85,7 +84,7 @@ func testArraySize(size, iterations int) *SizeResult {
 		numbers := generator.GenerateRandomNumbers(size)
 		ops, finalArray := solver.SolvePushSwap(numbers)
 		
-		isSorted := utils.IsSorted(finalArray)
+		isSorted := isSorted(finalArray)
 		if !isSorted {
 			fmt.Printf("❌ Iteration %d failed: Array not sorted properly\n", i+1)
 			fmt.Printf("   Original: %v\n", numbers)
@@ -131,6 +130,20 @@ func min(a, b int) int {
 		return a
 	}
 	return b
+}
+
+// isSorted checks if an array of integers is sorted in ascending order
+func isSorted(arr []int) bool {
+	if len(arr) <= 1 {
+		return true
+	}
+	
+	for i := 1; i < len(arr); i++ {
+		if arr[i] < arr[i-1] {
+			return false
+		}
+	}
+	return true
 }
 
 // calculateStats calculates statistics for the size result

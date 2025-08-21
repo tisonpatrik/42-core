@@ -1,11 +1,7 @@
-package operations
-
-import (
-	"push_swap_prototype/internal/stack"
-)
+package stack
 
 // swap swaps the first 2 elements at the top of a stack (exactly like C swap)
-func swap(stk *stack.Stack) {
+func swap(stk *Stack) {
 	// C implementation checks if second element exists by checking if it's 0
 	// stk->stack[next_down(stk, stk->top)] == 0
 	if stk.CurrentSize() < 2 {

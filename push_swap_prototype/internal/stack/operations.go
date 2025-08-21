@@ -1,14 +1,9 @@
-package operations
-
-import (
-	"push_swap_prototype/internal/stack"
-	"push_swap_prototype/internal/utils"
-)
+package stack
 
 // PushSwapData represents the two stacks used in push swap (like C t_ps)
 type PushSwapData struct {
-	A           *stack.Stack
-	B           *stack.Stack
+	A           *Stack
+	B           *Stack
 	OpList      []Operation
 	WritingMode bool
 }
@@ -16,8 +11,8 @@ type PushSwapData struct {
 // NewPushSwapData creates new push swap data structure
 func NewPushSwapData() *PushSwapData {
 	return &PushSwapData{
-		A:           stack.New(),
-		B:           stack.New(),
+		A:           New(),
+		B:           New(),
 		OpList:      []Operation{},
 		WritingMode: true,
 	}
@@ -26,9 +21,9 @@ func NewPushSwapData() *PushSwapData {
 // NewPushSwapDataWithCapacity creates new push swap data structure with specific capacity (like C init_data)
 func NewPushSwapDataWithCapacity(capacity int) *PushSwapData {
 	// Like C init_data: both stacks get the same capacity
-	a := stack.New()
+	a := New()
 	a.InitWithCapacity(capacity)
-	b := stack.New()
+	b := New()
 	b.InitWithCapacity(capacity)
 	
 	return &PushSwapData{
@@ -60,10 +55,8 @@ func InitializeFromSlice(data *PushSwapData, values []int) {
 	if data == nil {
 		return
 	}
-	// Convert numbers to ranks like the C implementation
-	rankedValues := utils.RandomToRank(values)
 	// Create stack with ranks using FromSlice (like C fill_stack)
-	data.A = stack.FromSlice(rankedValues)
+	data.A = FromSlice(values)
 }
 
 // Operation represents a push swap operation (like C t_op)

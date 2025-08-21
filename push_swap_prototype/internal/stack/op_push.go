@@ -1,11 +1,7 @@
-package operations
-
-import (
-	"push_swap_prototype/internal/stack"
-)
+package stack
 
 // push pushes an element from src to dest (like C push)
-func push(src *stack.Stack, dest *stack.Stack) {
+func push(src *Stack, dest *Stack) {
 	dest.PushFrom(src)
 }
 

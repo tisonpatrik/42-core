@@ -1,15 +1,13 @@
 package solver
 
-import (
-	"push_swap_prototype/internal/operations"
-)
+import "push_swap_prototype/internal/stack"
 
 // splitMaxReduction reduces the max chunk size when elements are moved (exactly like C implementation)
-func splitMaxReduction(ps *operations.PushSwapData, max *operations.Chunk) {
+func splitMaxReduction(ps *stack.PushSwapData, max *stack.Chunk) {
 	a := ps.A
 	
 	// Use 1-based indexing like C implementation
-	if max.Loc == operations.TOP_A && max.Size == 3 && isConsecutive(
+	if max.Loc == stack.TOP_A && max.Size == 3 && isConsecutive(
 		a.GetValueAtPosition(1), a.GetValueAtPosition(2), 
 		a.GetValueAtPosition(3), a.GetValueAtPosition(4)) && 
 		aPartlySort(ps, 4) {
@@ -17,19 +15,19 @@ func splitMaxReduction(ps *operations.PushSwapData, max *operations.Chunk) {
 		return
 	}
 	
-	if max.Loc == operations.TOP_A && a.GetValueAtPosition(1) == a.GetValueAtPosition(3)-1 && 
+	if max.Loc == stack.TOP_A && a.GetValueAtPosition(1) == a.GetValueAtPosition(3)-1 && 
 		aPartlySort(ps, 3) {
-		operations.Swap_a(ps)
+		stack.Swap_a(ps)
 		max.Size--
 	}
 	
-	if max.Loc == operations.TOP_A && aPartlySort(ps, 1) {
+	if max.Loc == stack.TOP_A && aPartlySort(ps, 1) {
 		max.Size--
 	}
 }
 
 // aPartlySort checks if stack A is partially sorted from a given position (exactly like C implementation)
-func aPartlySort(ps *operations.PushSwapData, from int) bool {
+func aPartlySort(ps *stack.PushSwapData, from int) bool {
 	a := ps.A
 	
 	// Start from the top position like C implementation

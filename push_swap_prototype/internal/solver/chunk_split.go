@@ -1,12 +1,12 @@
 package solver
 
 import (
-	"push_swap_prototype/internal/operations"
+	"push_swap_prototype/internal/stack"
 )
 
 // chunk_split splits a chunk into three parts based on pivot values
 // Exactly like C implementation
-func chunk_split(ps *operations.PushSwapData, to_split *operations.Chunk, dest *operations.SplitDest) {
+func chunk_split(ps *stack.PushSwapData, to_split *stack.Chunk, dest *stack.SplitDest) {
 	var pivot1, pivot2 int
 	var maxValue int
 
@@ -16,7 +16,6 @@ func chunk_split(ps *operations.PushSwapData, to_split *operations.Chunk, dest *
 	maxValue = chunkMaxValue(ps, to_split)
 	// Exactly like C implementation: while (to_split->size--)
 	for to_split.Size > 0 {
-		to_split.Size--
 		nextValue := chunkValue(ps, to_split, 1)
 		
 		if nextValue > maxValue-pivot2 {
@@ -26,15 +25,17 @@ func chunk_split(ps *operations.PushSwapData, to_split *operations.Chunk, dest *
 				easySort(ps, to_split)
 			}
 		} else if nextValue > maxValue-pivot1 {
-			dest.Mid.Size += moveFromTo(ps, to_split.Loc, dest.Mid.Loc)
+			dest.Mid.Size += moveFromTo(ps, to_split.Loc, dest.Max.Loc)
 		} else {
 			dest.Min.Size += moveFromTo(ps, to_split.Loc, dest.Min.Loc)
 		}
+		
+		to_split.Size--  // Move this to the END of the loop
 	}
 }
 
 // initSize initializes the size of all destination chunks to 0
-func initSize(min, mid, max *operations.Chunk) {
+func initSize(min, mid, max *stack.Chunk) {
 	min.Size = 0
 	mid.Size = 0
 	max.Size = 0
@@ -42,45 +43,45 @@ func initSize(min, mid, max *operations.Chunk) {
 
 // setSplitLoc sets the location for each destination chunk based on the source location
 // Exactly like C implementation
-func setSplitLoc(loc operations.Loc, min, mid, max *operations.Chunk) {
+func setSplitLoc(loc stack.Loc, min, mid, max *stack.Chunk) {
 	switch loc {
-	case operations.TOP_A:
-		min.Loc = operations.BOTTOM_B
-		mid.Loc = operations.TOP_B
-		max.Loc = operations.BOTTOM_A
-	case operations.BOTTOM_A:
-		min.Loc = operations.BOTTOM_B
-		mid.Loc = operations.TOP_B
-		max.Loc = operations.TOP_A
-	case operations.TOP_B:
-		min.Loc = operations.BOTTOM_B
-		mid.Loc = operations.BOTTOM_A
-		max.Loc = operations.TOP_A
-	case operations.BOTTOM_B:
-		min.Loc = operations.TOP_B
-		mid.Loc = operations.BOTTOM_A
-		max.Loc = operations.TOP_A
+	case stack.TOP_A:
+		min.Loc = stack.BOTTOM_B
+		mid.Loc = stack.TOP_B
+		max.Loc = stack.BOTTOM_A
+	case stack.BOTTOM_A:
+		min.Loc = stack.BOTTOM_B
+		mid.Loc = stack.TOP_B
+		max.Loc = stack.TOP_A
+	case stack.TOP_B:
+		min.Loc = stack.BOTTOM_B
+		mid.Loc = stack.BOTTOM_A
+		max.Loc = stack.TOP_A
+	case stack.BOTTOM_B:
+		min.Loc = stack.TOP_B
+		mid.Loc = stack.BOTTOM_A
+		max.Loc = stack.TOP_A
 	}
 }
 
 // setThirdPivots sets the pivot values for splitting based on location and size
 // Exactly like C implementation
-func setThirdPivots(loc operations.Loc, crtSize int, pivot1, pivot2 *int) {
+func setThirdPivots(loc stack.Loc, crtSize int, pivot1, pivot2 *int) {
 	*pivot2 = crtSize / 3
 	
 	switch loc {
-	case operations.TOP_A, operations.BOTTOM_A:
+	case stack.TOP_A, stack.BOTTOM_A:
 		*pivot1 = 2 * crtSize / 3
-	case operations.TOP_B, operations.BOTTOM_B:
+	case stack.TOP_B, stack.BOTTOM_B:
 		*pivot1 = crtSize / 2
 	default:
 		*pivot1 = crtSize / 2 // Default case to ensure pivot1 is always set
 	}
 	
-	if (loc == operations.TOP_A || loc == operations.BOTTOM_A) && crtSize < 15 {
+	if (loc == stack.TOP_A || loc == stack.BOTTOM_A) && crtSize < 15 {
 		*pivot1 = crtSize
 	}
-	if loc == operations.BOTTOM_B && crtSize < 8 {
+	if loc == stack.BOTTOM_B && crtSize < 8 {
 		*pivot2 = crtSize / 2
 	}
 }

@@ -1,76 +1,74 @@
 package solver
 
-import (
-	"push_swap_prototype/internal/operations"
-)
+import "push_swap_prototype/internal/stack"
 
 // moveFromTo moves an element from one location to another and returns 1 if successful
-func moveFromTo(ps *operations.PushSwapData, from, to operations.Loc) int {
+func moveFromTo(ps *stack.PushSwapData, from, to stack.Loc) int {
 	switch from {
-	case operations.TOP_A:
+	case stack.TOP_A:
 		moveFromTopA(ps, to)
-	case operations.TOP_B:
+	case stack.TOP_B:
 		moveFromTopB(ps, to)
-	case operations.BOTTOM_A:
+	case stack.BOTTOM_A:
 		moveFromBottomA(ps, to)
-	case operations.BOTTOM_B:
+	case stack.BOTTOM_B:
 		moveFromBottomB(ps, to)
 	}
 	return 1
 }
 
 // moveFromTopA moves an element from TOP_A to the specified location
-func moveFromTopA(ps *operations.PushSwapData, to operations.Loc) {
+func moveFromTopA(ps *stack.PushSwapData, to stack.Loc) {
 	switch to {
-	case operations.TOP_B:
-		operations.Push_b(ps)
-	case operations.BOTTOM_A:
-		operations.Rotate_a(ps)
-	case operations.BOTTOM_B:
-		operations.Push_b(ps)
-		operations.Rotate_b(ps)
+	case stack.TOP_B:
+		stack.Push_b(ps)
+	case stack.BOTTOM_A:
+		stack.Rotate_a(ps)
+	case stack.BOTTOM_B:
+		stack.Push_b(ps)
+		stack.Rotate_b(ps)
 	}
 }
 
 // moveFromTopB moves an element from TOP_B to the specified location
-func moveFromTopB(ps *operations.PushSwapData, to operations.Loc) {
+func moveFromTopB(ps *stack.PushSwapData, to stack.Loc) {
 	switch to {
-	case operations.TOP_A:
-		operations.Push_a(ps)
-	case operations.BOTTOM_B:
-		operations.Rotate_b(ps)
-	case operations.BOTTOM_A:
-		operations.Push_a(ps)
-		operations.Rotate_a(ps)
+	case stack.TOP_A:
+		stack.Push_a(ps)
+	case stack.BOTTOM_B:
+		stack.Rotate_b(ps)
+	case stack.BOTTOM_A:
+		stack.Push_a(ps)
+		stack.Rotate_a(ps)
 	}
 }
 
 // moveFromBottomA moves an element from BOTTOM_A to the specified location
-func moveFromBottomA(ps *operations.PushSwapData, to operations.Loc) {
+func moveFromBottomA(ps *stack.PushSwapData, to stack.Loc) {
 	switch to {
-	case operations.TOP_A:
-		operations.R_rotate_a(ps)
-	case operations.TOP_B:
-		operations.R_rotate_a(ps)
-		operations.Push_b(ps)
-	case operations.BOTTOM_B:
-		operations.R_rotate_a(ps)
-		operations.Push_b(ps)
-		operations.Rotate_b(ps)
+	case stack.TOP_A:
+		stack.R_rotate_a(ps)
+	case stack.TOP_B:
+		stack.R_rotate_a(ps)
+		stack.Push_b(ps)
+	case stack.BOTTOM_B:
+		stack.R_rotate_a(ps)
+		stack.Push_b(ps)
+		stack.Rotate_b(ps)
 	}
 }
 
 // moveFromBottomB moves an element from BOTTOM_B to the specified location
-func moveFromBottomB(ps *operations.PushSwapData, to operations.Loc) {
+func moveFromBottomB(ps *stack.PushSwapData, to stack.Loc) {
 	switch to {
-	case operations.TOP_B:
-		operations.R_rotate_b(ps)
-	case operations.TOP_A:
-		operations.R_rotate_b(ps)
-		operations.Push_a(ps)
-	case operations.BOTTOM_A:
-		operations.R_rotate_b(ps)
-		operations.Push_a(ps)
-		operations.Rotate_a(ps)
+	case stack.TOP_B:
+		stack.R_rotate_b(ps)
+	case stack.TOP_A:
+		stack.R_rotate_b(ps)
+		stack.Push_a(ps)
+	case stack.BOTTOM_A:
+		stack.R_rotate_b(ps)
+		stack.Push_a(ps)
+		stack.Rotate_a(ps)
 	}
 }

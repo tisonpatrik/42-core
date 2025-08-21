@@ -1,11 +1,7 @@
-package operations
-
-import (
-	"push_swap_prototype/internal/stack"
-)
+package stack
 
 // rotate rotates a stack up (first element becomes last) (like C rotate)
-func rotate(stk *stack.Stack) {
+func rotate(stk *Stack) {
 	stk.RotateUp()
 }
 

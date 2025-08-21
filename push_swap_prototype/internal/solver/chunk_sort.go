@@ -1,13 +1,13 @@
 package solver
 
 import (
-	"push_swap_prototype/internal/operations"
+	"push_swap_prototype/internal/stack"
 )
 
 // chunk_sort sorts the entire stack A using chunk-based sorting
-func chunk_sort(ps *operations.PushSwapData) {
-	chunkAll := operations.Chunk{
-		Loc:  operations.TOP_A,
+func chunk_sort(ps *stack.PushSwapData) {
+	chunkAll := stack.Chunk{
+		Loc:  stack.TOP_A, 
 		Size: ps.A.Size(),
 	}
 	
@@ -15,7 +15,7 @@ func chunk_sort(ps *operations.PushSwapData) {
 }
 
 // recChunkSort recursively sorts chunks using divide and conquer approach
-func recChunkSort(ps *operations.PushSwapData, toSort *operations.Chunk) {
+func recChunkSort(ps *stack.PushSwapData, toSort *stack.Chunk) {
 	// Move chunk to the top if needed
 	chunkToTheTop(ps, toSort)
 	
@@ -36,7 +36,7 @@ func recChunkSort(ps *operations.PushSwapData, toSort *operations.Chunk) {
 	}
 	
 	// Split chunk and recursively sort
-	var dest operations.SplitDest
+	var dest stack.SplitDest
 	chunk_split(ps, toSort, &dest)
 	
 	// Recursively sort the three parts (exactly like C implementation)
@@ -46,27 +46,27 @@ func recChunkSort(ps *operations.PushSwapData, toSort *operations.Chunk) {
 }
 
 // sortTwo sorts two elements in a chunk
-func sortTwo(ps *operations.PushSwapData, chunk *operations.Chunk) {
+func sortTwo(ps *stack.PushSwapData, chunk *stack.Chunk) {
 	// Move elements to TOP_A if they're not already there (exactly like C implementation)
-	if chunk.Loc == operations.BOTTOM_A || chunk.Loc == operations.BOTTOM_B || chunk.Loc == operations.TOP_B {
-		moveFromTo(ps, chunk.Loc, operations.TOP_A)
-		moveFromTo(ps, chunk.Loc, operations.TOP_A)
+	if chunk.Loc == stack.BOTTOM_A || chunk.Loc == stack.BOTTOM_B || chunk.Loc == stack.TOP_B {
+		moveFromTo(ps, chunk.Loc, stack.TOP_A)
+		moveFromTo(ps, chunk.Loc, stack.TOP_A)
 	}
 	
 	// If the top element is greater than the second element, swap them
 	// Use 1-based indexing like C implementation
 	if ps.A.GetValueAtPosition(1) > ps.A.GetValueAtPosition(2) {
-		operations.Swap_a(ps)
+		stack.Swap_a(ps)
 	}
 	
 	chunk.Size -= 2
 }
 
 // sortOne handles a single element in a chunk
-func sortOne(ps *operations.PushSwapData, chunk *operations.Chunk) {
+func sortOne(ps *stack.PushSwapData, chunk *stack.Chunk) {
 	// Move element to TOP_A if it's not already there
-	if chunk.Loc == operations.BOTTOM_A || chunk.Loc == operations.BOTTOM_B || chunk.Loc == operations.TOP_B {
-		moveFromTo(ps, chunk.Loc, operations.TOP_A)
+	if chunk.Loc == stack.BOTTOM_A || chunk.Loc == stack.BOTTOM_B || chunk.Loc == stack.TOP_B {
+		moveFromTo(ps, chunk.Loc, stack.TOP_A)
 	}
 	chunk.Size--
 }

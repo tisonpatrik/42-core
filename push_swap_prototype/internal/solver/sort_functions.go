@@ -1,27 +1,25 @@
 package solver
 
-import (
-	"push_swap_prototype/internal/operations"
-)
+import "push_swap_prototype/internal/stack"
 
 // sortThree sorts three elements in a chunk
-func sortThree(ps *operations.PushSwapData, chunk *operations.Chunk) {
+func sortThree(ps *stack.PushSwapData, chunk *stack.Chunk) {
 	switch chunk.Loc {
-	case operations.TOP_A:
+	case stack.TOP_A:
 		sortThreeTopA(ps, chunk)
-	case operations.BOTTOM_A:
+	case stack.BOTTOM_A:
 		sortThreeBottomA(ps, chunk)
-	case operations.TOP_B:
+	case stack.TOP_B:
 		sortThreeTopB(ps, chunk)
-	case operations.BOTTOM_B:
+	case stack.BOTTOM_B:
 		sortThreeBottomB(ps, chunk)
 	}
 }
 
 // sortThreeTopA sorts three elements when chunk is at TOP_A
-func sortThreeTopA(ps *operations.PushSwapData, chunk *operations.Chunk) {
+func sortThreeTopA(ps *stack.PushSwapData, chunk *stack.Chunk) {
 	// If we're already at TOP_A and sorting 3 elements, use the simple sort_three_a logic
-	if chunk.Loc == operations.TOP_A && chunk.Size == 3 {
+	if chunk.Loc == stack.TOP_A && chunk.Size == 3 {
 		// Use 1-based indexing like C implementation
 		first := ps.A.GetValueAtPosition(1)
 		second := ps.A.GetValueAtPosition(2)
@@ -30,21 +28,21 @@ func sortThreeTopA(ps *operations.PushSwapData, chunk *operations.Chunk) {
 		// Apply the same logic as C implementation
 		if first > second && third > second && third > first {
 			// Case: first > second, third > second, third > first
-			operations.Swap_a(ps)
+			stack.Swap_a(ps)
 		} else if first > second && third > second && first > third {
 			// Case: first > second, third > second, first > third  
-			operations.Rotate_a(ps)
+			stack.Rotate_a(ps)
 		} else if second > first && second > third && first > third {
 			// Case: second > first, second > third, first > third
-			operations.R_rotate_a(ps)
+			stack.R_rotate_a(ps)
 		} else if second > first && second > third && third > first {
 			// Case: second > first, second > third, third > first
-			operations.Swap_a(ps)
-			operations.Rotate_a(ps)
+			stack.Swap_a(ps)
+			stack.Rotate_a(ps)
 		} else if first > second && second > third && first > third {
 			// Case: first > second, second > third, first > third
-			operations.Swap_a(ps)
-			operations.R_rotate_a(ps)
+			stack.Swap_a(ps)
+			stack.R_rotate_a(ps)
 		}
 		
 		// Chunk is sorted, but don't modify size (like C implementation)
@@ -57,90 +55,90 @@ func sortThreeTopA(ps *operations.PushSwapData, chunk *operations.Chunk) {
 	
 	// Use 1-based indexing like C implementation
 	if stk.GetValueAtPosition(1) == max {
-		operations.Swap_a(ps)
-		operations.Rotate_a(ps)
-		operations.Swap_a(ps)
-		operations.R_rotate_a(ps)
+		stack.Swap_a(ps)
+		stack.Rotate_a(ps)
+		stack.Swap_a(ps)
+		stack.R_rotate_a(ps)
 	} else if stk.GetValueAtPosition(2) == max {
-		operations.Rotate_a(ps)
-		operations.Swap_a(ps)
-		operations.R_rotate_a(ps)
+		stack.Rotate_a(ps)
+		stack.Swap_a(ps)
+		stack.R_rotate_a(ps)
 	}
 	
 	// Update chunk location and size exactly like C
-	chunk.Loc = operations.TOP_A
+	chunk.Loc = stack.TOP_A
 	chunk.Size -= 1
 	sortTwo(ps, chunk)
 }
 
 // sortThreeTopB sorts three elements when chunk is at TOP_B
-func sortThreeTopB(ps *operations.PushSwapData, chunk *operations.Chunk) {
-	operations.Push_a(ps)
+func sortThreeTopB(ps *stack.PushSwapData, chunk *stack.Chunk) {
+	stack.Push_a(ps)
 	
 	// Use 1-based indexing like C implementation
 	if ps.B.GetValueAtPosition(1) == chunkMaxValue(ps, chunk) {
-		operations.Push_a(ps)
-		operations.Swap_a(ps)
+		stack.Push_a(ps)
+		stack.Swap_a(ps)
 	} else if ps.B.GetValueAtPosition(2) == chunkMaxValue(ps, chunk) {
-		operations.Swap_b(ps)
-		operations.Push_a(ps)
-		operations.Swap_a(ps)
+		stack.Swap_b(ps)
+		stack.Push_a(ps)
+		stack.Swap_a(ps)
 	} else {
-		operations.Push_a(ps)
+		stack.Push_a(ps)
 	}
 	
-	operations.Push_a(ps)
+	stack.Push_a(ps)
 	
 	// Update chunk location and size exactly like C
-	chunk.Loc = operations.TOP_A
+	chunk.Loc = stack.TOP_A
 	chunk.Size -= 1
 	sortTwo(ps, chunk)
 }
 
 // sortThreeBottomA sorts three elements when chunk is at BOTTOM_A
-func sortThreeBottomA(ps *operations.PushSwapData, chunk *operations.Chunk) {
-	operations.R_rotate_a(ps)
-	operations.R_rotate_a(ps)
+func sortThreeBottomA(ps *stack.PushSwapData, chunk *stack.Chunk) {
+	stack.R_rotate_a(ps)
+	stack.R_rotate_a(ps)
 	
 	// Use 1-based indexing like C implementation
 	if ps.A.GetValueAtPosition(1) == chunkMaxValue(ps, chunk) {
-		operations.Swap_a(ps)
-		operations.R_rotate_a(ps)
+		stack.Swap_a(ps)
+		stack.R_rotate_a(ps)
 	} else if ps.A.GetValueAtPosition(2) == chunkMaxValue(ps, chunk) {
-		operations.R_rotate_a(ps)
+		stack.R_rotate_a(ps)
 	} else {
-		operations.Push_b(ps)
-		operations.R_rotate_a(ps)
-		operations.Swap_a(ps)
-		operations.Push_a(ps)
+		stack.Push_b(ps)
+		stack.R_rotate_a(ps)
+		stack.Swap_a(ps)
+		stack.Push_a(ps)
 	}
 	
-	// Update chunk location and size exactly like C
-	chunk.Loc = operations.TOP_A
+	// Update chunk location and size exactly like C	
+	chunk.Loc = stack.TOP_A
 	chunk.Size -= 1
 	sortTwo(ps, chunk)
 }
 
 // sortThreeBottomB sorts three elements when chunk is at BOTTOM_B
-func sortThreeBottomB(ps *operations.PushSwapData, chunk *operations.Chunk) {
-	operations.R_rotate_b(ps)
-	operations.R_rotate_b(ps)
+func sortThreeBottomB(ps *stack.PushSwapData, chunk *stack.Chunk) {
+	stack.R_rotate_b(ps)
+	stack.R_rotate_b(ps)
 	
 	// Use 1-based indexing like C implementation
 	if ps.B.GetValueAtPosition(1) == chunkMaxValue(ps, chunk) {
-		operations.Push_a(ps)
-		operations.R_rotate_b(ps)
+		stack.Push_a(ps)
+		stack.R_rotate_b(ps)
 	} else if ps.B.GetValueAtPosition(2) == chunkMaxValue(ps, chunk) {
-		operations.Swap_b(ps)
-		operations.Push_a(ps)
-		operations.R_rotate_b(ps)
+		stack.Swap_b(ps)
+		stack.Push_a(ps)
+		stack.R_rotate_b(ps)
 	} else {
-		operations.R_rotate_b(ps)
-		operations.Push_a(ps)
+		stack.R_rotate_b(ps)
+		stack.Push_a(ps)
 	}
 	
 	// Update chunk location and size exactly like C
-	chunk.Loc = operations.TOP_B
+	chunk.Loc = stack.TOP_B
 	chunk.Size -= 1
 	sortTwo(ps, chunk)
 }
