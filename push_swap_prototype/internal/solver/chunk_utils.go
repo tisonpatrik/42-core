@@ -28,10 +28,12 @@ func chunkValue(ps *operations.PushSwapData, chunk *operations.Chunk, n int) int
 	switch chunk.Loc {
 	case operations.TOP_A, operations.TOP_B:
 		// For TOP, position 1 is index 0, position 2 is index 1, etc.
-		return stk.GetValueAtPosition0(n - 1)
+		// Use 1-based indexing like C implementation
+		return stk.GetValueAtPosition(n)
 	case operations.BOTTOM_A, operations.BOTTOM_B:
 		// For BOTTOM, position 1 is the last element, position 2 is second-to-last, etc.
-		return stk.GetValueAtPosition0(stk.Size() - n)
+		// Convert to 1-based position from the bottom
+		return stk.GetValueAtPosition(stk.Size() - n + 1)
 	}
 	
 	return 0
@@ -53,25 +55,35 @@ func chunkMaxValue(ps *operations.PushSwapData, chunk *operations.Chunk) int {
 	return maxValue
 }
 
-// aPartlySort checks if stack A is partially sorted from a given position (1-based like C)
+// aPartlySort checks if stack A is partially sorted from a given position (exactly like C implementation)
 func aPartlySort(ps *operations.PushSwapData, from int) bool {
 	a := ps.A
 	
-	// Use 1-based indexing like C implementation	
-	for i := from; i < a.Size(); i++ {
+	// Start from the given position (1-based like C implementation)
+	i := from
+	for i <= a.Size() {
 		current := a.GetValueAtPosition(i)
-		next := a.GetValueAtPosition(i + 1)
-		if next != 0 && next != current+1 {
-			return false
+		// Continue until we find the maximum value (which is a.Size())
+		if current == a.Size() {
+			return true
 		}
+		
+		// Check if the next value is exactly current + 1
+		if i+1 <= a.Size() {
+			next := a.GetValueAtPosition(i + 1)
+			if next != current+1 {
+				return false
+			}
+		}
+		i++
 	}
 	return true
 }
 
-// isConsecutive checks if four numbers are consecutive
+// isConsecutive checks if four numbers are consecutive (exactly like C implementation)
 func isConsecutive(a, b, c, d int) bool {
-	// Sort all four numbers to check if they're consecutive
-	sortFourNumbers(&a, &b, &c, &d)
+	// Sort only the first three numbers, like C implementation
+	sortThreeNumbers(&a, &b, &c)
 	return (b-a == 1) && (c-b == 1) && (d-c == 1)
 }
 

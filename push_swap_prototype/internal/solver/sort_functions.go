@@ -24,27 +24,10 @@ func sortOne(ps *operations.PushSwapData, chunk *operations.Chunk) {
 
 // sortTwo sorts two elements in a chunk
 func sortTwo(ps *operations.PushSwapData, chunk *operations.Chunk) {
-	// Move elements to TOP_A if they're not already there
+	// Move elements to TOP_A if they're not already there (exactly like C implementation)
 	if chunk.Loc == operations.BOTTOM_A || chunk.Loc == operations.BOTTOM_B || chunk.Loc == operations.TOP_B {
-		// Move first element
-		switch chunk.Loc {
-		case operations.BOTTOM_A:
-			operations.R_rotate_a(ps)
-		case operations.BOTTOM_B:
-			operations.R_rotate_b(ps)
-		case operations.TOP_B:
-			operations.Push_a(ps)
-		}
-		
-		// Move second element
-		switch chunk.Loc {
-		case operations.BOTTOM_A:
-			operations.R_rotate_a(ps)
-		case operations.BOTTOM_B:
-			operations.R_rotate_b(ps)
-		case operations.TOP_B:
-			operations.Push_a(ps)
-		}
+		moveFromTo(ps, chunk.Loc, operations.TOP_A)
+		moveFromTo(ps, chunk.Loc, operations.TOP_A)
 	}
 	
 	// If the top element is greater than the second element, swap them
@@ -181,19 +164,20 @@ func sortThreeBottomB(ps *operations.PushSwapData, chunk *operations.Chunk) {
 	// Use 1-based indexing like C implementation
 	if ps.B.GetValueAtPosition(1) == chunkMaxValue(ps, chunk) {
 		operations.Push_a(ps)
-		operations.Swap_a(ps)
+		operations.R_rotate_b(ps)
 	} else if ps.B.GetValueAtPosition(2) == chunkMaxValue(ps, chunk) {
 		operations.Swap_b(ps)
 		operations.Push_a(ps)
-		operations.Swap_a(ps)
+		operations.R_rotate_b(ps)
 	} else {
+		operations.R_rotate_b(ps)
 		operations.Push_a(ps)
 	}
 	
-	operations.Push_a(ps)
-	
 	// Update chunk location and size exactly like C
-	chunk.Loc = operations.TOP_A
+	chunk.Loc = operations.TOP_B
 	chunk.Size -= 1
 	sortTwo(ps, chunk)
 }
+
+

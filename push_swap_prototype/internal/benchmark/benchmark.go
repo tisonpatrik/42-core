@@ -2,6 +2,7 @@ package benchmark
 
 import (
 	"fmt"
+	"math/rand"
 	"push_swap_prototype/internal/generator"
 	"push_swap_prototype/internal/solver"
 	"push_swap_prototype/internal/utils"
@@ -31,6 +32,9 @@ type SizeResult struct {
 // RunBenchmark runs the push swap benchmark with the specified number of iterations
 func RunBenchmark(iterations int) bool {
 	startTime := time.Now()
+	
+	// Seed the random number generator with current time
+	rand.Seed(startTime.UnixNano())
 	
 	fmt.Printf("Starting Push Swap Benchmark with %d iterations per size\n", iterations)
 	fmt.Printf("Testing sizes: 100 and 500\n")

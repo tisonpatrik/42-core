@@ -5,6 +5,7 @@ import (
 )
 
 // chunk_split splits a chunk into three parts based on pivot values
+// Exactly like C implementation
 func chunk_split(ps *operations.PushSwapData, to_split *operations.Chunk, dest *operations.SplitDest) {
 	var pivot1, pivot2 int
 	var maxValue int
@@ -19,18 +20,14 @@ func chunk_split(ps *operations.PushSwapData, to_split *operations.Chunk, dest *
 		nextValue := chunkValue(ps, to_split, 1)
 		
 		if nextValue > maxValue-pivot2 {
-			// Move to max chunk
 			dest.Max.Size += moveFromTo(ps, to_split.Loc, dest.Max.Loc)
 			splitMaxReduction(ps, &dest.Max)
 			if aPartlySort(ps, 1) && to_split.Size > 0 {
-				// Apply easy sort optimization exactly like C
 				easySort(ps, to_split)
 			}
 		} else if nextValue > maxValue-pivot1 {
-			// Move to mid chunk
 			dest.Mid.Size += moveFromTo(ps, to_split.Loc, dest.Mid.Loc)
 		} else {
-			// Move to min chunk
 			dest.Min.Size += moveFromTo(ps, to_split.Loc, dest.Min.Loc)
 		}
 		to_split.Size-- // Decrement size like C implementation
@@ -67,20 +64,15 @@ func setSplitLoc(loc operations.Loc, min, mid, max *operations.Chunk) {
 }
 
 // setThirdPivots sets the pivot values for splitting based on location and size
+// Exactly like C implementation
 func setThirdPivots(loc operations.Loc, crtSize int, pivot1, pivot2 *int) {
 	*pivot2 = crtSize / 3
 	
 	if loc == operations.TOP_A || loc == operations.BOTTOM_A {
 		*pivot1 = 2 * crtSize / 3
-		if crtSize < 15 {
-			*pivot1 = crtSize // Exactly like C implementation
-		}
 	}
 	if loc == operations.TOP_B || loc == operations.BOTTOM_B {
 		*pivot1 = crtSize / 2
-	}
-	if loc == operations.BOTTOM_B && crtSize < 8 {
-		*pivot2 = crtSize / 2
 	}
 }
 

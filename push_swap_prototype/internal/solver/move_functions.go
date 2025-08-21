@@ -28,7 +28,7 @@ func moveFromTopA(ps *operations.PushSwapData, to operations.Loc) {
 		operations.Rotate_a(ps)
 	case operations.BOTTOM_B:
 		operations.Push_b(ps)
-		operations.R_rotate_b(ps)
+		operations.Rotate_b(ps)
 	}
 }
 
@@ -38,7 +38,7 @@ func moveFromTopB(ps *operations.PushSwapData, to operations.Loc) {
 	case operations.TOP_A:
 		operations.Push_a(ps)
 	case operations.BOTTOM_B:
-		operations.R_rotate_b(ps)
+		operations.Rotate_b(ps)
 	case operations.BOTTOM_A:
 		operations.Push_a(ps)
 		operations.Rotate_a(ps)
@@ -56,7 +56,7 @@ func moveFromBottomA(ps *operations.PushSwapData, to operations.Loc) {
 	case operations.BOTTOM_B:
 		operations.R_rotate_a(ps)
 		operations.Push_b(ps)
-		operations.R_rotate_b(ps)
+		operations.Rotate_b(ps)
 	}
 }
 

@@ -222,7 +222,7 @@ func TestSortThreeTopB(t *testing.T) {
 		t.Errorf("Expected size to decrease by 3, got %d", originalSize-chunk.Size)
 	}
 	
-	// Location should change to TOP_A
+	// Location should change to TOP_A (matching C implementation)
 	if chunk.Loc != operations.TOP_A {
 		t.Errorf("Expected location to be TOP_A, got %v", chunk.Loc)
 	}
@@ -243,7 +243,7 @@ func TestSortThreeBottomA(t *testing.T) {
 		t.Errorf("Expected size to decrease by 3, got %d", originalSize-chunk.Size)
 	}
 	
-	// Location should change to TOP_A
+	// Location should change to TOP_A (matching C implementation)
 	if chunk.Loc != operations.TOP_A {
 		t.Errorf("Expected location to be TOP_A, got %v", chunk.Loc)
 	}
@@ -264,9 +264,9 @@ func TestSortThreeBottomB(t *testing.T) {
 		t.Errorf("Expected size to decrease by 3, got %d", originalSize-chunk.Size)
 	}
 	
-	// Location should change to TOP_A
-	if chunk.Loc != operations.TOP_A {
-		t.Errorf("Expected location to be TOP_A, got %v", chunk.Loc)
+	// Location should change to TOP_B (matching C implementation)
+	if chunk.Loc != operations.TOP_B {
+		t.Errorf("Expected location to be TOP_B, got %v", chunk.Loc)
 	}
 }
 
@@ -285,7 +285,7 @@ func TestSortThreeTopBMaxFirst(t *testing.T) {
 		t.Errorf("Expected size to decrease by 3, got %d", originalSize-chunk.Size)
 	}
 	
-	// Location should change to TOP_A
+	// Location should change to TOP_A (matching C implementation)
 	if chunk.Loc != operations.TOP_A {
 		t.Errorf("Expected location to be TOP_A, got %v", chunk.Loc)
 	}
@@ -306,7 +306,7 @@ func TestSortThreeTopBMaxSecond(t *testing.T) {
 		t.Errorf("Expected size to decrease by 3, got %d", originalSize-chunk.Size)
 	}
 	
-	// Location should change to TOP_A
+	// Location should change to TOP_A (matching C implementation)
 	if chunk.Loc != operations.TOP_A {
 		t.Errorf("Expected location to be TOP_A, got %v", chunk.Loc)
 	}
@@ -327,7 +327,7 @@ func TestSortThreeTopBMaxThird(t *testing.T) {
 		t.Errorf("Expected size to decrease by 3, got %d", originalSize-chunk.Size)
 	}
 	
-	// Location should change to TOP_A
+	// Location should change to TOP_A (matching C implementation)
 	if chunk.Loc != operations.TOP_A {
 		t.Errorf("Expected location to be TOP_A, got %v", chunk.Loc)
 	}
@@ -348,7 +348,7 @@ func TestSortThreeBottomAMaxFirst(t *testing.T) {
 		t.Errorf("Expected size to decrease by 3, got %d", originalSize-chunk.Size)
 	}
 	
-	// Location should change to TOP_A
+	// Location should change to TOP_A (matching C implementation)
 	if chunk.Loc != operations.TOP_A {
 		t.Errorf("Expected location to be TOP_A, got %v", chunk.Loc)
 	}
@@ -369,7 +369,7 @@ func TestSortThreeBottomAMaxSecond(t *testing.T) {
 		t.Errorf("Expected size to decrease by 3, got %d", originalSize-chunk.Size)
 	}
 	
-	// Location should change to TOP_A
+	// Location should change to TOP_A (matching C implementation)
 	if chunk.Loc != operations.TOP_A {
 		t.Errorf("Expected location to be TOP_A, got %v", chunk.Loc)
 	}
@@ -378,7 +378,7 @@ func TestSortThreeBottomAMaxSecond(t *testing.T) {
 // TestSortThreeBottomAMaxThird tests sortThreeBottomA when max value is third
 func TestSortThreeBottomAMaxThird(t *testing.T) {
 	ps := operations.NewPushSwapDataWithCapacity(4)
-	ps.A.FillFromSlice([]int{5, 6, 1, 2, 3}) // Max value 3 is third of bottom 3
+	ps.A.FillFromSlice([]int{5, 6, 1, 2, 3}) // Max value 3 is second of bottom 3
 	
 	chunk := &operations.Chunk{Loc: operations.BOTTOM_A, Size: 3}
 	originalSize := chunk.Size
@@ -390,7 +390,7 @@ func TestSortThreeBottomAMaxThird(t *testing.T) {
 		t.Errorf("Expected size to decrease by 3, got %d", originalSize-chunk.Size)
 	}
 	
-	// Location should change to TOP_A
+	// Location should change to TOP_A (matching C implementation)
 	if chunk.Loc != operations.TOP_A {
 		t.Errorf("Expected location to be TOP_A, got %v", chunk.Loc)
 	}
@@ -411,9 +411,9 @@ func TestSortThreeBottomBMaxFirst(t *testing.T) {
 		t.Errorf("Expected size to decrease by 3, got %d", originalSize-chunk.Size)
 	}
 	
-	// Location should change to TOP_A
-	if chunk.Loc != operations.TOP_A {
-		t.Errorf("Expected location to be TOP_A, got %v", chunk.Loc)
+	// Location should change to TOP_B (matching C implementation)
+	if chunk.Loc != operations.TOP_B {
+		t.Errorf("Expected location to be TOP_B, got %v", chunk.Loc)
 	}
 }
 
@@ -432,9 +432,9 @@ func TestSortThreeBottomBMaxSecond(t *testing.T) {
 		t.Errorf("Expected size to decrease by 3, got %d", originalSize-chunk.Size)
 	}
 	
-	// Location should change to TOP_A
-	if chunk.Loc != operations.TOP_A {
-		t.Errorf("Expected location to be TOP_A, got %v", chunk.Loc)
+	// Location should change to TOP_B (matching C implementation)
+	if chunk.Loc != operations.TOP_B {
+		t.Errorf("Expected location to be TOP_B, got %v", chunk.Loc)
 	}
 }
 
@@ -453,8 +453,8 @@ func TestSortThreeBottomBMaxThird(t *testing.T) {
 		t.Errorf("Expected size to decrease by 3, got %d", originalSize-chunk.Size)
 	}
 	
-	// Location should change to TOP_A
-	if chunk.Loc != operations.TOP_A {
-		t.Errorf("Expected location to be TOP_A, got %v", chunk.Loc)
+	// Location should change to TOP_B (matching C implementation)
+	if chunk.Loc != operations.TOP_B {
+		t.Errorf("Expected location to be TOP_B, got %v", chunk.Loc)
 	}
 }

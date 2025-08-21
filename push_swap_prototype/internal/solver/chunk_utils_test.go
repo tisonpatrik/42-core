@@ -246,9 +246,9 @@ func TestAPartlySort(t *testing.T) {
 	}
 }
 
-// TestIsConsecutive tests isConsecutive function
+// TestIsConsecutive tests isConsecutive function (matching C implementation behavior)
 func TestIsConsecutive(t *testing.T) {
-	// Test consecutive numbers
+	// Test consecutive numbers in order
 	if !isConsecutive(1, 2, 3, 4) {
 		t.Error("1,2,3,4 should be consecutive")
 	}
@@ -258,9 +258,14 @@ func TestIsConsecutive(t *testing.T) {
 		t.Error("1,2,4,5 should not be consecutive")
 	}
 	
-	// Test with different order
-	if !isConsecutive(4, 2, 1, 3) {
-		t.Error("4,2,1,3 should be consecutive after sorting")
+	// Test with first 3 needing sorting, 4th in correct position
+	if !isConsecutive(3, 1, 2, 4) {
+		t.Error("3,1,2,4 should be consecutive (sorts to 1,2,3,4)")
+	}
+	
+	// Test where 4th element breaks the sequence
+	if isConsecutive(1, 3, 2, 5) {
+		t.Error("1,3,2,5 should not be consecutive (sorts to 1,2,3,5)")
 	}
 }
 

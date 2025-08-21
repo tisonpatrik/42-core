@@ -119,7 +119,7 @@ func TestSetThirdPivotsTopA(t *testing.T) {
 	setThirdPivots(operations.TOP_A, crtSize, &pivot1, &pivot2)
 	
 	expectedPivot2 := 9 / 3 // 3
-	expectedPivot1 := 9 // For size < 15, pivot1 = crtSize (like C implementation)
+	expectedPivot1 := 2 * 9 / 3 // 6 (like C implementation: 2 * crtSize / 3)
 	
 	if pivot2 != expectedPivot2 {
 		t.Errorf("Expected pivot2 to be %d, got %d", expectedPivot2, pivot2)
@@ -137,7 +137,7 @@ func TestSetThirdPivotsTopASmallSize(t *testing.T) {
 	setThirdPivots(operations.TOP_A, crtSize, &pivot1, &pivot2)
 	
 	expectedPivot2 := 10 / 3 // 3
-	expectedPivot1 := 10 // Should be crtSize for small sizes
+	expectedPivot1 := 2 * 10 / 3 // 6 (like C implementation: 2 * crtSize / 3)
 	
 	if pivot2 != expectedPivot2 {
 		t.Errorf("Expected pivot2 to be %d, got %d", expectedPivot2, pivot2)
@@ -172,7 +172,7 @@ func TestSetThirdPivotsBottomB(t *testing.T) {
 	
 	setThirdPivots(operations.BOTTOM_B, crtSize, &pivot1, &pivot2)
 	
-	expectedPivot2 := 6 / 2 // 3 (special case for BOTTOM_B < 8)
+	expectedPivot2 := 6 / 3 // 2 (like C implementation: crtSize / 3)
 	expectedPivot1 := 6 / 2 // 3
 	
 	if pivot2 != expectedPivot2 {
@@ -210,8 +210,8 @@ func TestSetThirdPivotsEdgeCases(t *testing.T) {
 	if pivot2 != 0 {
 		t.Errorf("Expected pivot2 to be 0 for size 1, got %d", pivot2)
 	}
-	if pivot1 != 1 {
-		t.Errorf("Expected pivot1 to be 1 for size 1, got %d", pivot1)
+	if pivot1 != 0 {
+		t.Errorf("Expected pivot1 to be 0 for size 1, got %d", pivot1)
 	}
 	
 	// Test with size 0

@@ -55,10 +55,3 @@ func chunkToTheTop(ps *operations.PushSwapData, chunk *operations.Chunk) {
 		chunk.Loc = operations.TOP_A
 	}
 }
-
-
-
-
-
-
-
