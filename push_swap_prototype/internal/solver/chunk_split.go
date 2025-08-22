@@ -68,7 +68,7 @@ func setSplitLoc(loc stack.Loc, min, mid, max *stack.Chunk) {
 // Exactly like C implementation
 func setThirdPivots(loc stack.Loc, crtSize int, pivot1, pivot2 *int) {
 	*pivot2 = crtSize / 3
-	
+	*pivot1 = crtSize / 2;
 	switch loc {
 	case stack.TOP_A, stack.BOTTOM_A:
 		*pivot1 = 2 * crtSize / 3
