@@ -55,7 +55,9 @@ func InitializeFromSlice(data *PushSwapData, values []int) {
 	if data == nil {
 		return
 	}
-	// Create stack with ranks using FromSlice (like C fill_stack)
+	
+	// Initialize stack directly with input values (like C version)
+	// No need for randomToRank conversion
 	data.A = FromSlice(values)
 }
 

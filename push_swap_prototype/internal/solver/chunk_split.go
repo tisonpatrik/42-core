@@ -1,12 +1,13 @@
 package solver
 
 import (
+	"fmt"
 	"push_swap_prototype/internal/stack"
 )
 
-// chunk_split splits a chunk into three parts based on pivot values
+// chunkSplit splits a chunk into three parts based on pivot values
 // Exactly like C implementation
-func chunk_split(ps *stack.PushSwapData, to_split *stack.Chunk, dest *stack.SplitDest) {
+func chunkSplit(ps *stack.PushSwapData, to_split *stack.Chunk, dest *stack.SplitDest) {
 	var pivot1, pivot2 int
 	var maxValue int
 
@@ -14,24 +15,41 @@ func chunk_split(ps *stack.PushSwapData, to_split *stack.Chunk, dest *stack.Spli
 	setSplitLoc(to_split.Loc, &dest.Min, &dest.Mid, &dest.Max)
 	setThirdPivots(to_split.Loc, to_split.Size, &pivot1, &pivot2)
 	maxValue = chunkMaxValue(ps, to_split)
+	
+	// Log initial state
+	fmt.Printf("=== CHUNK_SPLIT START ===\n")
+	fmt.Printf("Initial size: %d, maxValue: %d, pivot1: %d, pivot2: %d\n", 
+		to_split.Size, maxValue, pivot1, pivot2)
+	fmt.Printf("Dest locations - Min: %v, Mid: %v, Max: %v\n", 
+		dest.Min.Loc, dest.Mid.Loc, dest.Max.Loc)
+	
 	// Exactly like C implementation: while (to_split->size--)
 	for to_split.Size > 0 {
 		nextValue := chunkValue(ps, to_split, 1)
 		
+		fmt.Printf("Processing value: %d (size remaining: %d)\n", nextValue, to_split.Size)
+		
 		if nextValue > maxValue-pivot2 {
+			fmt.Printf("  -> MAX chunk (value %d > %d)\n", nextValue, maxValue-pivot2)
 			dest.Max.Size += moveFromTo(ps, to_split.Loc, dest.Max.Loc)
 			splitMaxReduction(ps, &dest.Max)
 			if aPartlySort(ps, 1) && to_split.Size > 0 {
 				easySort(ps, to_split)
 			}
 		} else if nextValue > maxValue-pivot1 {
-			dest.Mid.Size += moveFromTo(ps, to_split.Loc, dest.Max.Loc)
+			fmt.Printf("  -> MID chunk (value %d > %d)\n", nextValue, maxValue-pivot1)
+			dest.Mid.Size += moveFromTo(ps, to_split.Loc, dest.Mid.Loc)
 		} else {
+			fmt.Printf("  -> MIN chunk (value %d <= %d)\n", nextValue, maxValue-pivot1)
 			dest.Min.Size += moveFromTo(ps, to_split.Loc, dest.Min.Loc)
 		}
 		
-		to_split.Size--  // Move this to the END of the loop
+		to_split.Size--
 	}
+	
+	fmt.Printf("=== CHUNK_SPLIT END ===\n")
+	fmt.Printf("Final sizes - Min: %d, Mid: %d, Max: %d\n", 
+		dest.Min.Size, dest.Mid.Size, dest.Max.Size)
 }
 
 // initSize initializes the size of all destination chunks to 0

@@ -5,8 +5,6 @@ import (
 )
 
 
-
-
 func SolvePushSwap(numbers []int) ([]stack.Operation, []int) {
 	ps := stack.NewPushSwapData()
 	stack.InitializeFromSlice(ps, numbers)
