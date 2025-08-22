@@ -145,19 +145,7 @@ func FromSlice(values []int) *Stack {
 	return s
 }
 
-// GetValueAtPosition returns the value at a specific position (1-based like C)
-func (s *Stack) GetValueAtPosition(pos int) int {
-	if pos < 1 || pos > s.CurrentSize() {
-		return 0
-	}
-	
-	// Convert 1-based to 0-based index
-	index := s.top
-	for i := 1; i < pos; i++ {
-		index = s.NextDown(index)
-	}
-	return s.stack[index]
-}
+
 
 // GetValueAtPosition0 returns the value at a specific position (0-based)
 func (s *Stack) GetValueAtPosition0(pos int) int {
@@ -182,61 +170,22 @@ func (s *Stack) GetBottom() int {
 	return s.bottom
 }
 
+// SetTop sets the top index (like C implementation - direct field access)
+func (s *Stack) SetTop(top int) {
+	s.top = top
+}
+
+// SetBottom sets the bottom index (like C implementation - direct field access)
+func (s *Stack) SetBottom(bottom int) {
+	s.bottom = bottom
+}
+
 // GetStack returns the stack array (like C implementation)
 func (s *Stack) GetStack() []int {
 	return s.stack
 }
 
-// IsFull returns true if the stack is at maximum capacity (like C is_full)
-func (s *Stack) IsFull() bool {
-	if s.size == 0 {
-		return false
-	}
-	return s.size == s.CurrentSize()
-}
 
-// CurrentSize returns the current number of elements in the stack
-func (s *Stack) CurrentSize() int {
-	if s.size == 0 {
-		return 0
-	}
-	
-	// Handle empty stack case like C implementation
-	if s.top == s.bottom && s.stack[s.top] == 0 {
-		return 0
-	}
-	
-	// For non-empty stacks, use C logic
-	if s.top > s.bottom {
-		return ((s.size - s.top) + (s.bottom + 1))
-	} else {
-		return (s.bottom - s.top + 1)
-	}
-}
-
-// NextUp returns the next index going up in the stack (like C implementation)
-func (s *Stack) NextUp(index int) int {
-	if s.CurrentSize() == 0 {
-		return index
-	}
-	if index == 0 {
-		return s.size - 1
-	} else {
-		return index - 1
-	}
-}
-
-// NextDown returns the next index going down in the stack (like C implementation)
-func (s *Stack) NextDown(index int) int {
-	if s.CurrentSize() == 0 {
-		return index
-	}
-	if index == s.size-1 {
-		return 0
-	} else {
-		return index + 1
-	}
-}
 
 // Value returns the value at a specific index (like C implementation)
 func (s *Stack) Value(index int) int {
