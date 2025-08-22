@@ -45,6 +45,11 @@ func (s *Stack) GetValueAtPosition(pos int) int {
 // CurrentSize returns the current number of elements in the stack
 // Equivalent to current_size in C implementation
 func (s *Stack) CurrentSize() int {
+	// Check if stack is empty or uninitialized
+	if s.size == 0 || len(s.stack) == 0 {
+		return 0
+	}
+	
 	if s.top == s.bottom && s.stack[s.top] == 0 {
 		return 0
 	}
