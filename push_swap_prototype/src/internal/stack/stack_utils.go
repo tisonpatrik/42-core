@@ -26,7 +26,7 @@ func (s *Stack) NextDown(index int) int {
 		return index
 	}
 	if index == s.size-1 {
-		return 0
+		return 0	
 	} else {
 		return index + 1
 	}
