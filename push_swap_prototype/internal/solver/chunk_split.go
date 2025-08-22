@@ -17,6 +17,7 @@ func chunkSplit(ps *stack.PushSwapData, to_split *stack.Chunk, dest *stack.Split
 	
 	
 	for to_split.Size > 0 {
+		to_split.Size--
 		nextValue := chunkValue(ps, to_split, 1)
 		
 		if nextValue > maxValue-pivot2 {
@@ -30,8 +31,6 @@ func chunkSplit(ps *stack.PushSwapData, to_split *stack.Chunk, dest *stack.Split
 		} else {
 			dest.Min.Size += moveFromTo(ps, to_split.Loc, dest.Min.Loc)
 		}
-		
-		to_split.Size--
 	}
 }
 

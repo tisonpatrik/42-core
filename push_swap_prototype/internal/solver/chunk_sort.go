@@ -27,9 +27,9 @@ func recChunkSort(ps *stack.PushSwapData, toSort *stack.Chunk) {
 			sortTwo(ps, toSort)
 		case 1:
 			sortOne(ps, toSort)
-		case 0:
+		default:
+			return
 		}
-		return
 	}
 
 	var dest stack.SplitDest

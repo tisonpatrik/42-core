@@ -4,7 +4,6 @@ import (
 	"push_swap_prototype/internal/stack"
 )
 
-// splitMaxReduction reduces the max chunk size when elements are moved (exactly like C implementation)
 func splitMaxReduction(ps *stack.PushSwapData, max *stack.Chunk) {
 	a := ps.A
 	
@@ -35,8 +34,8 @@ func aPartlySort(ps *stack.PushSwapData, from int) bool {
 	i := a.GetTop()
 	
 	for from > 1 {
-		i = a.NextDown(i)
 		from--
+		i = a.NextDown(i)
 	}
 	
 	for a.Value(i) != a.Size() {
@@ -58,7 +57,6 @@ func isConsecutive(a, b, c, d int) bool {
 	return result
 }
 
-// sortThreeNumbers sorts three numbers in ascending order (exactly like C implementation)
 func sortThreeNumbers(a, b, c *int) {
 	
 	if *a > *b {

@@ -5,31 +5,13 @@ import (
 )
 
 func easySort(ps *stack.PushSwapData, chunk *stack.Chunk) {
-
 	for chunk.Loc != stack.TOP_A && chunk.Size != 0 {
-		if chunk.Size < 1 {
-			break
-		}
-		
-		topA := ps.A.GetValueAtPosition(1)
-		chunkFirst := chunkValue(ps, chunk, 1)
-		
-		if chunk.Size < 2 {
-			if topA == chunkFirst+1 {
-				sortOne(ps, chunk)
-			} else {
-				break
-			}
+		if ps.A.GetValueAtPosition(1) == chunkValue(ps, chunk, 1)+1 && chunk.Size > 0 {
+			sortOne(ps, chunk)
+		} else if ps.A.GetValueAtPosition(1) == chunkValue(ps, chunk, 2)+1 && chunk.Size > 1 {
+			easySortSecond(ps, chunk)
 		} else {
-			chunkSecond := chunkValue(ps, chunk, 2)
-			
-			if topA == chunkFirst+1 && chunk.Size > 0 {
-				sortOne(ps, chunk)
-			} else if topA == chunkSecond+1 && chunk.Size > 1 {
-				easySortSecond(ps, chunk)
-			} else {
-				break
-			}
+			break
 		}
 	}
 }
