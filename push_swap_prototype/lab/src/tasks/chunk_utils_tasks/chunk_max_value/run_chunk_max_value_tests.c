@@ -1,9 +1,11 @@
 #include "../../../../include/chunk_max_value_test.h"
 #include "../../../../include/stack_utils.h"
+#include "../../../../include/json_utils.h"
 #include "../../../../libs/push_swap/src/chunk_utils.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 // Constants to replace magic numbers
 #define TEST_COUNT 4
@@ -110,7 +112,7 @@ int run_chunk_max_value_tests(int size) {
     }
     
     // Save results to JSON file
-    save_chunk_max_value_tests_to_json(tests, TEST_COUNT, "chunk_max_value.json");
+    save_tests_to_json_generic("chunk_max_value.json", "chunk_max_value", (void**)tests, TEST_COUNT, add_chunk_max_value_test_data);
     
     // Cleanup
     free(chunk_data);

@@ -1,31 +1,20 @@
 #include <stdio.h>
-
-// Forward declarations for test functions
-int run_loc_to_stack_tests(int size);
-int run_chunk_max_value_tests(int size);
-int run_chunk_value_tests(int size);
+#include "../include/test_runner.h"
 
 int main(void)
 {
-    int test_array_size = 10;  // Size for all test arrays
+    // Create test configuration (can be extended with command line args later)
+    t_test_config *config = get_default_test_config();
+    if (!config) {
+        printf("Error: Failed to create test configuration\n");
+        return 1;
+    }
     
-    // Run the loc_to_stack test suite
-    if (run_loc_to_stack_tests(test_array_size) != 0) {
-        printf("Error: Loc to stack tests failed\n");
-        return 1;
-    }
-
-    // Run the chunk_max_value test suite
-    if (run_chunk_max_value_tests(test_array_size) != 0) {
-        printf("Error: Chunk max value tests failed\n");
-        return 1;
-    }
-
-    // Run the chunk_value test suite
-    if (run_chunk_value_tests(test_array_size) != 0) {
-        printf("Error: Chunk value tests failed\n");
-        return 1;
-    }
-
-    return (0);
+    // Run all test suites through the test runner
+    int result = run_all_test_suites(config);
+    
+    // Cleanup
+    free_test_config(config);
+    
+    return result;
 }

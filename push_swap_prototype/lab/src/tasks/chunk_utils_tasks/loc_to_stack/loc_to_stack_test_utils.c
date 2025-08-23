@@ -1,5 +1,4 @@
 #include "../../../../include/loc_to_stack_test.h"
-#include "../../../../include/json_utils.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -36,10 +35,4 @@ void free_loc_to_stack_test(t_loc_to_stack_test *test) {
     free(test->stack_loc);
     free(test->input_array);
     free(test);
-}
-
-// Save loc to stack tests to JSON file
-void save_loc_to_stack_tests_to_json(t_loc_to_stack_test **tests, int num_tests, const char *filename) {
-    // Use the generic JSON utility with loc to stack test callback
-    save_tests_to_json_generic(filename, "loc_to_stack", (void**)tests, num_tests, add_loc_to_stack_test_data);
 }

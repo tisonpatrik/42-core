@@ -1,5 +1,6 @@
 #include "../../../../include/chunk_value_test.h"
 #include "../../../../include/stack_utils.h"
+#include "../../../../include/json_utils.h"
 #include "../../../../libs/push_swap/src/chunk_utils.h"
 #include <stdbool.h>
 #include <stdio.h>
@@ -120,7 +121,7 @@ int run_chunk_value_tests(int size) {
     }
     
     // Save results to JSON file
-    save_chunk_value_tests_to_json(tests, TEST_COUNT, "chunk_value.json");
+    save_tests_to_json_generic("chunk_value.json", "chunk_value", (void**)tests, TEST_COUNT, add_chunk_value_test_data);
     
     // Cleanup
     cleanup_test_resources(tests);

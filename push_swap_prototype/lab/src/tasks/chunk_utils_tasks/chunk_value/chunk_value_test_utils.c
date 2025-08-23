@@ -1,5 +1,4 @@
 #include "../../../../include/chunk_value_test.h"
-#include "../../../../include/json_utils.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -38,10 +37,4 @@ void free_chunk_value_test(t_chunk_value_test *test) {
     free(test->chunk_loc);
     free(test->input_array);
     free(test);
-}
-
-// Save chunk value tests to JSON file
-void save_chunk_value_tests_to_json(t_chunk_value_test **tests, int num_tests, const char *filename) {
-    // Use the generic JSON utility with chunk value test callback
-    save_tests_to_json_generic(filename, "chunk_value", (void**)tests, num_tests, add_chunk_value_test_data);
 }

@@ -1,5 +1,6 @@
 #include "../../../../include/loc_to_stack_test.h"
 #include "../../../../include/stack_utils.h"
+#include "../../../../include/json_utils.h"
 #include "../../../../libs/push_swap/src/chunk_utils.h"
 #include <stdbool.h>
 #include <stdio.h>
@@ -110,7 +111,7 @@ int run_loc_to_stack_tests(int size) {
     }
     
     // Save results to JSON file
-    save_loc_to_stack_tests_to_json(tests, TEST_COUNT, "loc_to_stack.json");
+    save_tests_to_json_generic("loc_to_stack.json", "loc_to_stack", (void**)tests, TEST_COUNT, add_loc_to_stack_test_data);
     
     // Cleanup
     free(stack_a_data);

@@ -7,7 +7,7 @@
 struct s_push_swap;
 typedef struct s_push_swap t_ps;
 
-// Chunk value test structure
+// Structure for chunk value test
 typedef struct s_chunk_value_test {
     int id;
     char *name;
@@ -19,14 +19,8 @@ typedef struct s_chunk_value_test {
     int offset;          // Position within chunk
 } t_chunk_value_test;
 
-// Test utility functions
+// Function declarations
 t_chunk_value_test* create_chunk_value_test(int id, const char *name, int *input_array, int array_size, int result, const char *chunk_loc, int chunk_size, int offset);
 void free_chunk_value_test(t_chunk_value_test *test);
-
-// JSON export function
-void save_chunk_value_tests_to_json(t_chunk_value_test **tests, int num_tests, const char *filename);
-
-// Main test runner
-int run_chunk_value_tests(int size);
 
 #endif
