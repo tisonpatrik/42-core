@@ -43,13 +43,13 @@ typedef struct s_chunk_value_test {
 } t_chunk_value_test;
 
 // Function to run loc_to_stack tests
-int run_loc_to_stack_tests(void);
+int run_loc_to_stack_tests(int size);
 
 // Function to run chunk_max_value tests
-int run_chunk_max_value_tests(void);
+int run_chunk_max_value_tests(int size);
 
 // Function to run chunk_value tests
-int run_chunk_value_tests(void);
+int run_chunk_value_tests(int size);
 
 // Function to save loc_to_stack test results
 void save_loc_to_stack_results(t_ps *data, t_loc_to_stack_test *test_data);

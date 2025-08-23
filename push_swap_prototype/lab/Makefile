@@ -15,7 +15,7 @@ MAIN_SRCS = $(SRC_DIR)/main.c
 
 # Utility source files (no main function)
 UTIL_SRCS = $(wildcard $(SRC_DIR)/utils/*.c)
-TASK_SRCS = $(wildcard $(SRC_DIR)/tasks/*.c)
+TASK_SRCS = $(wildcard $(SRC_DIR)/tasks/*.c) $(wildcard $(SRC_DIR)/tasks/chunk_utils_tasks/*.c)
 
 # Push swap source files needed for the tests
 PUSH_SWAP_SRCS = $(PUSH_SWAP_SRC_DIR)/chunk_utils.c $(PUSH_SWAP_SRC_DIR)/stack_utils.c

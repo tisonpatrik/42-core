@@ -174,6 +174,91 @@ int save_test_results_to_json(const char *filename_prefix, t_json_export *export
     return success;
 }
 
+// Special function for chunk_utils tests - saves to chunk_utils directory with specific test name
+int save_chunk_utils_test_results(const char *test_name, t_json_export *export_data) {
+    if (!export_data || !test_name) return 0;
+    
+    cJSON *root = cJSON_CreateObject();
+    if (!root) return 0;
+    
+    // Add metadata
+    cJSON_AddItemToObject(root, "title", cJSON_CreateString(export_data->title));
+    cJSON_AddItemToObject(root, "description", cJSON_CreateString(export_data->description));
+    
+    // Add test results
+    cJSON *tests = cJSON_CreateArray();
+    if (!tests) {
+        cJSON_Delete(root);
+        return 0;
+    }
+    
+    for (int i = 0; i < export_data->num_results; i++) {
+        cJSON *test = cJSON_CreateObject();
+        if (!test) continue;
+        
+        cJSON_AddItemToObject(test, "id", cJSON_CreateNumber(export_data->results[i].id));
+        cJSON_AddItemToObject(test, "name", cJSON_CreateString(export_data->results[i].name));
+        cJSON_AddItemToObject(test, "result", cJSON_CreateNumber(export_data->results[i].value));
+        
+        cJSON_AddItemToArray(tests, test);
+    }
+    cJSON_AddItemToObject(root, "tests", tests);
+    
+    // Add input data
+    if (export_data->num_custom_data > 0) {
+        cJSON *input_data = cJSON_CreateObject();
+        if (input_data) {
+            for (int i = 0; i < export_data->num_custom_data; i++) {
+                if (strcmp(export_data->custom_data[i].type, "array") == 0) {
+                    cJSON *array = cJSON_CreateArray();
+                    if (array) {
+                        int *int_array = (int*)export_data->custom_data[i].value;
+                        for (int j = 0; j < export_data->custom_data[i].size; j++) {
+                            cJSON_AddItemToArray(array, cJSON_CreateNumber(int_array[j]));
+                        }
+                        cJSON_AddItemToObject(input_data, export_data->custom_data[i].key, array);
+                    }
+                } else if (strcmp(export_data->custom_data[i].type, "string") == 0) {
+                    cJSON_AddItemToObject(input_data, export_data->custom_data[i].key, 
+                                        cJSON_CreateString((char*)export_data->custom_data[i].value));
+                }
+            }
+            cJSON_AddItemToObject(root, "input", input_data);
+        }
+    }
+    
+    // Convert to string and save to file
+    char *json_string = cJSON_Print(root);
+    if (!json_string) {
+        cJSON_Delete(root);
+        return 0;
+    }
+    
+    // Create chunk_utils directory if it doesn't exist
+    system("mkdir -p data/chunk_utils");
+    
+    // Generate filename with test name
+    char filename[256];
+    snprintf(filename, sizeof(filename), "data/chunk_utils/%s.json", test_name);
+    
+    FILE *file = fopen(filename, "w");
+    int success = 0;
+    if (file) {
+        fprintf(file, "%s", json_string);
+        fclose(file);
+        printf("Results saved to: %s\n", filename);
+        success = 1;
+    } else {
+        printf("Failed to save results to file\n");
+    }
+    
+    // Cleanup
+    free(json_string);
+    cJSON_Delete(root);
+    
+    return success;
+}
+
 // Helper function to cleanup JSON export structure
 void cleanup_json_export(t_json_export *export_data) {
     if (export_data) {

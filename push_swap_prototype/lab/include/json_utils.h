@@ -32,6 +32,9 @@ typedef struct s_json_export {
 // Generic function to save test results to JSON
 int save_test_results_to_json(const char *filename_prefix, t_json_export *export_data);
 
+// Special function for chunk_utils tests - saves to chunk_utils directory with specific test name
+int save_chunk_utils_test_results(const char *test_name, t_json_export *export_data);
+
 // Helper function to create test result
 t_test_result create_test_result(int id, const char *name, int value);
 
