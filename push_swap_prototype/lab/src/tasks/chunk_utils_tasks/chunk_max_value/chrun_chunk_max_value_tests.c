@@ -1,8 +1,6 @@
-#include "../../../include/chunk_utils_task.h"
-#include "../../../include/specific_test_utils.h"
-#include "../../../include/specific_json_utils.h"
-#include "../../../include/stack_utils.h"
-#include "../../../libs/push_swap/src/chunk_utils.h"
+#include "../../../../include/chunk_max_value_test.h"
+#include "../../../../include/stack_utils.h"
+#include "../../../../libs/push_swap/src/chunk_utils.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
