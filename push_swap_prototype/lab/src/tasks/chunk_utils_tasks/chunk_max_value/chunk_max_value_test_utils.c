@@ -1,5 +1,5 @@
 #include "../../../../include/chunk_max_value_test.h"
-#include "../../../../libs/cJSON/cJSON.h"
+#include "../../../../include/json_utils.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -41,43 +41,6 @@ void free_chunk_max_value_test(t_chunk_max_value_test *test) {
 
 // Save chunk max value tests to JSON file
 void save_chunk_max_value_tests_to_json(t_chunk_max_value_test **tests, int num_tests, const char *filename) {
-    cJSON *root = cJSON_CreateObject();
-    cJSON *tests_array = cJSON_CreateArray();
-    
-    for (int i = 0; i < num_tests; i++) {
-        if (!tests[i]) continue;
-        
-        cJSON *test_obj = cJSON_CreateObject();
-        cJSON *input_array = cJSON_CreateArray();
-        
-        // Add test metadata
-        cJSON_AddNumberToObject(test_obj, "id", tests[i]->id);
-        cJSON_AddStringToObject(test_obj, "name", tests[i]->name);
-        cJSON_AddNumberToObject(test_obj, "result", tests[i]->result);
-        cJSON_AddStringToObject(test_obj, "chunk_loc", tests[i]->chunk_loc);
-        cJSON_AddNumberToObject(test_obj, "chunk_size", tests[i]->chunk_size);
-        
-        // Add input array
-        for (int j = 0; j < tests[i]->array_size; j++) {
-            cJSON_AddItemToArray(input_array, cJSON_CreateNumber(tests[i]->input_array[j]));
-        }
-        cJSON_AddItemToObject(test_obj, "input_array", input_array);
-        
-        cJSON_AddItemToArray(tests_array, test_obj);
-    }
-    
-    cJSON_AddItemToObject(root, "tests", tests_array);
-    
-    // Write to file in data/chunk_utils directory
-    char filepath[256];
-    snprintf(filepath, sizeof(filepath), "data/chunk_utils/%s", filename);
-    FILE *file = fopen(filepath, "w");
-    if (file) {
-        char *json_string = cJSON_Print(root);
-        fprintf(file, "%s", json_string);
-        free(json_string);
-        fclose(file);
-    }
-    
-    cJSON_Delete(root);
+    // Use the generic JSON utility with chunk max value test callback
+    save_tests_to_json_generic(filename, "chunk_max_value", (void**)tests, num_tests, add_chunk_max_value_test_data);
 }

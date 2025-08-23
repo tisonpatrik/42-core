@@ -27,13 +27,18 @@ lab/
 │   │   ├── generator.c          # Generate test data
 │   │   ├── json_utils.c         # JSON export
 │   │   ├── file_utils.c         # File I/O
-│   │   ├── stack_utils.c        # Stack management
-│   │   └── test_utils.c         # Test framework
+│   │   └── stack_utils.c        # Stack management
 │   ├── tasks/                   # Test logic
 │   │   └── chunk_utils_tasks/   # Chunk tests
-│   │       ├── loc_to_stack.c            # Test loc_to_stack
-│   │       ├── chunk_max_value.c         # Test chunk_max_value
-│   │       └── chunk_value.c             # Test chunk_value
+│   │       ├── loc_to_stack/            # Test loc_to_stack
+│   │       │   ├── loc_to_stack_test_utils.c
+│   │       │   └── run_loc_to_stack_tests.c
+│   │       ├── chunk_max_value/         # Test chunk_max_value
+│   │       │   ├── chunk_max_value_test_utils.c
+│   │       │   └── run_chunk_max_value_tests.c
+│   │       └── chunk_value/             # Test chunk_value
+│   │           ├── chunk_value_test_utils.c
+│   │           └── run_chunk_value_tests.c
 │   └── main.c                   # Test runner
 ├── include/                     # Header files
 ├── libs/                        # Libraries
@@ -86,10 +91,10 @@ make build  # Only build without running
 ```
 
 ### **Makefile targets:**
-- `make` nebo `make all` - Build a spustí testy (default)
-- `make build` - Jen zkompiluje bez spouštění
-- `make clean` - Vyčistí zkompilované soubory
-- `make re` - Vyčistí, překompiluje a spustí testy
+- `make` or `make all` - Build and run tests (default)
+- `make build` - Only compile without running
+- `make clean` - Clean compiled files
+- `make re` - Clean, recompile and run tests
 
 ### **Results:**
 Tests run automatically and generate JSON files in the `data/chunk_utils/` directory.
