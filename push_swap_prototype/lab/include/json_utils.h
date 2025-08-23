@@ -2,6 +2,7 @@
 # define JSON_UTILS_H
 
 #include <time.h>
+#include "chunk_utils_task.h"
 
 // Generic structure for test results
 typedef struct s_test_result {
@@ -67,5 +68,7 @@ t_custom_data create_string_data(const char *key, const char *value);
 
 // Helper function to cleanup JSON export structure
 void cleanup_json_export(t_json_export *export_data);
+
+
 
 #endif

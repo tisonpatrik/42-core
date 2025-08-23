@@ -39,77 +39,46 @@ int run_chunk_max_value_tests(int size) {
         return 1;
     }
 	
-	// Initialize test data structure
-    t_chunk_max_value_test test_data = {0};
+	// Run tests and collect results
+    t_chunk_max_value_test test_data;
     
-    // Test 1: TOP_A, size=5
-    test_data.test1_top_a.input_array = malloc(size * sizeof(int));
-    test_data.test1_top_a.array_size = size;
-    test_data.test1_top_a.chunk_loc = TOP_A;
-    test_data.test1_top_a.chunk_size = 5;
+    // Test 1: Top A chunk max value
+    test_data.max_value_a = test_chunk_max_value_top_a(data);
     
-    // Copy input data
-    for (int i = 0; i < size; i++) {
-        test_data.test1_top_a.input_array[i] = data->a.stack[i];
+    // Test 2: Bottom A chunk max value
+    test_data.max_value_b = test_chunk_max_value_bottom_a(data);
+    
+    // Test 3: Top B chunk max value
+    int top_b_max = test_chunk_max_value_top_b(data);
+    
+    // Test 4: Bottom B chunk max value
+    int bottom_b_max = test_chunk_max_value_bottom_b(data);
+    
+    // Find the overall maximum for combined result
+    test_data.max_value_combined = test_data.max_value_a;
+    if (test_data.max_value_b > test_data.max_value_combined)
+        test_data.max_value_combined = test_data.max_value_b;
+    if (top_b_max > test_data.max_value_combined)
+        test_data.max_value_combined = top_b_max;
+    if (bottom_b_max > test_data.max_value_combined)
+        test_data.max_value_combined = bottom_b_max;
+    
+    // Copy chunk data for JSON export
+    test_data.chunk_data = malloc(size * sizeof(int));
+    test_data.chunk_size = size;
+    if (test_data.chunk_data) {
+        for (int i = 0; i < size; i++) {
+            test_data.chunk_data[i] = data->a.stack[i];
+        }
+        test_data.chunk_start_index = 0;
+        test_data.chunk_end_index = size - 1;
+        
+        // Save results to JSON file
+        save_chunk_max_value_results(data, &test_data);
+        
+        // Cleanup test data
+        free(test_data.chunk_data);
     }
-    
-    // Run test
-    t_chunk chunk1 = {TOP_A, 5};
-    test_data.test1_top_a.result = chunk_max_value(data, &chunk1);
-    
-    // Test 2: BOTTOM_A, size=4
-    test_data.test2_bottom_a.input_array = malloc(size * sizeof(int));
-    test_data.test2_bottom_a.array_size = size;
-    test_data.test2_bottom_a.chunk_loc = BOTTOM_A;
-    test_data.test2_bottom_a.chunk_size = 4;
-    
-    // Copy input data
-    for (int i = 0; i < size; i++) {
-        test_data.test2_bottom_a.input_array[i] = data->a.stack[i];
-    }
-    
-    // Run test
-    t_chunk chunk2 = {BOTTOM_A, 4};
-    test_data.test2_bottom_a.result = chunk_max_value(data, &chunk2);
-    
-    // Test 3: TOP_B, size=3
-    test_data.test3_top_b.input_array = malloc(size * sizeof(int));
-    test_data.test3_top_b.array_size = size;
-    test_data.test3_top_b.chunk_loc = TOP_B;
-    test_data.test3_top_b.chunk_size = 3;
-    
-    // Copy input data
-    for (int i = 0; i < size; i++) {
-        test_data.test3_top_b.input_array[i] = data->b.stack[i];
-    }
-    
-    // Run test
-    t_chunk chunk3 = {TOP_B, 3};
-    test_data.test3_top_b.result = chunk_max_value(data, &chunk3);
-    
-    // Test 4: BOTTOM_B, size=4
-    test_data.test4_bottom_b.input_array = malloc(size * sizeof(int));
-    test_data.test4_bottom_b.array_size = size;
-    test_data.test4_bottom_b.chunk_loc = BOTTOM_B;
-    test_data.test4_bottom_b.chunk_size = 4;
-    
-    // Copy input data
-    for (int i = 0; i < size; i++) {
-        test_data.test4_bottom_b.input_array[i] = data->b.stack[i];
-    }
-    
-    // Run test
-    t_chunk chunk4 = {BOTTOM_B, 4};
-    test_data.test4_bottom_b.result = chunk_max_value(data, &chunk4);
-    
-    // Save results to JSON file
-    save_chunk_max_value_results(data, &test_data);
-    
-    // Cleanup test data
-    free(test_data.test1_top_a.input_array);
-    free(test_data.test2_bottom_a.input_array);
-    free(test_data.test3_top_b.input_array);
-    free(test_data.test4_bottom_b.input_array);
 
     // Cleanup only once at the end
     cleanup_test_data(data);
