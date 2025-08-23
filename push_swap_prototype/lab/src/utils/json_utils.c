@@ -1,7 +1,7 @@
-#include "../../include/json_utils.h"
-#include "../../include/chunk_value_test.h"
-#include "../../include/chunk_max_value_test.h"
-#include "../../include/loc_to_stack_test.h"
+#include "../../include/utils/json_utils.h"
+#include "../../include/testing/chunk_value_test.h"
+#include "../../include/testing/chunk_max_value_test.h"
+#include "../../include/testing/loc_to_stack_test.h"
 #include "../../libs/cJSON/cJSON.h"
 #include <stdio.h>
 #include <stdlib.h>

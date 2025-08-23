@@ -1,12 +1,9 @@
-#include "../../../include/test_runner.h"
+#include "../../../include/testing/test_runner.h"
+#include "../../../include/testing/chunk_utils_tests.h"
+#include "../../../include/testing/test_config.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-// Forward declarations for test functions
-extern int run_loc_to_stack_tests(int size);
-extern int run_chunk_max_value_tests(int size);
-extern int run_chunk_value_tests(int size);
 
 // Test suite definitions
 static const t_test_suite test_suites[] = {
@@ -16,33 +13,6 @@ static const t_test_suite test_suites[] = {
 };
 
 static const int NUM_TEST_SUITES = sizeof(test_suites) / sizeof(test_suites[0]);
-
-// Create a new test configuration
-t_test_config* create_test_config(int array_size, const char *output_dir, int verbose) {
-    t_test_config *config = malloc(sizeof(t_test_config));
-    if (!config) return NULL;
-    
-    config->test_array_size = array_size;
-    config->output_directory = output_dir ? strdup(output_dir) : strdup("data/chunk_utils");
-    config->verbose_output = verbose;
-    
-    return config;
-}
-
-// Free test configuration
-void free_test_config(t_test_config *config) {
-    if (!config) return;
-    
-    if (config->output_directory) {
-        free((void*)config->output_directory);
-    }
-    free(config);
-}
-
-// Get default test configuration
-t_test_config* get_default_test_config(void) {
-    return create_test_config(10, "data/chunk_utils", 0);
-}
 
 // Run a single test suite
 int run_test_suite(const t_test_suite *suite, const t_test_config *config, t_test_result *result) {

@@ -1,4 +1,4 @@
-#include "../../include/generator.h"
+#include "../../include/utils/generator.h"
 #include "../../libs/push_swap/src/models.h"
 #include <stdlib.h>
 

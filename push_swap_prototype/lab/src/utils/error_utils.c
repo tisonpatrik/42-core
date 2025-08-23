@@ -1,4 +1,4 @@
-#include "../../include/error_utils.h"
+#include "../../include/utils/error_utils.h"
 #include <stddef.h>
 
 // Error message lookup table

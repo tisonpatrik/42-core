@@ -1,7 +1,7 @@
 # Compiler and flags
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror -g
-INCLUDES = -Iinclude -Ilibs/push_swap/src -Ilibs/cJSON
+INCLUDES = -Iinclude -Iinclude/core -Iinclude/testing -Iinclude/utils -Ilibs/push_swap/src -Ilibs/cJSON
 
 # Directories
 SRC_DIR = src

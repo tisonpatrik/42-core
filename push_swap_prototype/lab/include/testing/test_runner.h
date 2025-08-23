@@ -1,12 +1,8 @@
 #ifndef TEST_RUNNER_H
 # define TEST_RUNNER_H
 
-// Test configuration structure
-typedef struct s_test_config {
-    int test_array_size;
-    const char *output_directory;
-    int verbose_output;
-} t_test_config;
+#include "../core/types.h"
+#include "test_config.h"
 
 // Test result structure
 typedef struct s_test_result {

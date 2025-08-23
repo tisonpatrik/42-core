@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "../include/test_runner.h"
+#include "../include/testing/test_runner.h"
 
 int main(void)
 {

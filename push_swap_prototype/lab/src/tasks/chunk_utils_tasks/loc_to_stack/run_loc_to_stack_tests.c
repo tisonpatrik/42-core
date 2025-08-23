@@ -1,13 +1,13 @@
-#include "../../../../include/loc_to_stack_test.h"
-#include "../../../../include/stack_utils.h"
-#include "../../../../include/json_utils.h"
+#include "../../../../include/testing/loc_to_stack_test.h"
+#include "../../../../include/utils/stack_utils.h"
+#include "../../../../include/utils/json_utils.h"
+#include "../../../../include/testing/chunk_utils_tests.h"
+#include "../../../../include/testing/test_config.h"
+#include "../../../../include/testing/test_utils.h"
 #include "../../../../libs/push_swap/src/chunk_utils.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-
-// Constants to replace magic numbers
-#define TEST_COUNT 4
 
 // Function is implemented in libs/push_swap/src/chunk_utils.c
 
@@ -32,20 +32,9 @@ int test_loc_to_stack_bottom_b(t_ps *data) {
     return result->stack[result->bottom];
 }
 
-// Helper function to copy stack data
-static int* copy_stack_data(const int *source, int size) {
-    int *copy = malloc(size * sizeof(int));
-    if (!copy) return NULL;
-    
-    for (int i = 0; i < size; i++) {
-        copy[i] = source[i];
-    }
-    return copy;
-}
-
 // Helper function to create all test cases
 static int create_all_test_cases(t_ps *data, t_loc_to_stack_test **tests, 
-                                int *stack_a_data, int *stack_b_data, int size) {
+                                int *stack_a_data, int *stack_b_data, int size, const t_test_config *config) {
     // Test 1: TOP_A
     int top_a_result = test_loc_to_stack_top_a(data);
     tests[0] = create_loc_to_stack_test(1, "TOP_A", stack_a_data, size, top_a_result, "TOP_A");
@@ -63,31 +52,30 @@ static int create_all_test_cases(t_ps *data, t_loc_to_stack_test **tests,
     tests[3] = create_loc_to_stack_test(4, "BOTTOM_B", stack_b_data, size, bottom_b_result, "BOTTOM_B");
     
     // Check if all tests were created successfully
-    for (int i = 0; i < TEST_COUNT; i++) {
+    for (int i = 0; i < config->test_counts.loc_to_stack_count; i++) {
         if (!tests[i]) return 0; // Failed to create a test
     }
     return 1; // All tests created successfully
 }
 
-// Helper function to cleanup test resources
-static void cleanup_test_resources(t_loc_to_stack_test **tests) {
-    for (int i = 0; i < TEST_COUNT; i++) {
-        if (tests[i]) {
-            free_loc_to_stack_test(tests[i]);
-        }
-    }
-}
-
 // Main function to run loc_to_stack tests
 int run_loc_to_stack_tests(int size) {
+    // Get default configuration
+    t_test_config *config = get_default_test_config();
+    if (!config) {
+        printf("Failed to create test configuration\n");
+        return 1;
+    }
+    
     t_ps *data = create_test_data(size, size);
     if (!data) {
         printf("Failed to create test data\n");
+        free_test_config(config);
         return 1;
     }
     
     // Create array of test cases
-    t_loc_to_stack_test *tests[TEST_COUNT] = {NULL};
+    t_loc_to_stack_test *tests[4] = {NULL}; // Fixed size for now
     
     // Copy stack data for JSON export
     int *stack_a_data = copy_stack_data(data->a.stack, size);
@@ -97,27 +85,33 @@ int run_loc_to_stack_tests(int size) {
         if (stack_a_data) free(stack_a_data);
         if (stack_b_data) free(stack_b_data);
         cleanup_test_data(data);
+        free_test_config(config);
         return 1;
     }
     
     // Create all test cases
-    if (!create_all_test_cases(data, tests, stack_a_data, stack_b_data, size)) {
+    if (!create_all_test_cases(data, tests, stack_a_data, stack_b_data, size, config)) {
         printf("Failed to create test cases\n");
         free(stack_a_data);
         free(stack_b_data);
-        cleanup_test_resources(tests);
         cleanup_test_data(data);
+        free_test_config(config);
         return 1;
     }
     
     // Save results to JSON file
-    save_tests_to_json_generic("loc_to_stack.json", "loc_to_stack", (void**)tests, TEST_COUNT, add_loc_to_stack_test_data);
+    save_tests_to_json_generic("loc_to_stack.json", "loc_to_stack", (void**)tests, config->test_counts.loc_to_stack_count, add_loc_to_stack_test_data);
     
     // Cleanup
     free(stack_a_data);
     free(stack_b_data);
-    cleanup_test_resources(tests);
+    for (int i = 0; i < config->test_counts.loc_to_stack_count; i++) {
+        if (tests[i]) {
+            free_loc_to_stack_test(tests[i]);
+        }
+    }
     cleanup_test_data(data);
+    free_test_config(config);
 
     return 0;
 }
