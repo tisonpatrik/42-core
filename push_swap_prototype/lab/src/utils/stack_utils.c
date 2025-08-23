@@ -18,3 +18,25 @@ void cleanup_stack(t_stack *stack) {
         stack->stack = NULL;
     }
 }
+
+// Test data creation utility
+t_ps* create_test_data(int stack_a_size, int stack_b_size) {
+    t_ps *data = malloc(sizeof(t_ps));
+    if (!data) return NULL;
+    
+    init_stack(&data->a, stack_a_size);
+    init_stack(&data->b, stack_b_size);
+    data->op_list = NULL;
+    data->writing_mode = false;
+    
+    return data;
+}
+
+// Test data cleanup utility
+void cleanup_test_data(t_ps *data) {
+    if (data) {
+        cleanup_stack(&data->a);
+        cleanup_stack(&data->b);
+        free(data);
+    }
+}

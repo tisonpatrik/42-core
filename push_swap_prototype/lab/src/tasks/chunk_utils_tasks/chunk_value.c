@@ -1,7 +1,7 @@
 #include "../../../include/chunk_utils_task.h"
-#include "../../../include/json_utils.h"
+#include "../../../include/specific_test_utils.h"
+#include "../../../include/specific_json_utils.h"
 #include "../../../include/stack_utils.h"
-#include "../../../include/test_utils.h"
 #include "../../../libs/push_swap/src/chunk_utils.h"
 #include <stdbool.h>
 #include <stdio.h>
@@ -43,13 +43,8 @@ int run_chunk_value_tests(int size) {
         return 1;
     }
 	
-	// Create test batch with 5 test cases
-    t_test_batch *batch = create_test_batch("chunk_value", 5);
-    if (!batch) {
-        printf("Failed to create test batch\n");
-        cleanup_test_data(data);
-        return 1;
-    }
+	// Create array of 5 test cases
+    t_chunk_value_test *tests[5] = {NULL};
     
     // Test 1: TOP_A, size=5, offset=0 (first element in chunk)
     int *input_array1 = malloc(size * sizeof(int));
@@ -60,11 +55,7 @@ int run_chunk_value_tests(int size) {
     t_chunk chunk1 = {TOP_A, 5};
     int result1 = chunk_value(data, &chunk1, 0);
     
-    t_test_case *test1 = create_test_case(1, "TOP_A_basic", input_array1, size, result1);
-    set_test_param1(test1, "chunk_loc", "TOP_A");
-    set_test_param2(test1, "chunk_size", 5);
-    set_test_param3(test1, "offset", "0");
-    add_test_to_batch(batch, 0, test1);
+    tests[0] = create_chunk_value_test(1, "TOP_A_basic", input_array1, size, result1, "TOP_A", 5, 0);
     
     // Test 2: TOP_A, size=5, offset=2 (third element in chunk)
     int *input_array2 = malloc(size * sizeof(int));
@@ -75,11 +66,7 @@ int run_chunk_value_tests(int size) {
     t_chunk chunk2 = {TOP_A, 5};
     int result2 = chunk_value(data, &chunk2, 2);
     
-    t_test_case *test2 = create_test_case(2, "TOP_A_middle", input_array2, size, result2);
-    set_test_param1(test1, "chunk_loc", "TOP_A");
-    set_test_param2(test1, "chunk_size", 5);
-    set_test_param3(test1, "offset", "2");
-    add_test_to_batch(batch, 1, test2);
+    tests[1] = create_chunk_value_test(2, "TOP_A_middle", input_array2, size, result2, "TOP_A", 5, 2);
     
     // Test 3: BOTTOM_B, size=4, offset=0 (first element in chunk)
     int *input_array3 = malloc(size * sizeof(int));
@@ -90,11 +77,7 @@ int run_chunk_value_tests(int size) {
     t_chunk chunk3 = {BOTTOM_B, 4};
     int result3 = chunk_value(data, &chunk3, 0);
     
-    t_test_case *test3 = create_test_case(3, "BOTTOM_B_basic", input_array3, size, result3);
-    set_test_param1(test1, "chunk_loc", "BOTTOM_B");
-    set_test_param2(test1, "chunk_size", 4);
-    set_test_param3(test1, "offset", "0");
-    add_test_to_batch(batch, 2, test3);
+    tests[2] = create_chunk_value_test(3, "BOTTOM_B_basic", input_array3, size, result3, "BOTTOM_B", 4, 0);
     
     // Test 4: BOTTOM_B, size=4, offset=1 (second element in chunk)
     int *input_array4 = malloc(size * sizeof(int));
@@ -105,13 +88,9 @@ int run_chunk_value_tests(int size) {
     t_chunk chunk4 = {BOTTOM_B, 4};
     int result4 = chunk_value(data, &chunk4, 1);
     
-    t_test_case *test4 = create_test_case(4, "BOTTOM_B_second", input_array4, size, result4);
-    set_test_param1(test1, "chunk_loc", "BOTTOM_B");
-    set_test_param2(test1, "chunk_size", 4);
-    set_test_param3(test1, "offset", "1");
-    add_test_to_batch(batch, 3, test4);
+    tests[3] = create_chunk_value_test(4, "BOTTOM_B_second", input_array4, size, result4, "BOTTOM_B", 4, 1);
     
-    // Test 5: TOP_B, size=3, offset=2 (third element in chunk)
+    // Test 5: TOP_B, size=3, offset=2 (last element in chunk)
     int *input_array5 = malloc(size * sizeof(int));
     for (int i = 0; i < size; i++) {
         input_array5[i] = data->b.stack[i];
@@ -120,22 +99,20 @@ int run_chunk_value_tests(int size) {
     t_chunk chunk5 = {TOP_B, 3};
     int result5 = chunk_value(data, &chunk5, 2);
     
-    t_test_case *test5 = create_test_case(5, "TOP_B_last", input_array5, size, result5);
-    set_test_param1(test1, "chunk_loc", "TOP_B");
-    set_test_param2(test1, "chunk_size", 3);
-    set_test_param3(test1, "offset", "2");
-    add_test_to_batch(batch, 4, test5);
+    tests[4] = create_chunk_value_test(5, "TOP_B_last", input_array5, size, result5, "TOP_B", 3, 2);
     
     // Save results to JSON file
-    save_test_batch_to_json(batch, "chunk_value.json");
+    save_chunk_value_tests_to_json(tests, 5, "chunk_value.json");
     
     // Cleanup
-    free_test_batch(batch);
+    for (int i = 0; i < 5; i++) {
+        if (tests[i]) {
+            free_chunk_value_test(tests[i]);
+        }
+    }
     cleanup_test_data(data);
-    
+
     return 0;
 }
-
-// Function removed - now using generic t_test_batch approach directly
 
 
