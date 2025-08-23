@@ -26,8 +26,14 @@ CJSON_SRCS = $(CJSON_SRC_DIR)/cJSON.c
 # Target executables (one for each main source file)
 TARGETS = $(BIN_DIR)/main
 
-# Default target
-all: $(TARGETS)
+# Build target - only compile
+build: $(TARGETS)
+	@echo "Build completed successfully!"
+
+# Default target - build and run
+all: build
+	@echo "Running tests..."
+	./$(BIN_DIR)/main
 
 # Create directories
 $(BIN_DIR):
@@ -47,16 +53,10 @@ fclean: clean
 # Rebuild everything
 re: fclean all
 
-# Run specific executables
-run-main: $(BIN_DIR)/main
-	./$(BIN_DIR)/main
-
-# Test target - run the test suite
-test: $(BIN_DIR)/main
-	./$(BIN_DIR)/main
+# Note: Tests are automatically run with 'make all'
 
 # Phony targets
-.PHONY: all clean fclean re run-main test
+.PHONY: all build clean fclean re
 
 # Default target
 .DEFAULT_GOAL = all

@@ -41,12 +41,17 @@ int add_custom_string(t_json_export *export_data, const char *key, const char *v
 t_custom_data create_int_array_data(const char *key, int *array, int size);
 t_custom_data create_string_data(const char *key, const char *value);
 
-// File I/O utilities
-int ensure_directory_exists(const char *path);
-int save_json_to_file(const char *filepath, const char *json_string);
+// File I/O utilities moved to file_utils.h
 
 // JSON serialization utilities
 char *serialize_json_export(t_json_export *export_data);
 int save_test_results_to_json(const char *filepath, t_json_export *export_data);
+
+// Forward declaration for test batch types
+struct s_test_batch;
+typedef struct s_test_batch t_test_batch;
+
+// Test batch JSON export functionality
+void save_test_batch_to_json(t_test_batch *batch, const char *filename);
 
 #endif

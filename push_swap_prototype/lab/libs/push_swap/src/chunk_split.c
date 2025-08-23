@@ -1,10 +1,10 @@
 #include "models.h"
+#include "chunk_utils.h"
 
 void	innit_size(t_chunk *min, t_chunk *mid, t_chunk *max);
 void	set_split_loc(t_loc loc, t_chunk *min, t_chunk *mid, t_chunk *max);
 void	set_third_pivots(t_loc loc, int crt_size, int *pivot_1, int *pivot_2);
-int	chunk_max_value(t_ps *data, t_chunk *chunk);
-int	chunk_value(t_ps *data, t_chunk *chunk, int n);
+// Functions are implemented in chunk_utils.c
 int	move_from_to(t_ps *data, t_loc from, t_loc to);
 void	split_max_reduction(t_ps *data, t_chunk *max);
 bool	a_partly_sort(t_ps *data, int n);

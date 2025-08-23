@@ -1,4 +1,6 @@
 #include "../../include/json_utils.h"
+#include "../../include/chunk_utils_task.h"
+#include "../../include/file_utils.h"
 #include "../../libs/cJSON/cJSON.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -108,32 +110,7 @@ t_custom_data create_string_data(const char *key, const char *value) {
     return data;
 }
 
-// File I/O utilities
-int ensure_directory_exists(const char *path) {
-    if (!path) return 0;
-    
-    char mkdir_cmd[512];
-    snprintf(mkdir_cmd, sizeof(mkdir_cmd), "mkdir -p %s", path);
-    return system(mkdir_cmd) == 0;
-}
-
-int save_json_to_file(const char *filepath, const char *json_string) {
-    if (!filepath || !json_string) return 0;
-    
-    FILE *file = fopen(filepath, "w");
-    if (!file) return 0;
-    
-    int success = fprintf(file, "%s", json_string) > 0;
-    fclose(file);
-    
-    if (success) {
-        printf("Results saved to: %s\n", filepath);
-    } else {
-        printf("Failed to save results to file: %s\n", filepath);
-    }
-    
-    return success;
-}
+// File I/O utilities moved to file_utils.c
 
 // JSON serialization utilities
 char *serialize_json_export(t_json_export *export_data) {
@@ -193,6 +170,78 @@ char *serialize_json_export(t_json_export *export_data) {
     cJSON_Delete(root);
     
     return json_string;
+}
+
+// Test batch JSON export functionality
+void save_test_batch_to_json(t_test_batch *batch, const char *filename) {
+    if (!batch || !filename) return;
+    
+    cJSON *root = cJSON_CreateArray();
+    if (!root) return;
+    
+    // Iterate through all tests in the batch
+    for (int i = 0; i < batch->num_tests; i++) {
+        t_test_case *test = &batch->tests[i];
+        
+        cJSON *test_obj = cJSON_CreateObject();
+        if (!test_obj) continue;
+        
+        cJSON_AddItemToObject(test_obj, "id", cJSON_CreateNumber(test->id));
+        cJSON_AddItemToObject(test_obj, "name", cJSON_CreateString(test->name));
+        
+        // Create inputs object
+        cJSON *inputs = cJSON_CreateObject();
+        if (!inputs) continue;
+        
+        // Add array if it exists
+        if (test->input_array && test->array_size > 0) {
+            cJSON *array = cJSON_CreateArray();
+            if (array) {
+                for (int j = 0; j < test->array_size; j++) {
+                    cJSON_AddItemToArray(array, cJSON_CreateNumber(test->input_array[j]));
+                }
+                cJSON_AddItemToObject(inputs, "array", array);
+            }
+        }
+        
+        // Add optional parameters dynamically
+        if (test->param1_name && test->param1_value) {
+            cJSON_AddItemToObject(inputs, test->param1_name, cJSON_CreateString(test->param1_value));
+        }
+        
+        if (test->param2_name) {
+            cJSON_AddItemToObject(inputs, test->param2_name, cJSON_CreateNumber(test->param2_value));
+        }
+        
+        if (test->param3_name && test->param3_value) {
+            cJSON_AddItemToObject(inputs, test->param3_name, cJSON_CreateString(test->param3_value));
+        }
+        
+        cJSON_AddItemToObject(test_obj, "inputs", inputs);
+        cJSON_AddItemToObject(test_obj, "result", cJSON_CreateNumber(test->result));
+        
+        cJSON_AddItemToArray(root, test_obj);
+    }
+    
+    // Convert to string and save to file
+    char *json_string = cJSON_Print(root);
+    if (!json_string) {
+        cJSON_Delete(root);
+        return;
+    }
+    
+    // Create directory if it doesn't exist
+    ensure_directory_exists("data/chunk_utils");
+    
+    // Save to file
+    char filepath[256];
+    snprintf(filepath, sizeof(filepath), "data/chunk_utils/%s", filename);
+    
+    save_json_to_file(filepath, json_string);
+    
+    // Cleanup
+    free(json_string);
+    cJSON_Delete(root);
 }
 
 int save_test_results_to_json(const char *filepath, t_json_export *export_data) {

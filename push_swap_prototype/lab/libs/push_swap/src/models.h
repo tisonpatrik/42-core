@@ -1,3 +1,6 @@
+#ifndef MODELS_H
+# define MODELS_H
+
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -66,3 +69,5 @@ typedef struct s_split_dest
 	t_chunk	mid;
 	t_chunk	max;
 }			t_split_dest;
+
+#endif
