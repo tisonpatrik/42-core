@@ -3,6 +3,7 @@
 #include "../../../include/chunk_utils_common.h"
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 // Forward declaration of the function to test
 t_stack	*loc_to_stack(t_ps *data, t_loc loc);
@@ -80,4 +81,62 @@ int run_loc_to_stack_tests(int size) {
     cleanup_test_data(data);
 
     return 0;
+}
+
+// Business logic function to save loc_to_stack test results
+void save_loc_to_stack_results(t_ps *data __attribute__((unused)), t_loc_to_stack_test *test_data) {
+    if (!test_data) return;
+    
+    // Create test batch
+    t_test_batch *batch = create_test_batch("loc_to_stack", 4);
+    if (!batch) return;
+    
+    // Create test cases using the clean utility functions
+    t_test_case test1 = {0};
+    test1.id = 1;
+    test1.name = "TOP_A";
+    test1.input_array = test_data->stack_a_data;
+    test1.array_size = test_data->stack_a_size;
+    test1.result = test_data->top_a_result;
+    test1.param1_name = "stack_loc";
+    test1.param1_value = "TOP_A";
+    
+    t_test_case test2 = {0};
+    test2.id = 2;
+    test2.name = "BOTTOM_A";
+    test2.input_array = test_data->stack_a_data;
+    test2.array_size = test_data->stack_a_size;
+    test2.result = test_data->bottom_a_result;
+    test2.param1_name = "stack_loc";
+    test2.param1_value = "BOTTOM_A";
+    
+    t_test_case test3 = {0};
+    test3.id = 3;
+    test3.name = "TOP_B";
+    test3.input_array = test_data->stack_b_data;
+    test3.array_size = test_data->stack_b_size;
+    test3.result = test_data->top_b_result;
+    test3.param1_name = "stack_loc";
+    test3.param1_value = "TOP_B";
+    
+    t_test_case test4 = {0};
+    test4.id = 4;
+    test4.name = "BOTTOM_B";
+    test4.input_array = test_data->stack_b_data;
+    test4.array_size = test_data->stack_b_size;
+    test4.result = test_data->bottom_b_result;
+    test4.param1_name = "stack_loc";
+    test4.param1_value = "BOTTOM_B";
+    
+    // Add tests to batch
+    add_test_to_batch(batch, 0, &test1);
+    add_test_to_batch(batch, 1, &test2);
+    add_test_to_batch(batch, 2, &test3);
+    add_test_to_batch(batch, 3, &test4);
+    
+    // Save to file using the clean utility function
+    save_test_batch_to_json(batch, "loc_to_stack.json");
+    
+    // Cleanup
+    free_test_batch(batch);
 }

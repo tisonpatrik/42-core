@@ -2,7 +2,6 @@
 # define JSON_UTILS_H
 
 #include <time.h>
-#include "chunk_utils_task.h"
 
 // Generic structure for test results
 typedef struct s_test_result {
@@ -30,45 +29,24 @@ typedef struct s_json_export {
     t_custom_data *custom_data;
 } t_json_export;
 
-// Generic function to save test results to JSON
-int save_test_results_to_json(const char *filename_prefix, t_json_export *export_data);
-
-// Special function for chunk_utils tests - saves to chunk_utils directory with specific test name
-int save_chunk_utils_test_results(const char *test_name, t_json_export *export_data);
-
-// Generic function to save test results with custom data
-int save_generic_test_results(const char *test_name, 
-                             const char *title, 
-                             const char *description,
-                             t_test_result *results, 
-                             int num_results,
-                             t_custom_data *custom_data, 
-                             int num_custom_data);
-
-// Helper function to create test result
-t_test_result create_test_result(int id, const char *name, int value);
-
-// Helper function to create JSON export structure
+// Core JSON utility functions
 t_json_export *create_json_export(const char *title, const char *description);
-
-// Helper function to add test result to export
-int add_test_result(t_json_export *export_data, t_test_result result);
-
-// Helper function to add custom data (array of integers)
-int add_custom_int_array(t_json_export *export_data, const char *key, int *array, int size);
-
-// Helper function to add custom data (string)
-int add_custom_string(t_json_export *export_data, const char *key, const char *value);
-
-// Helper function to create custom data for integer arrays
-t_custom_data create_int_array_data(const char *key, int *array, int size);
-
-// Helper function to create custom data for strings
-t_custom_data create_string_data(const char *key, const char *value);
-
-// Helper function to cleanup JSON export structure
 void cleanup_json_export(t_json_export *export_data);
 
+// Data manipulation utilities
+t_test_result create_test_result(int id, const char *name, int value);
+int add_test_result(t_json_export *export_data, t_test_result result);
+int add_custom_int_array(t_json_export *export_data, const char *key, int *array, int size);
+int add_custom_string(t_json_export *export_data, const char *key, const char *value);
+t_custom_data create_int_array_data(const char *key, int *array, int size);
+t_custom_data create_string_data(const char *key, const char *value);
 
+// File I/O utilities
+int ensure_directory_exists(const char *path);
+int save_json_to_file(const char *filepath, const char *json_string);
+
+// JSON serialization utilities
+char *serialize_json_export(t_json_export *export_data);
+int save_test_results_to_json(const char *filepath, t_json_export *export_data);
 
 #endif

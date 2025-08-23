@@ -85,3 +85,69 @@ int run_chunk_max_value_tests(int size) {
 
     return 0;
 }
+
+// Business logic function to save chunk_max_value test results
+void save_chunk_max_value_results(t_ps *data __attribute__((unused)), t_chunk_max_value_test *test_data) {
+    if (!test_data) return;
+    
+    // Create test batch
+    t_test_batch *batch = create_test_batch("chunk_max_value", 4);
+    if (!batch) return;
+    
+    // Create test cases using the clean utility functions
+    t_test_case test1 = {0};
+    test1.id = 1;
+    test1.name = "TOP_A";
+    test1.input_array = test_data->chunk_data;
+    test1.array_size = test_data->chunk_size;
+    test1.result = test_data->max_value_a;
+    test1.param1_name = "chunk_loc";
+    test1.param1_value = "TOP_A";
+    test1.param2_name = "chunk_size";
+    test1.param2_value = 5;
+    
+    t_test_case test2 = {0};
+    test2.id = 2;
+    test2.name = "BOTTOM_A";
+    test2.input_array = test_data->chunk_data;
+    test2.array_size = test_data->chunk_size;
+    test2.result = test_data->max_value_b;
+    test2.param1_name = "chunk_loc";
+    test2.param1_value = "BOTTOM_A";
+    test2.param2_name = "chunk_size";
+    test2.param2_value = 4;
+    
+    t_test_case test3 = {0};
+    test3.id = 3;
+    test3.name = "TOP_B";
+    test3.input_array = test_data->chunk_data;
+    test3.array_size = test_data->chunk_size;
+    test3.result = test_data->max_value_combined;
+    test3.param1_name = "chunk_loc";
+    test3.param1_value = "TOP_B";
+    test3.param2_name = "chunk_size";
+    test3.param2_value = 3;
+    
+    t_test_case test4 = {0};
+    test4.id = 4;
+    test4.name = "BOTTOM_B";
+    test4.input_array = test_data->chunk_data;
+    test4.array_size = test_data->chunk_size;
+    test4.result = test_data->max_value_combined;
+    test4.param1_name = "chunk_loc";
+    test4.param1_value = "BOTTOM_B";
+    test4.param2_name = "chunk_size";
+    test4.param2_value = 4;
+    
+    // Add tests to batch
+    add_test_to_batch(batch, 0, &test1);
+    add_test_to_batch(batch, 1, &test2);
+    add_test_to_batch(batch, 2, &test3);
+    add_test_to_batch(batch, 3, &test4);
+    
+    // Save to file using the clean utility function
+    save_test_batch_to_json(batch, "chunk_max_value.json");
+    
+    // Cleanup
+    free_test_batch(batch);
+}
