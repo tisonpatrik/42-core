@@ -1,20 +1,22 @@
+#include "../include/testing/chunk_utils_tests.h"
 #include <stdio.h>
-#include "../include/testing/test_runner.h"
+
+// Forward declarations
+extern int run_loc_to_stack_tests(int size);
+extern int run_chunk_max_value_tests(int size);
+extern int run_chunk_value_tests(int size);
 
 int main(void)
 {
-    // Create test configuration (can be extended with command line args later)
-    t_test_config *config = get_default_test_config();
-    if (!config) {
-        printf("Error: Failed to create test configuration\n");
-        return 1;
-    }
+    printf("🚀 Running tests with size: 10\n");
     
-    // Run all test suites through the test runner
-    int result = run_all_test_suites(config);
+    int result = 0;
+    int size = 10;
+    result += run_loc_to_stack_tests(size);
+    result += run_chunk_max_value_tests(size);
+    result += run_chunk_value_tests(size);
     
-    // Cleanup
-    free_test_config(config);
+    printf("🎯 Tests completed! %s\n", result == 0 ? "All passed!" : "Some failed!");
     
     return result;
 }

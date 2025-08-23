@@ -6,112 +6,94 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// Constants for file operations
-#define MAX_FILEPATH_LENGTH 256
-
-// Generic function to save any test array to JSON
+// Simple JSON writer - no complex callbacks needed
 int save_tests_to_json_generic(const char *filename, const char *test_type, 
                                void **tests, int num_tests, 
                                void (*add_test_data)(void *test_obj, void *test)) {
     (void)test_type; // Suppress unused parameter warning
-    RETURN_IF_NULL(filename);
-    RETURN_IF_NULL(tests);
-    RETURN_IF_NULL(add_test_data);
     
     cJSON *json_root = cJSON_CreateObject();
     cJSON *json_tests_array = cJSON_CreateArray();
     
-    for (int test_index = 0; test_index < num_tests; test_index++) {
-        if (!tests[test_index]) continue;
+    for (int i = 0; i < num_tests; i++) {
+        if (!tests[i]) continue;
         
-        cJSON *current_test_obj = cJSON_CreateObject();
-        
-        // Add test-specific data using the callback function
-        add_test_data((void*)current_test_obj, tests[test_index]);
-        
-        cJSON_AddItemToArray(json_tests_array, current_test_obj);
+        cJSON *test_obj = cJSON_CreateObject();
+        add_test_data(test_obj, tests[i]);
+        cJSON_AddItemToArray(json_tests_array, test_obj);
     }
     
     cJSON_AddItemToObject(json_root, "tests", json_tests_array);
     
-    // Write to file in data/chunk_utils directory
-    char output_filepath[MAX_FILEPATH_LENGTH];
-    snprintf(output_filepath, sizeof(output_filepath), "data/chunk_utils/%s", filename);
-    FILE *output_file = fopen(output_filepath, "w");
-    if (output_file) {
-        char *formatted_json_string = cJSON_Print(json_root);
-        fprintf(output_file, "%s", formatted_json_string);
-        free(formatted_json_string);
-        fclose(output_file);
+    // Write to file
+    char filepath[256];
+    snprintf(filepath, sizeof(filepath), "data/chunk_utils/%s", filename);
+    
+    FILE *file = fopen(filepath, "w");
+    if (file) {
+        char *json_str = cJSON_Print(json_root);
+        fprintf(file, "%s", json_str);
+        free(json_str);
+        fclose(file);
         cJSON_Delete(json_root);
-        RETURN_SUCCESS;
+        return 0;
     }
     
     cJSON_Delete(json_root);
-    RETURN_FAILURE;
+    return 1;
 }
 
-// Helper function to add input array to JSON
-void add_input_array_to_json(void *json_test_obj, int *input_array, int array_size) {
-    if (!json_test_obj || !input_array) return;
+// Simple test data adders - direct JSON creation
+void add_chunk_value_test_data(void *json_obj, void *test) {
+    t_chunk_value_test *t = (t_chunk_value_test*)test;
+    cJSON *obj = (cJSON*)json_obj;
     
-    cJSON *json_input_array = cJSON_CreateArray();
-    for (int element_index = 0; element_index < array_size; element_index++) {
-        cJSON_AddItemToArray(json_input_array, cJSON_CreateNumber(input_array[element_index]));
+    cJSON_AddNumberToObject(obj, "id", t->id);
+    cJSON_AddStringToObject(obj, "name", t->name);
+    cJSON_AddNumberToObject(obj, "result", t->result);
+    cJSON_AddStringToObject(obj, "chunk_loc", t->chunk_loc);
+    cJSON_AddNumberToObject(obj, "chunk_size", t->chunk_size);
+    cJSON_AddNumberToObject(obj, "offset", t->offset);
+    
+    // Add input array
+    cJSON *array = cJSON_CreateArray();
+    for (int i = 0; i < t->array_size; i++) {
+        cJSON_AddItemToArray(array, cJSON_CreateNumber(t->input_array[i]));
     }
-    cJSON_AddItemToObject((cJSON*)json_test_obj, "input_array", json_input_array);
+    cJSON_AddItemToObject(obj, "input_array", array);
 }
 
-// Callback function for chunk value tests
-void add_chunk_value_test_data(void *json_test_obj, void *chunk_value_test) {
-    if (!json_test_obj || !chunk_value_test) return;
+void add_chunk_max_value_test_data(void *json_obj, void *test) {
+    t_chunk_max_value_test *t = (t_chunk_max_value_test*)test;
+    cJSON *obj = (cJSON*)json_obj;
     
-    t_chunk_value_test *current_chunk_test = (t_chunk_value_test*)chunk_value_test;
-    cJSON *json_test_object = (cJSON*)json_test_obj;
-    
-    // Add test metadata
-    cJSON_AddNumberToObject(json_test_object, "id", current_chunk_test->id);
-    cJSON_AddStringToObject(json_test_object, "name", current_chunk_test->name);
-    cJSON_AddNumberToObject(json_test_object, "result", current_chunk_test->result);
-    cJSON_AddStringToObject(json_test_object, "chunk_loc", current_chunk_test->chunk_loc);
-    cJSON_AddNumberToObject(json_test_object, "chunk_size", current_chunk_test->chunk_size);
-    cJSON_AddNumberToObject(json_test_object, "offset", current_chunk_test->offset);
+    cJSON_AddNumberToObject(obj, "id", t->id);
+    cJSON_AddStringToObject(obj, "name", t->name);
+    cJSON_AddNumberToObject(obj, "result", t->result);
+    cJSON_AddStringToObject(obj, "chunk_loc", t->chunk_loc);
+    cJSON_AddNumberToObject(obj, "chunk_size", t->chunk_size);
     
     // Add input array
-    add_input_array_to_json(json_test_obj, current_chunk_test->input_array, current_chunk_test->array_size);
+    cJSON *array = cJSON_CreateArray();
+    for (int i = 0; i < t->array_size; i++) {
+        cJSON_AddItemToArray(array, cJSON_CreateNumber(t->input_array[i]));
+    }
+    cJSON_AddItemToObject(obj, "input_array", array);
 }
 
-// Callback function for chunk max value tests
-void add_chunk_max_value_test_data(void *json_test_obj, void *chunk_max_value_test) {
-    if (!json_test_obj || !chunk_max_value_test) return;
+void add_loc_to_stack_test_data(void *json_obj, void *test) {
+    t_loc_to_stack_test *t = (t_loc_to_stack_test*)test;
+    cJSON *obj = (cJSON*)json_obj;
     
-    t_chunk_max_value_test *current_chunk_test = (t_chunk_max_value_test*)chunk_max_value_test;
-    cJSON *json_test_object = (cJSON*)json_test_obj;
-    
-    // Add test metadata
-    cJSON_AddNumberToObject(json_test_object, "id", current_chunk_test->id);
-    cJSON_AddStringToObject(json_test_object, "name", current_chunk_test->name);
-    cJSON_AddNumberToObject(json_test_object, "result", current_chunk_test->result);
-    cJSON_AddStringToObject(json_test_object, "chunk_loc", current_chunk_test->chunk_loc);
-    cJSON_AddNumberToObject(json_test_object, "chunk_size", current_chunk_test->chunk_size);
+    cJSON_AddNumberToObject(obj, "id", t->id);
+    cJSON_AddStringToObject(obj, "name", t->name);
+    cJSON_AddNumberToObject(obj, "result", t->result);
+    cJSON_AddStringToObject(obj, "stack_loc", t->stack_loc);
     
     // Add input array
-    add_input_array_to_json(json_test_obj, current_chunk_test->input_array, current_chunk_test->array_size);
-}
-
-// Callback function for loc to stack tests
-void add_loc_to_stack_test_data(void *json_test_obj, void *loc_to_stack_test) {
-    if (!json_test_obj || !loc_to_stack_test) return;
-    
-    t_loc_to_stack_test *current_stack_test = (t_loc_to_stack_test*)loc_to_stack_test;
-    cJSON *json_test_object = (cJSON*)json_test_obj;
-    
-    // Add test metadata
-    cJSON_AddNumberToObject(json_test_object, "id", current_stack_test->id);
-    cJSON_AddStringToObject(json_test_object, "name", current_stack_test->name);
-    cJSON_AddNumberToObject(json_test_object, "result", current_stack_test->result);
-    cJSON_AddStringToObject(json_test_object, "stack_loc", current_stack_test->stack_loc);
-    
-    // Add input array
-    add_input_array_to_json(json_test_obj, current_stack_test->input_array, current_stack_test->array_size);
+    cJSON *array = cJSON_CreateArray();
+    for (int i = 0; i < t->array_size; i++) {
+        cJSON_AddItemToArray(array, cJSON_CreateNumber(t->input_array[i]));
+    }
+    cJSON_AddItemToObject(obj, "input_array", array);
 }

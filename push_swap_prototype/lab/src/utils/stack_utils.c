@@ -4,8 +4,8 @@
 
 // Stack initialization utility
 void init_stack(t_stack *stack, int size) {
-    int *random_data = generate_random_array(size);
-    stack->stack = random_data;
+    int *test_data = generate_test_array(size);
+    stack->stack = test_data;
     stack->size = size;
     stack->top = 0;
     stack->bottom = size - 1;
