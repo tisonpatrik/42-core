@@ -5,6 +5,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// Constants to replace magic numbers
+#define TEST_COUNT 4
+
 // Function is implemented in libs/push_swap/src/chunk_utils.c
 
 // Clean test functions - ONLY test logic, no test case creation
@@ -36,8 +39,8 @@ int run_loc_to_stack_tests(int size) {
         return 1;
     }
 	
-	// Create array of 4 test cases
-    t_loc_to_stack_test *tests[4] = {NULL};
+	// Create array of test cases
+    t_loc_to_stack_test *tests[TEST_COUNT] = {NULL};
     
     // Copy stack data for JSON export
     int *stack_a_data = malloc(size * sizeof(int));
@@ -77,12 +80,12 @@ int run_loc_to_stack_tests(int size) {
     tests[3] = create_loc_to_stack_test(4, "BOTTOM_B", stack_b_data, size, bottom_b_result, "BOTTOM_B");
     
     // Save results to JSON file
-    save_loc_to_stack_tests_to_json(tests, 4, "loc_to_stack.json");
+    save_loc_to_stack_tests_to_json(tests, TEST_COUNT, "loc_to_stack.json");
     
     // Cleanup
     free(stack_a_data);
     free(stack_b_data);
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < TEST_COUNT; i++) {
         if (tests[i]) {
             free_loc_to_stack_test(tests[i]);
         }
