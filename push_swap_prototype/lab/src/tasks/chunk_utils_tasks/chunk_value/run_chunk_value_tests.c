@@ -39,89 +39,91 @@ int test_chunk_value_top_b_last(t_ps *data) {
     return chunk_value(data, &chunk, 2); // Last element in chunk
 }
 
-// Main function to run chunk_value tests
-int run_chunk_value_tests(int size) {
-	t_ps *data = create_test_data(size, size);
-	if (!data) {
-        printf("Failed to create test data\n");
-        return 1;
-    }
-	
-	// Create array of test cases
-    t_chunk_value_test *tests[TEST_COUNT] = {NULL};
+// Helper function to copy stack data
+static int* copy_stack_data(const int *source, int size) {
+    int *copy = malloc(size * sizeof(int));
+    if (!copy) return NULL;
     
-    // Test 1: TOP_A, size=5, offset=0 (first element in chunk)
-    int *input_array1 = malloc(size * sizeof(int));
     for (int i = 0; i < size; i++) {
-        input_array1[i] = data->a.stack[i];
+        copy[i] = source[i];
     }
+    return copy;
+}
+
+// Helper function to create a single test case
+static t_chunk_value_test* create_single_test_case(int test_id, const char *test_name, 
+                                                  t_ps *data, t_loc loc, int chunk_size, 
+                                                  int offset, const char *stack_name) {
+    int *input_array = copy_stack_data(
+        (loc == TOP_A || loc == BOTTOM_A) ? data->a.stack : data->b.stack, 
+        data->a.size
+    );
+    if (!input_array) return NULL;
     
-    t_chunk chunk1 = {TOP_A, TOP_A_CHUNK_SIZE};
-    int result1 = chunk_value(data, &chunk1, 0);
+    t_chunk chunk = {loc, chunk_size};
+    int result = chunk_value(data, &chunk, offset);
     
-    tests[0] = create_chunk_value_test(1, "TOP_A_basic", input_array1, size, result1, "TOP_A", TOP_A_CHUNK_SIZE, 0);
+    return create_chunk_value_test(test_id, test_name, input_array, data->a.size, 
+                                  result, stack_name, chunk_size, offset);
+}
+
+// Helper function to run all test cases
+static int run_all_test_cases(t_ps *data, t_chunk_value_test **tests) {
+    // Test 1: TOP_A, size=5, offset=0 (first element in chunk)
+    tests[0] = create_single_test_case(1, "TOP_A_basic", data, TOP_A, TOP_A_CHUNK_SIZE, 0, "TOP_A");
     
     // Test 2: TOP_A, size=5, offset=2 (third element in chunk)
-    int *input_array2 = malloc(size * sizeof(int));
-    for (int i = 0; i < size; i++) {
-        input_array2[i] = data->a.stack[i];
-    }
-    
-    t_chunk chunk2 = {TOP_A, TOP_A_CHUNK_SIZE};
-    int result2 = chunk_value(data, &chunk2, 2);
-    
-    tests[1] = create_chunk_value_test(2, "TOP_A_middle", input_array2, size, result2, "TOP_A", TOP_A_CHUNK_SIZE, 2);
+    tests[1] = create_single_test_case(2, "TOP_A_middle", data, TOP_A, TOP_A_CHUNK_SIZE, 2, "TOP_A");
     
     // Test 3: BOTTOM_B, size=4, offset=0 (first element in chunk)
-    int *input_array3 = malloc(size * sizeof(int));
-    for (int i = 0; i < size; i++) {
-        input_array3[i] = data->b.stack[i];
-    }
-    
-    t_chunk chunk3 = {BOTTOM_B, BOTTOM_B_CHUNK_SIZE};
-    int result3 = chunk_value(data, &chunk3, 0);
-    
-    tests[2] = create_chunk_value_test(3, "BOTTOM_B_basic", input_array3, size, result3, "BOTTOM_B", BOTTOM_B_CHUNK_SIZE, 0);
+    tests[2] = create_single_test_case(3, "BOTTOM_B_basic", data, BOTTOM_B, BOTTOM_B_CHUNK_SIZE, 0, "BOTTOM_B");
     
     // Test 4: BOTTOM_B, size=4, offset=1 (second element in chunk)
-    int *input_array4 = malloc(size * sizeof(int));
-    for (int i = 0; i < size; i++) {
-        input_array4[i] = data->b.stack[i];
-    }
-    
-    t_chunk chunk4 = {BOTTOM_B, BOTTOM_B_CHUNK_SIZE};
-    int result4 = chunk_value(data, &chunk4, 1);
-    
-    tests[3] = create_chunk_value_test(4, "BOTTOM_B_second", input_array4, size, result4, "BOTTOM_B", BOTTOM_B_CHUNK_SIZE, 1);
+    tests[3] = create_single_test_case(4, "BOTTOM_B_second", data, BOTTOM_B, BOTTOM_B_CHUNK_SIZE, 1, "BOTTOM_B");
     
     // Test 5: TOP_B, size=3, offset=2 (last element in chunk)
-    int *input_array5 = malloc(size * sizeof(int));
-    for (int i = 0; i < size; i++) {
-        input_array5[i] = data->b.stack[i];
+    tests[4] = create_single_test_case(5, "TOP_B_last", data, TOP_B, TOP_B_CHUNK_SIZE, 2, "TOP_B");
+    
+    // Check if all tests were created successfully
+    for (int i = 0; i < TEST_COUNT; i++) {
+        if (!tests[i]) return 0; // Failed to create a test
     }
-    
-    t_chunk chunk5 = {TOP_B, TOP_B_CHUNK_SIZE};
-    int result5 = chunk_value(data, &chunk5, 2);
-    
-    tests[4] = create_chunk_value_test(5, "TOP_B_last", input_array5, size, result5, "TOP_B", TOP_B_CHUNK_SIZE, 2);
-    
-    // Save results to JSON file
-    save_chunk_value_tests_to_json(tests, TEST_COUNT, "chunk_value.json");
-    
-    // Cleanup
+    return 1; // All tests created successfully
+}
+
+// Helper function to cleanup test resources
+static void cleanup_test_resources(t_chunk_value_test **tests) {
     for (int i = 0; i < TEST_COUNT; i++) {
         if (tests[i]) {
             free_chunk_value_test(tests[i]);
         }
     }
+}
+
+// Main function to run chunk_value tests
+int run_chunk_value_tests(int size) {
+    t_ps *data = create_test_data(size, size);
+    if (!data) {
+        printf("Failed to create test data\n");
+        return 1;
+    }
     
-    // Free the allocated input arrays
-    free(input_array1);
-    free(input_array2);
-    free(input_array3);
-    free(input_array4);
-    free(input_array5);
+    // Create array of test cases
+    t_chunk_value_test *tests[TEST_COUNT] = {NULL};
     
+    // Run all test cases
+    if (!run_all_test_cases(data, tests)) {
+        printf("Failed to create test cases\n");
+        cleanup_test_resources(tests);
+        cleanup_test_data(data);
+        return 1;
+    }
+    
+    // Save results to JSON file
+    save_chunk_value_tests_to_json(tests, TEST_COUNT, "chunk_value.json");
+    
+    // Cleanup
+    cleanup_test_resources(tests);
     cleanup_test_data(data);
 
     return 0;
