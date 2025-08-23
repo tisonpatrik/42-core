@@ -35,6 +35,15 @@ int save_test_results_to_json(const char *filename_prefix, t_json_export *export
 // Special function for chunk_utils tests - saves to chunk_utils directory with specific test name
 int save_chunk_utils_test_results(const char *test_name, t_json_export *export_data);
 
+// Generic function to save test results with custom data
+int save_generic_test_results(const char *test_name, 
+                             const char *title, 
+                             const char *description,
+                             t_test_result *results, 
+                             int num_results,
+                             t_custom_data *custom_data, 
+                             int num_custom_data);
+
 // Helper function to create test result
 t_test_result create_test_result(int id, const char *name, int value);
 
@@ -49,6 +58,12 @@ int add_custom_int_array(t_json_export *export_data, const char *key, int *array
 
 // Helper function to add custom data (string)
 int add_custom_string(t_json_export *export_data, const char *key, const char *value);
+
+// Helper function to create custom data for integer arrays
+t_custom_data create_int_array_data(const char *key, int *array, int size);
+
+// Helper function to create custom data for strings
+t_custom_data create_string_data(const char *key, const char *value);
 
 // Helper function to cleanup JSON export structure
 void cleanup_json_export(t_json_export *export_data);

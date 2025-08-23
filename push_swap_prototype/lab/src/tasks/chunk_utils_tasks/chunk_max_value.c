@@ -1,42 +1,37 @@
 #include "../../../libs/push_swap/src/models.h"
-#include "../../../include/json_utils.h"
 #include "../../../include/chunk_utils_task.h"
 #include "../../../include/chunk_utils_common.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-// Function to save chunk_max_value test results using generic JSON utils
-void save_chunk_max_value_results(t_ps *data __attribute__((unused)), t_chunk_max_value_test *test_data) {
-    // Create JSON export structure
-    t_json_export *export_data = create_json_export(
-        "Chunk Max Value Test Results", 
-        "Test results for chunk_max_value function"
-    );
-    
-    if (!export_data) {
-        printf("Failed to create JSON export structure\n");
-        return;
-    }
-    
-    // Add test results
-    add_test_result(export_data, create_test_result(1, "max_value_a", test_data->max_value_a));
-    add_test_result(export_data, create_test_result(2, "max_value_b", test_data->max_value_b));
-    add_test_result(export_data, create_test_result(3, "max_value_combined", test_data->max_value_combined));
-    add_test_result(export_data, create_test_result(4, "chunk_size", test_data->chunk_size));
-    
-    // Add input data
-    add_custom_int_array(export_data, "chunk_data", test_data->chunk_data, test_data->chunk_size);
-    add_custom_string(export_data, "chunk_range", "chunk_start_index to chunk_end_index");
-    
-    // Save to JSON file in chunk_utils directory
-    save_chunk_utils_test_results("chunk_max_value", export_data);
-    
-    // Cleanup
-    cleanup_json_export(export_data);
+// Forward declaration of the function to test
+t_stack	*loc_to_stack(t_ps *data, t_loc loc);
+
+int	chunk_max_value(t_ps *data, t_chunk *chunk);
+
+// Test functions to return results instead of printing
+int test_chunk_max_value_top_a(t_ps *data) {
+    t_chunk chunk = {TOP_A, 5};
+    return chunk_max_value(data, &chunk);
 }
 
-// Example implementation of chunk_max_value test
+int test_chunk_max_value_bottom_a(t_ps *data) {
+    t_chunk chunk = {BOTTOM_A, 4};
+    return chunk_max_value(data, &chunk);
+}
+
+int test_chunk_max_value_top_b(t_ps *data) {
+    t_chunk chunk = {TOP_B, 3};
+    return chunk_max_value(data, &chunk);
+}
+
+int test_chunk_max_value_bottom_b(t_ps *data) {
+    t_chunk chunk = {BOTTOM_B, 4};
+    return chunk_max_value(data, &chunk);
+}
+
+// Main function to run chunk_max_value tests
 int run_chunk_max_value_tests(int size) {
 	t_ps *data = create_test_data(size, size);
 	if (!data) {
@@ -44,28 +39,77 @@ int run_chunk_max_value_tests(int size) {
         return 1;
     }
 	
-	// Simulate chunk_max_value test results
-    t_chunk_max_value_test test_data;
-    test_data.max_value_a = 9;  // Assuming max value in stack A
-    test_data.max_value_b = 8;  // Assuming max value in stack B
-    test_data.max_value_combined = 9;  // Overall max
-    test_data.chunk_size = 5;
-    test_data.chunk_start_index = 2;
-    test_data.chunk_end_index = 6;
+	// Initialize test data structure
+    t_chunk_max_value_test test_data = {0};
     
-    // Create sample chunk data
-    test_data.chunk_data = malloc(test_data.chunk_size * sizeof(int));
-    if (test_data.chunk_data) {
-        for (int i = 0; i < test_data.chunk_size; i++) {
-            test_data.chunk_data[i] = data->a.stack[(test_data.chunk_start_index + i) % size];
-        }
-        
-        // Save results to JSON file
-        save_chunk_max_value_results(data, &test_data);
-        
-        // Cleanup test data
-        free(test_data.chunk_data);
+    // Test 1: TOP_A, size=5
+    test_data.test1_top_a.input_array = malloc(size * sizeof(int));
+    test_data.test1_top_a.array_size = size;
+    test_data.test1_top_a.chunk_loc = TOP_A;
+    test_data.test1_top_a.chunk_size = 5;
+    
+    // Copy input data
+    for (int i = 0; i < size; i++) {
+        test_data.test1_top_a.input_array[i] = data->a.stack[i];
     }
+    
+    // Run test
+    t_chunk chunk1 = {TOP_A, 5};
+    test_data.test1_top_a.result = chunk_max_value(data, &chunk1);
+    
+    // Test 2: BOTTOM_A, size=4
+    test_data.test2_bottom_a.input_array = malloc(size * sizeof(int));
+    test_data.test2_bottom_a.array_size = size;
+    test_data.test2_bottom_a.chunk_loc = BOTTOM_A;
+    test_data.test2_bottom_a.chunk_size = 4;
+    
+    // Copy input data
+    for (int i = 0; i < size; i++) {
+        test_data.test2_bottom_a.input_array[i] = data->a.stack[i];
+    }
+    
+    // Run test
+    t_chunk chunk2 = {BOTTOM_A, 4};
+    test_data.test2_bottom_a.result = chunk_max_value(data, &chunk2);
+    
+    // Test 3: TOP_B, size=3
+    test_data.test3_top_b.input_array = malloc(size * sizeof(int));
+    test_data.test3_top_b.array_size = size;
+    test_data.test3_top_b.chunk_loc = TOP_B;
+    test_data.test3_top_b.chunk_size = 3;
+    
+    // Copy input data
+    for (int i = 0; i < size; i++) {
+        test_data.test3_top_b.input_array[i] = data->b.stack[i];
+    }
+    
+    // Run test
+    t_chunk chunk3 = {TOP_B, 3};
+    test_data.test3_top_b.result = chunk_max_value(data, &chunk3);
+    
+    // Test 4: BOTTOM_B, size=4
+    test_data.test4_bottom_b.input_array = malloc(size * sizeof(int));
+    test_data.test4_bottom_b.array_size = size;
+    test_data.test4_bottom_b.chunk_loc = BOTTOM_B;
+    test_data.test4_bottom_b.chunk_size = 4;
+    
+    // Copy input data
+    for (int i = 0; i < size; i++) {
+        test_data.test4_bottom_b.input_array[i] = data->b.stack[i];
+    }
+    
+    // Run test
+    t_chunk chunk4 = {BOTTOM_B, 4};
+    test_data.test4_bottom_b.result = chunk_max_value(data, &chunk4);
+    
+    // Save results to JSON file
+    save_chunk_max_value_results(data, &test_data);
+    
+    // Cleanup test data
+    free(test_data.test1_top_a.input_array);
+    free(test_data.test2_bottom_a.input_array);
+    free(test_data.test3_top_b.input_array);
+    free(test_data.test4_bottom_b.input_array);
 
     // Cleanup only once at the end
     cleanup_test_data(data);

@@ -1,4 +1,5 @@
 #include "../../include/json_utils.h"
+#include "../../include/chunk_utils_task.h"
 #include "../../libs/cJSON/cJSON.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -259,6 +260,76 @@ int save_chunk_utils_test_results(const char *test_name, t_json_export *export_d
     return success;
 }
 
+// Generic function to save test results with custom data
+int save_generic_test_results(const char *test_name, 
+                             const char *title, 
+                             const char *description,
+                             t_test_result *results, 
+                             int num_results,
+                             t_custom_data *custom_data, 
+                             int num_custom_data) {
+    
+    t_json_export *export_data = create_json_export(title, description);
+    if (!export_data) {
+        printf("Failed to create JSON export structure\n");
+        return 0;
+    }
+    
+    // Add all test results
+    for (int i = 0; i < num_results; i++) {
+        if (!add_test_result(export_data, results[i])) {
+            printf("Failed to add test result %d\n", i);
+            cleanup_json_export(export_data);
+            return 0;
+        }
+    }
+    
+    // Add all custom data
+    for (int i = 0; i < num_custom_data; i++) {
+        if (custom_data[i].type && strcmp(custom_data[i].type, "array") == 0) {
+            if (!add_custom_int_array(export_data, custom_data[i].key, 
+                                     (int*)custom_data[i].value, custom_data[i].size)) {
+                printf("Failed to add custom array data %d\n", i);
+                cleanup_json_export(export_data);
+                return 0;
+            }
+        } else if (custom_data[i].type && strcmp(custom_data[i].type, "string") == 0) {
+            if (!add_custom_string(export_data, custom_data[i].key, 
+                                  (char*)custom_data[i].value)) {
+                printf("Failed to add custom string data %d\n", i);
+                cleanup_json_export(export_data);
+                return 0;
+            }
+        }
+    }
+    
+    // Save to JSON file
+    int success = save_chunk_utils_test_results(test_name, export_data);
+    
+    // Cleanup
+    cleanup_json_export(export_data);
+    
+    return success;
+}
+
+t_custom_data create_int_array_data(const char *key, int *array, int size) {
+    t_custom_data data;
+    data.key = key;
+    data.type = "array";
+    data.value = array;
+    data.size = size;
+    return data;
+}
+
+t_custom_data create_string_data(const char *key, const char *value) {
+    t_custom_data data;
+    data.key = key;
+    data.type = "string";
+    data.value = (void*)value;
+    data.size = 0;
+    return data;
+}
+
 // Helper function to cleanup JSON export structure
 void cleanup_json_export(t_json_export *export_data) {
     if (export_data) {
@@ -270,4 +341,329 @@ void cleanup_json_export(t_json_export *export_data) {
         }
         free(export_data);
     }
+}
+
+// Function to save loc_to_stack test results in custom JSON format
+void save_loc_to_stack_results(t_ps *data __attribute__((unused)), t_loc_to_stack_test *test_data) {
+    cJSON *root = cJSON_CreateArray();
+    if (!root) return;
+    
+    // Test 1: TOP_A
+    cJSON *test1 = cJSON_CreateObject();
+    cJSON_AddItemToObject(test1, "id", cJSON_CreateNumber(1));
+    cJSON_AddItemToObject(test1, "name", cJSON_CreateString("TOP_A"));
+    
+    cJSON *inputs1 = cJSON_CreateObject();
+    cJSON *array1 = cJSON_CreateArray();
+    for (int i = 0; i < test_data->test1_top_a.array_size; i++) {
+        cJSON_AddItemToArray(array1, cJSON_CreateNumber(test_data->test1_top_a.input_array[i]));
+    }
+    cJSON_AddItemToObject(inputs1, "array", array1);
+    cJSON_AddItemToObject(inputs1, "stack_loc", cJSON_CreateString("TOP_A"));
+    cJSON_AddItemToObject(test1, "inputs", inputs1);
+    cJSON_AddItemToObject(test1, "result", cJSON_CreateNumber(test_data->test1_top_a.result));
+    
+    cJSON_AddItemToArray(root, test1);
+    
+    // Test 2: BOTTOM_A
+    cJSON *test2 = cJSON_CreateObject();
+    cJSON_AddItemToObject(test2, "id", cJSON_CreateNumber(2));
+    cJSON_AddItemToObject(test2, "name", cJSON_CreateString("BOTTOM_A"));
+    
+    cJSON *inputs2 = cJSON_CreateObject();
+    cJSON *array2 = cJSON_CreateArray();
+    for (int i = 0; i < test_data->test2_bottom_a.array_size; i++) {
+        cJSON_AddItemToArray(array2, cJSON_CreateNumber(test_data->test2_bottom_a.input_array[i]));
+    }
+    cJSON_AddItemToObject(inputs2, "array", array2);
+    cJSON_AddItemToObject(inputs2, "stack_loc", cJSON_CreateString("BOTTOM_A"));
+    cJSON_AddItemToObject(test2, "inputs", inputs2);
+    cJSON_AddItemToObject(test2, "result", cJSON_CreateNumber(test_data->test2_bottom_a.result));
+    
+    cJSON_AddItemToArray(root, test2);
+    
+    // Test 3: TOP_B
+    cJSON *test3 = cJSON_CreateObject();
+    cJSON_AddItemToObject(test3, "id", cJSON_CreateNumber(3));
+    cJSON_AddItemToObject(test3, "name", cJSON_CreateString("TOP_B"));
+    
+    cJSON *inputs3 = cJSON_CreateObject();
+    cJSON *array3 = cJSON_CreateArray();
+    for (int i = 0; i < test_data->test3_top_b.array_size; i++) {
+        cJSON_AddItemToArray(array3, cJSON_CreateNumber(test_data->test3_top_b.input_array[i]));
+    }
+    cJSON_AddItemToObject(inputs3, "array", array3);
+    cJSON_AddItemToObject(inputs3, "stack_loc", cJSON_CreateString("TOP_B"));
+    cJSON_AddItemToObject(test3, "inputs", inputs3);
+    cJSON_AddItemToObject(test3, "result", cJSON_CreateNumber(test_data->test3_top_b.result));
+    
+    cJSON_AddItemToArray(root, test3);
+    
+    // Test 4: BOTTOM_B
+    cJSON *test4 = cJSON_CreateObject();
+    cJSON_AddItemToObject(test4, "id", cJSON_CreateNumber(4));
+    cJSON_AddItemToObject(test4, "name", cJSON_CreateString("BOTTOM_B"));
+    
+    cJSON *inputs4 = cJSON_CreateObject();
+    cJSON *array4 = cJSON_CreateArray();
+    for (int i = 0; i < test_data->test4_bottom_b.array_size; i++) {
+        cJSON_AddItemToArray(array4, cJSON_CreateNumber(test_data->test4_bottom_b.input_array[i]));
+    }
+    cJSON_AddItemToObject(inputs4, "array", array4);
+    cJSON_AddItemToObject(inputs4, "stack_loc", cJSON_CreateString("BOTTOM_B"));
+    cJSON_AddItemToObject(test4, "inputs", inputs4);
+    cJSON_AddItemToObject(test4, "result", cJSON_CreateNumber(test_data->test4_bottom_b.result));
+    
+    cJSON_AddItemToArray(root, test4);
+    
+    // Convert to string and save to file
+    char *json_string = cJSON_Print(root);
+    if (!json_string) {
+        cJSON_Delete(root);
+        return;
+    }
+    
+    // Create chunk_utils directory if it doesn't exist
+    system("mkdir -p data/chunk_utils");
+    
+    // Save to file
+    FILE *file = fopen("data/chunk_utils/loc_to_stack.json", "w");
+    if (file) {
+        fprintf(file, "%s", json_string);
+        fclose(file);
+        printf("Results saved to: data/chunk_utils/loc_to_stack.json\n");
+    } else {
+        printf("Failed to save results to file\n");
+    }
+    
+    // Cleanup
+    free(json_string);
+    cJSON_Delete(root);
+}
+
+// Function to save chunk_value test results in custom JSON format
+void save_chunk_value_results(t_ps *data __attribute__((unused)), t_chunk_value_test *test_data) {
+    cJSON *root = cJSON_CreateArray();
+    if (!root) return;
+    
+    // Test 1: TOP_A_BASIC
+    cJSON *test1 = cJSON_CreateObject();
+    cJSON_AddItemToObject(test1, "id", cJSON_CreateNumber(1));
+    cJSON_AddItemToObject(test1, "name", cJSON_CreateString("TOP_A_BASIC"));
+    
+    cJSON *inputs1 = cJSON_CreateObject();
+    cJSON *array1 = cJSON_CreateArray();
+    for (int i = 0; i < test_data->test1_top_a_basic.array_size; i++) {
+        cJSON_AddItemToArray(array1, cJSON_CreateNumber(test_data->test1_top_a_basic.input_array[i]));
+    }
+    cJSON_AddItemToObject(inputs1, "array", array1);
+    cJSON_AddItemToObject(inputs1, "chunk_loc", cJSON_CreateString("TOP_A"));
+    cJSON_AddItemToObject(inputs1, "chunk_size", cJSON_CreateNumber(5));
+    cJSON_AddItemToObject(inputs1, "offset", cJSON_CreateString("0 (start of chunk)"));
+    cJSON_AddItemToObject(test1, "inputs", inputs1);
+    cJSON_AddItemToObject(test1, "result", cJSON_CreateNumber(test_data->test1_top_a_basic.result));
+    
+    cJSON_AddItemToArray(root, test1);
+    
+    // Test 2: TOP_A_MIDDLE
+    cJSON *test2 = cJSON_CreateObject();
+    cJSON_AddItemToObject(test2, "id", cJSON_CreateNumber(2));
+    cJSON_AddItemToObject(test2, "name", cJSON_CreateString("TOP_A_MIDDLE"));
+    
+    cJSON *inputs2 = cJSON_CreateObject();
+    cJSON *array2 = cJSON_CreateArray();
+    for (int i = 0; i < test_data->test2_top_a_middle.array_size; i++) {
+        cJSON_AddItemToArray(array2, cJSON_CreateNumber(test_data->test2_top_a_middle.input_array[i]));
+    }
+    cJSON_AddItemToObject(inputs2, "array", array2);
+    cJSON_AddItemToObject(inputs2, "chunk_loc", cJSON_CreateString("TOP_A"));
+    cJSON_AddItemToObject(inputs2, "chunk_size", cJSON_CreateNumber(5));
+    cJSON_AddItemToObject(inputs2, "offset", cJSON_CreateString("2 (third element in chunk)"));
+    cJSON_AddItemToObject(test2, "inputs", inputs2);
+    cJSON_AddItemToObject(test2, "result", cJSON_CreateNumber(test_data->test2_top_a_middle.result));
+    
+    cJSON_AddItemToArray(root, test2);
+    
+    // Test 3: BOTTOM_B_BASIC
+    cJSON *test3 = cJSON_CreateObject();
+    cJSON_AddItemToObject(test3, "id", cJSON_CreateNumber(3));
+    cJSON_AddItemToObject(test3, "name", cJSON_CreateString("BOTTOM_B_BASIC"));
+    
+    cJSON *inputs3 = cJSON_CreateObject();
+    cJSON *array3 = cJSON_CreateArray();
+    for (int i = 0; i < test_data->test3_bottom_b_basic.array_size; i++) {
+        cJSON_AddItemToArray(array3, cJSON_CreateNumber(test_data->test3_bottom_b_basic.input_array[i]));
+    }
+    cJSON_AddItemToObject(inputs3, "array", array3);
+    cJSON_AddItemToObject(inputs3, "chunk_loc", cJSON_CreateString("BOTTOM_B"));
+    cJSON_AddItemToObject(inputs3, "chunk_size", cJSON_CreateNumber(4));
+    cJSON_AddItemToObject(inputs3, "offset", cJSON_CreateString("0 (start of chunk)"));
+    cJSON_AddItemToObject(test3, "inputs", inputs3);
+    cJSON_AddItemToObject(test3, "result", cJSON_CreateNumber(test_data->test3_bottom_b_basic.result));
+    
+    cJSON_AddItemToArray(root, test3);
+    
+    // Test 4: BOTTOM_B_SECOND
+    cJSON *test4 = cJSON_CreateObject();
+    cJSON_AddItemToObject(test4, "id", cJSON_CreateNumber(4));
+    cJSON_AddItemToObject(test4, "name", cJSON_CreateString("BOTTOM_B_SECOND"));
+    
+    cJSON *inputs4 = cJSON_CreateObject();
+    cJSON *array4 = cJSON_CreateArray();
+    for (int i = 0; i < test_data->test4_bottom_b_second.array_size; i++) {
+        cJSON_AddItemToArray(array4, cJSON_CreateNumber(test_data->test4_bottom_b_second.input_array[i]));
+    }
+    cJSON_AddItemToObject(inputs4, "array", array4);
+    cJSON_AddItemToObject(inputs4, "chunk_loc", cJSON_CreateString("BOTTOM_B"));
+    cJSON_AddItemToObject(inputs4, "chunk_size", cJSON_CreateNumber(4));
+    cJSON_AddItemToObject(inputs4, "offset", cJSON_CreateString("1 (second element in chunk)"));
+    cJSON_AddItemToObject(test4, "inputs", inputs4);
+    cJSON_AddItemToObject(test4, "result", cJSON_CreateNumber(test_data->test4_bottom_b_second.result));
+    
+    cJSON_AddItemToArray(root, test4);
+    
+    // Test 5: TOP_B_LAST
+    cJSON *test5 = cJSON_CreateObject();
+    cJSON_AddItemToObject(test5, "id", cJSON_CreateNumber(5));
+    cJSON_AddItemToObject(test5, "name", cJSON_CreateString("TOP_B_LAST"));
+    
+    cJSON *inputs5 = cJSON_CreateObject();
+    cJSON *array5 = cJSON_CreateArray();
+    for (int i = 0; i < test_data->test5_top_b_last.array_size; i++) {
+        cJSON_AddItemToArray(array5, cJSON_CreateNumber(test_data->test5_top_b_last.input_array[i]));
+    }
+    cJSON_AddItemToObject(inputs5, "array", array5);
+    cJSON_AddItemToObject(inputs5, "chunk_loc", cJSON_CreateString("TOP_B"));
+    cJSON_AddItemToObject(inputs5, "chunk_size", cJSON_CreateNumber(3));
+    cJSON_AddItemToObject(inputs5, "offset", cJSON_CreateString("2 (third element in chunk)"));
+    cJSON_AddItemToObject(test5, "inputs", inputs5);
+    cJSON_AddItemToObject(test5, "result", cJSON_CreateNumber(test_data->test5_top_b_last.result));
+    
+    cJSON_AddItemToArray(root, test5);
+    
+    // Convert to string and save to file
+    char *json_string = cJSON_Print(root);
+    if (!json_string) {
+        cJSON_Delete(root);
+        return;
+    }
+    
+    // Create chunk_utils directory if it doesn't exist
+    system("mkdir -p data/chunk_utils");
+    
+    // Save to file
+    FILE *file = fopen("data/chunk_utils/chunk_value.json", "w");
+    if (file) {
+        fprintf(file, "%s", json_string);
+        fclose(file);
+        printf("Results saved to: data/chunk_utils/chunk_value.json\n");
+    } else {
+        printf("Failed to save results to file\n");
+    }
+    
+    // Cleanup
+    free(json_string);
+    cJSON_Delete(root);
+}
+
+// Function to save chunk_max_value test results in custom JSON format
+void save_chunk_max_value_results(t_ps *data __attribute__((unused)), t_chunk_max_value_test *test_data) {
+    cJSON *root = cJSON_CreateArray();
+    if (!root) return;
+    
+    // Test 1: TOP_A, size=5
+    cJSON *test1 = cJSON_CreateObject();
+    cJSON_AddItemToObject(test1, "id", cJSON_CreateNumber(1));
+    cJSON_AddItemToObject(test1, "name", cJSON_CreateString("TOP_A"));
+    
+    cJSON *inputs1 = cJSON_CreateObject();
+    cJSON *array1 = cJSON_CreateArray();
+    for (int i = 0; i < test_data->test1_top_a.array_size; i++) {
+        cJSON_AddItemToArray(array1, cJSON_CreateNumber(test_data->test1_top_a.input_array[i]));
+    }
+    cJSON_AddItemToObject(inputs1, "array", array1);
+    cJSON_AddItemToObject(inputs1, "chunk_loc", cJSON_CreateString("TOP_A"));
+    cJSON_AddItemToObject(inputs1, "chunk_size", cJSON_CreateNumber(5));
+    cJSON_AddItemToObject(test1, "inputs", inputs1);
+    cJSON_AddItemToObject(test1, "result", cJSON_CreateNumber(test_data->test1_top_a.result));
+    
+    cJSON_AddItemToArray(root, test1);
+    
+    // Test 2: BOTTOM_A, size=4
+    cJSON *test2 = cJSON_CreateObject();
+    cJSON_AddItemToObject(test2, "id", cJSON_CreateNumber(2));
+    cJSON_AddItemToObject(test2, "name", cJSON_CreateString("BOTTOM_A"));
+    
+    cJSON *inputs2 = cJSON_CreateObject();
+    cJSON *array2 = cJSON_CreateArray();
+    for (int i = 0; i < test_data->test2_bottom_a.array_size; i++) {
+        cJSON_AddItemToArray(array2, cJSON_CreateNumber(test_data->test2_bottom_a.input_array[i]));
+    }
+    cJSON_AddItemToObject(inputs2, "array", array2);
+    cJSON_AddItemToObject(inputs2, "chunk_loc", cJSON_CreateString("BOTTOM_A"));
+    cJSON_AddItemToObject(inputs2, "chunk_size", cJSON_CreateNumber(4));
+    cJSON_AddItemToObject(test2, "inputs", inputs2);
+    cJSON_AddItemToObject(test2, "result", cJSON_CreateNumber(test_data->test2_bottom_a.result));
+    
+    cJSON_AddItemToArray(root, test2);
+    
+    // Test 3: TOP_B, size=3
+    cJSON *test3 = cJSON_CreateObject();
+    cJSON_AddItemToObject(test3, "id", cJSON_CreateNumber(3));
+    cJSON_AddItemToObject(test3, "name", cJSON_CreateString("TOP_B"));
+    
+    cJSON *inputs3 = cJSON_CreateObject();
+    cJSON *array3 = cJSON_CreateArray();
+    for (int i = 0; i < test_data->test3_top_b.array_size; i++) {
+        cJSON_AddItemToArray(array3, cJSON_CreateNumber(test_data->test3_top_b.input_array[i]));
+    }
+    cJSON_AddItemToObject(inputs3, "array", array3);
+    cJSON_AddItemToObject(inputs3, "chunk_loc", cJSON_CreateString("TOP_B"));
+    cJSON_AddItemToObject(inputs3, "chunk_size", cJSON_CreateNumber(3));
+    cJSON_AddItemToObject(test3, "inputs", inputs3);
+    cJSON_AddItemToObject(test3, "result", cJSON_CreateNumber(test_data->test3_top_b.result));
+    
+    cJSON_AddItemToArray(root, test3);
+    
+    // Test 4: BOTTOM_B, size=4
+    cJSON *test4 = cJSON_CreateObject();
+    cJSON_AddItemToObject(test4, "id", cJSON_CreateNumber(4));
+    cJSON_AddItemToObject(test4, "name", cJSON_CreateString("BOTTOM_B"));
+    
+    cJSON *inputs4 = cJSON_CreateObject();
+    cJSON *array4 = cJSON_CreateArray();
+    for (int i = 0; i < test_data->test4_bottom_b.array_size; i++) {
+        cJSON_AddItemToArray(array4, cJSON_CreateNumber(test_data->test4_bottom_b.input_array[i]));
+    }
+    cJSON_AddItemToObject(inputs4, "array", array4);
+    cJSON_AddItemToObject(inputs4, "chunk_loc", cJSON_CreateString("BOTTOM_B"));
+    cJSON_AddItemToObject(inputs4, "chunk_size", cJSON_CreateNumber(4));
+    cJSON_AddItemToObject(test4, "inputs", inputs4);
+    cJSON_AddItemToObject(test4, "result", cJSON_CreateNumber(test_data->test4_bottom_b.result));
+    
+    cJSON_AddItemToArray(root, test4);
+    
+    // Convert to string and save to file
+    char *json_string = cJSON_Print(root);
+    if (!json_string) {
+        cJSON_Delete(root);
+        return;
+    }
+    
+    // Create chunk_utils directory if it doesn't exist
+    system("mkdir -p data/chunk_utils");
+    
+    // Save to file
+    FILE *file = fopen("data/chunk_utils/chunk_max_value.json", "w");
+    if (file) {
+        fprintf(file, "%s", json_string);
+        fclose(file);
+        printf("Results saved to: data/chunk_utils/chunk_max_value.json\n");
+    } else {
+        printf("Failed to save results to file\n");
+    }
+    
+    // Cleanup
+    free(json_string);
+    cJSON_Delete(root);
 }

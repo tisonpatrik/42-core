@@ -9,37 +9,129 @@ typedef struct s_push_swap t_ps;
 
 // Specific structure for loc_to_stack test results
 typedef struct s_loc_to_stack_test {
-    int top_a_result;
-    int bottom_a_result;
-    int top_b_result;
-    int bottom_b_result;
-    int *stack_a_data;
-    int stack_a_size;
-    int *stack_b_data;
-    int stack_b_size;
+    // Test 1: TOP_A
+    struct {
+        int *input_array;
+        int array_size;
+        int stack_loc;
+        int result;
+    } test1_top_a;
+    
+    // Test 2: BOTTOM_A
+    struct {
+        int *input_array;
+        int array_size;
+        int stack_loc;
+        int result;
+    } test2_bottom_a;
+    
+    // Test 3: TOP_B
+    struct {
+        int *input_array;
+        int array_size;
+        int stack_loc;
+        int result;
+    } test3_top_b;
+    
+    // Test 4: BOTTOM_B
+    struct {
+        int *input_array;
+        int array_size;
+        int stack_loc;
+        int result;
+    } test4_bottom_b;
 } t_loc_to_stack_test;
 
 // Specific structure for chunk_max_value test results
 typedef struct s_chunk_max_value_test {
-    int max_value_a;
-    int max_value_b;
-    int max_value_combined;
-    int *chunk_data;
-    int chunk_size;
-    int chunk_start_index;
-    int chunk_end_index;
+    // Test 1: TOP_A, size=5
+    struct {
+        int *input_array;
+        int array_size;
+        int chunk_loc;
+        int chunk_size;
+        int result;
+    } test1_top_a;
+    
+    // Test 2: BOTTOM_A, size=4
+    struct {
+        int *input_array;
+        int array_size;
+        int chunk_loc;
+        int chunk_size;
+        int result;
+    } test2_bottom_a;
+    
+    // Test 3: TOP_B, size=3
+    struct {
+        int *input_array;
+        int array_size;
+        int chunk_loc;
+        int chunk_size;
+        int result;
+    } test3_top_b;
+    
+    // Test 4: BOTTOM_B, size=4
+    struct {
+        int *input_array;
+        int array_size;
+        int chunk_loc;
+        int chunk_size;
+        int result;
+    } test4_bottom_b;
 } t_chunk_max_value_test;
 
 // Specific structure for chunk_value test results
 typedef struct s_chunk_value_test {
-    int target_value;
-    int found_value;
-    int found_index;
-    int search_range_start;
-    int search_range_end;
-    int *search_data;
-    int search_data_size;
-    bool value_found;
+    // Test 1: TOP_A, size=5, offset=0
+    struct {
+        int *input_array;
+        int array_size;
+        int chunk_loc;
+        int chunk_size;
+        int offset;
+        int result;
+    } test1_top_a_basic;
+    
+    // Test 2: TOP_A, size=5, offset=2
+    struct {
+        int *input_array;
+        int array_size;
+        int chunk_loc;
+        int chunk_size;
+        int offset;
+        int result;
+    } test2_top_a_middle;
+    
+    // Test 3: BOTTOM_B, size=4, offset=0
+    struct {
+        int *input_array;
+        int array_size;
+        int chunk_loc;
+        int chunk_size;
+        int offset;
+        int result;
+    } test3_bottom_b_basic;
+    
+    // Test 4: BOTTOM_B, size=4, offset=1
+    struct {
+        int *input_array;
+        int array_size;
+        int chunk_loc;
+        int chunk_size;
+        int offset;
+        int result;
+    } test4_bottom_b_second;
+    
+    // Test 5: TOP_B, size=3, offset=2
+    struct {
+        int *input_array;
+        int array_size;
+        int chunk_loc;
+        int chunk_size;
+        int offset;
+        int result;
+    } test5_top_b_last;
 } t_chunk_value_test;
 
 // Function to run loc_to_stack tests

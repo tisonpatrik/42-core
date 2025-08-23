@@ -1,5 +1,4 @@
 #include "../../../libs/push_swap/src/models.h"
-#include "../../../include/json_utils.h"
 #include "../../../include/chunk_utils_task.h"
 #include "../../../include/chunk_utils_common.h"
 #include <stdbool.h>
@@ -9,7 +8,7 @@
 // Forward declaration of the function to test
 t_stack	*loc_to_stack(t_ps *data, t_loc loc);
 
-// Modified test functions to return results instead of printing
+// Test functions to return results instead of printing
 int test_loc_to_stack_top_a(t_ps *data) {
     t_stack *result = loc_to_stack(data, TOP_A);
     return result->stack[result->top];
@@ -30,40 +29,6 @@ int test_loc_to_stack_bottom_b(t_ps *data) {
     return result->stack[result->bottom];
 }
 
-// Function to save loc_to_stack test results using generic JSON utils
-void save_loc_to_stack_results(t_ps *data __attribute__((unused)), t_loc_to_stack_test *test_data) {
-    // Create JSON export structure
-    t_json_export *export_data = create_json_export(
-        "Loc to Stack Test Results", 
-        "Test results for loc_to_stack function with different locations"
-    );
-    
-    if (!export_data) {
-        printf("Failed to create JSON export structure\n");
-        return;
-    }
-    
-    // Add test results
-    const char *locations[] = {"TOP_A", "BOTTOM_A", "TOP_B", "BOTTOM_B"};
-    int results[] = {test_data->top_a_result, test_data->bottom_a_result, 
-                     test_data->top_b_result, test_data->bottom_b_result};
-    
-    for (int i = 0; i < 4; i++) {
-        t_test_result result = create_test_result(i + 1, locations[i], results[i]);
-        add_test_result(export_data, result);
-    }
-    
-    // Add input data - stack contents
-    add_custom_int_array(export_data, "stack_a", test_data->stack_a_data, test_data->stack_a_size);
-    add_custom_int_array(export_data, "stack_b", test_data->stack_b_data, test_data->stack_b_size);
-    
-    // Save to JSON file in chunk_utils directory
-    save_chunk_utils_test_results("loc_to_stack", export_data);
-    
-    // Cleanup
-    cleanup_json_export(export_data);
-}
-
 // Main function to run loc_to_stack tests
 int run_loc_to_stack_tests(int size) {
 	t_ps *data = create_test_data(size, size);
@@ -72,31 +37,73 @@ int run_loc_to_stack_tests(int size) {
         return 1;
     }
 	
-	// Run tests and collect results
-    t_loc_to_stack_test test_data;
-    test_data.top_a_result = test_loc_to_stack_top_a(data);
-    test_data.bottom_a_result = test_loc_to_stack_bottom_a(data);
-    test_data.top_b_result = test_loc_to_stack_top_b(data);
-    test_data.bottom_b_result = test_loc_to_stack_bottom_b(data);
+	// Initialize test data structure
+    t_loc_to_stack_test test_data = {0};
     
-    // Copy stack data for JSON export
-    test_data.stack_a_data = malloc(size * sizeof(int));
-    test_data.stack_b_data = malloc(size * sizeof(int));
-    if (test_data.stack_a_data && test_data.stack_b_data) {
-        for (int i = 0; i < size; i++) {
-            test_data.stack_a_data[i] = data->a.stack[i];
-            test_data.stack_b_data[i] = data->b.stack[i];
-        }
-        test_data.stack_a_size = size;
-        test_data.stack_b_size = size;
-        
-        // Save results to JSON file
-        save_loc_to_stack_results(data, &test_data);
-        
-        // Cleanup test data
-        free(test_data.stack_a_data);
-        free(test_data.stack_b_data);
+    // Test 1: TOP_A
+    test_data.test1_top_a.input_array = malloc(size * sizeof(int));
+    test_data.test1_top_a.array_size = size;
+    test_data.test1_top_a.stack_loc = TOP_A;
+    
+    // Copy input data
+    for (int i = 0; i < size; i++) {
+        test_data.test1_top_a.input_array[i] = data->a.stack[i];
     }
+    
+    // Run test
+    t_stack *result1 = loc_to_stack(data, TOP_A);
+    test_data.test1_top_a.result = result1->stack[result1->top];
+    
+    // Test 2: BOTTOM_A
+    test_data.test2_bottom_a.input_array = malloc(size * sizeof(int));
+    test_data.test2_bottom_a.array_size = size;
+    test_data.test2_bottom_a.stack_loc = BOTTOM_A;
+    
+    // Copy input data
+    for (int i = 0; i < size; i++) {
+        test_data.test2_bottom_a.input_array[i] = data->a.stack[i];
+    }
+    
+    // Run test
+    t_stack *result2 = loc_to_stack(data, BOTTOM_A);
+    test_data.test2_bottom_a.result = result2->stack[result2->bottom];
+    
+    // Test 3: TOP_B
+    test_data.test3_top_b.input_array = malloc(size * sizeof(int));
+    test_data.test3_top_b.array_size = size;
+    test_data.test3_top_b.stack_loc = TOP_B;
+    
+    // Copy input data
+    for (int i = 0; i < size; i++) {
+        test_data.test3_top_b.input_array[i] = data->b.stack[i];
+    }
+    
+    // Run test
+    t_stack *result3 = loc_to_stack(data, TOP_B);
+    test_data.test3_top_b.result = result3->stack[result3->top];
+    
+    // Test 4: BOTTOM_B
+    test_data.test4_bottom_b.input_array = malloc(size * sizeof(int));
+    test_data.test4_bottom_b.array_size = size;
+    test_data.test4_bottom_b.stack_loc = BOTTOM_B;
+    
+    // Copy input data
+    for (int i = 0; i < size; i++) {
+        test_data.test4_bottom_b.input_array[i] = data->b.stack[i];
+    }
+    
+    // Run test
+    t_stack *result4 = loc_to_stack(data, BOTTOM_B);
+    test_data.test4_bottom_b.result = result4->stack[result4->bottom];
+    
+    // Save results to JSON file
+    save_loc_to_stack_results(data, &test_data);
+    
+    // Cleanup test data
+    free(test_data.test1_top_a.input_array);
+    free(test_data.test2_bottom_a.input_array);
+    free(test_data.test3_top_b.input_array);
+    free(test_data.test4_bottom_b.input_array);
 
     // Cleanup only once at the end
     cleanup_test_data(data);
