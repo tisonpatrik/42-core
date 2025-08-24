@@ -30,11 +30,13 @@ func ChunkValue(ps *stack.PushSwapData, chunk *stack.Chunk, n int) int {
 	}
 
 	// Match C implementation exactly: advance by n-1 positions
-	if loc == stack.TOP_A || loc == stack.TOP_B {
+	// n=1 means first element in chunk, n=2 means second element, etc.
+	switch loc {
+	case stack.TOP_A, stack.TOP_B:
 		for n--; n > 0; n-- {
 			i = stk.NextDown(i)
 		}
-	} else if loc == stack.BOTTOM_A || loc == stack.BOTTOM_B {
+	case stack.BOTTOM_A, stack.BOTTOM_B:
 		for n--; n > 0; n-- {
 			i = stk.NextUp(i)
 		}
@@ -51,7 +53,6 @@ func ChunkValue(ps *stack.PushSwapData, chunk *stack.Chunk, n int) int {
 }
 
 func ChunkMaxValue(ps *stack.PushSwapData, chunk *stack.Chunk) int {
-
 	var stk *stack.Stack
 	var size int
 	var maxValue int
@@ -65,8 +66,8 @@ func ChunkMaxValue(ps *stack.PushSwapData, chunk *stack.Chunk) int {
 	}
 	
 	size = chunk.Size
-	maxValue = 0
-
+	
+	// Fix: Start with the first value in the chunk, not 0
 	switch chunk.Loc {
 	case stack.TOP_A, stack.TOP_B:
 		i = stk.GetTop()
@@ -75,9 +76,11 @@ func ChunkMaxValue(ps *stack.PushSwapData, chunk *stack.Chunk) int {
 	default:
 		i = stk.GetTop()
 	}
+	
+	// Initialize maxValue with the first value in the chunk
+	maxValue = stk.GetStack()[i]
 
-	// Fix: Match C implementation exactly - process exactly chunk_size elements
-	// C: while (size--) - decrements first, then checks
+	// Process exactly chunk_size elements
 	for ; size > 0; size-- {
 		if stk.GetStack()[i] > maxValue {
 			maxValue = stk.GetStack()[i]
@@ -90,6 +93,50 @@ func ChunkMaxValue(ps *stack.PushSwapData, chunk *stack.Chunk) int {
 		}
 	}
 	return maxValue
+}
+
+// ChunkMinValue finds the minimum value in a chunk (matching C implementation)
+func ChunkMinValue(ps *stack.PushSwapData, chunk *stack.Chunk) int {
+	var stk *stack.Stack
+	var size int
+	var minValue int
+	var i int
+
+	stk = locToStack(ps, chunk.Loc)
+	
+	// Check if stack is empty or chunk size is invalid
+	if stk == nil || stk.CurrentSize() == 0 || chunk.Size <= 0 {
+		return 0
+	}
+	
+	size = chunk.Size
+	
+	// Start with the first value in the chunk
+	switch chunk.Loc {
+	case stack.TOP_A, stack.TOP_B:
+		i = stk.GetTop()
+	case stack.BOTTOM_A, stack.BOTTOM_B:
+		i = stk.GetBottom()
+	default:
+		i = stk.GetTop()
+	}
+	
+	// Initialize minValue with the first value in the chunk
+	minValue = stk.GetStack()[i]
+
+	// Process exactly chunk_size elements
+	for ; size > 0; size-- {
+		if stk.GetStack()[i] < minValue {
+			minValue = stk.GetStack()[i]
+		}
+		switch chunk.Loc {
+		case stack.TOP_A, stack.TOP_B:
+			i = stk.NextDown(i)
+		case stack.BOTTOM_A, stack.BOTTOM_B:
+			i = stk.NextUp(i)
+		}
+	}
+	return minValue
 }
 
 // locToStack returns the appropriate stack based on the location

@@ -4,19 +4,22 @@ import (
 	"push_swap_prototype/internal/stack"
 )
 
-// Chunk_sort sorts the entire stack A using chunk-based sorting
-func Chunk_sort(ps *stack.PushSwapData) {
+// ChunkSort sorts the entire stack A using chunk-based sorting
+func ChunkSort(ps *stack.PushSwapData) {
+	
 	chunkAll := stack.Chunk{
 		Loc:  stack.TOP_A,
 		Size: ps.A.Size(),
 	}
-
+	
 	RecChunkSort(ps, &chunkAll)
 }
 
 // RecChunkSort recursively sorts chunks using divide and conquer approach
 func RecChunkSort(ps *stack.PushSwapData, toSort *stack.Chunk) {
-	chunkToTheTop(ps, toSort)
+	
+	
+	ChunkToTheTop(ps, toSort)
 	EasySort(ps, toSort)
 
 	if toSort.Size <= 3 {
@@ -30,23 +33,16 @@ func RecChunkSort(ps *stack.PushSwapData, toSort *stack.Chunk) {
 		default:
 			return
 		}
-		return // Return early for small chunks, don't split them
+		return
 	}
 
-	// Only split chunks larger than 3
+	
 	var dest stack.SplitDest
 	ChunkSplit(ps, toSort, &dest)
-
-	// Only recurse on chunks with size > 0
-	if dest.Max.Size > 0 {
-		RecChunkSort(ps, &dest.Max)
-	}
-	if dest.Mid.Size > 0 {
-		RecChunkSort(ps, &dest.Mid)
-	}
-	if dest.Min.Size > 0 {
-		RecChunkSort(ps, &dest.Min)
-	}
+	RecChunkSort(ps, &dest.Max)
+	RecChunkSort(ps, &dest.Mid)
+	RecChunkSort(ps, &dest.Min)
+	
 }
 
 // SortTwo sorts two elements in a chunk

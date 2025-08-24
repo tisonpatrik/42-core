@@ -55,11 +55,21 @@ func InitializeFromSlice(data *PushSwapData, values []int) {
 	if data == nil {
 		return
 	}
+	// We do not need ranking, bcs we are generating already ranked values.
 
-	// Initialize stack directly with input values (like C version)
-	// No need for randomToRank conversion
-	data.A = FromSlice(values)
+	// Initialize stack A with proper capacity if not already done
+	if data.A.size == 0 {
+		data.A.InitWithCapacity(len(values))
+	}
+
+	// Fill stack A with ranked values (like C fill_stack)
+	copy(data.A.stack, values)
+	
+	// Set pointers like C fill_stack: first element is at top, last element is at bottom
+	data.A.top = 0
+	data.A.bottom = len(values) - 1
 }
+
 
 // Operation represents a push swap operation (like C t_op)
 type Operation int

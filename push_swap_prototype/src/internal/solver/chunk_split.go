@@ -1,7 +1,6 @@
 package solver
 
 import (
-	"fmt"
 	"push_swap_prototype/internal/stack"
 )
 
@@ -11,53 +10,33 @@ func ChunkSplit(ps *stack.PushSwapData, to_split *stack.Chunk, dest *stack.Split
 	var pivot1, pivot2 int
 	var maxValue int
 
-	fmt.Printf("DEBUG: ChunkSplit START - to_split: loc=%v, size=%d\n", to_split.Loc, to_split.Size)
-
 	initSize(&dest.Min, &dest.Mid, &dest.Max)
 	setSplitLoc(to_split.Loc, &dest.Min, &dest.Mid, &dest.Max)
-	setThirdPivots(to_split.Loc, to_split.Size, &pivot1, &pivot2)
+	setThirdPivots(to_split, &pivot1, &pivot2)
 	maxValue = ChunkMaxValue(ps, to_split)
 
-	fmt.Printf("DEBUG: ChunkSplit - pivots: pivot1=%d, pivot2=%d, maxValue=%d\n", pivot1, pivot2, maxValue)
-	fmt.Printf("DEBUG: ChunkSplit - dest locations: MIN=%v, MID=%v, MAX=%v\n", dest.Min.Loc, dest.Mid.Loc, dest.Max.Loc)
 
 	for to_split.Size > 0 {
-		oldSize := to_split.Size
-		to_split.Size--
+						
 		nextValue := ChunkValue(ps, to_split, 1)
-
-		fmt.Printf("DEBUG: ChunkSplit LOOP - to_split.Size: %d->%d, nextValue=%d\n", oldSize, to_split.Size, nextValue)
-
+		
+		
 		if nextValue > maxValue-pivot2 {
-			fmt.Printf("DEBUG: ChunkSplit - Moving to MAX chunk (dest.Max.Size: %d->", dest.Max.Size)
-			// FIXED: Store MoveFromTo result before calling SplitMaxReduction
-			moved := MoveFromTo(ps, to_split.Loc, dest.Max.Loc)
-			dest.Max.Size += moved
-			fmt.Printf("%d), moved=%d\n", dest.Max.Size, moved)
-
-			// SplitMaxReduction should be called on dest.Max, as in C implementation
-			fmt.Printf("DEBUG: ChunkSplit - Calling SplitMaxReduction on dest.Max (size=%d)\n", dest.Max.Size)
+			dest.Max.Size += MoveFromTo(ps, to_split.Loc, dest.Max.Loc)
 			SplitMaxReduction(ps, &dest.Max)
-			fmt.Printf("DEBUG: ChunkSplit - After SplitMaxReduction: dest.Max.Size=%d\n", dest.Max.Size)
-
+			
 			if APartlySort(ps, 1) && to_split.Size > 0 {
-				fmt.Printf("DEBUG: ChunkSplit - Calling easySort on to_split (size=%d)\n", to_split.Size)
-				EasySort(ps, to_split)
+				EasySort(ps, &dest.Max)
 			}
 		} else if nextValue > maxValue-pivot1 {
-			fmt.Printf("DEBUG: ChunkSplit - Moving to MID chunk (dest.Mid.Size: %d->", dest.Mid.Size)
 			dest.Mid.Size += MoveFromTo(ps, to_split.Loc, dest.Mid.Loc)
-			fmt.Printf("%d)\n", dest.Mid.Size)
 		} else {
-			fmt.Printf("DEBUG: ChunkSplit - Moving to MIN chunk (dest.Min.Size: %d->", dest.Min.Size)
 			dest.Min.Size += MoveFromTo(ps, to_split.Loc, dest.Min.Loc)
-			fmt.Printf("%d)\n", dest.Min.Size)
 		}
+		
+		to_split.Size--
 	}
-
-	fmt.Printf("DEBUG: ChunkSplit END - Final sizes: MIN=%d, MID=%d, MAX=%d\n", dest.Min.Size, dest.Mid.Size, dest.Max.Size)
 }
-
 // initSize initializes the size of all destination chunks to 0
 func initSize(min, mid, max *stack.Chunk) {
 	min.Size = 0
@@ -89,23 +68,29 @@ func setSplitLoc(loc stack.Loc, min, mid, max *stack.Chunk) {
 }
 
 // setThirdPivots sets the pivot values for splitting based on location and size
-// Exactly like C implementation
-func setThirdPivots(loc stack.Loc, crtSize int, pivot1, pivot2 *int) {
-	*pivot2 = crtSize / 3
-	*pivot1 = crtSize / 2
-	switch loc {
+// Fixed: Now matches C implementation exactly - uses SIZE-BASED pivots, not VALUE-BASED
+func setThirdPivots(to_split *stack.Chunk, pivot1, pivot2 *int) {
+	// CRITICAL FIX: Use SIZE-BASED pivots like C implementation, not VALUE-BASED
+	// Initialize pivot_2 first (matches C: *pivot_2 = crt_size / 3)
+	*pivot2 = to_split.Size / 3
+	
+	// Initialize pivot_1 based on location (matches C implementation exactly)
+	switch to_split.Loc {
 	case stack.TOP_A, stack.BOTTOM_A:
-		*pivot1 = 2 * crtSize / 3
+		*pivot1 = 2 * to_split.Size / 3
+		// Special case for small chunks (matches C: if (crt_size < 15) *pivot_1 = crt_size)
+		if to_split.Size < 15 {
+			*pivot1 = to_split.Size
+		}
 	case stack.TOP_B, stack.BOTTOM_B:
-		*pivot1 = crtSize / 2
+		*pivot1 = to_split.Size / 2
+		// Special case for bottom B with small chunks (matches C: if (loc == BOTTOM_B && crt_size < 8) *pivot_2 = crt_size / 2)
+		if to_split.Loc == stack.BOTTOM_B && to_split.Size < 8 {
+			*pivot2 = to_split.Size / 2
+		}
 	default:
-		*pivot1 = crtSize / 2 // Default case to ensure pivot1 is always set
+		// Fallback initialization for any unexpected location values
+		*pivot1 = to_split.Size / 2
 	}
-
-	if (loc == stack.TOP_A || loc == stack.BOTTOM_A) && crtSize < 15 {
-		*pivot1 = crtSize
-	}
-	if loc == stack.BOTTOM_B && crtSize < 8 {
-		*pivot2 = crtSize / 2
-	}
+	
 }

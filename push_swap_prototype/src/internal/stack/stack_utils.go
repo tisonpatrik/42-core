@@ -35,9 +35,15 @@ func (s *Stack) NextDown(index int) int {
 // GetValueAtPosition returns the value at a specific position (1-based like C)
 // Equivalent to value in C implementation
 func (s *Stack) GetValueAtPosition(pos int) int {
+	if s.CurrentSize() == 0 {
+		return 0
+	}
 	index := s.top
 	for i := 1; i < pos; i++ {
 		index = s.NextDown(index)
+	}
+	if index < 0 || index >= len(s.stack) {
+		return 0
 	}
 	return s.stack[index]
 }
