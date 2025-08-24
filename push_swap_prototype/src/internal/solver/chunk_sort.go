@@ -33,7 +33,7 @@ func recChunkSort(ps *stack.PushSwapData, toSort *stack.Chunk) {
 	}
 
 	var dest stack.SplitDest
-	chunkSplit(ps, toSort, &dest)
+	ChunkSplit(ps, toSort, &dest)
 	
 	recChunkSort(ps, &dest.Max)
 	recChunkSort(ps, &dest.Mid)

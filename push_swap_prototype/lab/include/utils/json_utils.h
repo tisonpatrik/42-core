@@ -17,5 +17,6 @@ void add_input_array_to_json(void *test_obj, int *input_array, int array_size);
 void add_chunk_value_test_data(void *test_obj, void *test);
 void add_chunk_max_value_test_data(void *test_obj, void *test);
 void add_loc_to_stack_test_data(void *test_obj, void *test);
+void add_chunk_split_test_data(void *test_obj, void *test);
 
 #endif

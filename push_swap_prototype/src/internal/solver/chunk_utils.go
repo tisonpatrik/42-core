@@ -29,49 +29,14 @@ func ChunkValue(ps *stack.PushSwapData, chunk *stack.Chunk, n int) int {
 		return 0
 	}
 	
-	// Based on the test results, the C code seems to advance the index in a specific way
-	// Let me implement the exact behavior that matches the test results
-	
-	// For TOP_A/TOP_B: advance based on n value
-	switch loc {
-	case stack.TOP_A, stack.TOP_B:
-		switch n {
-		case 0:
-			// Stay at current position
-		case 1:
-			// Stay at current position (buggy behavior)
-		case 2:
-			// Advance once
+	// Match C implementation exactly: advance by n-1 positions
+	if loc == stack.TOP_A || loc == stack.TOP_B {
+		for n--; n > 0; n-- {
 			i = stk.NextDown(i)
-		case 4:
-			// Advance 3 times (to get to index 3)
-			i = stk.NextDown(i) // 0 -> 1
-			i = stk.NextDown(i) // 1 -> 2  
-			i = stk.NextDown(i) // 2 -> 3
-		case 5:
-			// Advance 4 times (to get to index 4)
-			i = stk.NextDown(i) // 0 -> 1
-			i = stk.NextDown(i) // 1 -> 2
-			i = stk.NextDown(i) // 2 -> 3
-			i = stk.NextDown(i) // 3 -> 4
-		default:
-			// For other n values, advance once if n > 1
-			if n > 1 {
-				i = stk.NextDown(i)
-			}
 		}
-	case stack.BOTTOM_A, stack.BOTTOM_B:
-		// For BOTTOM_A/BOTTOM_B: advance based on n value
-		switch n {
-		case 0:
-			// Stay at current position
-		case 1:
-			// Stay at current position (buggy behavior)
-		default:
-			// For other n values, advance once if n > 1
-			if n > 1 {
-				i = stk.NextUp(i)
-			}
+	} else if loc == stack.BOTTOM_A || loc == stack.BOTTOM_B {
+		for n--; n > 0; n-- {
+			i = stk.NextUp(i)
 		}
 	}
 	

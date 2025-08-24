@@ -4,9 +4,9 @@ import (
 	"push_swap_prototype/internal/stack"
 )
 
-// chunkSplit splits a chunk into three parts based on pivot values
+// ChunkSplit splits a chunk into three parts based on pivot values
 // Exactly like C implementation
-func chunkSplit(ps *stack.PushSwapData, to_split *stack.Chunk, dest *stack.SplitDest) {
+func ChunkSplit(ps *stack.PushSwapData, to_split *stack.Chunk, dest *stack.SplitDest) {
 	var pivot1, pivot2 int
 	var maxValue int
 
@@ -14,7 +14,6 @@ func chunkSplit(ps *stack.PushSwapData, to_split *stack.Chunk, dest *stack.Split
 	setSplitLoc(to_split.Loc, &dest.Min, &dest.Mid, &dest.Max)
 	setThirdPivots(to_split.Loc, to_split.Size, &pivot1, &pivot2)
 	maxValue = ChunkMaxValue(ps, to_split)
-	
 	
 	for to_split.Size > 0 {
 		to_split.Size--
@@ -68,7 +67,7 @@ func setSplitLoc(loc stack.Loc, min, mid, max *stack.Chunk) {
 // Exactly like C implementation
 func setThirdPivots(loc stack.Loc, crtSize int, pivot1, pivot2 *int) {
 	*pivot2 = crtSize / 3
-	*pivot1 = crtSize / 2;
+	*pivot1 = crtSize / 2
 	switch loc {
 	case stack.TOP_A, stack.BOTTOM_A:
 		*pivot1 = 2 * crtSize / 3
