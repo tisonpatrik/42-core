@@ -1,20 +1,7 @@
-# Generated test results
-data/
-
-# Build artifacts
-bin/
-
-# Object files
-*.o
-
-# Executables
-*.exe
-*.out
-
-# IDE files
-.vscode/
-.idea/
-
-# OS generated files
 .DS_Store
-Thumbs.db
+build/
+lib/libft/obj/
+*.a
+*.o
+bin/
+logs/

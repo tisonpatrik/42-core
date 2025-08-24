@@ -1,63 +1,130 @@
-# Compiler and flags
-CC = gcc
-CFLAGS = -Wall -Wextra -Werror -g
-INCLUDES = -Iinclude -Iinclude/core -Iinclude/testing -Iinclude/utils -Ilibs/push_swap/src -Ilibs/cJSON
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: patrik <patrik@student.42.fr>              +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/07/27 14:02:06 by ugerkens          #+#    #+#              #
+#    Updated: 2025/08/24 19:06:36 by patrik           ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
-# Directories
-SRC_DIR = src
-BIN_DIR = bin
-INCLUDE_DIR = include
-PUSH_SWAP_SRC_DIR = libs/push_swap/src
-CJSON_SRC_DIR = libs/cJSON
+# Variables
+CC					=	gcc
+CFLAGS				=	-Wall -Wextra -Werror -Iinclude -Isrc -O3
+RM					=	rm -rf
+CHECKER				=	bin/checker
+PUSH_SWAP			=	bin/push_swap
+TEST_RUNNER			=	bin/test_runner
+NAME				=	$(PUSH_SWAP) $(CHECKER)
 
-# Source files with main functions (these will become executables)
-MAIN_SRCS = $(SRC_DIR)/main.c
+# Libraries
+LIBFT				=	libft.a
+LIBFT_DIR			=	lib/libft
+LIBFT_FILE			=	$(LIBFT_DIR)/$(LIBFT)
+CFLAGS				+=	-I $(LIBFT_DIR)/include
 
-# Utility source files (no main function)
-UTIL_SRCS = $(wildcard $(SRC_DIR)/utils/*.c)
-TASK_SRCS = $(wildcard $(SRC_DIR)/tasks/*.c) $(wildcard $(SRC_DIR)/tasks/chunk_utils_tasks/*.c) $(wildcard $(SRC_DIR)/tasks/chunk_utils_tasks/*/*.c) $(wildcard $(SRC_DIR)/tasks/chunk_split_tasks/chunk_split/*.c) $(wildcard $(SRC_DIR)/tasks/test_runner/*.c)
+FT_PRINTF			=	ft_printf.a
+FT_PRINTF_DIR		=	lib/ft_printf
+FT_PRINTF_FILE		=	$(FT_PRINTF_DIR)/$(FT_PRINTF)
+CFLAGS				+=	-I $(FT_PRINTF_DIR)/include
 
-# Push swap source files needed for the tests
-PUSH_SWAP_SRCS = libs/push_swap/src/chunk_utils.c \
-                  libs/push_swap/src/stack_utils.c
+MAKE_LIB			=	make --no-print-directory -C
 
-# cJSON library source files
-CJSON_SRCS = $(CJSON_SRC_DIR)/cJSON.c
+# Source and Object Files
+VPATH				=	src:src/stack:src/push_swap:src/checker_bonus:include
+STACK_INC			=	stack.h
+PUSH_SWAP_INC		=	$(STACK_INC) push_swap.h debug_logging.h
+CHECKER_INC			=	$(STACK_INC) checker_bonus.h debug_logging.h
 
-# Target executables (one for each main source file)
-TARGETS = $(BIN_DIR)/main
+# Rules
+build:				$(PUSH_SWAP) $(TEST_RUNNER)
 
-# Build target - only compile
-build: $(TARGETS)
-	@echo "Build completed successfully!"
+all:				build test
 
-# Default target - build and run
-all: build
-	@echo "Running tests..."
-	./$(BIN_DIR)/main
+bonus:				$(CHECKER)
 
-# Create directories
-$(BIN_DIR):
-	mkdir -p $(BIN_DIR)
+test_runner:		$(TEST_RUNNER)
 
-# Build main executable
-$(BIN_DIR)/main: $(SRC_DIR)/main.c $(UTIL_SRCS) $(TASK_SRCS) $(PUSH_SWAP_SRCS) $(CJSON_SRCS) | $(BIN_DIR)
-	$(CC) $(CFLAGS) $(INCLUDES) $^ -o $@
+test:				$(TEST_RUNNER)
+	@echo "=== Running test with 100 random numbers ==="
+	@./bin/test_runner
 
-# Clean everything including executables
-clean:
-	rm -rf $(BIN_DIR)
+bin:
+					mkdir -p bin
 
-# Clean everything including executables
-fclean: clean
+LIB					=	$(LIBFT_FILE) $(FT_PRINTF_FILE)
 
-# Rebuild everything
-re: fclean all
+# Use wildcards to find all .c files and compile them to .o in bin
+PUSH_SWAP_OBJ		=	$(wildcard src/*.c src/stack/*.c src/push_swap/*.c src/logging/*.c)
+PUSH_SWAP_OBJ		:=	$(notdir $(PUSH_SWAP_OBJ:%.c=%.o))
+PUSH_SWAP_OBJ		:=	$(addprefix bin/,$(PUSH_SWAP_OBJ))
 
-# Note: Tests are automatically run with 'make all'
+CHECKER_OBJ			=	$(wildcard src/stack/*.c src/checker_bonus/*.c src/logging/*.c)
+CHECKER_OBJ			:=	$(notdir $(CHECKER_OBJ:%.c=%.o))
+CHECKER_OBJ			:=	$(addprefix bin/,$(CHECKER_OBJ))
 
-# Phony targets
-.PHONY: all build clean fclean re
+TEST_RUNNER_OBJ		=	tools/test_runner.c
+TEST_RUNNER_OBJ		:=	$(notdir $(TEST_RUNNER_OBJ:%.c=%.o))
+TEST_RUNNER_OBJ		:=	$(addprefix bin/,$(TEST_RUNNER_OBJ))
 
-# Default target
-.DEFAULT_GOAL = all
+# Generic rule for all .o files
+bin/%.o:	src/%.c
+			@mkdir -p bin
+			$(CC) $(CFLAGS) -c $< -o $@
+
+bin/%.o:	src/stack/%.c
+			@mkdir -p bin
+			$(CC) $(CFLAGS) -c $< -o $@
+
+bin/%.o:	src/push_swap/%.c
+			@mkdir -p bin
+			$(CC) $(CFLAGS) -c $< -o $@
+
+bin/%.o:	src/checker_bonus/%.c
+			@mkdir -p bin
+			$(CC) $(CFLAGS) -c $< -o $@
+
+bin/%.o:	src/logging/%.c
+			@mkdir -p bin
+			$(CC) $(CFLAGS) -c $< -o $@
+
+bin/%.o:	tools/%.c
+			@mkdir -p bin
+			$(CC) $(CFLAGS) -c $< -o $@
+
+$(LIBFT_FILE):
+					$(MAKE_LIB) $(LIBFT_DIR)
+$(FT_PRINTF_FILE):
+					$(MAKE_LIB) $(FT_PRINTF_DIR)
+
+$(PUSH_SWAP):		bin $(LIB) $(PUSH_SWAP_OBJ)
+					$(CC) $(CFLAGS) $(PUSH_SWAP_OBJ) $(LIB) -o $@
+
+$(CHECKER):			bin $(LIB) $(CHECKER_OBJ)
+					$(CC) $(CFLAGS) $(CHECKER_OBJ) $(LIB) -o $@
+
+$(TEST_RUNNER):		bin $(TEST_RUNNER_OBJ)
+					$(CC) $(CFLAGS) $(TEST_RUNNER_OBJ) -o $@
+
+lib_clean:
+					$(MAKE_LIB) $(LIBFT_DIR) clean
+					$(MAKE_LIB) $(FT_PRINTF_DIR) clean
+
+lib_fclean:
+					$(MAKE_LIB) $(LIBFT_DIR) fclean
+					$(MAKE_LIB) $(FT_PRINTF_DIR) fclean
+
+clean:				lib_clean
+					$(RM) bin
+
+fclean:				clean lib_fclean
+					$(RM) $(NAME)
+					$(RM) bin
+
+re:					fclean all
+
+.SILENT:
+
+.PHONY:				all build test bonus test_runner lib_clean lib_fclean clean fclean re bin
