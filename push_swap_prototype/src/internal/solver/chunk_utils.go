@@ -105,8 +105,9 @@ func ChunkMaxValue(ps *stack.PushSwapData, chunk *stack.Chunk) int {
 		i = stk.GetTop()
 	}
 	
-	for size > 0 {
-		size--
+	// Fix: Match C implementation exactly - process exactly chunk_size elements
+	// C: while (size--) - decrements first, then checks
+	for ; size > 0; size-- {
 		if stk.GetStack()[i] > maxValue {
 			maxValue = stk.GetStack()[i]
 		}
