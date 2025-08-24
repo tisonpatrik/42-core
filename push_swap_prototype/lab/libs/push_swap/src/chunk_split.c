@@ -22,9 +22,11 @@ void	chunk_split(t_ps *data, t_chunk *to_split, t_split_dest *dest)
 	set_split_loc(to_split->loc, &dest->min, &dest->mid, &dest->max);
 	set_third_pivots(to_split->loc, to_split->size, &pivot_1, &pivot_2);
 	max_value = chunk_max_value(data, to_split);
+	
 	while (to_split->size--)
 	{
 		next_value = chunk_value(data, to_split, 1);
+		
 		if (next_value > max_value - pivot_2)
 		{
 			dest->max.size += move_from_to(data, to_split->loc, dest->max.loc);
@@ -78,12 +80,21 @@ void	set_third_pivots(t_loc loc, int crt_size, int *pivot_1, int *pivot_2)
 {
 	*pivot_2 = crt_size / 3;
 	*pivot_1 = crt_size / 2; // Default initialization
+	
 	if (loc == TOP_A || loc == BOTTOM_A)
+	{
 		*pivot_1 = 2 * crt_size / 3;
+	}
 	if (loc == TOP_B || loc == BOTTOM_B)
+	{
 		*pivot_1 = crt_size / 2;
+	}
 	if ((loc == TOP_A || loc == BOTTOM_A) && crt_size < 15)
+	{
 		*pivot_1 = crt_size;
+	}
 	if (loc == BOTTOM_B && crt_size < 8)
+	{
 		*pivot_2 = crt_size / 2;
+	}
 }
