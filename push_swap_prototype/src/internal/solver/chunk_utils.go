@@ -4,7 +4,7 @@ import (
 	"push_swap_prototype/internal/stack"
 )
 
-func chunkValue(ps *stack.PushSwapData, chunk *stack.Chunk, n int) int {
+func ChunkValue(ps *stack.PushSwapData, chunk *stack.Chunk, n int) int {
 	loc := chunk.Loc
 	stk := locToStack(ps, loc)
 
@@ -85,7 +85,7 @@ func chunkValue(ps *stack.PushSwapData, chunk *stack.Chunk, n int) int {
 	return result
 }
 
-func chunkMaxValue(ps *stack.PushSwapData, chunk *stack.Chunk) int {
+func ChunkMaxValue(ps *stack.PushSwapData, chunk *stack.Chunk) int {
 
 	var stk *stack.Stack
 	var size int

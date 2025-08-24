@@ -8,7 +8,7 @@ import (
 func sortThree(ps *stack.PushSwapData, chunk *stack.Chunk) {
 	
 	stk := locToStack(ps, chunk.Loc)
-	max := chunkMaxValue(ps, chunk)
+	max := ChunkMaxValue(ps, chunk)
 	switch chunk.Loc {
 	case stack.TOP_A:
 		sortThreeTopA(ps, chunk, stk, max)

@@ -11,7 +11,7 @@ int main(void)
     printf("🚀 Running tests with size: 10\n");
     
     int result = 0;
-    int size = 10;
+    int size = 100;
     result += run_loc_to_stack_tests(size);
     result += run_chunk_max_value_tests(size);
     result += run_chunk_value_tests(size);

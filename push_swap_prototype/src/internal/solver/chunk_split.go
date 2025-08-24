@@ -13,12 +13,12 @@ func chunkSplit(ps *stack.PushSwapData, to_split *stack.Chunk, dest *stack.Split
 	initSize(&dest.Min, &dest.Mid, &dest.Max)
 	setSplitLoc(to_split.Loc, &dest.Min, &dest.Mid, &dest.Max)
 	setThirdPivots(to_split.Loc, to_split.Size, &pivot1, &pivot2)
-	maxValue = chunkMaxValue(ps, to_split)
+	maxValue = ChunkMaxValue(ps, to_split)
 	
 	
 	for to_split.Size > 0 {
 		to_split.Size--
-		nextValue := chunkValue(ps, to_split, 1)
+		nextValue := ChunkValue(ps, to_split, 1)
 		
 		if nextValue > maxValue-pivot2 {
 			dest.Max.Size += moveFromTo(ps, to_split.Loc, dest.Max.Loc)

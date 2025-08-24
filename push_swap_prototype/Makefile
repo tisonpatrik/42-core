@@ -16,7 +16,9 @@ clean:
 	@rm -f $(bin_dir)/$(name)
 
 test:
-	@echo "🧪 Running all Go tests..."
-	@go test ./... 2>&1 | awk '/^ok/ {print "✅ " $$0} /^FAIL/ {print "❌ " $$0} /^=== RUN/ {print "▶️  " $$0} /^--- PASS/ {print "✅ " $$0} /^--- FAIL/ {print "❌ " $$0}'
+	@cd src && go test -count=1 ./...
 
-.PHONY: build clean run tidy test 
+lab:
+	@cd lab && make all
+
+.PHONY: build clean run tidy test lab
