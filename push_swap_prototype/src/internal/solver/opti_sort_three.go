@@ -37,7 +37,7 @@ func sortThreeTopA(ps *stack.PushSwapData, chunk *stack.Chunk, stk *stack.Stack,
 	
 	chunk.Loc = stack.TOP_A
 	chunk.Size -= 1
-	sortTwo(ps, chunk)
+	SortTwo(ps, chunk)
 }
 
 func sortThreeTopB(ps *stack.PushSwapData, chunk *stack.Chunk, stk *stack.Stack, max int) {
@@ -55,7 +55,7 @@ func sortThreeTopB(ps *stack.PushSwapData, chunk *stack.Chunk, stk *stack.Stack,
 	stack.Push_a(ps)
 	chunk.Loc = stack.TOP_A
 	chunk.Size -= 1
-	sortTwo(ps, chunk)
+	SortTwo(ps, chunk)
 }
 
 func sortThreeBottomA(ps *stack.PushSwapData, chunk *stack.Chunk, stk *stack.Stack, max int) {
@@ -74,7 +74,7 @@ func sortThreeBottomA(ps *stack.PushSwapData, chunk *stack.Chunk, stk *stack.Sta
 	}
 	chunk.Loc = stack.TOP_A
 	chunk.Size -= 1
-	sortTwo(ps, chunk)
+	SortTwo(ps, chunk)
 }
 
 // sortThreeBottomB sorts three elements when chunk is at BOTTOM_B
@@ -94,7 +94,7 @@ func sortThreeBottomB(ps *stack.PushSwapData, chunk *stack.Chunk, stk *stack.Sta
 	}
 	chunk.Loc = stack.TOP_B
 	chunk.Size -= 1
-	sortTwo(ps, chunk)
+	SortTwo(ps, chunk)
 }
 
 

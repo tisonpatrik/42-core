@@ -16,7 +16,7 @@ func SolvePushSwap(numbers []int) ([]stack.Operation, []int) {
 	} else if ps.A.Size() == 5 {
 		sort_five_a(ps)
 	} else {
-		chunk_sort(ps)
+		Chunk_sort(ps)
 	}
 	return ps.GetOperations(), ps.A.ToSlice()
 }

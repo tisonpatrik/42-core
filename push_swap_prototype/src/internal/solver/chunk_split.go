@@ -20,15 +20,15 @@ func ChunkSplit(ps *stack.PushSwapData, to_split *stack.Chunk, dest *stack.Split
 		nextValue := ChunkValue(ps, to_split, 1)
 		
 		if nextValue > maxValue-pivot2 {
-			dest.Max.Size += moveFromTo(ps, to_split.Loc, dest.Max.Loc)
+			dest.Max.Size += MoveFromTo(ps, to_split.Loc, dest.Max.Loc)
 			splitMaxReduction(ps, &dest.Max)
 			if aPartlySort(ps, 1) && to_split.Size > 0 {
 				easySort(ps, to_split)
 			}
 		} else if nextValue > maxValue-pivot1 {
-			dest.Mid.Size += moveFromTo(ps, to_split.Loc, dest.Mid.Loc)
+			dest.Mid.Size += MoveFromTo(ps, to_split.Loc, dest.Mid.Loc)
 		} else {
-			dest.Min.Size += moveFromTo(ps, to_split.Loc, dest.Min.Loc)
+			dest.Min.Size += MoveFromTo(ps, to_split.Loc, dest.Min.Loc)
 		}
 	}
 }

@@ -4,23 +4,23 @@ import (
 	"push_swap_prototype/internal/stack"
 )
 
-// moveFromTo moves an element from one location to another and returns 1 if successful
-func moveFromTo(ps *stack.PushSwapData, from, to stack.Loc) int {
+// MoveFromTo moves an element from one location to another and returns 1 if successful
+func MoveFromTo(ps *stack.PushSwapData, from, to stack.Loc) int {
 	switch from {
 	case stack.TOP_A:
-		moveFromTopA(ps, to)
+		MoveFromTopA(ps, to)
 	case stack.TOP_B:
-		moveFromTopB(ps, to)
+		MoveFromTopB(ps, to)
 	case stack.BOTTOM_A:
-		moveFromBottomA(ps, to)
+		MoveFromBottomA(ps, to)
 	case stack.BOTTOM_B:
-		moveFromBottomB(ps, to)
+		MoveFromBottomB(ps, to)
 	}
 	return 1
 }
 
-// moveFromTopA moves an element from TOP_A to the specified location
-func moveFromTopA(ps *stack.PushSwapData, to stack.Loc) {
+// MoveFromTopA moves an element from TOP_A to the specified location
+func MoveFromTopA(ps *stack.PushSwapData, to stack.Loc) {
 	switch to {
 	case stack.TOP_B:
 		stack.Push_b(ps)
@@ -32,8 +32,8 @@ func moveFromTopA(ps *stack.PushSwapData, to stack.Loc) {
 	}
 }
 
-// moveFromTopB moves an element from TOP_B to the specified location
-func moveFromTopB(ps *stack.PushSwapData, to stack.Loc) {
+// MoveFromTopB moves an element from TOP_B to the specified location
+func MoveFromTopB(ps *stack.PushSwapData, to stack.Loc) {
 	switch to {
 	case stack.TOP_A:
 		stack.Push_a(ps)
@@ -45,8 +45,8 @@ func moveFromTopB(ps *stack.PushSwapData, to stack.Loc) {
 	}
 }
 
-// moveFromBottomA moves an element from BOTTOM_A to the specified location
-func moveFromBottomA(ps *stack.PushSwapData, to stack.Loc) {
+// MoveFromBottomA moves an element from BOTTOM_A to the specified location
+func MoveFromBottomA(ps *stack.PushSwapData, to stack.Loc) {
 	switch to {
 	case stack.TOP_A:
 		stack.R_rotate_a(ps)
@@ -60,8 +60,8 @@ func moveFromBottomA(ps *stack.PushSwapData, to stack.Loc) {
 	}
 }
 
-// moveFromBottomB moves an element from BOTTOM_B to the specified location
-func moveFromBottomB(ps *stack.PushSwapData, to stack.Loc) {
+// MoveFromBottomB moves an element from BOTTOM_B to the specified location
+func MoveFromBottomB(ps *stack.PushSwapData, to stack.Loc) {
 	
 	switch to {
 	case stack.TOP_B:

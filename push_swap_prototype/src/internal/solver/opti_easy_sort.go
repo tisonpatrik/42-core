@@ -7,7 +7,7 @@ import (
 func easySort(ps *stack.PushSwapData, chunk *stack.Chunk) {
 	for chunk.Loc != stack.TOP_A && chunk.Size != 0 {
 		if ps.A.GetValueAtPosition(1) == ChunkValue(ps, chunk, 1)+1 && chunk.Size > 0 {
-			sortOne(ps, chunk)
+			SortOne(ps, chunk)
 		} else if ps.A.GetValueAtPosition(1) == ChunkValue(ps, chunk, 2)+1 && chunk.Size > 1 {
 			easySortSecond(ps, chunk)
 		} else {
