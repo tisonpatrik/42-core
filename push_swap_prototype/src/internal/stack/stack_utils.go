@@ -26,7 +26,7 @@ func (s *Stack) NextDown(index int) int {
 		return index
 	}
 	if index == s.size-1 {
-		return 0	
+		return 0
 	} else {
 		return index + 1
 	}
@@ -49,7 +49,7 @@ func (s *Stack) CurrentSize() int {
 	if s.size == 0 || len(s.stack) == 0 {
 		return 0
 	}
-	
+
 	if s.top == s.bottom && s.stack[s.top] == 0 {
 		return 0
 	}

@@ -12,12 +12,12 @@ func GenerateRandomNumbers(size int) []int {
 	for i := range size {
 		numbers[i] = i
 	}
-	
+
 	// Fisher-Yates shuffle algorithm for unbiased shuffling
 	for i := len(numbers) - 1; i > 0; i-- {
 		j := rand.Intn(i + 1)
 		numbers[i], numbers[j] = numbers[j], numbers[i]
 	}
-	
+
 	return numbers
 }

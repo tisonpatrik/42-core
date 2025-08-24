@@ -7,15 +7,15 @@ func swap(stk *Stack) {
 	if stk.CurrentSize() < 2 {
 		return
 	}
-	
+
 	// Get the second element position using NextDown like C implementation
 	secondPos := stk.NextDown(stk.GetTop())
-	
+
 	// Check if second element exists (not 0) - exactly like C implementation
 	if stk.GetStack()[secondPos] == 0 {
 		return
 	}
-	
+
 	// Swap the top two elements
 	stk.SwapTop()
 }

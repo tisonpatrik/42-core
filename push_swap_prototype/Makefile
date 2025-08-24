@@ -2,11 +2,11 @@ name:= push_swap_prototype
 bin_dir:= bin
 
 tidy:
-	go mod tidy -v
-	go fmt ./...
+	@cd src && go mod tidy -v
+	@cd src && go fmt ./...
 
 build:
-	@go build -o $(bin_dir)/$(name) ./cmd
+	@cd src && go build -o ../$(bin_dir)/$(name) ./cmd
 
 run:
 	@make build

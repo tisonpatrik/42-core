@@ -14,21 +14,21 @@ func ChunkValue(ps *stack.PushSwapData, chunk *stack.Chunk, n int) int {
 	}
 
 	var i int
-	
+
 	switch loc {
 	case stack.TOP_A, stack.TOP_B:
 		i = stk.GetTop()
 	case stack.BOTTOM_A, stack.BOTTOM_B:
 		i = stk.GetBottom()
 	default:
-		i = stk.GetTop()	
+		i = stk.GetTop()
 	}
-	
+
 	// Validate index bounds
 	if i < 0 || i >= len(stk.GetStack()) {
 		return 0
 	}
-	
+
 	// Match C implementation exactly: advance by n-1 positions
 	if loc == stack.TOP_A || loc == stack.TOP_B {
 		for n--; n > 0; n-- {
@@ -39,12 +39,12 @@ func ChunkValue(ps *stack.PushSwapData, chunk *stack.Chunk, n int) int {
 			i = stk.NextUp(i)
 		}
 	}
-	
+
 	// Validate the final index
 	if i < 0 || i >= len(stk.GetStack()) {
 		return 0
 	}
-	
+
 	// Get the value at the calculated index
 	result := stk.GetStack()[i]
 	return result
@@ -58,9 +58,15 @@ func ChunkMaxValue(ps *stack.PushSwapData, chunk *stack.Chunk) int {
 	var i int
 
 	stk = locToStack(ps, chunk.Loc)
+	
+	// Check if stack is empty or chunk size is invalid
+	if stk == nil || stk.CurrentSize() == 0 || chunk.Size <= 0 {
+		return 0
+	}
+	
 	size = chunk.Size
 	maxValue = 0
-	
+
 	switch chunk.Loc {
 	case stack.TOP_A, stack.TOP_B:
 		i = stk.GetTop()
@@ -69,7 +75,7 @@ func ChunkMaxValue(ps *stack.PushSwapData, chunk *stack.Chunk) int {
 	default:
 		i = stk.GetTop()
 	}
-	
+
 	// Fix: Match C implementation exactly - process exactly chunk_size elements
 	// C: while (size--) - decrements first, then checks
 	for ; size > 0; size-- {

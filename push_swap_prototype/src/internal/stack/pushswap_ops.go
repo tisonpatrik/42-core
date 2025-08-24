@@ -5,10 +5,10 @@ func (s *Stack) SwapTop() bool {
 	if s.CurrentSize() < 2 {
 		return false
 	}
-	
+
 	// Get the second element position using NextDown like C implementation
 	secondPos := s.NextDown(s.top)
-	
+
 	// Swap the top two elements
 	s.stack[s.top], s.stack[secondPos] = s.stack[secondPos], s.stack[s.top]
 	return true
@@ -22,7 +22,7 @@ func (s *Stack) RotateUp() bool {
 		// Empty stack - just return true (like C would)
 		return true
 	}
-	
+
 	if s.IsFull() {
 		s.bottom = s.top
 		s.top = s.NextDown(s.top)
@@ -35,7 +35,7 @@ func (s *Stack) RotateUp() bool {
 	return true
 }
 
-// RotateDown rotates the stack down (bottom element goes to top) - exactly like C r_rotate  
+// RotateDown rotates the stack down (bottom element goes to top) - exactly like C r_rotate
 func (s *Stack) RotateDown() bool {
 	// C implementation always performs r_rotate operation regardless of stack size
 	// But we need to handle empty stacks to avoid panics
@@ -43,7 +43,7 @@ func (s *Stack) RotateDown() bool {
 		// Empty stack - just return true (like C would)
 		return true
 	}
-	
+
 	if s.IsFull() {
 		s.top = s.bottom
 		s.bottom = s.NextUp(s.bottom)
@@ -63,14 +63,14 @@ func (s *Stack) PushFrom(other *Stack) bool {
 	if s.IsFull() {
 		return false
 	}
-	
+
 	// C implementation doesn't check if source is empty
 	// But we need to handle empty source stacks to avoid panics
 	if other.CurrentSize() == 0 {
 		// Source is empty - just return true (like C would)
 		return true
 	}
-	
+
 	// If destination is empty, initialize it with sufficient capacity
 	if s.size == 0 {
 		// Initialize with size equal to source size to avoid expansion issues
@@ -78,21 +78,20 @@ func (s *Stack) PushFrom(other *Stack) bool {
 		s.size = other.size
 		s.top = 0
 		s.bottom = 0
-		
+
 		// For empty destination, first element goes at top
 		s.stack[s.top] = other.stack[other.top]
 		other.stack[other.top] = 0
 		other.top = other.NextDown(other.top)
 		return true
 	}
-	
+
 	// Exactly like C push operation
 	destIndex := s.NextUp(s.top)
 	s.stack[destIndex] = other.stack[other.top]
 	s.top = destIndex
 	other.stack[other.top] = 0
 	other.top = other.NextDown(other.top)
-	
+
 	return true
 }
-

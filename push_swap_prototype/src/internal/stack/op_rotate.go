@@ -28,4 +28,4 @@ func Rotate_ab(data *PushSwapData) {
 	if data.WritingMode {
 		saveOp(data, RR)
 	}
-} 
+}

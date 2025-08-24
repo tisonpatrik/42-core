@@ -3,9 +3,9 @@ package stack
 // Stack represents a circular buffer stack like the C implementation
 type Stack struct {
 	stack  []int
-	size   int  // capacity of the buffer
-	top    int  // index of top element
-	bottom int  // index of bottom element
+	size   int // capacity of the buffer
+	top    int // index of top element
+	bottom int // index of bottom element
 }
 
 // New creates a new empty stack
@@ -35,10 +35,10 @@ func (s *Stack) FillFromSlice(values []int) {
 	if len(values) > s.size {
 		return // Cannot fit more elements than capacity
 	}
-	
+
 	// Copy values to stack array
 	copy(s.stack, values)
-	
+
 	// Set pointers like C fill_stack
 	s.top = 0
 	s.bottom = len(values) - 1
@@ -92,10 +92,10 @@ func (s *Stack) Pop() int {
 	if s.CurrentSize() == 0 {
 		return 0
 	}
-	
+
 	val := s.stack[s.top]
 	s.stack[s.top] = 0 // clear the position
-	
+
 	if s.top == s.bottom {
 		// Last element - reset to empty state
 		s.top = 0
@@ -104,7 +104,7 @@ func (s *Stack) Pop() int {
 		// Move top pointer down
 		s.top = s.NextDown(s.top)
 	}
-	
+
 	return val
 }
 
@@ -113,7 +113,7 @@ func (s *Stack) ToSlice() []int {
 	if s.CurrentSize() == 0 {
 		return []int{}
 	}
-	
+
 	result := make([]int, s.CurrentSize())
 	index := s.top
 	for i := 0; i < s.CurrentSize(); i++ {
@@ -129,30 +129,28 @@ func FromSlice(values []int) *Stack {
 	if len(values) == 0 {
 		return s
 	}
-	
+
 	// Initialize stack with exact capacity (like C init_stack)
 	// In C, both stacks get capacity equal to the number of input arguments
 	s.stack = make([]int, len(values))
 	s.size = len(values)
-	
+
 	// Fill the stack with values (like C fill_stack)
 	copy(s.stack, values)
-	
+
 	// Set pointers: first element is at top, last element is at bottom
 	s.top = 0
 	s.bottom = len(values) - 1
-	
+
 	return s
 }
-
-
 
 // GetValueAtPosition0 returns the value at a specific position (0-based)
 func (s *Stack) GetValueAtPosition0(pos int) int {
 	if pos < 0 || pos >= s.CurrentSize() {
 		return 0
 	}
-	
+
 	index := s.top
 	for i := 0; i < pos; i++ {
 		index = s.NextDown(index)
@@ -185,8 +183,6 @@ func (s *Stack) GetStack() []int {
 	return s.stack
 }
 
-
-
 // Value returns the value at a specific index (like C implementation)
 func (s *Stack) Value(index int) int {
 	if index < 0 || index >= s.size {
@@ -203,4 +199,3 @@ func (s *Stack) SetValue(index int, val int) bool {
 	s.stack[index] = val
 	return true
 }
-

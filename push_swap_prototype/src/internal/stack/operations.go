@@ -25,7 +25,7 @@ func NewPushSwapDataWithCapacity(capacity int) *PushSwapData {
 	a.InitWithCapacity(capacity)
 	b := New()
 	b.InitWithCapacity(capacity)
-	
+
 	return &PushSwapData{
 		A:           a,
 		B:           b,
@@ -55,7 +55,7 @@ func InitializeFromSlice(data *PushSwapData, values []int) {
 	if data == nil {
 		return
 	}
-	
+
 	// Initialize stack directly with input values (like C version)
 	// No need for randomToRank conversion
 	data.A = FromSlice(values)

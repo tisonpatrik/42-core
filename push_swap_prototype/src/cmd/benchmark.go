@@ -9,30 +9,30 @@ func RunBenchmark(iterations int) bool {
 	for range iterations {
 		numbers := GenerateRandomNumbers(100)
 		ops, result := solver.SolvePushSwap(numbers)
-		
+
 		if !isSorted(result) {
 			return false
 		}
-		
+
 		if len(ops) > 700 {
 			return false
 		}
 	}
-	
+
 	// Test size 500
 	for range iterations {
 		numbers := GenerateRandomNumbers(500)
 		ops, result := solver.SolvePushSwap(numbers)
-		
+
 		if !isSorted(result) {
 			return false
 		}
-		
+
 		if len(ops) > 5500 {
 			return false
 		}
 	}
-	
+
 	return true
 }
 

@@ -62,7 +62,7 @@ func MoveFromBottomA(ps *stack.PushSwapData, to stack.Loc) {
 
 // MoveFromBottomB moves an element from BOTTOM_B to the specified location
 func MoveFromBottomB(ps *stack.PushSwapData, to stack.Loc) {
-	
+
 	switch to {
 	case stack.TOP_B:
 		stack.R_rotate_b(ps)
