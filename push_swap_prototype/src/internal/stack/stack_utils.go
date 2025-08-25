@@ -37,13 +37,19 @@ func Value(s *Stack, pos int) int {
 
 // CurrentSize = current_size (C)
 func CurrentSize(s *Stack) int {
+
+	// Check if stack is empty (top == bottom and value at top is 0)
 	if s.Top == s.Bottom && s.Stack[s.Top] == 0 {
 		return 0
 	}
+	
+	// Calculate size based on circular buffer logic
 	if s.Top > s.Bottom {
 		return (s.Size - s.Top) + (s.Bottom + 1)
+	}else
+	{
+		return s.Bottom - s.Top + 1
 	}
-	return s.Bottom - s.Top + 1
 }
 
 // IsFull = is_full (C)
