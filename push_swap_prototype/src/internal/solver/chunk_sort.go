@@ -54,11 +54,11 @@ func SortTwo(ps *stack.PushSwapData, chunk *stack.Chunk) {
 }
 
 // SortOne handles a single element in a chunk
-func SortOne(ps *stack.PushSwapData, chunk *stack.Chunk) {
+func SortOne(ps *stack.PushSwapData, to_sort *stack.Chunk) {
 	
-	if chunk.Loc == stack.BOTTOM_A || chunk.Loc == stack.BOTTOM_B || chunk.Loc == stack.TOP_B {
-		MoveFromTo(ps, chunk.Loc, stack.TOP_A)
+	if to_sort.Loc == stack.BOTTOM_A || to_sort.Loc == stack.BOTTOM_B || to_sort.Loc == stack.TOP_B {
+		MoveFromTo(ps, to_sort.Loc, stack.TOP_A)
 	}
 	
-	chunk.Size -= 1
+	to_sort.Size -= 1
 }

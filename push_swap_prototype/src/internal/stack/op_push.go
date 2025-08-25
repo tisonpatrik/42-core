@@ -5,8 +5,9 @@ func push(src *Stack, dest *Stack) {
 	if IsFull(dest) {
 		return
 	}
-	dest.Top = NextUp(dest, dest.Top)
-	dest.Stack[dest.Top] = src.Stack[src.Top]
+	dest_i := NextUp(dest, dest.Top)
+	dest.Stack[dest_i] = src.Stack[src.Top]
+	dest.Top = dest_i
 	src.Stack[src.Top] = 0
 	src.Top = NextDown(src, src.Top)
 }
