@@ -25,85 +25,86 @@ func SortThree(ps *stack.PushSwapData, chunk *stack.Chunk) {
 	
 	// FIXED: Decrement chunk.Size by 3 after sorting three elements
 	chunk.Size -= 3
+	SortTwo(ps, chunk)
 }
 
-// sortThreeTopA třídí tři prvky, když je chunk na TOP_A
-func SortThreeTopA(ps *stack.PushSwapData, chunk *stack.Chunk, stk *stack.Stack, max int) {
-
-	if stk.Value(stk.GetTop()) == max {
-		stack.Swap_a(ps)
-		stack.Rotate_a(ps)
-		stack.Swap_a(ps)
-		stack.R_rotate_a(ps)
-	} else if stk.Value(stk.NextDown(stk.GetTop())) == max {
-		stack.Rotate_a(ps)
-		stack.Swap_a(ps)
-		stack.R_rotate_a(ps)
-	} else {
+func SortThreeTopA(ps *stack.PushSwapData, to_sort *stack.Chunk, stk *stack.Stack, max int) {
+	if stack.Value(stk, stk.Top) == max {
+		stack.SwapA(ps)
+		stack.RotateA(ps)
+		stack.SwapA(ps)
+		stack.ReverseRotateA(ps)
+	} else if stack.Value(stk, stack.NextDown(stk, stk.Top)) == max {
+		stack.RotateA(ps)
+		stack.SwapA(ps)
+		stack.ReverseRotateA(ps)
 	}
 
-	chunk.Loc = stack.TOP_A
+	to_sort.Loc = stack.TOP_A
+	to_sort.Size -= 1
+	
+	SortTwo(ps, to_sort)
 }
 
-// sortThreeTopB třídí tři prvky, když je chunk na TOP_B
-func SortThreeTopB(ps *stack.PushSwapData, chunk *stack.Chunk, stk *stack.Stack, max int) {
-	
-	stack.Push_a(ps)
-	
-	if stk.Value(stk.GetTop()) == max {
-		stack.Push_a(ps)
-		stack.Swap_a(ps)
-	} else if stk.Value(stk.NextDown(stk.GetTop())) == max {
-		stack.Swap_b(ps)
-		stack.Push_a(ps)
-		stack.Swap_a(ps)
-	} else {
-		stack.Push_a(ps)
-	}
-	
-	stack.Push_a(ps)
+func SortThreeTopB(ps *stack.PushSwapData, to_sort *stack.Chunk, stk *stack.Stack, max int) {
+	stack.PushA(ps)
 
-	chunk.Loc = stack.TOP_A
+	if stack.Value(stk, stk.Top) == max {
+		stack.PushA(ps)
+		stack.SwapA(ps)
+	} else if stack.Value(stk, stack.NextDown(stk, stk.Top)) == max {
+		stack.SwapB(ps)
+		stack.PushA(ps)
+		stack.SwapA(ps)
+	} else {
+		stack.PushA(ps)
+	}
+	stack.PushA(ps)
+
+	to_sort.Loc = stack.TOP_A
+	to_sort.Size -= 1
+
+	SortTwo(ps, to_sort)
 }
 
-// sortThreeBottomA třídí tři prvky, když je chunk na BOTTOM_A
-func SortThreeBottomA(ps *stack.PushSwapData, chunk *stack.Chunk, stk *stack.Stack, max int) {
-	
-	stack.R_rotate_a(ps)
-	stack.R_rotate_a(ps)
-	
-	if stk.Value(stk.GetTop()) == max {
-		stack.Swap_a(ps)
-		stack.R_rotate_a(ps)
-	} else if stk.Value(stk.NextDown(stk.GetTop())) == max {
-		stack.R_rotate_a(ps)
-	} else {
-		stack.Push_b(ps)
-		stack.R_rotate_a(ps)
-		stack.Swap_a(ps)
-		stack.Push_a(ps)
+func SortThreeBottomA(ps *stack.PushSwapData, to_sort *stack.Chunk, stk *stack.Stack, max int) {
+	stack.ReverseRotateA(ps)
+	stack.ReverseRotateA(ps)
+
+	if stack.Value(stk, stk.Top) == max {
+		stack.SwapA(ps)
+		stack.ReverseRotateA(ps)
+	} else if stack.Value(stk, stack.NextDown(stk, stk.Top)) == max {
+		stack.ReverseRotateA(ps)
+	}else {
+		stack.PushB(ps)
+		stack.ReverseRotateA(ps)
+		stack.SwapA(ps)
+		stack.PushA(ps)
 	}
 
-	chunk.Loc = stack.TOP_A
+	to_sort.Loc = stack.TOP_A
+	to_sort.Size -= 1
+	SortTwo(ps, to_sort)
 }
 
-// sortThreeBottomB třídí tři prvky, když je chunk na BOTTOM_B
-func SortThreeBottomB(ps *stack.PushSwapData, chunk *stack.Chunk, stk *stack.Stack, max int) {
-	
-	stack.R_rotate_b(ps)
-	stack.R_rotate_b(ps)
-	
-	if stk.Value(stk.GetTop()) == max {
-		stack.Push_a(ps)
-		stack.R_rotate_b(ps)
-	} else if stk.Value(stk.NextDown(stk.GetTop())) == max {
-		stack.Swap_b(ps)
-		stack.Push_a(ps)
-		stack.R_rotate_b(ps)
-	} else {
-		stack.Push_a(ps)
-		stack.Push_a(ps)
+func SortThreeBottomB(ps *stack.PushSwapData, to_sort *stack.Chunk, stk *stack.Stack, max int) {
+	stack.ReverseRotateB(ps)
+	stack.ReverseRotateB(ps)
+
+	if stack.Value(stk, stk.Top) == max {
+		stack.SwapB(ps)
+		stack.ReverseRotateB(ps)
+	}else if stack.Value(stk, stack.NextDown(stk, stk.Top)) == max {
+		stack.ReverseRotateB(ps)
+	}	else {
+		stack.PushA(ps)
+		stack.ReverseRotateB(ps)
+		stack.SwapB(ps)
+		stack.PushA(ps)
 	}
 
-	chunk.Loc = stack.TOP_A
+	to_sort.Loc = stack.TOP_B
+	to_sort.Size -= 1
+	SortTwo(ps, to_sort)
 }

@@ -13,40 +13,31 @@ func ChunkSort(ps *stack.PushSwapData) {
 
 // RecChunkSort recursively sorts chunks using divide and conquer approach
 func RecChunkSort(ps *stack.PushSwapData, toSort *stack.Chunk) {
-
+	
+	// FIXED: Match C implementation exactly - call chunk_to_the_top first
+	ChunkToTheTop(ps, toSort)
 	EasySort(ps, toSort)
-
-	// FIXED: Use toSort.Size after EasySort, because EasySort now modifies it
+	
 	if toSort.Size <= 3 {
 		
-		switch toSort.Size {
-		case 3:
+		if toSort.Size == 3 {
 			SortThree(ps, toSort)
-		case 2:
+		} else if toSort.Size == 2 {
 			SortTwo(ps, toSort)
-		case 1:
+		} else if toSort.Size == 1 {
 			SortOne(ps, toSort)
-		default:
-			return
 		}
-		return  // FIXED: Return immediately for small chunks like C implementation
+		return
 	}
 	
-	// FIXED: ChunkSplit now returns SplitDest instead of taking a pointer
-	dest := ChunkSplit(ps, toSort)
+	// FIXED: Match C implementation exactly - use pointer parameter like C
+	var dest stack.SplitDest
+	ChunkSplit(ps, toSort, &dest)
 	
-	// FIXED: Only recurse on chunks with size > 0 to prevent infinite recursion
-	if dest.Max.Size > 0 {
-		RecChunkSort(ps, &dest.Max)
-	}
-	
-	if dest.Mid.Size > 0 {
-		RecChunkSort(ps, &dest.Mid)
-	}
-	
-	if dest.Min.Size > 0 {
-		RecChunkSort(ps, &dest.Min)
-	}
+	// FIXED: Match C implementation exactly - always recurse on all chunks
+	RecChunkSort(ps, &dest.Max)
+	RecChunkSort(ps, &dest.Mid)
+	RecChunkSort(ps, &dest.Min)
 }
 
 // SortTwo sorts two elements in a chunk
@@ -57,12 +48,12 @@ func SortTwo(ps *stack.PushSwapData, chunk *stack.Chunk) {
 		MoveFromTo(ps, chunk.Loc, stack.TOP_A)
 	}
 
+	// FIXED: Match C implementation exactly - use value() function
 	if ps.A.GetValue(1) > ps.A.GetValue(2) {
 		stack.Swap_a(ps)
-	} else {
 	}
 
-	// FIXED: Decrement chunk.Size like C implementation
+	// FIXED: Match C implementation exactly - decrement size
 	chunk.Size -= 2
 }
 
@@ -71,9 +62,8 @@ func SortOne(ps *stack.PushSwapData, chunk *stack.Chunk) {
 	
 	if chunk.Loc == stack.BOTTOM_A || chunk.Loc == stack.BOTTOM_B || chunk.Loc == stack.TOP_B {
 		MoveFromTo(ps, chunk.Loc, stack.TOP_A)
-	} else {
 	}
 	
-	// FIXED: Decrement chunk.Size like C implementation
-	chunk.Size--
+	// FIXED: Match C implementation exactly - decrement size
+	chunk.Size -= 1
 }

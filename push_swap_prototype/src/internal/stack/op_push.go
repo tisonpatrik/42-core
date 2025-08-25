@@ -1,22 +1,26 @@
 package stack
 
-// push pushes an element from src to dest (like C push)
+
 func push(src *Stack, dest *Stack) {
-	dest.PushFrom(src)
+	if IsFull(dest) {
+		return
+	}
+	dest.Top = NextUp(dest, dest.Top)
+	dest.Stack[dest.Top] = src.Stack[src.Top]
+	src.Stack[src.Top] = 0
+	src.Top = NextDown(src, src.Top)
 }
 
-// Push_a pushes the first element of B to A (like C push_a)
-func Push_a(data *PushSwapData) {
-	push(data.B, data.A)
-	if data.WritingMode {
-		saveOp(data, PA)
+func PushA(ps *PushSwapData) {
+	push(ps.B, ps.A)
+	if ps.WritingMode {
+		SaveOp(ps, PA)
 	}
 }
 
-// Push_b pushes the first element of A to B (like C push_b)
-func Push_b(data *PushSwapData) {
-	push(data.A, data.B)
-	if data.WritingMode {
-		saveOp(data, PB)
+func PushB(ps *PushSwapData) {
+	push(ps.A, ps.B)
+	if ps.WritingMode {
+		SaveOp(ps, PB)
 	}
 }

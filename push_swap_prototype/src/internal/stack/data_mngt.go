@@ -1,14 +1,16 @@
 package stack
 
 func IsSorted(ps *PushSwapData) bool {
-	if ps.A.Size() <= 1 {
-		return true
-	}
+	i := ps.A.Top
+	rank := 1
 
-	for i := 1; i < ps.A.Size(); i++ {
-		if ps.A.GetValue(i) > ps.A.GetValue(i+1) {
+	for rank <= ps.A.Size {
+		if ps.A.Stack[i] != rank {
 			return false
 		}
+		rank++
+		i = NextDown(ps.A, i)
 	}
 	return true
 }
+

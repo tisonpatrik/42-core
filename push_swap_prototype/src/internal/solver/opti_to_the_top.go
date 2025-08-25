@@ -4,12 +4,12 @@ import (
 	"push_swap_prototype/internal/stack"
 )
 
-// chunkToTheTop moves the chunk to the top of its stack
+// ChunkToTheTop moves the chunk to the top of its stack
 func ChunkToTheTop(ps *stack.PushSwapData, chunk *stack.Chunk) {
-	if chunk.Loc == stack.BOTTOM_B && ps.B.CurrentSize() == chunk.Size {
+	if chunk.Loc == stack.BOTTOM_B && stack.CurrentSize(ps.B) == chunk.Size {
 		chunk.Loc = stack.TOP_B
 	}
-	if chunk.Loc == stack.BOTTOM_A && ps.A.CurrentSize() == chunk.Size {
+	if chunk.Loc == stack.BOTTOM_A && stack.CurrentSize(ps.A) == chunk.Size {
 		chunk.Loc = stack.TOP_A
 	}
 }

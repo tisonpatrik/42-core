@@ -4,15 +4,13 @@ import (
 	"push_swap_prototype/internal/stack"
 )
 
-func SolvePushSwap(numbers []int) ([]stack.Operation, []int) {
+func SolvePushSwap(numbers []int) () {
 	
-	ps := stack.NewPushSwapDataWithCapacity(len(numbers))
-	stack.InitializeFromSlice(ps, numbers)
-
+	ps := stack.NewPushSwapData()
+	stack.FillStack(ps.A, numbers)
 	if stack.IsSorted(ps) {
-		return []stack.Operation{}, ps.A.ToSlice()
+		return
 	}
 	
 	ChunkSort(ps)
-	return ps.GetOperations(), ps.A.ToSlice()
 }

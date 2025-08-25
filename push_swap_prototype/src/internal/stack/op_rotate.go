@@ -1,31 +1,35 @@
 package stack
 
-// rotate rotates a stack up (first element becomes last) (like C rotate)
 func rotate(stk *Stack) {
-	stk.RotateUp()
-}
-
-// Rotate_a rotates stack A up (first element becomes last) (like C rotate_a)
-func Rotate_a(data *PushSwapData) {
-	rotate(data.A)
-	if data.WritingMode {
-		saveOp(data, RA)
+	if IsFull(stk) {
+		stk.Bottom = stk.Top
+		stk.Top = NextDown(stk, stk.Top)
+	} else {
+		stk.Bottom = NextDown(stk, stk.Bottom)
+		stk.Stack[stk.Bottom] = stk.Stack[stk.Top]
+		stk.Stack[stk.Top] = 0
+		stk.Top = NextDown(stk, stk.Top)
 	}
 }
 
-// Rotate_b rotates stack B up (first element becomes last) (like C rotate_b)
-func Rotate_b(data *PushSwapData) {
-	rotate(data.B)
-	if data.WritingMode {
-		saveOp(data, RB)
+func RotateA(ps *PushSwapData) {
+	rotate(ps.A)
+	if ps.WritingMode {
+		SaveOp(ps, RA)
 	}
 }
 
-// Rotate_ab rotates both stacks up (like C rotate_ab)
-func Rotate_ab(data *PushSwapData) {
-	rotate(data.A)
-	rotate(data.B)
-	if data.WritingMode {
-		saveOp(data, RR)
+func RotateB(ps *PushSwapData) {
+	rotate(ps.B)
+	if ps.WritingMode {
+		SaveOp(ps, RB)
+	}
+}
+
+func RotateAB(ps *PushSwapData) {
+	rotate(ps.A)
+	rotate(ps.B)
+	if ps.WritingMode {
+		SaveOp(ps, RR)
 	}
 }

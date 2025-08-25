@@ -9,16 +9,16 @@ func SplitMaxReduction(ps *stack.PushSwapData, max *stack.Chunk) {
 	a := ps.A
 
 	if max.Loc == stack.TOP_A && max.Size == 3 && isConsecutive(
-		a.GetValue(1), a.GetValue(2),
-		a.GetValue(3), a.GetValue(4)) &&
+		stack.Value(a, 1), stack.Value(a, 2),
+		stack.Value(a, 3), stack.Value(a, 4)) &&
 		APartlySort(ps, 4) {
 		SortThree(ps, max)
 		return
 	}
 
-	if max.Loc == stack.TOP_A && a.GetValue(1) == a.GetValue(3)-1 &&
+	if max.Loc == stack.TOP_A && stack.Value(a, 1) == stack.Value(a, 3)-1 &&
 		APartlySort(ps, 3) {
-		stack.Swap_a(ps)
+		stack.SwapA(ps)
 		max.Size--
 	}
 
@@ -30,34 +30,16 @@ func SplitMaxReduction(ps *stack.PushSwapData, max *stack.Chunk) {
 func APartlySort(ps *stack.PushSwapData, from int) bool {
 	
 	a := ps.A
-	
-	// Fix: Start from top and advance by (from-1) positions (like C implementation)
-	i := a.GetTop()
-	
-	// Fix: Decrement from BEFORE using it (like C: while (--from))
-	for from > 1 {
-		from--
-		i = a.NextDown(i)
+
+	i := a.Top
+
+	for ; from > 0; from-- {
+		i = stack.NextDown(a, i)
 	}
 	
-	// Fix: Check bounds before accessing
-	if i < 0 || i >= len(a.GetStack()) {
-		return false
-	}
-	
-	// Fix: Check if we've reached the end of the stack
-	for i >= 0 && a.GetStack()[i] != ps.A.Size() {
-		value := a.GetStack()[i]
-		i = a.NextDown(i)
-		
-		// Fix: Check bounds before next access
-		if i < 0 || i >= len(a.GetStack()) {
-			return false
-		}
-		
-		nextValue := a.GetStack()[i]
-		
-		if nextValue != value+1 {
+	for ; a.Stack[i] != a.Size; i = stack.NextDown(a, i) {
+		value := a.Stack[i]
+		if a.Stack[i] != value + 1 {
 			return false
 		}
 	}
@@ -75,13 +57,11 @@ func isConsecutive(a, b, c, d int) bool {
 
 func sortThreeNumbers(a, b, c *int) {
 	
-	// Optimalizovaný algoritmus pro 3 čísla - méně porovnání a swapů
 	if *a > *b {
 		*a, *b = *b, *a
 	}
 	if *b > *c {
 		*b, *c = *c, *b
-		// Po swapu b a c musíme zkontrolovat a a b
 		if *a > *b {
 			*a, *b = *b, *a
 		}
