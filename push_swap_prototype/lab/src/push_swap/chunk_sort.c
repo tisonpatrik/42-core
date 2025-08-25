@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 20:56:55 by ugerkens          #+#    #+#             */
-/*   Updated: 2025/08/25 00:43:57 by patrik           ###   ########.fr       */
+/*   Updated: 2025/08/25 11:01:26 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,9 @@ void	chunk_sort(t_ps *data)
 {
 	t_chunk	chunk_all;
 
-	// Debug: Log function entry
-	debug_log(DEBUG_DEBUG, "=== CHUNK_SORT START ===");
-	debug_log(DEBUG_DEBUG, "Stack A size: %d", data->a.size);
-	
 	chunk_all.loc = TOP_A;
 	chunk_all.size = data->a.size;
-	
-	debug_log(DEBUG_DEBUG, "Created chunk_all: loc=%d, size=%d", chunk_all.loc, chunk_all.size);
-	debug_log(DEBUG_DEBUG, "Calling rec_chunk_sort with chunk_all");
-	
 	rec_chunk_sort(data, &chunk_all);
-	
-	debug_log(DEBUG_DEBUG, "=== CHUNK_SORT END ===");
 }
 
 void	rec_chunk_sort(t_ps *data, t_chunk *to_sort)

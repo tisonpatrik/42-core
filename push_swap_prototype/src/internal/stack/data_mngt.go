@@ -6,7 +6,7 @@ func IsSorted(ps *PushSwapData) bool {
 	}
 
 	for i := 1; i < ps.A.Size(); i++ {
-		if ps.A.GetValueAtPosition(i) > ps.A.GetValueAtPosition(i+1) {
+		if ps.A.GetValue(i) > ps.A.GetValue(i+1) {
 			return false
 		}
 	}

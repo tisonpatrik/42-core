@@ -55,19 +55,15 @@ func InitializeFromSlice(data *PushSwapData, values []int) {
 	if data == nil {
 		return
 	}
-	// We do not need ranking, bcs we are generating already ranked values.
-
-	// Initialize stack A with proper capacity if not already done
-	if data.A.size == 0 {
+	
+	// FIXED: Initialize with proper capacity first, then fill
+	if data.A.Size() == 0 {
 		data.A.InitWithCapacity(len(values))
 	}
-
-	// Fill stack A with ranked values (like C fill_stack)
-	copy(data.A.stack, values)
 	
-	// Set pointers like C fill_stack: first element is at top, last element is at bottom
-	data.A.top = 0
-	data.A.bottom = len(values) - 1
+	// Now fill the stack with values
+	data.A.FillFromSlice(values)
+	
 }
 
 
@@ -132,6 +128,14 @@ const (
 type Chunk struct {
 	Loc  Loc
 	Size int
+}
+
+// NewChunk creates a new chunk with the specified location and size
+func NewChunk(loc Loc, size int) *Chunk {
+	return &Chunk{
+		Loc:  loc,
+		Size: size,
+	}
 }
 
 // SplitDest represents the destination for splitting a chunk (like C t_split_dest)

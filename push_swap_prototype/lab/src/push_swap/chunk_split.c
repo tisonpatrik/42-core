@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 20:57:19 by ugerkens          #+#    #+#             */
-/*   Updated: 2025/08/25 00:43:57 by patrik           ###   ########.fr       */
+/*   Updated: 2025/08/25 11:18:49 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,9 @@ void	chunk_split(t_ps *data, t_chunk *to_split, t_split_dest *dest)
 	// Debug: Log before while loop
 	debug_log(DEBUG_DEBUG, "Before while loop: to_split->size = %d", to_split->size);
 	
-	while (to_split->size--)
+	while (to_split->size > 0)
 	{
+		to_split->size--;
 		// Debug: Log each iteration
 		debug_log(DEBUG_DEBUG, "=== WHILE LOOP ITERATION ===");
 		debug_log(DEBUG_DEBUG, "After size--: to_split->size = %d", to_split->size + 1);

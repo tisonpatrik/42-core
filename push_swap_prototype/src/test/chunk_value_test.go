@@ -21,7 +21,7 @@ func TestChunkValueTOP_A_Offset1(t *testing.T) {
 	}
 
 	// Act
-	result := solver.ChunkValue(ps, chunk, 1, chunk.Size)
+	result := solver.ChunkValue(ps, chunk, 1)
 
 	// Assert - EXACT first element from log line 19
 	expected := 53
@@ -45,7 +45,7 @@ func TestChunkValueTOP_A_Offset2(t *testing.T) {
 	}
 
 	// Act
-	result := solver.ChunkValue(ps, chunk, 2, chunk.Size)
+	result := solver.ChunkValue(ps, chunk, 2)
 
 	// Assert - EXACT second element from log line 19
 	expected := 12
@@ -69,7 +69,7 @@ func TestChunkValueTOP_A_Offset3(t *testing.T) {
 	}
 
 	// Act
-	result := solver.ChunkValue(ps, chunk, 3, chunk.Size)
+	result := solver.ChunkValue(ps, chunk, 3)
 
 	// Assert - EXACT third element from log line 19
 	expected := 18
@@ -93,7 +93,7 @@ func TestChunkValueBOTTOM_A_Offset1(t *testing.T) {
 	}
 
 	// Act
-	result := solver.ChunkValue(ps, chunk, 1, chunk.Size)
+	result := solver.ChunkValue(ps, chunk, 1)
 
 	// Assert - EXACT last element from log line 19
 	expected := 65
@@ -117,7 +117,7 @@ func TestChunkValueBOTTOM_A_Offset2(t *testing.T) {
 	}
 
 	// Act
-	result := solver.ChunkValue(ps, chunk, 2, chunk.Size)
+	result := solver.ChunkValue(ps, chunk, 2)
 
 	// Assert - EXACT second to last element from log line 19
 	expected := 14

@@ -56,33 +56,30 @@ func (s *Stack) RotateDown() bool {
 	return true
 }
 
-// PushFrom pushes an element from another stack to this stack (exactly like C push)
 func (s *Stack) PushFrom(other *Stack) bool {
 	// C implementation only checks if destination is full
-	// If destination is full, return false (like C implementation)
 	if s.IsFull() {
 		return false
 	}
 
 	// C implementation doesn't check if source is empty
-	// But we need to handle empty source stacks to avoid panics
 	if other.CurrentSize() == 0 {
-		// Source is empty - just return true (like C would)
 		return true
 	}
 
 	// If destination is empty, initialize it with sufficient capacity
-	if s.size == 0 {
-		// Initialize with size equal to source size to avoid expansion issues
-		s.stack = make([]int, other.size)
-		s.size = other.size
-		s.top = 0
-		s.bottom = 0
-
+	if s.CurrentSize() == 0 {
+		// FIXED: Don't change s.size (capacity), just ensure capacity
+		if cap(s.stack) < 1 {
+			s.stack = make([]int, 100) // Ensure sufficient capacity
+		}
+		
 		// For empty destination, first element goes at top
 		s.stack[s.top] = other.stack[other.top]
 		other.stack[other.top] = 0
 		other.top = other.NextDown(other.top)
+		
+		// FIXED: Don't change s.size, it's the capacity
 		return true
 	}
 
@@ -92,6 +89,7 @@ func (s *Stack) PushFrom(other *Stack) bool {
 	s.top = destIndex
 	other.stack[other.top] = 0
 	other.top = other.NextDown(other.top)
-
+	
+	// FIXED: Don't change s.size, it's the capacity
 	return true
 }

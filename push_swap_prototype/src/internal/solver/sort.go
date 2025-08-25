@@ -5,13 +5,14 @@ import (
 )
 
 func SolvePushSwap(numbers []int) ([]stack.Operation, []int) {
-	ps := stack.NewPushSwapData()
+	
+	ps := stack.NewPushSwapDataWithCapacity(len(numbers))
 	stack.InitializeFromSlice(ps, numbers)
 
 	if stack.IsSorted(ps) {
 		return []stack.Operation{}, ps.A.ToSlice()
 	}
-	ChunkSort(ps)
 	
+	ChunkSort(ps)
 	return ps.GetOperations(), ps.A.ToSlice()
 }

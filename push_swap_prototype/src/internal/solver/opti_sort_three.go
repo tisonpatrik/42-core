@@ -6,8 +6,11 @@ import (
 
 // sortThree třídí tři prvky v chunku shodně s C implementací
 func SortThree(ps *stack.PushSwapData, chunk *stack.Chunk) {
+	
+	
 	stk := locToStack(ps, chunk.Loc)
 	max := ChunkMaxValue(ps, chunk)
+
 
 	switch chunk.Loc {
 	case stack.TOP_A:
@@ -26,6 +29,7 @@ func SortThree(ps *stack.PushSwapData, chunk *stack.Chunk) {
 
 // sortThreeTopA třídí tři prvky, když je chunk na TOP_A
 func SortThreeTopA(ps *stack.PushSwapData, chunk *stack.Chunk, stk *stack.Stack, max int) {
+
 	if stk.Value(stk.GetTop()) == max {
 		stack.Swap_a(ps)
 		stack.Rotate_a(ps)
@@ -35,18 +39,17 @@ func SortThreeTopA(ps *stack.PushSwapData, chunk *stack.Chunk, stk *stack.Stack,
 		stack.Rotate_a(ps)
 		stack.Swap_a(ps)
 		stack.R_rotate_a(ps)
+	} else {
 	}
 
 	chunk.Loc = stack.TOP_A
-	// FIXED: Don't decrement chunk.Size here - let calling function handle it
-	// chunk.Size -= 1
-	// FIXED: Don't call SortTwo - that's not correct behavior
-	// SortTwo(ps, chunk)
 }
 
 // sortThreeTopB třídí tři prvky, když je chunk na TOP_B
 func SortThreeTopB(ps *stack.PushSwapData, chunk *stack.Chunk, stk *stack.Stack, max int) {
+	
 	stack.Push_a(ps)
+	
 	if stk.Value(stk.GetTop()) == max {
 		stack.Push_a(ps)
 		stack.Swap_a(ps)
@@ -57,19 +60,18 @@ func SortThreeTopB(ps *stack.PushSwapData, chunk *stack.Chunk, stk *stack.Stack,
 	} else {
 		stack.Push_a(ps)
 	}
+	
 	stack.Push_a(ps)
 
 	chunk.Loc = stack.TOP_A
-	// FIXED: Don't decrement chunk.Size here - let calling function handle it
-	// chunk.Size -= 1
-	// FIXED: Don't call SortTwo - that's not correct behavior
-	// SortTwo(ps, chunk)
 }
 
 // sortThreeBottomA třídí tři prvky, když je chunk na BOTTOM_A
 func SortThreeBottomA(ps *stack.PushSwapData, chunk *stack.Chunk, stk *stack.Stack, max int) {
+	
 	stack.R_rotate_a(ps)
 	stack.R_rotate_a(ps)
+	
 	if stk.Value(stk.GetTop()) == max {
 		stack.Swap_a(ps)
 		stack.R_rotate_a(ps)
@@ -83,16 +85,14 @@ func SortThreeBottomA(ps *stack.PushSwapData, chunk *stack.Chunk, stk *stack.Sta
 	}
 
 	chunk.Loc = stack.TOP_A
-	// FIXED: Don't decrement chunk.Size here - let calling function handle it
-	// chunk.Size -= 1
-	// FIXED: Don't call SortTwo - that's not correct behavior
-	// SortTwo(ps, chunk)
 }
 
 // sortThreeBottomB třídí tři prvky, když je chunk na BOTTOM_B
 func SortThreeBottomB(ps *stack.PushSwapData, chunk *stack.Chunk, stk *stack.Stack, max int) {
+	
 	stack.R_rotate_b(ps)
 	stack.R_rotate_b(ps)
+	
 	if stk.Value(stk.GetTop()) == max {
 		stack.Push_a(ps)
 		stack.R_rotate_b(ps)
@@ -101,13 +101,9 @@ func SortThreeBottomB(ps *stack.PushSwapData, chunk *stack.Chunk, stk *stack.Sta
 		stack.Push_a(ps)
 		stack.R_rotate_b(ps)
 	} else {
-		stack.R_rotate_b(ps)
+		stack.Push_a(ps)
 		stack.Push_a(ps)
 	}
 
-	chunk.Loc = stack.TOP_B
-	// FIXED: Don't decrement chunk.Size here - let calling function handle it
-	// chunk.Size -= 1
-	// FIXED: Don't call SortTwo - that's not correct behavior
-	// SortTwo(ps, chunk)
+	chunk.Loc = stack.TOP_A
 }
