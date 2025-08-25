@@ -27,12 +27,12 @@ func MoveFromTopA(ps *stack.PushSwapData, to stack.Loc) {
 	
 	switch to {
 	case stack.TOP_B:
-		stack.Push_b(ps)
+		stack.PushB(ps)
 	case stack.BOTTOM_A:
-		stack.Rotate_a(ps)
+		stack.RotateA(ps)
 	case stack.BOTTOM_B:
-		stack.Push_b(ps)
-		stack.Rotate_b(ps)
+		stack.PushB(ps)
+		stack.RotateB(ps)
 	}
 	
 }
@@ -42,12 +42,12 @@ func MoveFromTopB(ps *stack.PushSwapData, to stack.Loc) {
 	
 	switch to {
 	case stack.TOP_A:
-		stack.Push_a(ps)
+		stack.PushA(ps)
 	case stack.BOTTOM_B:
-		stack.Rotate_b(ps)
+		stack.RotateB(ps)
 	case stack.BOTTOM_A:
-		stack.Push_a(ps)
-		stack.Rotate_a(ps)
+		stack.PushA(ps)
+		stack.RotateA(ps)
 	}
 }
 
@@ -56,14 +56,14 @@ func MoveFromBottomA(ps *stack.PushSwapData, to stack.Loc) {
 	
 	switch to {
 	case stack.TOP_A:
-		stack.R_rotate_a(ps)
+		stack.ReverseRotateA(ps)
 	case stack.TOP_B:
-		stack.R_rotate_a(ps)
-		stack.Push_b(ps)
+		stack.ReverseRotateA(ps)
+		stack.PushB(ps)
 	case stack.BOTTOM_B:
-		stack.R_rotate_a(ps)
-		stack.Push_b(ps)
-		stack.Rotate_b(ps)
+		stack.ReverseRotateA(ps)
+		stack.PushB(ps)
+		stack.RotateB(ps)
 	}
 	
 }
@@ -73,13 +73,13 @@ func MoveFromBottomB(ps *stack.PushSwapData, to stack.Loc) {
 
 	switch to {
 	case stack.TOP_A:
-		stack.R_rotate_b(ps)
-		stack.Push_a(ps)
+		stack.ReverseRotateB(ps)
+		stack.PushA(ps)
 	case stack.TOP_B:
-		stack.R_rotate_b(ps)
+		stack.ReverseRotateB(ps)
 	case stack.BOTTOM_A:
-		stack.R_rotate_b(ps)
-		stack.Push_a(ps)
-		stack.Rotate_a(ps)
+		stack.ReverseRotateB(ps)
+		stack.PushA(ps)
+		stack.RotateA(ps)
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 20:58:15 by ugerkens          #+#    #+#             */
-/*   Updated: 2025/08/25 12:49:11 by patrik           ###   ########.fr       */
+/*   Updated: 2025/08/25 15:06:02 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 void	easy_sort(t_ps *data, t_chunk *to_sort)
 {
-
-	while (to_sort->loc != TOP_A && to_sort->size)
+	for (; to_sort->loc != TOP_A && to_sort->size; )
 	{
 		if (value(&data->a, 1) == chunk_value(data, to_sort, 1) + 1
 			&& to_sort->size > 0)

@@ -7,30 +7,23 @@ import (
 // Returns SplitDest instead of modifying a pointer parameter
 func ChunkSplit(ps *stack.PushSwapData, to_split *stack.Chunk, dest *stack.SplitDest) {
 	
+	var pivot1, pivot2 int
 	initSize(&dest.Min, &dest.Mid, &dest.Max)
 	setSplitLoc(to_split.Loc, &dest.Min, &dest.Mid, &dest.Max)
-	
-	setThirdPivots(to_split.Loc, to_split.Size, &dest.Pivot1, &dest.Pivot2)
-	
+	setThirdPivots(to_split.Loc, to_split.Size, &pivot1, &pivot2)
+
 	maxValue := ChunkMaxValue(ps, to_split)
 
-	// FIXED: Match C implementation exactly - use for loop with original size
-	originalSize := to_split.Size
-	
-	for j := 0; j < originalSize; j++ {
-		to_split.Size--
-		
-		// FIXED: Use j+1 for ChunkValue calculation to match C implementation
-		nextValue := ChunkValue(ps, to_split, j+1)
-		
-		if nextValue > maxValue-dest.Pivot2 {
+	for i := 0; i < to_split.Size; i++ {
+		nextValue := ChunkValue(ps, to_split, i+1)
+
+		if nextValue > maxValue-pivot2 {
 			dest.Max.Size += MoveFromTo(ps, to_split.Loc, dest.Max.Loc)
 			SplitMaxReduction(ps, &dest.Max)
-			
-			if APartlySort(ps, 1) && to_split.Size > 0 {
+			if APartlySort(ps, 1) && to_split.Size-i-1 > 0 {
 				EasySort(ps, to_split)
 			}
-		} else if nextValue > maxValue-dest.Pivot1 {
+		} else if nextValue > maxValue-pivot1 {
 			dest.Mid.Size += MoveFromTo(ps, to_split.Loc, dest.Mid.Loc)
 		} else {
 			dest.Min.Size += MoveFromTo(ps, to_split.Loc, dest.Min.Loc)

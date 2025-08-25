@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 20:58:30 by ugerkens          #+#    #+#             */
-/*   Updated: 2025/08/25 14:47:32 by patrik           ###   ########.fr       */
+/*   Updated: 2025/08/25 14:51:53 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,29 +47,25 @@ bool	a_partly_sort(t_ps *data, int from)
 
 	a = &data->a;
 	
-	i = a->top;
-	
-	while (--from)
+	// First loop: move to the starting position
+	for (i = a->top; from > 0; from--)
 	{
 		i = next_down(a, i);
 	}
 	
-	while (a->stack[i] != data->a.size)
+	// Second loop: check if the sequence is sorted
+	value = a->stack[i];
+	for (; a->stack[i] != data->a.size; i = next_down(a, i))
 	{
-		value = a->stack[i];
-		
-		i = next_down(a, i);
-		
-		
 		if (a->stack[i] != value + 1)
 		{
 			return (false);
 		}
+		value = a->stack[i];
 	}
 	
 	return (true);
 }
-
 bool	is_consecutive(int a, int b, int c, int d)
 {
 	sort_three_numbers(&a, &b, &c);

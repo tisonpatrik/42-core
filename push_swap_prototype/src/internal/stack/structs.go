@@ -29,6 +29,11 @@ type PushSwapData struct {
 	WritingMode bool
 }
 
+type SplitDest struct {
+	Min Chunk
+	Mid Chunk
+	Max Chunk
+}
 
 type Operation int
 
