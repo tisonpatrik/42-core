@@ -22,10 +22,6 @@ func SortThree(ps *stack.PushSwapData, chunk *stack.Chunk) {
 	case stack.BOTTOM_B:
 		SortThreeBottomB(ps, chunk, stk, max)
 	}
-	
-	// FIXED: Decrement chunk.Size by 3 after sorting three elements
-	chunk.Size -= 3
-	SortTwo(ps, chunk)
 }
 
 func SortThreeTopA(ps *stack.PushSwapData, to_sort *stack.Chunk, stk *stack.Stack, max int) {
@@ -93,14 +89,14 @@ func SortThreeBottomB(ps *stack.PushSwapData, to_sort *stack.Chunk, stk *stack.S
 	stack.ReverseRotateB(ps)
 
 	if stack.Value(stk, stk.Top) == max {
-		stack.SwapB(ps)
-		stack.ReverseRotateB(ps)
-	}else if stack.Value(stk, stack.NextDown(stk, stk.Top)) == max {
-		stack.ReverseRotateB(ps)
-	}	else {
 		stack.PushA(ps)
 		stack.ReverseRotateB(ps)
+	}else if stack.Value(stk, stack.NextDown(stk, stk.Top)) == max {
 		stack.SwapB(ps)
+		stack.PushA(ps)
+		stack.ReverseRotateB(ps)
+	}	else {
+		stack.ReverseRotateB(ps)
 		stack.PushA(ps)
 	}
 

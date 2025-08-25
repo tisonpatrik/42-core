@@ -54,8 +54,10 @@ func HandleBottomA(ps *stack.PushSwapData, to_sort *stack.Chunk) {
 func HandleBottomB(ps *stack.PushSwapData, to_sort *stack.Chunk) {
 	stack.ReverseRotateB(ps)
 	stack.ReverseRotateB(ps)
-	stack.SwapB(ps)
-	if stack.Value(ps.B, 1) == stack.Value(ps.B, 2) - 1 {
+
+	stack.PushA(ps)  // FIXED: Match C implementation - push_a first, then swap_b
+	if stack.Value(ps.B, 1) == stack.Value(ps.A, 1) - 1 {
+		stack.PushA(ps)
 		to_sort.Size--
 	} else {
 		stack.RotateB(ps)
