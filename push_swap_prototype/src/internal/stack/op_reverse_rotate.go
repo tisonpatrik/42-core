@@ -1,0 +1,35 @@
+package stack
+
+func reverseRotate(stk *Stack) {
+	if IsFull(stk) {
+		stk.Top = stk.Bottom
+		stk.Bottom = NextUp(stk, stk.Bottom)
+	} else {
+		stk.Top = NextUp(stk, stk.Top)
+		stk.Stack[stk.Top] = stk.Stack[stk.Bottom]
+		stk.Stack[stk.Bottom] = 0
+		stk.Bottom = NextUp(stk, stk.Bottom)
+	}
+}
+
+func ReverseRotateA(ps *PushSwapData) {
+	reverseRotate(ps.A)
+	if ps.WritingMode {
+		SaveOp(ps, RRA)
+	}
+}
+
+func ReverseRotateB(ps *PushSwapData) {
+	reverseRotate(ps.B)
+	if ps.WritingMode {
+		SaveOp(ps, RRB)
+	}
+}
+
+func ReverseRotateAB(ps *PushSwapData) {
+	reverseRotate(ps.A)
+	reverseRotate(ps.B)
+	if ps.WritingMode {
+		SaveOp(ps, RRR)
+	}
+}

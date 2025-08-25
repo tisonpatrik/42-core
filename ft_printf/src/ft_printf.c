@@ -3,25 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 14:25:51 by ptison            #+#    #+#             */
-/*   Updated: 2025/06/15 14:14:05 by patrik           ###   ########.fr       */
+/*   Updated: 2025/08/17 11:00:29 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "parser.h"
+#include "../libft/libft.h"
 #include <stdarg.h>
 
-int	dispatch_conversion(char type, va_list args);
+int		dispatch_conversion(char type, va_list args);
+char	parse_format(const char *format, int *i);
 
 int	ft_printf(const char *format, ...)
 {
-	int			i;
-	int			total;
-	va_list		args;
-	char		type;
+	int		i;
+	int		total;
+	va_list	args;
+	char	type;
 
 	i = 0;
 	total = 0;
