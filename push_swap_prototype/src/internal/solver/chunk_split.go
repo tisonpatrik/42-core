@@ -15,7 +15,7 @@ func ChunkSplit(ps *stack.PushSwapData, to_split *stack.Chunk, dest *stack.Split
 	maxValue := ChunkMaxValue(ps, to_split)
 
 	for i := 0; i < to_split.Size; i++ {
-		nextValue := ChunkValue(ps, to_split, i+1)
+		nextValue := ChunkValue(ps, to_split, 1) // Fixed: Always use index 1 like C implementation
 
 		if nextValue > maxValue-pivot2 {
 			dest.Max.Size += MoveFromTo(ps, to_split.Loc, dest.Max.Loc)
