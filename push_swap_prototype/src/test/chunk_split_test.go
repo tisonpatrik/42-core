@@ -20,10 +20,8 @@ func TestChunkSplitFullChunk(t *testing.T) {
 		Size: 100, // EXACT from log line 155
 	}
 
-	dest := &stack.SplitDest{}
-
 	// Act
-	solver.ChunkSplit(ps, chunk, dest)
+	dest := solver.ChunkSplit(ps, chunk)
 
 	// Assert - EXACT results from log line 16264-16276 (function exit)
 	// Stack A final size=33, Stack B final size=67 (from log line 16264)

@@ -6,11 +6,12 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 21:09:08 by ugerkens          #+#    #+#             */
-/*   Updated: 2025/08/24 18:37:26 by patrik           ###   ########.fr       */
+/*   Updated: 2025/08/25 00:43:57 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/stack.h"
+#include "../../include/debug_logging.h"
 
 void	fill_stack(t_ps *data, t_stack *stk, int size, char **arg)
 {
@@ -91,15 +92,25 @@ void	random_to_rank(int *numbers, int *rank, int size)
 	int	j;
 	int	count_smaller;
 
+	// Debug: Log function entry
+	debug_log(DEBUG_DEBUG, "=== RANDOM_TO_RANK START ===");
+	debug_log(DEBUG_DEBUG, "Size: %d", size);
+	
 	i = 0;
 	while (i < size)
 	{
+		debug_log(DEBUG_DEBUG, "Processing index %d: number=%d", i, numbers[i]);
+		
 		j = 0;
 		count_smaller = 0;
 		while (j < size)
 			if (numbers[j++] <= numbers[i])
 				count_smaller++;
+		
 		rank[i] = count_smaller;
+		debug_log(DEBUG_DEBUG, "Rank[%d] = %d", i, rank[i]);
 		i++;
 	}
+	
+	debug_log(DEBUG_DEBUG, "=== RANDOM_TO_RANK END ===");
 }

@@ -1,10 +1,11 @@
 package solver
 
 import (
+	"fmt"
 	"push_swap_prototype/internal/stack"
 )
 
-func ChunkValue(ps *stack.PushSwapData, chunk *stack.Chunk, n int) int {
+func ChunkValue(ps *stack.PushSwapData, chunk *stack.Chunk, n int, originalSize int) int {
 	loc := chunk.Loc
 	stk := locToStack(ps, loc)
 
@@ -29,7 +30,8 @@ func ChunkValue(ps *stack.PushSwapData, chunk *stack.Chunk, n int) int {
 		return 0
 	}
 
-	// Match C implementation exactly: advance by n-1 positions
+	// FIXED: Use originalSize for index calculation, not chunk.Size
+	// This matches C implementation where chunk_value uses the size before decrement
 	// n=1 means first element in chunk, n=2 means second element, etc.
 	switch loc {
 	case stack.TOP_A, stack.TOP_B:
@@ -60,8 +62,14 @@ func ChunkMaxValue(ps *stack.PushSwapData, chunk *stack.Chunk) int {
 
 	stk = locToStack(ps, chunk.Loc)
 	
+	// DEBUG: Add logging to see why we return 0
+	fmt.Printf("DEBUG: ChunkMaxValue - chunk.Loc=%v, chunk.Size=%d\n", chunk.Loc, chunk.Size)
+	fmt.Printf("DEBUG: ChunkMaxValue - stk=%v, stk.CurrentSize()=%d\n", stk, stk.CurrentSize())
+	
 	// Check if stack is empty or chunk size is invalid
 	if stk == nil || stk.CurrentSize() == 0 || chunk.Size <= 0 {
+		fmt.Printf("DEBUG: ChunkMaxValue - returning 0 because: stk==nil=%v, stk.CurrentSize()==0=%v, chunk.Size<=0=%v\n", 
+			stk == nil, stk != nil && stk.CurrentSize() == 0, chunk.Size <= 0)
 		return 0
 	}
 	
@@ -92,6 +100,8 @@ func ChunkMaxValue(ps *stack.PushSwapData, chunk *stack.Chunk) int {
 			i = stk.NextUp(i)
 		}
 	}
+	
+	fmt.Printf("DEBUG: ChunkMaxValue - returning maxValue=%d\n", maxValue)
 	return maxValue
 }
 

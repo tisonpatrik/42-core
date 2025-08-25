@@ -218,7 +218,7 @@ func TestChunkSortRecursion(t *testing.T) {
 	
 	// Basic check that we didn't lose elements
 	if ps.A.Size() != 59 {
-		t.Errorf("Stack A size changed from 69 to %d", ps.A.Size())
+		t.Errorf("Stack A size changed from 59 to %d", ps.A.Size())
 	}
 	
 	t.Log("Chunk_sort completed successfully - no infinite loop detected!")

@@ -50,15 +50,17 @@ func EasySort(ps *stack.PushSwapData, chunk *stack.Chunk) {
 		lastChunkSize = chunk.Size
 		lastChunkLoc = chunk.Loc
 		
-		if ps.A.GetValueAtPosition(1) == ChunkValue(ps, chunk, 1)+1 && chunk.Size > 0 {
+		if ps.A.GetValueAtPosition(1) == ChunkValue(ps, chunk, 1, chunk.Size)+1 && chunk.Size > 0 {
 			fmt.Printf("DEBUG: EasySort - Condition 1 met, calling SortOne\n")
 			SortOne(ps, chunk)
-		} else if ps.A.GetValueAtPosition(1) == ChunkValue(ps, chunk, 2)+1 && chunk.Size > 1 {
+			// SortOne will decrement chunk.Size
+		} else if ps.A.GetValueAtPosition(1) == ChunkValue(ps, chunk, 2, chunk.Size)+1 && chunk.Size > 1 {
 			fmt.Printf("DEBUG: EasySort - Condition 2 met, calling EasySortSecond\n")
 			EasySortSecond(ps, chunk)
+			// EasySortSecond will decrement chunk.Size
 		} else {
 			fmt.Printf("DEBUG: EasySort - No conditions met, breaking loop\n")
-			break
+			break // FIXED: Add break statement like C implementation
 		}
 	}
 	
@@ -76,6 +78,7 @@ func EasySortSecond(ps *stack.PushSwapData, chunk *stack.Chunk) {
 		HandleBottomB(ps, chunk)
 	}
 	
+	// FIXED: Decrement chunk.Size like C implementation
 	chunk.Size--
 }
 

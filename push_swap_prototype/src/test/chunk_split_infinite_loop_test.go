@@ -27,14 +27,13 @@ func TestChunkSplitInfiniteLoop(t *testing.T) {
 		Size: 33, // EXACT from log - chunk size 33
 	}
 
-	dest := &stack.SplitDest{}
-
 	// Act - This should cause infinite loop due to race condition
 	// We'll use a timeout to detect the infinite loop
 	done := make(chan bool, 1)
 	
 	go func() {
-		solver.ChunkSplit(ps, chunk, dest)
+		dest := solver.ChunkSplit(ps, chunk)
+		_ = dest // Use dest to avoid unused variable warning
 		done <- true
 	}()
 
@@ -45,9 +44,6 @@ func TestChunkSplitInfiniteLoop(t *testing.T) {
 	case <-time.After(5 * time.Second):
 		t.Fatal("ChunkSplit timed out - INFINITE LOOP DETECTED! This confirms the bug.")
 	}
-
-	// If we get here, check the results
-	t.Logf("Final chunk sizes: MIN=%d, MID=%d, MAX=%d", dest.Min.Size, dest.Mid.Size, dest.Max.Size)
 }
 
 // TestChunkSplitRaceCondition tests the race condition that causes infinite loops
@@ -68,13 +64,12 @@ func TestChunkSplitRaceCondition(t *testing.T) {
 		Size: 3, // This size will trigger SplitMaxReduction logic
 	}
 
-	dest := &stack.SplitDest{}
-
 	// Act - This should demonstrate the race condition
 	done := make(chan bool, 1)
 	
 	go func() {
-		solver.ChunkSplit(ps, chunk, dest)
+		dest := solver.ChunkSplit(ps, chunk)
+		_ = dest // Use dest to avoid unused variable warning
 		done <- true
 	}()
 
@@ -85,10 +80,6 @@ func TestChunkSplitRaceCondition(t *testing.T) {
 	case <-time.After(3 * time.Second):
 		t.Fatal("ChunkSplit timed out - RACE CONDITION BUG CONFIRMED!")
 	}
-
-	// Log the results
-	t.Logf("ChunkSplit completed. Final chunk sizes: MIN=%d, MID=%d, MAX=%d", 
-		dest.Min.Size, dest.Mid.Size, dest.Max.Size)
 }
 
 // TestChunkSplitSizeDistributionBug tests the specific bug where chunk sizes are incorrectly distributed
@@ -107,10 +98,8 @@ func TestChunkSplitSizeDistributionBug(t *testing.T) {
 		Size: 3, // This size will trigger SplitMaxReduction logic
 	}
 
-	dest := &stack.SplitDest{}
-
 	// Act
-	solver.ChunkSplit(ps, chunk, dest)
+	dest := solver.ChunkSplit(ps, chunk)
 
 	// Assert - Check that chunk sizes are correctly distributed
 	// With input [1,2,3] and size 3, we expect proper distribution
@@ -153,10 +142,8 @@ func TestChunkSplitSize11(t *testing.T) {
 		Size: 11, // EXACT from log - chunk size 11
 	}
 
-	dest := &stack.SplitDest{}
-
 	// Act
-	solver.ChunkSplit(ps, chunk, dest)
+	dest := solver.ChunkSplit(ps, chunk)
 
 	// Assert - EXACT results from log line 480
 	// Expected: MIN=0, MID=8, MAX=3 (from log)

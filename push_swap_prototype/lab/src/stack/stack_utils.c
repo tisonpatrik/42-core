@@ -6,11 +6,12 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 21:09:14 by ugerkens          #+#    #+#             */
-/*   Updated: 2025/08/24 18:37:36 by patrik           ###   ########.fr       */
+/*   Updated: 2025/08/25 00:45:17 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/stack.h"
+#include "../../include/debug_logging.h"
 
 int	next_up(t_stack *stk, int index)
 {
@@ -36,9 +37,23 @@ int	value(t_stack *stk, int n)
 {
 	int	i;
 
+	// Debug: Log function entry
+	debug_log(DEBUG_DEBUG, "=== VALUE START ===");
+	debug_log(DEBUG_DEBUG, "n=%d, stk->top=%d, stk->size=%d", n, stk->top, stk->size);
+
 	i = stk->top;
+	debug_log(DEBUG_DEBUG, "Starting index: i=%d", i);
+	
+	debug_log(DEBUG_DEBUG, "Entering while (--n > 0) loop with n=%d", n);
 	while (--n > 0)
+	{
+		debug_log(DEBUG_DEBUG, "Decrementing n: n=%d, moving down from i=%d", n, i);
 		i = next_down(stk, i);
+		debug_log(DEBUG_DEBUG, "After next_down: i=%d", i);
+	}
+	debug_log(DEBUG_DEBUG, "Exited while loop, final i=%d, value=%d", i, stk->stack[i]);
+	
+	debug_log(DEBUG_DEBUG, "=== VALUE END ===");
 	return (stk->stack[i]);
 }
 

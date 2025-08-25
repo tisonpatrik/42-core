@@ -19,6 +19,9 @@ func SortThree(ps *stack.PushSwapData, chunk *stack.Chunk) {
 	case stack.BOTTOM_B:
 		SortThreeBottomB(ps, chunk, stk, max)
 	}
+	
+	// FIXED: Decrement chunk.Size by 3 after sorting three elements
+	chunk.Size -= 3
 }
 
 // sortThreeTopA třídí tři prvky, když je chunk na TOP_A
@@ -35,8 +38,10 @@ func SortThreeTopA(ps *stack.PushSwapData, chunk *stack.Chunk, stk *stack.Stack,
 	}
 
 	chunk.Loc = stack.TOP_A
-	chunk.Size -= 1
-	SortTwo(ps, chunk)
+	// FIXED: Don't decrement chunk.Size here - let calling function handle it
+	// chunk.Size -= 1
+	// FIXED: Don't call SortTwo - that's not correct behavior
+	// SortTwo(ps, chunk)
 }
 
 // sortThreeTopB třídí tři prvky, když je chunk na TOP_B
@@ -55,8 +60,10 @@ func SortThreeTopB(ps *stack.PushSwapData, chunk *stack.Chunk, stk *stack.Stack,
 	stack.Push_a(ps)
 
 	chunk.Loc = stack.TOP_A
-	chunk.Size -= 1
-	SortTwo(ps, chunk)
+	// FIXED: Don't decrement chunk.Size here - let calling function handle it
+	// chunk.Size -= 1
+	// FIXED: Don't call SortTwo - that's not correct behavior
+	// SortTwo(ps, chunk)
 }
 
 // sortThreeBottomA třídí tři prvky, když je chunk na BOTTOM_A
@@ -76,8 +83,10 @@ func SortThreeBottomA(ps *stack.PushSwapData, chunk *stack.Chunk, stk *stack.Sta
 	}
 
 	chunk.Loc = stack.TOP_A
-	chunk.Size -= 1
-	SortTwo(ps, chunk)
+	// FIXED: Don't decrement chunk.Size here - let calling function handle it
+	// chunk.Size -= 1
+	// FIXED: Don't call SortTwo - that's not correct behavior
+	// SortTwo(ps, chunk)
 }
 
 // sortThreeBottomB třídí tři prvky, když je chunk na BOTTOM_B
@@ -97,6 +106,8 @@ func SortThreeBottomB(ps *stack.PushSwapData, chunk *stack.Chunk, stk *stack.Sta
 	}
 
 	chunk.Loc = stack.TOP_B
-	chunk.Size -= 1
-	SortTwo(ps, chunk)
+	// FIXED: Don't decrement chunk.Size here - let calling function handle it
+	// chunk.Size -= 1
+	// FIXED: Don't call SortTwo - that's not correct behavior
+	// SortTwo(ps, chunk)
 }

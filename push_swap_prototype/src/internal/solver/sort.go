@@ -12,5 +12,6 @@ func SolvePushSwap(numbers []int) ([]stack.Operation, []int) {
 		return []stack.Operation{}, ps.A.ToSlice()
 	}
 	ChunkSort(ps)
+	
 	return ps.GetOperations(), ps.A.ToSlice()
 }
