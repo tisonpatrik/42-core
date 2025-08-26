@@ -1,39 +1,12 @@
 package stack
 
-// Stack represents a circular buffer stack like the C implementation
+const nullValue = -1
+
 type Stack struct {
 	Stack  []int
-	capacity   int // capacity of the buffer
-	Top    int // index of top element
-	Bottom int // index of bottom element
-}
-
-func GetCapacity(stack *Stack) int {
-	return stack.capacity
-}
-
-func Push(stack *Stack, value int) {
-	if IsFull(stack) {
-		panic("Stack is full")
-	}
-	stack.Stack[stack.Top] = value
-	stack.Top = NextDown(stack, stack.Top)
-}
-
-func Pop(stack *Stack) *int {
-    if GettSize(stack) == 0 {
-        return nil
-    }
-    value := stack.Stack[stack.Top]
-    stack.Top = NextUp(stack, stack.Top)
-    return &value
-}
-
-func Peek(stack *Stack) *int {
-	if GettSize(stack) == 0 {
-		return nil
-	}
-	return &stack.Stack[stack.Top]
+	capacity   int
+	Top    int 
+	Bottom int
 }
 
 func InitStack(size int) *Stack {
@@ -45,19 +18,39 @@ func InitStack(size int) *Stack {
 	}
 	
 	for i := range stack.Stack {
-		stack.Stack[i] = 0
+		stack.Stack[i] = nullValue
 	}
 	
 	return stack
 }
 
+
+func Push(stack *Stack, value int) {
+    if IsFull(stack) {
+        panic("Stack is full")
+    }
+    
+    if value <= nullValue {
+        panic("Cannot push negative numbers or null values")
+    }
+    
+    stack.Stack[stack.Top] = value
+    stack.Bottom = NextDown(stack, stack.Bottom)
+}
+
+func Peek(stack *Stack) *int {
+	if GettSize(stack) == 0 {
+		return nil
+	}
+	return &stack.Stack[stack.Top]
+}
+
+
 func GettSize(s *Stack) int {
-	// Check if stack is empty (either no capacity or top equals bottom with no meaningful value)
 	if s.capacity == 0 || (s.Top == s.Bottom && s.Stack[s.Top] == 0) {
 		return 0
 	}
 	
-	// Calculate size based on circular buffer logic
 	if s.Top > s.Bottom {
 		return (s.capacity - s.Top) + (s.Bottom + 1)
 	} else {
@@ -65,12 +58,11 @@ func GettSize(s *Stack) int {
 	}
 }
 
-
 func IsSorted(stack *Stack) bool {
 	i := stack.Top
 	rank := 1
 
-	for rank <= GetCapacity(stack) {
+	for rank <= stack.capacity {
 		if stack.Stack[i] != rank {
 			return false
 		}
@@ -82,5 +74,21 @@ func IsSorted(stack *Stack) bool {
 
 
 func IsFull(s *Stack) bool {
-	return GettSize(s) == GetCapacity(s)
+	return GettSize(s) == s.capacity
+}
+
+func FillStack(s *Stack, values []int) {
+	s.Stack = values
+	s.Bottom = s.capacity - 1
+}
+
+func Value(s *Stack, pos int) int {
+	if GettSize(s) == 0 || pos <= 0 {
+		return 0
+	}
+	i := s.Top
+	for j := 1; j < pos; j++ {
+		i = NextDown(s,i)
+	}
+	return s.Stack[i]
 }

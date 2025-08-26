@@ -24,13 +24,3 @@ func NextDown(s *Stack,index int) int {
 }
 
 // GetValue = value (C) – 1-based pozice
-func Value(s *Stack, pos int) int {
-	if GettSize(s) == 0 || pos <= 0 {
-		return 0
-	}
-	i := s.Top
-	for j := 1; j < pos; j++ {
-		i = NextDown(s,i)
-	}
-	return s.Stack[i]
-}

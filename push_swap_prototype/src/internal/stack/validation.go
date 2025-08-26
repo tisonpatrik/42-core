@@ -68,14 +68,14 @@ func ValidateStackState(ps *SortingState, context string) *ValidationResult {
 // validateStack validates individual stack integrity
 func validateStack(stk *Stack, stackName string, result *ValidationResult) error {
 	// Check index bounds
-	if stk.Top < 0 || stk.Top >= GetCapacity(stk) {
+	if stk.Top < 0 || stk.Top >= GettSize(stk) {
 		result.Errors = append(result.Errors, 
-			fmt.Sprintf("%s: invalid top index %d (size: %d)", stackName, stk.Top, GetCapacity(stk)))
+			fmt.Sprintf("%s: invalid top index %d (size: %d)", stackName, stk.Top, GettSize(stk)))
 	}
 
-	if stk.Bottom < 0 || stk.Bottom >= GetCapacity(stk) {
+	if stk.Bottom < 0 || stk.Bottom >= GettSize(stk) {
 		result.Errors = append(result.Errors, 
-			fmt.Sprintf("%s: invalid bottom index %d (size: %d)", stackName, stk.Bottom, GetCapacity(stk)))
+			fmt.Sprintf("%s: invalid bottom index %d (size: %d)", stackName, stk.Bottom, GettSize(stk)))
 	}
 
 	// Check current size logic
@@ -85,9 +85,9 @@ func validateStack(stk *Stack, stackName string, result *ValidationResult) error
 			fmt.Sprintf("%s: invalid current size %d", stackName, currentSize))
 	}
 
-	if currentSize > GetCapacity(stk) {
+	if currentSize > GettSize(stk) {
 		result.Errors = append(result.Errors, 
-			fmt.Sprintf("%s: current size %d exceeds max size %d", stackName, currentSize, GetCapacity(stk)))
+			fmt.Sprintf("%s: current size %d exceeds max size %d", stackName, currentSize, GettSize(stk)))
 	}
 
 	// Validate circular buffer logic
@@ -107,14 +107,14 @@ func validateStack(stk *Stack, stackName string, result *ValidationResult) error
 func validateCircularBuffer(stk *Stack, stackName string, result *ValidationResult) error {
 	if stk.Top > stk.Bottom {
 		// Top is greater than bottom - check wraparound logic
-		if stk.Top >= GetCapacity(stk) || stk.Bottom < 0 {
+		if stk.Top >= GettSize(stk) || stk.Bottom < 0 {
 			result.Errors = append(result.Errors, 
 				fmt.Sprintf("%s: invalid wraparound indices: top=%d, bottom=%d", 
 					stackName, stk.Top, stk.Bottom))
 		}
 	} else {
 		// Top is less than bottom - normal order
-		if stk.Top < 0 || stk.Bottom >= GetCapacity(stk) {
+		if stk.Top < 0 || stk.Bottom >= GettSize(stk) {
 			result.Errors = append(result.Errors, 
 				fmt.Sprintf("%s: invalid normal indices: top=%d, bottom=%d", 
 					stackName, stk.Top, stk.Bottom))
@@ -139,7 +139,7 @@ func validateStackValues(stk *Stack, stackName string, result *ValidationResult)
 
 	// Check for potential data corruption
 	nonZeroCount := 0
-	for i := 0; i < GetCapacity(stk); i++ {
+	for i := 0; i < GettSize(stk); i++ {
 		if stk.Stack[i] != 0 {
 			nonZeroCount++
 		}
@@ -158,9 +158,9 @@ func validateStackValues(stk *Stack, stackName string, result *ValidationResult)
 func validateChunkConsistency(ps *SortingState, result *ValidationResult) error {
 	// This is a placeholder for future chunk validation logic
 	// For now, we'll just check basic stack relationship
-	if GetCapacity(ps.A) != GetCapacity(ps.B) {
+	if GettSize(ps.A) != GettSize(ps.B) {
 		result.Warnings = append(result.Warnings, 
-			fmt.Sprintf("Stack size mismatch: A=%d, B=%d", GetCapacity(ps.A), GetCapacity(ps.B)))
+			fmt.Sprintf("Stack size mismatch: A=%d, B=%d", GettSize(ps.A), GettSize(ps.B)))
 	}
 
 	return nil
@@ -177,7 +177,7 @@ func LogStackState(ps *SortingState, context string) {
 	
 	if ps.A != nil {
 		fmt.Printf("Stack A: top=%d, bottom=%d, size=%d, current_size=%d\n", 
-			ps.A.Top, ps.A.Bottom, GetCapacity(ps.A), GettSize(ps.A))
+			ps.A.Top, ps.A.Bottom, GettSize(ps.A), GettSize(ps.A))
 		fmt.Printf("Stack A top 5 values: [%d %d %d %d %d]\n",
 			Value(ps.A, 1), Value(ps.A, 2), Value(ps.A, 3), Value(ps.A, 4), Value(ps.A, 5))
 	} else {
@@ -186,7 +186,7 @@ func LogStackState(ps *SortingState, context string) {
 
 	if ps.B != nil {
 		fmt.Printf("Stack B: top=%d, bottom=%d, size=%d, current_size=%d\n", 
-			ps.B.Top, ps.B.Bottom, GetCapacity(ps.B), GettSize(ps.B))
+			ps.B.Top, ps.B.Bottom, GettSize(ps.B), GettSize(ps.B))
 		fmt.Printf("Stack B top 5 values: [%d %d %d %d %d]\n",
 			Value(ps.B, 1), Value(ps.B, 2), Value(ps.B, 3), Value(ps.B, 4), Value(ps.B, 5))
 	} else {

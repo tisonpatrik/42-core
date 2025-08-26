@@ -38,7 +38,7 @@ func APartlySort(ps *stack.SortingState, from int) bool {
 	}
 	
 	value := a.Stack[i] // Initialize value with first element
-	for ; a.Stack[i] != stack.GetCapacity(a); i = stack.NextDown(a, i) {  // FIXED: Use ps.A.Size like C implementation (data->a.size)
+	for ; a.Stack[i] != stack.GettSize(a); i = stack.NextDown(a, i) {  // FIXED: Use ps.A.Size like C implementation (data->a.size)
 		if a.Stack[i] != value + 1 {
 			return false
 		}

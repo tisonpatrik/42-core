@@ -7,7 +7,7 @@ import (
 // ChunkSort sorts the entire stack A using chunk-based sorting
 func ChunkSort(ps *stack.SortingState) {
 	
-	chunkAll := stack.Chunk{Loc: stack.TOP_A, Size: stack.GetCapacity(ps.A)}
+	chunkAll := stack.Chunk{Loc: stack.TOP_A, Size: stack.GettSize(ps.A)}
 	RecChunkSort(ps, &chunkAll)
 }
 
