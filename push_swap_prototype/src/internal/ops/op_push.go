@@ -10,11 +10,30 @@ func push(src *stack.Stack, dest *stack.Stack) {
 	if stack.IsFull(dest) {
 		return
 	}
-	dest_i := stack.NextUp(dest, dest.Top)
-	stack.Push(dest, stack.GetValue(src, src.Top))
-	dest.Top = dest_i
-	stack.Push(src, 0)
-	src.Top = stack.NextDown(src, src.Top)
+	
+	// Get the value from the top of source stack
+	value := stack.GetValue(src, 0) // Get top element (position 0)
+	if value == stack.NullValue() {
+		return // Source stack is empty
+	}
+	
+	// Push the value to destination stack
+	stack.Push(dest, value)
+	
+	// Remove the value from source stack by updating top pointer
+	// and clearing the value at the old top position
+	oldTop := stack.GetTop(src)
+	stack.SetValueAt(src, oldTop, stack.NullValue())
+	
+	// Update source stack top pointer
+	if stack.GettSize(src) == 1 {
+		// If this was the last element, mark stack as empty
+		stack.SetTop(src, -1)
+		stack.SetBottom(src, -1)
+	} else {
+		// Move top down
+		stack.SetTop(src, stack.Next(src, oldTop))
+	}
 }
 
 func PushA(ps *SortingState) {

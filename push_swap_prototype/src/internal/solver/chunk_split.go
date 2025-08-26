@@ -35,8 +35,8 @@ func ChunkSplit(ps *ops.SortingState, to_split *chunk.Chunk, dest *chunk.SplitDe
 	
 	fmt.Printf("Pivot values: pivot1=%d, pivot2=%d\n", pivot1, pivot2)
 	fmt.Printf("Split locations: Min(%d), Mid(%d), Max(%d)\n", dest.Min.Loc, dest.Mid.Loc, dest.Max.Loc)
-	fmt.Printf("Stack A before split: top=%d, bottom=%d, current_size=%d\n", ps.A.Top, ps.A.Bottom, stack.GettSize(ps.A))
-	fmt.Printf("Stack B before split: top=%d, bottom=%d, current_size=%d\n", ps.B.Top, ps.B.Bottom, stack.GettSize(ps.B))
+	fmt.Printf("Stack A before split: top=%d, bottom=%d, current_size=%d\n", stack.GetTop(ps.A), stack.GetBottom(ps.A), stack.GettSize(ps.A))
+	fmt.Printf("Stack B before split: top=%d, bottom=%d, current_size=%d\n", stack.GetTop(ps.B), stack.GetBottom(ps.B), stack.GettSize(ps.B))
 	fmt.Printf("=== CHUNK POSITIONING ANALYSIS ===\n")
 	fmt.Printf("Chunk positioning strategy:\n")
 	fmt.Printf("  - MAX chunk goes to loc %d (should end up at TOP_A eventually)\n", dest.Max.Loc)
@@ -90,8 +90,8 @@ func ChunkSplit(ps *ops.SortingState, to_split *chunk.Chunk, dest *chunk.SplitDe
 	
 	fmt.Printf("=== FINAL DISTRIBUTION ===\n")
 	fmt.Printf("Final split sizes: Max=%d, Mid=%d, Min=%d\n", dest.Max.Size, dest.Mid.Size, dest.Min.Size)
-	fmt.Printf("Stack A after split: top=%d, bottom=%d, current_size=%d\n", ps.A.Top, ps.A.Bottom, stack.GettSize(ps.A))
-	fmt.Printf("Stack B after split: top=%d, bottom=%d, current_size=%d\n", ps.B.Top, ps.B.Bottom, stack.GettSize(ps.B))
+	fmt.Printf("Stack A after split: top=%d, bottom=%d, current_size=%d\n", stack.GetTop(ps.A), stack.GetBottom(ps.A), stack.GettSize(ps.A))
+	fmt.Printf("Stack B after split: top=%d, bottom=%d, current_size=%d\n", stack.GetTop(ps.B), stack.GetBottom(ps.B), stack.GettSize(ps.B))
 	fmt.Printf("=== CHUNK POSITIONING AFTER SPLIT ===\n")
 	fmt.Printf("Chunk positioning after split:\n")
 	fmt.Printf("  - MAX chunk: loc=%d, size=%d (should be processed first)\n", dest.Max.Loc, dest.Max.Size)

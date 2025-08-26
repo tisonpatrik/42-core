@@ -10,6 +10,7 @@ import (
 func ChunkSort(ps *ops.SortingState) {
 	
 	chunkAll := chunk.Chunk{Loc: chunk.TOP_A, Size: stack.GettSize(ps.A)}
+	
 	RecChunkSort(ps, &chunkAll)
 }
 

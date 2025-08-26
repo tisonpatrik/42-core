@@ -2,19 +2,22 @@ package stack
 
 const nullValue = -1
 
+// circular buffer with top and bottom indices
+// no negative values in the stack
+
 type Stack struct {
 	stack  []int
 	capacity   int
-	Top    int 
-	Bottom int
+	top    int 
+	bottom int
 }
 
 func InitStack(size int) *Stack {
 	stack := &Stack{
 		stack:  make([]int, size),
 		capacity:   size,
-		Top:    0,
-		Bottom: 0,
+		top:    0, // Empty stack has top at 0
+		bottom: -1, // -1 means empty stack
 	}
 	
 	for i := range stack.stack {
@@ -25,27 +28,17 @@ func InitStack(size int) *Stack {
 }
 
 func GettSize(s *Stack) int {
-	count := 0
-	for _, val := range s.stack {
-		if val != nullValue {
-			count++
-		}
+	if s.bottom == -1 {
+		return 0 
 	}
-	return count
-}
-
-func IsSorted(stack *Stack) bool {
-	i := stack.Top
-	rank := 1
-
-	for rank <= stack.capacity {
-		if stack.stack[i] != rank {
-			return false
-		}
-		rank++
-		i = NextDown(stack, i)
+	
+	if s.top <= s.bottom {
+		// Normal case: Top <= Bottom
+		return s.bottom - s.top + 1
+	} else {
+		// Wrapped case: Top > Bottom (wrapped around)
+		return (s.capacity - s.top) + (s.bottom + 1)
 	}
-	return true
 }
 
 
@@ -53,34 +46,32 @@ func IsFull(s *Stack) bool {
 	return GettSize(s) == s.capacity
 }
 
-func FillStack(s *Stack, values []int) {
-	// Validate input
-	if s == nil {
-		panic("Stack is nil")
-	}
-	if len(values) != s.capacity {
-		panic("Cannot fill stack: values exceed capacity")
-	}
-	// Push each value individually using the stack's push mechanism
-	for _, val := range values {
-		// Validate before each push
-		if IsFull(s) {
-			panic("Stack became full unexpectedly during fill operation")
-		}
-		
-		// Validate value
-		if val <= nullValue {
-			panic("Cannot push negative numbers or null values")
-		}
-		
-		// Push to stack (this will handle all the index management)
-		Push(s, val)
-	}
+func GetTop(s *Stack) int {
+	return s.top
+}
+
+func GetBottom(s *Stack) int {
+	return s.bottom
 }
 
 func GetValue(s *Stack, pos int) int {
-	if pos < 0 || pos >= len(s.stack) {
+	if pos < 0 || pos >= GettSize(s) {
 		return nullValue
 	}
-	return s.stack[pos]
+	
+	// Convert 0-based position to actual index
+	index := (s.top + pos) % s.capacity
+	return s.stack[index]
+}
+
+// NullValue returns the null value constant
+func NullValue() int {
+	return nullValue
+}
+
+// SetValueAt sets a value at a specific index in the stack
+func SetValueAt(s *Stack, index int, value int) {
+	if index >= 0 && index < s.capacity {
+		s.stack[index] = value
+	}
 }

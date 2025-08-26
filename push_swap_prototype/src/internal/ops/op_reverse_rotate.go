@@ -5,15 +5,25 @@ import (
 )
 
 func reverseRotate(stk *stack.Stack) {
-	if stack.IsFull(stk) {
-		stk.Top = stk.Bottom
-		stk.Bottom = stack.NextUp(stk, stk.Bottom)
-	} else {
-		stk.Top = stack.NextUp(stk, stk.Top)
-		stack.Push(stk, stack.GetValue(stk, stk.Bottom))
-		stack.Push(stk, 0)
-		stk.Bottom = stack.NextUp(stk, stk.Bottom)
+	if stack.GettSize(stk) <= 1 {
+		return // Nothing to rotate
 	}
+	
+	// Get the bottom value
+	bottomValue := stack.GetValue(stk, stack.GettSize(stk)-1)
+	if bottomValue == stack.NullValue() {
+		return
+	}
+	
+	// Clear the bottom position
+	oldBottom := stack.GetBottom(stk)
+	stack.SetValueAt(stk, oldBottom, stack.NullValue())
+	
+	// Update bottom pointer to previous position
+	stack.SetBottom(stk, stack.Previous(stk, oldBottom))
+	
+	// Update top pointer to include the rotated element
+	stack.SetTop(stk, oldBottom)
 }
 
 func ReverseRotateA(ps *	SortingState) {

@@ -15,21 +15,21 @@ func ChunkValue(ps *ops.SortingState, chunk_item *chunk.Chunk, n int) int {
 	var i int
 	switch loc {
 	case chunk.TOP_A, chunk.TOP_B:
-		i = stk.Top
+		i = stack.GetTop(stk)
 	case chunk.BOTTOM_A, chunk.BOTTOM_B:
-		i = stk.Bottom
+		i = stack.GetBottom(stk)
 	default:
-		i = stk.Top
+		i = stack.GetTop(stk)
 	}
 	
 	switch loc {
 	case chunk.TOP_A, chunk.TOP_B:
 		for j := 1; j < n; j++ {
-			i = stack.NextDown(stk, i)
+			i = stack.Next(stk, i)
 		}
 	case chunk.BOTTOM_A, chunk.BOTTOM_B:
 		for j := 1; j < n; j++ {
-			i = stack.NextUp(stk, i)
+			i = stack.Previous(stk, i)
 		}
 	}
 	return stack.GetValue(stk, i)
@@ -48,11 +48,11 @@ func ChunkMaxValue(ps *ops.SortingState, chunk_item *chunk.Chunk) int {
 	var i int
 	switch chunk_item.Loc {
 	case chunk.TOP_A, chunk.TOP_B:
-		i = stk.Top
+		i = stack.GetTop(stk)
 	case chunk.BOTTOM_A, chunk.BOTTOM_B:
-		i = stk.Bottom
+		i = stack.GetBottom(stk)
 	default:
-		i = stk.Top // Default fallback like C
+		i = stack.GetTop(stk) // Default fallback like C
 	}
 	
 	for j := 0; j < size; j++ {
@@ -61,9 +61,9 @@ func ChunkMaxValue(ps *ops.SortingState, chunk_item *chunk.Chunk) int {
 		}
 		switch chunk_item.Loc {
 		case chunk.TOP_A, chunk.TOP_B:
-			i = stack.NextDown(stk, i)
+			i = stack.Next(stk, i)
 		case chunk.BOTTOM_A, chunk.BOTTOM_B:
-			i = stack.NextUp(stk, i)
+			i = stack.Previous(stk, i)
 		}
 	}
 	

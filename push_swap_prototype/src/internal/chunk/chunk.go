@@ -19,3 +19,8 @@ type SplitDest struct {
 	Mid Chunk
 	Max Chunk
 }
+
+
+func NewChunk(loc Loc, size int) *Chunk {
+	return &Chunk{Loc: loc, Size: size}
+}

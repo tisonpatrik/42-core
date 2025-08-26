@@ -33,14 +33,14 @@ func APartlySort(ps *ops.SortingState, from int) bool {
 	
 	a := ps.A
 
-	i := a.Top
+	i := stack.GetTop(a)
 
 	for ; from > 0; from-- {
-		i = stack.NextDown(a, i)
+		i = stack.Next(a, i)
 	}
 	
 	value := stack.GetValue(a, i) // Initialize value with first element
-	for ; stack.GetValue(a, i) != stack.GettSize(a); i = stack.NextDown(a, i) {  // FIXED: Use ps.A.Size like C implementation (data->a.size)
+	for ; stack.GetValue(a, i) != stack.GettSize(a); i = stack.Next(a, i) {  // FIXED: Use ps.A.Size like C implementation (data->a.size)
 		if stack.GetValue(a, i) != value + 1 {
 			return false
 		}

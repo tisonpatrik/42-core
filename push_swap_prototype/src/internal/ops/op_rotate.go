@@ -5,15 +5,25 @@ import (
 )
 
 func rotate(stk *stack.Stack) {
-	if stack.IsFull(stk) {
-		stk.Bottom = stk.Top
-		stk.Top = stack.NextDown(stk, stk.Top)
-	} else {
-		stk.Bottom = stack.NextDown(stk, stk.Bottom)
-		stack.Push(stk, stack.GetValue(stk, stk.Top))
-		stack.Push(stk, 0)
-		stk.Top = stack.NextDown(stk, stk.Top)
+	if stack.GettSize(stk) <= 1 {
+		return // Nothing to rotate
 	}
+	
+	// Get the top value
+	topValue := stack.GetValue(stk, 0)
+	if topValue == stack.NullValue() {
+		return
+	}
+	
+	// Clear the top position
+	oldTop := stack.GetTop(stk)
+	stack.SetValueAt(stk, oldTop, stack.NullValue())
+	
+	// Update top pointer to next position
+	stack.SetTop(stk, stack.Next(stk, oldTop))
+	
+	// Update bottom pointer to include the rotated element
+	stack.SetBottom(stk, oldTop)
 }
 
 func RotateA(ps *SortingState) {
