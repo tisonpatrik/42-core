@@ -2,11 +2,12 @@ package solver
 
 import (
 	"fmt"
+	"push_swap_prototype/internal/chunk"
 	"push_swap_prototype/internal/stack"
 )
 
 // MoveFromTo moves an element from one location to another and returns 1 if successful
-func MoveFromTo(ps *stack.SortingState, from, to stack.Loc) int {
+func MoveFromTo(ps *stack.SortingState, from, to chunk.Loc) int {
 	// Enhanced logging and validation
 	stack.LogOperation(fmt.Sprintf("MoveFromTo(%d->%d)", from, to), ps)
 	
@@ -27,16 +28,16 @@ func MoveFromTo(ps *stack.SortingState, from, to stack.Loc) int {
 	
 	// Perform the move operation
 	switch from {
-	case stack.TOP_A:
+	case chunk.TOP_A:
 		stack.LogInfo("Moving from TOP_A")
 		MoveFromTopA(ps, to)
-	case stack.TOP_B:
+	case chunk.TOP_B:
 		stack.LogInfo("Moving from TOP_B")
 		MoveFromTopB(ps, to)
-	case stack.BOTTOM_A:
+	case chunk.BOTTOM_A:
 		stack.LogInfo("Moving from BOTTOM_A")
 		MoveFromBottomA(ps, to)
-	case stack.BOTTOM_B:
+	case chunk.BOTTOM_B:
 		stack.LogInfo("Moving from BOTTOM_B")
 		MoveFromBottomB(ps, to)
 	}
@@ -60,14 +61,14 @@ func MoveFromTo(ps *stack.SortingState, from, to stack.Loc) int {
 }
 
 // MoveFromTopA moves an element from TOP_A to the specified location
-func MoveFromTopA(ps *stack.SortingState, to stack.Loc) {
+func MoveFromTopA(ps *stack.SortingState, to chunk.Loc) {
 	
 	switch to {
-	case stack.TOP_B:
+	case chunk.TOP_B:
 		stack.PushB(ps)
-	case stack.BOTTOM_A:
+	case chunk.BOTTOM_A:
 		stack.RotateA(ps)
-	case stack.BOTTOM_B:
+	case chunk.BOTTOM_B:
 		stack.PushB(ps)
 		stack.RotateB(ps)
 	}
@@ -75,29 +76,29 @@ func MoveFromTopA(ps *stack.SortingState, to stack.Loc) {
 }
 
 // MoveFromTopB moves an element from TOP_B to the specified location
-func MoveFromTopB(ps *stack.SortingState, to stack.Loc) {
+func MoveFromTopB(ps *stack.SortingState, to chunk.Loc) {
 	
 	switch to {
-	case stack.TOP_A:
+	case chunk.TOP_A:
 		stack.PushA(ps)
-	case stack.BOTTOM_B:
+	case chunk.BOTTOM_B:
 		stack.RotateB(ps)
-	case stack.BOTTOM_A:
+	case chunk.BOTTOM_A:
 		stack.PushA(ps)
 		stack.RotateA(ps)
 	}
 }
 
 // MoveFromBottomA moves an element from BOTTOM_A to the specified location
-func MoveFromBottomA(ps *stack.SortingState, to stack.Loc) {
+func MoveFromBottomA(ps *stack.SortingState, to chunk.Loc) {
 	
 	switch to {
-	case stack.TOP_A:
+	case chunk.TOP_A:
 		stack.ReverseRotateA(ps)
-	case stack.TOP_B:
+	case chunk.TOP_B:
 		stack.ReverseRotateA(ps)
 		stack.PushB(ps)
-	case stack.BOTTOM_B:
+	case chunk.BOTTOM_B:
 		stack.ReverseRotateA(ps)
 		stack.PushB(ps)
 		stack.RotateB(ps)
@@ -106,15 +107,15 @@ func MoveFromBottomA(ps *stack.SortingState, to stack.Loc) {
 }
 
 // MoveFromBottomB moves an element from BOTTOM_B to the specified location
-func MoveFromBottomB(ps *stack.SortingState, to stack.Loc) {
+func MoveFromBottomB(ps *stack.SortingState, to chunk.Loc) {
 
 	switch to {
-	case stack.TOP_A:
+	case chunk.TOP_A:
 		stack.ReverseRotateB(ps)
 		stack.PushA(ps)
-	case stack.TOP_B:
+	case chunk.TOP_B:
 		stack.ReverseRotateB(ps)
-	case stack.BOTTOM_A:
+	case chunk.BOTTOM_A:
 		stack.ReverseRotateB(ps)
 		stack.PushA(ps)
 		stack.RotateA(ps)

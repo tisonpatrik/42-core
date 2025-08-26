@@ -1,30 +1,31 @@
 package solver
 
 import (
+	"push_swap_prototype/internal/chunk"
 	"push_swap_prototype/internal/stack"
 )
 
 // sortThree třídí tři prvky v chunku shodně s C implementací
-func SortThree(ps *stack.SortingState, chunk *stack.Chunk) {
+func SortThree(ps *stack.SortingState, chunk_item *chunk.Chunk) {
 	
 	
-	stk := locToStack(ps, chunk.Loc)
-	max := ChunkMaxValue(ps, chunk)
+	stk := locToStack(ps, chunk_item.Loc)
+	max := ChunkMaxValue(ps, chunk_item)
 
 
-	switch chunk.Loc {
-	case stack.TOP_A:
-		SortThreeTopA(ps, chunk, stk, max)
-	case stack.BOTTOM_A:
-		SortThreeBottomA(ps, chunk, stk, max)
-	case stack.TOP_B:
-		SortThreeTopB(ps, chunk, stk, max)
-	case stack.BOTTOM_B:
-		SortThreeBottomB(ps, chunk, stk, max)
+	switch chunk_item.Loc {
+	case chunk.TOP_A:
+		SortThreeTopA(ps, chunk_item, stk, max)
+	case chunk.BOTTOM_A:
+		SortThreeBottomA(ps, chunk_item, stk, max)
+	case chunk.TOP_B:
+		SortThreeTopB(ps, chunk_item, stk, max)
+	case chunk.BOTTOM_B:
+		SortThreeBottomB(ps, chunk_item, stk, max)
 	}
 }
 
-func SortThreeTopA(ps *stack.SortingState, to_sort *stack.Chunk, stk *stack.Stack, max int) {
+func SortThreeTopA(ps *stack.SortingState, to_sort *chunk.Chunk, stk *stack.Stack, max int) {
 	if stack.Value(stk, stk.Top) == max {
 		stack.SwapA(ps)
 		stack.RotateA(ps)
@@ -36,13 +37,13 @@ func SortThreeTopA(ps *stack.SortingState, to_sort *stack.Chunk, stk *stack.Stac
 		stack.ReverseRotateA(ps)
 	}
 
-	to_sort.Loc = stack.TOP_A
+	to_sort.Loc = chunk.TOP_A
 	to_sort.Size -= 1
 	
 	SortTwo(ps, to_sort)
 }
 
-func SortThreeTopB(ps *stack.SortingState, to_sort *stack.Chunk, stk *stack.Stack, max int) {
+func SortThreeTopB(ps *stack.SortingState, to_sort *chunk.Chunk, stk *stack.Stack, max int) {
 	stack.PushA(ps)
 
 	if stack.Value(stk, stk.Top) == max {
@@ -57,13 +58,13 @@ func SortThreeTopB(ps *stack.SortingState, to_sort *stack.Chunk, stk *stack.Stac
 	}
 	stack.PushA(ps)
 
-	to_sort.Loc = stack.TOP_A
+	to_sort.Loc = chunk.TOP_A
 	to_sort.Size -= 1
 
 	SortTwo(ps, to_sort)
 }
 
-func SortThreeBottomA(ps *stack.SortingState, to_sort *stack.Chunk, stk *stack.Stack, max int) {
+func SortThreeBottomA(ps *stack.SortingState, to_sort *chunk.Chunk, stk *stack.Stack, max int) {
 	stack.ReverseRotateA(ps)
 	stack.ReverseRotateA(ps)
 
@@ -79,12 +80,12 @@ func SortThreeBottomA(ps *stack.SortingState, to_sort *stack.Chunk, stk *stack.S
 		stack.PushA(ps)
 	}
 
-	to_sort.Loc = stack.TOP_A
+	to_sort.Loc = chunk.TOP_A
 	to_sort.Size -= 1
 	SortTwo(ps, to_sort)
 }
 
-func SortThreeBottomB(ps *stack.SortingState, to_sort *stack.Chunk, stk *stack.Stack, max int) {
+func SortThreeBottomB(ps *stack.SortingState, to_sort *chunk.Chunk, stk *stack.Stack, max int) {
 	stack.ReverseRotateB(ps)
 	stack.ReverseRotateB(ps)
 
@@ -100,7 +101,7 @@ func SortThreeBottomB(ps *stack.SortingState, to_sort *stack.Chunk, stk *stack.S
 		stack.PushA(ps)
 	}
 
-	to_sort.Loc = stack.TOP_B
+	to_sort.Loc = chunk.TOP_B
 	to_sort.Size -= 1
 	SortTwo(ps, to_sort)
 }

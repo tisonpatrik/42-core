@@ -1,31 +1,32 @@
 package solver
 
 import (
+	"push_swap_prototype/internal/chunk"
 	"push_swap_prototype/internal/stack"
 )
 
 // Equivalent to chunk_value in C implementation
-func ChunkValue(ps *stack.SortingState, chunk *stack.Chunk, n int) int {
+func ChunkValue(ps *stack.SortingState, chunk_item *chunk.Chunk, n int) int {
 
-	loc := chunk.Loc
+	loc := chunk_item.Loc
 	stk := locToStack(ps, loc)
 
 	var i int
 	switch loc {
-	case stack.TOP_A, stack.TOP_B:
+	case chunk.TOP_A, chunk.TOP_B:
 		i = stk.Top
-	case stack.BOTTOM_A, stack.BOTTOM_B:
+	case chunk.BOTTOM_A, chunk.BOTTOM_B:
 		i = stk.Bottom
 	default:
 		i = stk.Top
 	}
 	
 	switch loc {
-	case stack.TOP_A, stack.TOP_B:
+	case chunk.TOP_A, chunk.TOP_B:
 		for j := 1; j < n; j++ {
 			i = stack.NextDown(stk, i)
 		}
-	case stack.BOTTOM_A, stack.BOTTOM_B:
+	case chunk.BOTTOM_A, chunk.BOTTOM_B:
 		for j := 1; j < n; j++ {
 			i = stack.NextUp(stk, i)
 		}
@@ -34,20 +35,20 @@ func ChunkValue(ps *stack.SortingState, chunk *stack.Chunk, n int) int {
 }
 
 // Equivalent to chunk_max_value in C implementation
-func ChunkMaxValue(ps *stack.SortingState, chunk *stack.Chunk) int {
-	if chunk == nil || chunk.Size <= 0 {
+func ChunkMaxValue(ps *stack.SortingState, chunk_item *chunk.Chunk) int {
+	if chunk_item == nil || chunk_item.Size <= 0 {
 		return 0
 	}
 	
-	stk := locToStack(ps, chunk.Loc)
-	size := chunk.Size
+	stk := locToStack(ps, chunk_item.Loc)
+	size := chunk_item.Size
 	maxVal := 0
 
 	var i int
-	switch chunk.Loc {
-	case stack.TOP_A, stack.TOP_B:
+	switch chunk_item.Loc {
+	case chunk.TOP_A, chunk.TOP_B:
 		i = stk.Top
-	case stack.BOTTOM_A, stack.BOTTOM_B:
+	case chunk.BOTTOM_A, chunk.BOTTOM_B:
 		i = stk.Bottom
 	default:
 		i = stk.Top // Default fallback like C
@@ -57,10 +58,10 @@ func ChunkMaxValue(ps *stack.SortingState, chunk *stack.Chunk) int {
 		if stk.Stack[i] > maxVal {
 			maxVal = stk.Stack[i]
 		}
-		switch chunk.Loc {
-		case stack.TOP_A, stack.TOP_B:
+		switch chunk_item.Loc {
+		case chunk.TOP_A, chunk.TOP_B:
 			i = stack.NextDown(stk, i)
-		case stack.BOTTOM_A, stack.BOTTOM_B:
+		case chunk.BOTTOM_A, chunk.BOTTOM_B:
 			i = stack.NextUp(stk, i)
 		}
 	}
@@ -68,8 +69,8 @@ func ChunkMaxValue(ps *stack.SortingState, chunk *stack.Chunk) int {
 	return maxVal
 }
 
-func locToStack(ps *stack.SortingState, loc stack.Loc) *stack.Stack {
-	if loc == stack.TOP_A || loc == stack.BOTTOM_A {
+func locToStack(ps *stack.SortingState, loc chunk.Loc) *stack.Stack {
+	if loc == chunk.TOP_A || loc == chunk.BOTTOM_A {
 		return ps.A
 	} else {
 		return ps.B

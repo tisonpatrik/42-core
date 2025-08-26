@@ -1,4 +1,4 @@
-package stack
+package chunk
 
 type Loc int
 
@@ -12,4 +12,10 @@ const (
 type Chunk struct {
 	Loc  Loc
 	Size int
+}
+
+type SplitDest struct {
+	Min Chunk
+	Mid Chunk
+	Max Chunk
 }

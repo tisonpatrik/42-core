@@ -1,13 +1,5 @@
 package stack
 
-
-
-type SplitDest struct {
-	Min Chunk
-	Mid Chunk
-	Max Chunk
-}
-
 type Operation int
 
 const (
