@@ -4,7 +4,7 @@ import (
 	"push_swap_prototype/internal/stack"
 )
 
-func EasySort(ps *stack.PushSwapData, to_sort *stack.Chunk) {
+func EasySort(ps *stack.SortingState, to_sort *stack.Chunk) {
 	
 	for ; to_sort.Loc != stack.TOP_A && to_sort.Size > 0; {
 		
@@ -19,7 +19,7 @@ func EasySort(ps *stack.PushSwapData, to_sort *stack.Chunk) {
 	
 }
 
-func EasySortSecond(ps *stack.PushSwapData, to_sort *stack.Chunk) {
+func EasySortSecond(ps *stack.SortingState, to_sort *stack.Chunk) {
 	switch to_sort.Loc {
 	case stack.TOP_B:
 		HandleTopB(ps, to_sort)
@@ -31,7 +31,7 @@ func EasySortSecond(ps *stack.PushSwapData, to_sort *stack.Chunk) {
 	to_sort.Size--
 }
 
-func HandleTopB(ps *stack.PushSwapData, to_sort *stack.Chunk) {
+func HandleTopB(ps *stack.SortingState, to_sort *stack.Chunk) {
 	stack.SwapB(ps)
 	stack.PushA(ps)
 	if stack.Value(ps.B, 1) == stack.Value(ps.A, 1) - 1 {
@@ -40,7 +40,7 @@ func HandleTopB(ps *stack.PushSwapData, to_sort *stack.Chunk) {
 	}
 }
 
-func HandleBottomA(ps *stack.PushSwapData, to_sort *stack.Chunk) {
+func HandleBottomA(ps *stack.SortingState, to_sort *stack.Chunk) {
 	stack.ReverseRotateA(ps)
 	stack.ReverseRotateA(ps)
 	stack.SwapA(ps)
@@ -51,7 +51,7 @@ func HandleBottomA(ps *stack.PushSwapData, to_sort *stack.Chunk) {
 	}
 }
 
-func HandleBottomB(ps *stack.PushSwapData, to_sort *stack.Chunk) {
+func HandleBottomB(ps *stack.SortingState, to_sort *stack.Chunk) {
 	stack.ReverseRotateB(ps)
 	stack.ReverseRotateB(ps)
 

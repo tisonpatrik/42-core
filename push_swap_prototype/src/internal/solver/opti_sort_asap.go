@@ -4,7 +4,7 @@ import (
 	"push_swap_prototype/internal/stack"
 )
 
-func SplitMaxReduction(ps *stack.PushSwapData, max *stack.Chunk) {
+func SplitMaxReduction(ps *stack.SortingState, max *stack.Chunk) {
 
 	a := ps.A
 
@@ -27,7 +27,7 @@ func SplitMaxReduction(ps *stack.PushSwapData, max *stack.Chunk) {
 	}
 }
 
-func APartlySort(ps *stack.PushSwapData, from int) bool {
+func APartlySort(ps *stack.SortingState, from int) bool {
 	
 	a := ps.A
 
@@ -38,7 +38,7 @@ func APartlySort(ps *stack.PushSwapData, from int) bool {
 	}
 	
 	value := a.Stack[i] // Initialize value with first element
-	for ; a.Stack[i] != ps.A.Size; i = stack.NextDown(a, i) {  // FIXED: Use ps.A.Size like C implementation (data->a.size)
+	for ; a.Stack[i] != stack.GetCapacity(a); i = stack.NextDown(a, i) {  // FIXED: Use ps.A.Size like C implementation (data->a.size)
 		if a.Stack[i] != value + 1 {
 			return false
 		}

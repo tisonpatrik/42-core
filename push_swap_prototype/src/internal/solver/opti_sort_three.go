@@ -5,7 +5,7 @@ import (
 )
 
 // sortThree třídí tři prvky v chunku shodně s C implementací
-func SortThree(ps *stack.PushSwapData, chunk *stack.Chunk) {
+func SortThree(ps *stack.SortingState, chunk *stack.Chunk) {
 	
 	
 	stk := locToStack(ps, chunk.Loc)
@@ -24,7 +24,7 @@ func SortThree(ps *stack.PushSwapData, chunk *stack.Chunk) {
 	}
 }
 
-func SortThreeTopA(ps *stack.PushSwapData, to_sort *stack.Chunk, stk *stack.Stack, max int) {
+func SortThreeTopA(ps *stack.SortingState, to_sort *stack.Chunk, stk *stack.Stack, max int) {
 	if stack.Value(stk, stk.Top) == max {
 		stack.SwapA(ps)
 		stack.RotateA(ps)
@@ -42,7 +42,7 @@ func SortThreeTopA(ps *stack.PushSwapData, to_sort *stack.Chunk, stk *stack.Stac
 	SortTwo(ps, to_sort)
 }
 
-func SortThreeTopB(ps *stack.PushSwapData, to_sort *stack.Chunk, stk *stack.Stack, max int) {
+func SortThreeTopB(ps *stack.SortingState, to_sort *stack.Chunk, stk *stack.Stack, max int) {
 	stack.PushA(ps)
 
 	if stack.Value(stk, stk.Top) == max {
@@ -63,7 +63,7 @@ func SortThreeTopB(ps *stack.PushSwapData, to_sort *stack.Chunk, stk *stack.Stac
 	SortTwo(ps, to_sort)
 }
 
-func SortThreeBottomA(ps *stack.PushSwapData, to_sort *stack.Chunk, stk *stack.Stack, max int) {
+func SortThreeBottomA(ps *stack.SortingState, to_sort *stack.Chunk, stk *stack.Stack, max int) {
 	stack.ReverseRotateA(ps)
 	stack.ReverseRotateA(ps)
 
@@ -84,7 +84,7 @@ func SortThreeBottomA(ps *stack.PushSwapData, to_sort *stack.Chunk, stk *stack.S
 	SortTwo(ps, to_sort)
 }
 
-func SortThreeBottomB(ps *stack.PushSwapData, to_sort *stack.Chunk, stk *stack.Stack, max int) {
+func SortThreeBottomB(ps *stack.SortingState, to_sort *stack.Chunk, stk *stack.Stack, max int) {
 	stack.ReverseRotateB(ps)
 	stack.ReverseRotateB(ps)
 

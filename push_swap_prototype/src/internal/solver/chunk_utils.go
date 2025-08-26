@@ -5,7 +5,7 @@ import (
 )
 
 // Equivalent to chunk_value in C implementation
-func ChunkValue(ps *stack.PushSwapData, chunk *stack.Chunk, n int) int {
+func ChunkValue(ps *stack.SortingState, chunk *stack.Chunk, n int) int {
 
 	loc := chunk.Loc
 	stk := locToStack(ps, loc)
@@ -34,7 +34,7 @@ func ChunkValue(ps *stack.PushSwapData, chunk *stack.Chunk, n int) int {
 }
 
 // Equivalent to chunk_max_value in C implementation
-func ChunkMaxValue(ps *stack.PushSwapData, chunk *stack.Chunk) int {
+func ChunkMaxValue(ps *stack.SortingState, chunk *stack.Chunk) int {
 	if chunk == nil || chunk.Size <= 0 {
 		return 0
 	}
@@ -68,7 +68,7 @@ func ChunkMaxValue(ps *stack.PushSwapData, chunk *stack.Chunk) int {
 	return maxVal
 }
 
-func locToStack(ps *stack.PushSwapData, loc stack.Loc) *stack.Stack {
+func locToStack(ps *stack.SortingState, loc stack.Loc) *stack.Stack {
 	if loc == stack.TOP_A || loc == stack.BOTTOM_A {
 		return ps.A
 	} else {

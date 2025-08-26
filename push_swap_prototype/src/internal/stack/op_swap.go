@@ -12,19 +12,19 @@ func swap(stk *Stack) {
 }
 
 
-func SwapA(ps *PushSwapData) {
+func SwapA(ps *SortingState) {
 	swap(ps.A)
 	if ps.WritingMode {
 		SaveOp(ps, SA)
 	}
 }
-func SwapB(ps *PushSwapData) {
+func SwapB(ps *SortingState) {
 	swap(ps.B)
 	if ps.WritingMode {
 		SaveOp(ps, SB)
 	}
 }
-func SwapAB(ps *PushSwapData) {
+func SwapAB(ps *SortingState) {
 	swap(ps.A)
 	swap(ps.B)
 	if ps.WritingMode {

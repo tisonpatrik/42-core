@@ -14,21 +14,6 @@ type Chunk struct {
 	Size int  // Changed from 'size' to 'Size' to make it public
 }
 
-// Stack represents a circular buffer stack like the C implementation
-type Stack struct {
-	Stack  []int
-	Size   int // capacity of the buffer
-	Top    int // index of top element
-	Bottom int // index of bottom element
-}
-
-type PushSwapData struct {
-	A           *Stack
-	B           *Stack
-	OpList      []Operation
-	WritingMode bool
-}
-
 type SplitDest struct {
 	Min Chunk
 	Mid Chunk

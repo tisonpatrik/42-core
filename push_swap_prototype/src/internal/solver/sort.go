@@ -4,9 +4,9 @@ import (
 	"push_swap_prototype/internal/stack"
 )
 
-func SolvePushSwap(ps *stack.PushSwapData) {
+func SolvePushSwap(ps *stack.SortingState) {
 	
-	if stack.IsSorted(ps) {
+	if stack.IsSorted(ps.A) {
 		return
 	}
 	

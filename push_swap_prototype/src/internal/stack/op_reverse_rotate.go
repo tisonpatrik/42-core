@@ -12,21 +12,21 @@ func reverseRotate(stk *Stack) {
 	}
 }
 
-func ReverseRotateA(ps *PushSwapData) {
+func ReverseRotateA(ps *SortingState) {
 	reverseRotate(ps.A)
 	if ps.WritingMode {
 		SaveOp(ps, RRA)
 	}
 }
 
-func ReverseRotateB(ps *PushSwapData) {
+func ReverseRotateB(ps *SortingState) {
 	reverseRotate(ps.B)
 	if ps.WritingMode {
 		SaveOp(ps, RRB)
 	}
 }
 
-func ReverseRotateAB(ps *PushSwapData) {
+func ReverseRotateAB(ps *SortingState) {
 	reverseRotate(ps.A)
 	reverseRotate(ps.B)
 	if ps.WritingMode {
