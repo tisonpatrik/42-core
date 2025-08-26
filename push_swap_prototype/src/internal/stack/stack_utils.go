@@ -90,15 +90,46 @@ func FillStack(s *Stack, values []int) {
     }
 }
 
+func Rotate(s *Stack) bool {
+    if GetSize(s) <= 1 {
+        return false
+    }
+    // take value from old top
+    v := s.stack[s.top]
 
+    // move top and bottom circularly
+    s.top = Next(s, s.top)
+    s.bottom = Next(s, s.bottom)
 
-func SetTop(s *Stack, newTop int) {
-	s.top = newTop
+    // new bottom is now the old top position; put it there
+    s.stack[s.bottom] = v
+    return true
 }
 
-// SetBottom sets the bottom index directly  
-func SetBottom(s *Stack, newBottom int) {
-	s.bottom = newBottom
+func ReverseRotate(s *Stack) bool {
+    if GetSize(s) <= 1 {
+        return false
+    }
+    // take value from old bottom
+    v := s.stack[s.bottom]
+
+    // move top and bottom circularly backwards
+    s.top = Previous(s, s.top)
+    s.bottom = Previous(s, s.bottom)
+
+    // new top gets the old bottom value
+    s.stack[s.top] = v
+    return true
+}
+
+func Swap(s *Stack) bool {
+	if GetSize(s) < 2 {
+		return false
+	}
+	i := s.top
+	j := Next(s, s.top)        // physical index of the second element
+	s.stack[i], s.stack[j] = s.stack[j], s.stack[i]
+	return true
 }
 
 func IsSorted(stack *Stack) bool {

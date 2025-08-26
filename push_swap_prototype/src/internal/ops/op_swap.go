@@ -1,30 +1,37 @@
 package ops
 
-import (
-	"push_swap_prototype/internal/stack"
-)
+import "push_swap_prototype/internal/stack"
 
-func swap(stk *stack.Stack) {
-
-	if (stack.GetValue(stk, stack.Next(stk, stack.GetTop(stk))) == 0) {
-		return
-	}
-	tmp := stack.GetValue(stk, stack.Next(stk, stack.GetTop(stk)))
-	stack.Push(stk, stack.GetValue(stk, stack.GetTop(stk)))
-	stack.Push(stk, tmp)
+func swap(stk *stack.Stack) bool {
+	return stack.Swap(stk)
 }
 
+// sa (swap a): Swap the first 2 elements at the top of stack a.
+// Do nothing if there is only one element or none.
 
 func SwapA(ps *SortingState) {
-	swap(ps.A)
-	SaveOp(ps, SA)
+	if swap(ps.A) {
+		SaveOp(ps, SA)
+	}
 }
+// sb (swap b): Swap the first 2 elements at the top of stack b.
+// Do nothing if there is only one element or none.
 func SwapB(ps *SortingState) {
-	swap(ps.B)
-	SaveOp(ps, SB)
+	if swap(ps.B) {
+		SaveOp(ps, SB)
+	}
 }
+
+// ss : sa and sb at the same time.
 func SwapAB(ps *SortingState) {
-	swap(ps.A)
-	swap(ps.B)
-	SaveOp(ps, SS)
+	a := swap(ps.A)
+	b := swap(ps.B)
+	switch {
+	case a && b:
+		SaveOp(ps, SS)
+	case a:
+		SaveOp(ps, SA)
+	case b:
+		SaveOp(ps, SB)
+	}
 }

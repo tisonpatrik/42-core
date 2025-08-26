@@ -4,30 +4,15 @@ import (
 	"push_swap_prototype/internal/stack"
 )
 
-func push(src *stack.Stack, dest *stack.Stack) bool {
-	if stack.IsFull(dest) {
+func push(src, dest *stack.Stack) bool {
+	if stack.IsFull(dest) || stack.GetSize(src) == 0 {
 		return false
 	}
-	
-	// Check if source is empty
-	if stack.GetSize(src) == 0 {
+	v := stack.Pop(src)                  // safe: src has at least 1 element
+	if v == stack.NullValue() {          // defensively, we should not get here
 		return false
 	}
-	
-	// Get the top value from source stack using Peek
-	topValuePtr := stack.Peek(src)
-	if topValuePtr == nil {
-		return false
-	}
-	
-	value := *topValuePtr
-	
-	// Push to destination using existing stack.Push
-	stack.Push(dest, value)
-	
-	// Remove from source using existing stack.Pop
-	stack.Pop(src)
-	
+	stack.Push(dest, v)                  // safe: dest is not full
 	return true
 }
 
