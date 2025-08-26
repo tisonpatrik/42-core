@@ -131,7 +131,7 @@ func validateStackValues(stk *stack.Stack, stackName string, result *ValidationR
 	
 	// Check if stack is empty but has non-zero indices
 	if currentSize == 0 {
-		if stk.Top != stk.Bottom || stk.Stack[stk.Top] != 0 {
+		if stk.Top != stk.Bottom || stack.GetValue(stk, stk.Top) != 0 {
 			result.Warnings = append(result.Warnings, 
 				fmt.Sprintf("%s: stack appears empty but has non-zero values", stackName))
 		}
@@ -141,7 +141,7 @@ func validateStackValues(stk *stack.Stack, stackName string, result *ValidationR
 	// Check for potential data corruption
 	nonZeroCount := 0
 	for i := 0; i < stack.GettSize(stk); i++ {
-		if stk.Stack[i] != 0 {
+		if stack.GetValue(stk, i) != 0 {
 			nonZeroCount++
 		}
 	}
@@ -180,7 +180,7 @@ func LogStackState(ps *SortingState, context string) {
 		fmt.Printf("Stack A: top=%d, bottom=%d, size=%d, current_size=%d\n", 
 			ps.A.Top, ps.A.Bottom, stack.GettSize(ps.A), stack.GettSize(ps.A))
 		fmt.Printf("Stack A top 5 values: [%d %d %d %d %d]\n",
-			stack.Value(ps.A, 1), stack.Value(ps.A, 2), stack.Value(ps.A, 3), stack.Value(ps.A, 4), stack.Value(ps.A, 5))
+			stack.GetValue(ps.A, 1), stack.GetValue(ps.A, 2), stack.GetValue(ps.A, 3), stack.GetValue(ps.A, 4), stack.GetValue(ps.A, 5))
 	} else {
 		fmt.Printf("Stack A: nil\n")
 	}
@@ -189,7 +189,7 @@ func LogStackState(ps *SortingState, context string) {
 		fmt.Printf("Stack B: top=%d, bottom=%d, size=%d, current_size=%d\n", 
 			ps.B.Top, ps.B.Bottom, stack.GettSize(ps.B), stack.GettSize(ps.B))
 		fmt.Printf("Stack B top 5 values: [%d %d %d %d %d]\n",
-			stack.Value(ps.B, 1), stack.Value(ps.B, 2), stack.Value(ps.B, 3), stack.Value(ps.B, 4), stack.Value(ps.B, 5))
+			stack.GetValue(ps.B, 1), stack.GetValue(ps.B, 2), stack.GetValue(ps.B, 3), stack.GetValue(ps.B, 4), stack.GetValue(ps.B, 5))
 	} else {
 		fmt.Printf("Stack B: nil\n")
 	}

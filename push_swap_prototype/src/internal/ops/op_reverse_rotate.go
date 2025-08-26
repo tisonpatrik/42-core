@@ -10,8 +10,8 @@ func reverseRotate(stk *stack.Stack) {
 		stk.Bottom = stack.NextUp(stk, stk.Bottom)
 	} else {
 		stk.Top = stack.NextUp(stk, stk.Top)
-		stk.Stack[stk.Top] = stk.Stack[stk.Bottom]
-		stk.Stack[stk.Bottom] = 0
+		stack.Push(stk, stack.GetValue(stk, stk.Bottom))
+		stack.Push(stk, 0)
 		stk.Bottom = stack.NextUp(stk, stk.Bottom)
 	}
 }

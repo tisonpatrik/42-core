@@ -47,7 +47,7 @@ func SortTwo(ps *ops.SortingState, to_sort *chunk.Chunk) {
 		MoveFromTo(ps, to_sort.Loc, chunk.TOP_A)
 	}
 
-	if stack.Value(ps.A, 1) > stack.Value(ps.A, 2) {
+	if stack.GetValue(ps.A, 1) > stack.GetValue(ps.A, 2) {
 		ops.SwapA(ps)
 	}
 

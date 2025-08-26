@@ -11,9 +11,9 @@ func push(src *stack.Stack, dest *stack.Stack) {
 		return
 	}
 	dest_i := stack.NextUp(dest, dest.Top)
-	dest.Stack[dest_i] = src.Stack[src.Top]
+	stack.Push(dest, stack.GetValue(src, src.Top))
 	dest.Top = dest_i
-	src.Stack[src.Top] = 0
+	stack.Push(src, 0)
 	src.Top = stack.NextDown(src, src.Top)
 }
 

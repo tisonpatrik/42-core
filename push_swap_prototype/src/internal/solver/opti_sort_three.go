@@ -27,12 +27,12 @@ func SortThree(ps *ops.SortingState, chunk_item *chunk.Chunk) {
 }
 
 func SortThreeTopA(ps *ops.SortingState, to_sort *chunk.Chunk, stk *stack.Stack, max int) {
-	if stack.Value(stk, stk.Top) == max {
+	if stack.GetValue(stk, stk.Top) == max {
 		ops.SwapA(ps)
 		ops.RotateA(ps)
 		ops.SwapA(ps)
 		ops.ReverseRotateA(ps)
-	} else if stack.Value(stk, stack.NextDown(stk, stk.Top)) == max {
+	} else if stack.GetValue(stk, stack.NextDown(stk, stk.Top)) == max {
 		ops.RotateA(ps)
 		ops.SwapA(ps)
 		ops.ReverseRotateA(ps)
@@ -47,10 +47,10 @@ func SortThreeTopA(ps *ops.SortingState, to_sort *chunk.Chunk, stk *stack.Stack,
 func SortThreeTopB(ps *ops.SortingState, to_sort *chunk.Chunk, stk *stack.Stack, max int) {
 	ops.PushA(ps)
 
-	if stack.Value(stk, stk.Top) == max {
+	if stack.GetValue(stk, stk.Top) == max {
 		ops.PushA(ps)
 		ops.SwapA(ps)
-	} else if stack.Value(stk, stack.NextDown(stk, stk.Top)) == max {
+	} else if stack.GetValue(stk, stack.NextDown(stk, stk.Top)) == max {
 		ops.SwapB(ps)
 		ops.PushA(ps)
 		ops.SwapA(ps)
@@ -69,10 +69,10 @@ func SortThreeBottomA(ps *ops.SortingState, to_sort *chunk.Chunk, stk *stack.Sta
 	ops.ReverseRotateA(ps)
 	ops.ReverseRotateA(ps)
 
-	if stack.Value(stk, stk.Top) == max {
+	if stack.GetValue(stk, stk.Top) == max {
 		ops.SwapA(ps)
 		ops.ReverseRotateA(ps)
-	} else if stack.Value(stk, stack.NextDown(stk, stk.Top)) == max {
+	} else if stack.GetValue(stk, stack.NextDown(stk, stk.Top)) == max {
 		ops.ReverseRotateA(ps)
 	}else {
 		ops.PushB(ps)
@@ -90,10 +90,10 @@ func SortThreeBottomB(ps *ops.SortingState, to_sort *chunk.Chunk, stk *stack.Sta
 	ops.ReverseRotateB(ps)
 	ops.ReverseRotateB(ps)
 
-	if stack.Value(stk, stk.Top) == max {
+	if stack.GetValue(stk, stk.Top) == max {
 		ops.PushA(ps)
 		ops.ReverseRotateB(ps)
-	}else if stack.Value(stk, stack.NextDown(stk, stk.Top)) == max {
+	}else if stack.GetValue(stk, stack.NextDown(stk, stk.Top)) == max {
 		ops.SwapB(ps)
 		ops.PushA(ps)
 		ops.ReverseRotateB(ps)

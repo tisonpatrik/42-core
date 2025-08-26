@@ -12,6 +12,6 @@ func main() {
 	ps := ops.InitData(numbers)
 	solver.SolvePushSwap(ps)
 	fmt.Printf("Is sorted: %v\n", stack.IsSorted(ps.A))
-	fmt.Printf("Stack A: %v\n", ps.A.Stack)
-	fmt.Printf("Stack B: %v\n", ps.B.Stack)
+	fmt.Printf("Stack A: %v\n", ps.A)
+	fmt.Printf("Stack B: %v\n", ps.B)
 }

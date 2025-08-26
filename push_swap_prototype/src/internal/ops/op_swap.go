@@ -6,12 +6,12 @@ import (
 
 func swap(stk *stack.Stack) {
 
-	if (stk.Stack[stack.NextDown(stk, stk.Top)] == 0) {
+	if (stack.GetValue(stk, stack.NextDown(stk, stk.Top)) == 0) {
 		return
 	}
-	tmp := stk.Stack[stack.NextDown(stk, stk.Top)]
-	stk.Stack[stack.NextDown(stk, stk.Top)] = stk.Stack[stk.Top]
-	stk.Stack[stk.Top] = tmp
+	tmp := stack.GetValue(stk, stack.NextDown(stk, stk.Top))
+	stack.Push(stk, stack.GetValue(stk, stk.Top))
+	stack.Push(stk, tmp)
 }
 
 

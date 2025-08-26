@@ -32,7 +32,7 @@ func ChunkValue(ps *ops.SortingState, chunk_item *chunk.Chunk, n int) int {
 			i = stack.NextUp(stk, i)
 		}
 	}
-	return stk.Stack[i]
+	return stack.GetValue(stk, i)
 }
 
 // Equivalent to chunk_max_value in C implementation
@@ -56,8 +56,8 @@ func ChunkMaxValue(ps *ops.SortingState, chunk_item *chunk.Chunk) int {
 	}
 	
 	for j := 0; j < size; j++ {
-		if stk.Stack[i] > maxVal {
-			maxVal = stk.Stack[i]
+		if stack.GetValue(stk, i) > maxVal {
+			maxVal = stack.GetValue(stk, i)
 		}
 		switch chunk_item.Loc {
 		case chunk.TOP_A, chunk.TOP_B:
