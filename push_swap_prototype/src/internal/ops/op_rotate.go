@@ -5,7 +5,7 @@ import (
 )
 
 func rotate(stk *stack.Stack) {
-	if stack.GettSize(stk) <= 1 {
+	if stack.GetSize(stk) <= 1 {
 		return // Nothing to rotate
 	}
 	
@@ -28,22 +28,16 @@ func rotate(stk *stack.Stack) {
 
 func RotateA(ps *SortingState) {
 	rotate(ps.A)
-	if ps.WritingMode {
-		SaveOp(ps, RA)
-	}
+	SaveOp(ps, RA)
 }
 
 func RotateB(ps *SortingState) {
 	rotate(ps.B)
-	if ps.WritingMode {
-		SaveOp(ps, RB)
-	}
+	SaveOp(ps, RB)
 }
 
 func RotateAB(ps *SortingState) {
 	rotate(ps.A)
 	rotate(ps.B)
-	if ps.WritingMode {
-		SaveOp(ps, RR)
-	}
+	SaveOp(ps, RR)
 }

@@ -11,7 +11,7 @@ func TestGettSizeEmptyStack(t *testing.T) {
 	stack := InitStack(5)
 	
 	// Act
-	size := GettSize(stack)
+	size := GetSize(stack)
 	
 	// Assert
 	expected := 0
@@ -27,7 +27,7 @@ func TestGettSizeSingleElement(t *testing.T) {
 	Push(stack, 42)
 	
 	// Act
-	size := GettSize(stack)
+	size := GetSize(stack)
 	
 	// Assert
 	expected := 1
@@ -45,7 +45,7 @@ func TestGettSizeNormalCase1(t *testing.T) {
 	Push(stack, 30)
 	
 	// Act
-	size := GettSize(stack)
+	size := GetSize(stack)
 	
 	// Assert
 	expected := 3
@@ -64,7 +64,7 @@ func TestGettSizeNormalCase2(t *testing.T) {
 	Push(stack, 40)
 	
 	// Act
-	size := GettSize(stack)
+	size := GetSize(stack)
 	
 	// Assert
 	expected := 4
@@ -84,7 +84,7 @@ func TestGettSizeFullStack(t *testing.T) {
 	Push(stack, 50)
 	
 	// Act
-	size := GettSize(stack)
+	size := GetSize(stack)
 	
 	// Assert
 	expected := 5
@@ -108,7 +108,7 @@ func TestGettSizeWithWrapping(t *testing.T) {
 	Push(stack, 40)
 	
 	// Act
-	size := GettSize(stack)
+	size := GetSize(stack)
 	
 	// Assert
 	expected := 3
@@ -127,7 +127,7 @@ func TestGettSizeAfterPop(t *testing.T) {
 	
 	// Act
 	Pop(stack)
-	size := GettSize(stack)
+	size := GetSize(stack)
 	
 	// Assert
 	expected := 2
@@ -148,7 +148,7 @@ func TestGettSizeAfterMultiplePops(t *testing.T) {
 	// Act
 	Pop(stack)
 	Pop(stack)
-	size := GettSize(stack)
+	size := GetSize(stack)
 	
 	// Assert
 	expected := 2
@@ -169,7 +169,7 @@ func TestGettSizeAfterPopAll(t *testing.T) {
 	Pop(stack)
 	Pop(stack)
 	Pop(stack)
-	size := GettSize(stack)
+	size := GetSize(stack)
 	
 	// Assert
 	expected := 0
@@ -375,8 +375,8 @@ func TestFillStackEmptyStack(t *testing.T) {
 	FillStack(stack, values)
 	
 	// Assert
-	if GettSize(stack) != 3 {
-		t.Errorf("Expected size 3, got %d", GettSize(stack))
+	if GetSize(stack) != 3 {
+		t.Errorf("Expected size 3, got %d", GetSize(stack))
 	}
 	// After FillStack, Top should be at index 1 (NextUp from 2)
 	if stack.top != 1 {
@@ -417,8 +417,8 @@ func TestFillStackWithWrapping(t *testing.T) {
 	FillStack(stack, values)
 	
 	// Assert
-	if GettSize(stack) != 3 {
-		t.Errorf("Expected size 3, got %d", GettSize(stack))
+	if GetSize(stack) != 3 {
+		t.Errorf("Expected size 3, got %d", GetSize(stack))
 	}
 }
 

@@ -10,11 +10,11 @@ import (
 func SortThree(ps *ops.SortingState, chunk_item *chunk.Chunk) {
 	
 	
-	stk := locToStack(ps, chunk_item.Loc)
+	stk := locToStack(ps, chunk.GetLoc(chunk_item))
 	max := ChunkMaxValue(ps, chunk_item)
 
 
-	switch chunk_item.Loc {
+	switch chunk.GetLoc(chunk_item) {
 	case chunk.TOP_A:
 		SortThreeTopA(ps, chunk_item, stk, max)
 	case chunk.BOTTOM_A:
@@ -38,8 +38,8 @@ func SortThreeTopA(ps *ops.SortingState, to_sort *chunk.Chunk, stk *stack.Stack,
 		ops.ReverseRotateA(ps)
 	}
 
-	to_sort.Loc = chunk.TOP_A
-	to_sort.Size -= 1
+	chunk.SetLoc(to_sort, chunk.TOP_A)
+	chunk.SetSize(to_sort, chunk.GetSize(to_sort)-1)
 	
 	SortTwo(ps, to_sort)
 }
@@ -59,8 +59,8 @@ func SortThreeTopB(ps *ops.SortingState, to_sort *chunk.Chunk, stk *stack.Stack,
 	}
 	ops.PushA(ps)
 
-	to_sort.Loc = chunk.TOP_A
-	to_sort.Size -= 1
+	chunk.SetLoc(to_sort, chunk.TOP_A)
+	chunk.SetSize(to_sort, chunk.GetSize(to_sort)-1)
 
 	SortTwo(ps, to_sort)
 }
@@ -81,8 +81,8 @@ func SortThreeBottomA(ps *ops.SortingState, to_sort *chunk.Chunk, stk *stack.Sta
 		ops.PushA(ps)
 	}
 
-	to_sort.Loc = chunk.TOP_A
-	to_sort.Size -= 1
+	chunk.SetLoc(to_sort, chunk.TOP_A)
+	chunk.SetSize(to_sort, chunk.GetSize(to_sort)-1)
 	SortTwo(ps, to_sort)
 }
 
@@ -102,7 +102,7 @@ func SortThreeBottomB(ps *ops.SortingState, to_sort *chunk.Chunk, stk *stack.Sta
 		ops.PushA(ps)
 	}
 
-	to_sort.Loc = chunk.TOP_B
-	to_sort.Size -= 1
+	chunk.SetLoc(to_sort, chunk.TOP_B)
+	chunk.SetSize(to_sort, chunk.GetSize(to_sort)-1)
 	SortTwo(ps, to_sort)
 }

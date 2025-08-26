@@ -17,20 +17,14 @@ func swap(stk *stack.Stack) {
 
 func SwapA(ps *SortingState) {
 	swap(ps.A)
-	if ps.WritingMode {
-		SaveOp(ps, SA)
-	}
+	SaveOp(ps, SA)
 }
 func SwapB(ps *SortingState) {
 	swap(ps.B)
-	if ps.WritingMode {
-		SaveOp(ps, SB)
-	}
+	SaveOp(ps, SB)
 }
 func SwapAB(ps *SortingState) {
 	swap(ps.A)
 	swap(ps.B)
-	if ps.WritingMode {
-		SaveOp(ps, SS)
-	}
+	SaveOp(ps, SS)
 }

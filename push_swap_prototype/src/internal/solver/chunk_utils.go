@@ -8,62 +8,33 @@ import (
 
 // Equivalent to chunk_value in C implementation
 func ChunkValue(ps *ops.SortingState, chunk_item *chunk.Chunk, n int) int {
-
-	loc := chunk_item.Loc
+	// n is the position (0-based), so we can use it directly with GetValue
+	loc := chunk.GetLoc(chunk_item)
 	stk := locToStack(ps, loc)
-
-	var i int
-	switch loc {
-	case chunk.TOP_A, chunk.TOP_B:
-		i = stack.GetTop(stk)
-	case chunk.BOTTOM_A, chunk.BOTTOM_B:
-		i = stack.GetBottom(stk)
-	default:
-		i = stack.GetTop(stk)
+	
+	// Validate position
+	if n < 0 || n >= chunk.GetSize(chunk_item) {
+		return stack.NullValue()
 	}
 	
-	switch loc {
-	case chunk.TOP_A, chunk.TOP_B:
-		for j := 1; j < n; j++ {
-			i = stack.Next(stk, i)
-		}
-	case chunk.BOTTOM_A, chunk.BOTTOM_B:
-		for j := 1; j < n; j++ {
-			i = stack.Previous(stk, i)
-		}
-	}
-	return stack.GetValue(stk, i)
+	return stack.GetValue(stk, n)
 }
 
 // Equivalent to chunk_max_value in C implementation
 func ChunkMaxValue(ps *ops.SortingState, chunk_item *chunk.Chunk) int {
-	if chunk_item == nil || chunk_item.Size <= 0 {
+	if chunk_item == nil || chunk.GetSize(chunk_item) <= 0 {
 		return 0
 	}
 	
-	stk := locToStack(ps, chunk_item.Loc)
-	size := chunk_item.Size
+	stk := locToStack(ps, chunk.GetLoc(chunk_item))
+	size := chunk.GetSize(chunk_item)
 	maxVal := 0
 
-	var i int
-	switch chunk_item.Loc {
-	case chunk.TOP_A, chunk.TOP_B:
-		i = stack.GetTop(stk)
-	case chunk.BOTTOM_A, chunk.BOTTOM_B:
-		i = stack.GetBottom(stk)
-	default:
-		i = stack.GetTop(stk) // Default fallback like C
-	}
-	
+	// Use positions (0-based) instead of indices for GetValue
 	for j := 0; j < size; j++ {
-		if stack.GetValue(stk, i) > maxVal {
-			maxVal = stack.GetValue(stk, i)
-		}
-		switch chunk_item.Loc {
-		case chunk.TOP_A, chunk.TOP_B:
-			i = stack.Next(stk, i)
-		case chunk.BOTTOM_A, chunk.BOTTOM_B:
-			i = stack.Previous(stk, i)
+		value := stack.GetValue(stk, j)
+		if value > maxVal {
+			maxVal = value
 		}
 	}
 	

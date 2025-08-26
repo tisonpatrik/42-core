@@ -10,7 +10,7 @@ func SplitMaxReduction(ps *ops.SortingState, max *chunk.Chunk) {
 
 	a := ps.A
 
-	if max.Loc == chunk.TOP_A && max.Size == 3 && isConsecutive(
+	if chunk.GetLoc(max) == chunk.TOP_A && chunk.GetSize(max) == 3 && isConsecutive(
 		stack.GetValue(a, 1), stack.GetValue(a, 2),
 		stack.GetValue(a, 3), stack.GetValue(a, 4)) &&
 		APartlySort(ps, 4) {
@@ -18,14 +18,14 @@ func SplitMaxReduction(ps *ops.SortingState, max *chunk.Chunk) {
 		return
 	}
 
-	if max.Loc == chunk.TOP_A && stack.GetValue(a, 1) == stack.GetValue(a, 3)-1 &&
+	if chunk.GetLoc(max) == chunk.TOP_A && stack.GetValue(a, 1) == stack.GetValue(a, 3)-1 &&
 		APartlySort(ps, 3) {
 		ops.SwapA(ps)
-		max.Size--
+		chunk.SetSize(max, chunk.GetSize(max)-1)
 	}
 
-	if max.Loc == chunk.TOP_A && APartlySort(ps, 1) {
-		max.Size--
+	if chunk.GetLoc(max) == chunk.TOP_A && APartlySort(ps, 1) {
+		chunk.SetSize(max, chunk.GetSize(max)-1)
 	}
 }
 
@@ -40,7 +40,7 @@ func APartlySort(ps *ops.SortingState, from int) bool {
 	}
 	
 	value := stack.GetValue(a, i) // Initialize value with first element
-	for ; stack.GetValue(a, i) != stack.GettSize(a); i = stack.Next(a, i) {  // FIXED: Use ps.A.Size like C implementation (data->a.size)
+	for ; stack.GetValue(a, i) != stack.GetSize(a); i = stack.Next(a, i) {  // FIXED: Use ps.A.Size like C implementation (data->a.size)
 		if stack.GetValue(a, i) != value + 1 {
 			return false
 		}

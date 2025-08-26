@@ -1,104 +1,95 @@
 package stack
 
 
-func Push(stack *Stack, value int) {
-    if IsFull(stack) {
-        panic("Stack is full")
-    }
-    
-    if value <= nullValue {
-        panic("Cannot push negative numbers or null values")
-    }
-    
-    // If stack is empty, set both top and bottom to same position
-    if GettSize(stack) == 0 {
-        stack.top = 0
-        stack.bottom = 0
-        stack.stack[stack.top] = value
-    } else {
-        // Move top up and place value
-        stack.top = Previous(stack, stack.top)
-        stack.stack[stack.top] = value
-    }
+func Push(s *Stack, value int) {
+	if IsFull(s) {
+		panic("Stack is full")
+	}
+	if value <= nullValue {
+		panic("Cannot push negative numbers or null values")
+	}
+
+	// stack is empty
+	if GetSize(s) == 0 {
+		s.top = 0
+		s.bottom = 0
+		s.stack[s.top] = value
+		return
+	}
+
+	// otherwise move top
+	s.top = Previous(s, s.top)
+	s.stack[s.top] = value
 }
 
+
 func Peek(stack *Stack) *int {
-	if GettSize(stack) == 0 {
+	if GetSize(stack) == 0 {
 		return nil
 	}
 	return &stack.stack[stack.top]
 }
 
-func Pop(stack *Stack) int {
-	if GettSize(stack) == 0 {
+func Pop(s *Stack) int {
+	if GetSize(s) == 0 {
 		return nullValue
 	}
-	
-	value := stack.stack[stack.top]
-	stack.stack[stack.top] = nullValue
-	
-	// If this was the last element, mark stack as empty
-	if stack.top == stack.bottom {
-		stack.bottom = -1
-		// Don't change top - keep it at 0 for empty stack
-	} else {
-		// Move top down
-		stack.top = Next(stack, stack.top)
+
+	value := s.stack[s.top]
+	s.stack[s.top] = nullValue
+
+	if s.top == s.bottom {
+		// last element -> empty stack
+		s.top = nullValue
+		s.bottom = nullValue
+		return value
 	}
-	
+
+	// otherwise move top towards bottom (circular)
+	s.top = Next(s, s.top)
 	return value
 }
 
-// Previous = next_up (C)
-func Previous(s *Stack, index int) int {
-	if index == 0 {
+
+func Previous(s *Stack, i int) int {
+	if i == 0 {
 		return s.capacity - 1
 	}
-	return index - 1
+	return i - 1
 }
 
-// Next = next_down (C)
-func Next(s *Stack, index int) int {
-	if index == s.capacity-1 {
+func Next(s *Stack, i int) int {
+	if i == s.capacity-1 {
 		return 0
 	}
-	return index + 1
+	return i + 1
 }
-
-
 
 func FillStack(s *Stack, values []int) {
-	// Validate input
-	if s == nil {
-		panic("Stack is nil")
-	}
-	if len(values) != s.capacity {
-		panic("Cannot fill stack: values exceed capacity")
-	}
-	
-	// Clear the stack first
-	for i := range s.stack {
-		s.stack[i] = nullValue
-	}
-	s.top = 0
-	s.bottom = -1 // Mark as empty
-	
-	// Push each value individually using the stack's push mechanism
-	for _, val := range values {
-		// Validate before each push
-		if IsFull(s) {
-			panic("Stack became full unexpectedly during fill operation")
-		}
-		
-		// Validate value
-		if val <= nullValue {
-			panic("Cannot push negative numbers or null values")
-		}
-		
-		// Push to stack (this will handle all the index management)
-		Push(s, val)
-	}
+    if s == nil {
+        panic("Stack is nil")
+    }
+    if len(values) != s.capacity {
+        panic("Cannot fill stack: values exceed capacity")
+    }
+
+    // Clear the buffer
+    for i := range s.stack {
+        s.stack[i] = nullValue
+    }
+	// Empty state must be -1 / -1, otherwise GetSize != 0
+    s.top = nullValue
+    s.bottom = nullValue
+
+    // Now we can push; Push itself panics on overflow
+    for _, val := range values {
+        if val <= nullValue {
+            panic("Cannot push negative numbers or null values")
+        }
+        Push(s, val)
+    }
 }
+
 
 
 func SetTop(s *Stack, newTop int) {
@@ -111,7 +102,7 @@ func SetBottom(s *Stack, newBottom int) {
 }
 
 func IsSorted(stack *Stack) bool {
-	if GettSize(stack) == 0 {
+	if GetSize(stack) == 0 {
 		return true
 	}
 	
@@ -119,7 +110,7 @@ func IsSorted(stack *Stack) bool {
 	rank := 1
 	count := 0
 
-	for count < GettSize(stack) {
+	for count < GetSize(stack) {
 		if stack.stack[i] != rank {
 			return false
 		}

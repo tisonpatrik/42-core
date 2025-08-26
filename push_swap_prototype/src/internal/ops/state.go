@@ -8,7 +8,6 @@ type SortingState struct {
 	A           *stack.Stack
 	B           *stack.Stack
 	OpList      []Operation
-	WritingMode bool
 }
 
 func InitData(numbers []int) *SortingState {
@@ -22,8 +21,6 @@ func InitData(numbers []int) *SortingState {
 	}
 	return ps
 }
-
-
 
 func SaveOp(ps *SortingState, op Operation) {
 	ps.OpList = append(ps.OpList, op)

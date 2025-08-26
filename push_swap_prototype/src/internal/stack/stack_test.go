@@ -1,6 +1,7 @@
 package stack
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -11,15 +12,14 @@ func TestInitStack(t *testing.T) {
 	
 	// Act
 	stack := InitStack(size)
-	
 	// Assert
 	if stack.capacity != size {
 		t.Errorf("Expected capacity %d, got %d", size, stack.capacity)
 	}
-	if stack.top != 0 {
+	if stack.top != nullValue {
 		t.Errorf("Expected Top to be 0, got %d", stack.top)
 	}
-	if stack.bottom != -1 {
+	if stack.bottom != nullValue {
 		t.Errorf("Expected Bottom to be -1 (empty), got %d", stack.bottom)
 	}
 	if len(stack.stack) != size {
@@ -36,26 +36,40 @@ func TestInitStack(t *testing.T) {
 
 // TestPushToEmptyStack tests pushing to an empty stack
 func TestPushToEmptyStack(t *testing.T) {
-	// Arrange
-	stack := InitStack(3)
-	
-	// Act
-	Push(stack, 1)
-	
-	// Assert
-	if stack.top != 0 {
-		t.Errorf("Expected Top to be 0, got %d", stack.top)
-	}
-	if stack.bottom != 0 {
-		t.Errorf("Expected Bottom to be 0, got %d", stack.bottom)
-	}
-	if stack.stack[0] != 1 {
-		t.Errorf("Expected stack[0] to be 1, got %d", stack.stack[0])
-	}
-	if GettSize(stack) != 1 {
-		t.Errorf("Expected size 1, got %d", GettSize(stack))
-	}
+    // Arrange
+    s := InitStack(3)
+
+    // Act
+    Push(s, 1)
+
+    // Assert: top / bottom po 1. pushi
+    if s.top != 0 {
+        t.Errorf("Expected Top to be 0, got %d", s.top)
+    }
+    if s.bottom != 0 {
+        t.Errorf("Expected Bottom to be 0, got %d", s.bottom)
+    }
+
+    // Assert: size
+    if sz := GetSize(s); sz != 1 {
+        t.Errorf("Expected size 1, got %d", sz)
+    }
+
+    // Assert: logická hodnota na pozici 0 (od topu)
+    if v := GetValue(s, 0); v != 1 {
+        t.Errorf("Expected value at logical pos 0 to be 1, got %d", v)
+    }
+
+    // (Volitelné) – kontrola backing array
+    if s.stack[0] != 1 {
+        t.Errorf("Expected s.stack[0] to be 1, got %d", s.stack[0])
+    }
+    if s.stack[1] != nullValue || s.stack[2] != nullValue {
+        t.Errorf("Expected unused slots to be %d, got [%d %d]", nullValue, s.stack[1], s.stack[2])
+    }
 }
+
+
 
 // TestPushMultipleElements tests pushing multiple elements
 func TestPushMultipleElements(t *testing.T) {
@@ -67,6 +81,8 @@ func TestPushMultipleElements(t *testing.T) {
 	Push(stack, 2)
 	Push(stack, 3)
 	
+	fmt.Println("stack", stack)
+
 	// Assert
 	// In circular buffer: Top moves up (decreases) with each push
 	// First push: Top = 0, stores at index 0
@@ -78,8 +94,8 @@ func TestPushMultipleElements(t *testing.T) {
 	if stack.bottom != 0 {
 		t.Errorf("Expected Bottom to be 0, got %d", stack.bottom)
 	}
-	if GettSize(stack) != 3 {
-		t.Errorf("Expected size 3, got %d", GettSize(stack))
+	if GetSize(stack) != 3 {
+		t.Errorf("Expected size 3, got %d", GetSize(stack))
 	}
 	
 	// Check values are stored in circular buffer order
@@ -123,8 +139,8 @@ func TestPushWithWrapping(t *testing.T) {
 	if stack.stack[1] != 4 {
 		t.Errorf("Expected stack[1] to be 4, got %d", stack.stack[1])
 	}
-	if GettSize(stack) != 3 {
-		t.Errorf("Expected size 3, got %d", GettSize(stack))
+	if GetSize(stack) != 3 {
+		t.Errorf("Expected size 3, got %d", GetSize(stack))
 	}
 }
 
@@ -140,36 +156,39 @@ func TestPopFromEmptyStack(t *testing.T) {
 	if value != nullValue {
 		t.Errorf("Expected nullValue (%d), got %d", nullValue, value)
 	}
-	if stack.top != 0 {
+	if stack.top != nullValue {
 		t.Errorf("Expected Top to remain 0, got %d", stack.top)
 	}
-	if stack.bottom != -1 {
+	if stack.bottom != nullValue {
 		t.Errorf("Expected Bottom to remain -1, got %d", stack.bottom)
 	}
 }
 
 // TestPopSingleElement tests popping a single element
 func TestPopSingleElement(t *testing.T) {
-	// Arrange
-	stack := InitStack(3)
-	Push(stack, 1)
-	
-	// Act
-	value := Pop(stack)
-	
-	// Assert
-	if value != 1 {
-		t.Errorf("Expected value 1, got %d", value)
-	}
-	if stack.top != 0 {
-		t.Errorf("Expected Top to be 0, got %d", stack.top)
-	}
-	if stack.bottom != -1 {
-		t.Errorf("Expected Bottom to be -1 (empty), got %d", stack.bottom)
-	}
-	if stack.stack[0] != nullValue {
-		t.Errorf("Expected stack[0] to be %d, got %d", nullValue, stack.stack[0])
-	}
+    // Arrange
+    stack := InitStack(3) // p\u0159edpoklad: Init nastav� top = -1, bottom = -1
+    Push(stack, 1)
+
+    // Act
+    value := Pop(stack)
+
+    // Assert
+    if value != 1 {
+        t.Errorf("Expected value 1, got %d", value)
+    }
+    if stack.top != nullValue {
+        t.Errorf("Expected Top to be %d (empty), got %d", nullValue, stack.top)
+    }
+    if stack.bottom != nullValue {
+        t.Errorf("Expected Bottom to be %d (empty), got %d", nullValue, stack.bottom)
+    }
+    if stack.stack[0] != nullValue {
+        t.Errorf("Expected stack[0] to be %d, got %d", nullValue, stack.stack[0])
+    }
+    if GetSize(stack) != 0 {
+        t.Errorf("Expected size 0, got %d", GetSize(stack))
+    }
 }
 
 // TestPopMultipleElements tests popping multiple elements
@@ -192,8 +211,8 @@ func TestPopMultipleElements(t *testing.T) {
 	}
 	
 	// Stack should be empty
-	if GettSize(stack) != 0 {
-		t.Errorf("Expected size 0, got %d", GettSize(stack))
+	if GetSize(stack) != 0 {
+		t.Errorf("Expected size 0, got %d", GetSize(stack))
 	}
 	if stack.bottom != -1 {
 		t.Errorf("Expected Bottom to be -1, got %d", stack.bottom)
@@ -232,8 +251,8 @@ func TestPeekNonEmptyStack(t *testing.T) {
 	}
 	
 	// Peeking shouldn't change the stack
-	if GettSize(stack) != 2 {
-		t.Errorf("Expected size to remain 2, got %d", GettSize(stack))
+	if GetSize(stack) != 2 {
+		t.Errorf("Expected size to remain 2, got %d", GetSize(stack))
 	}
 }
 
@@ -271,15 +290,15 @@ func TestWrappingBehavior(t *testing.T) {
 		Push(stack, 1)
 		Push(stack, 2)
 		
-		if GettSize(stack) != 2 {
-			t.Errorf("Expected size 2, got %d", GettSize(stack))
+		if GetSize(stack) != 2 {
+			t.Errorf("Expected size 2, got %d", GetSize(stack))
 		}
 		
 		Pop(stack)
 		Pop(stack)
 		
-		if GettSize(stack) != 0 {
-			t.Errorf("Expected size 0, got %d", GettSize(stack))
+		if GetSize(stack) != 0 {
+			t.Errorf("Expected size 0, got %d", GetSize(stack))
 		}
 	}
 }

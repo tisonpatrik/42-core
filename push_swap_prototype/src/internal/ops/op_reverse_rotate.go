@@ -5,12 +5,12 @@ import (
 )
 
 func reverseRotate(stk *stack.Stack) {
-	if stack.GettSize(stk) <= 1 {
+	if stack.GetSize(stk) <= 1 {
 		return // Nothing to rotate
 	}
 	
 	// Get the bottom value
-	bottomValue := stack.GetValue(stk, stack.GettSize(stk)-1)
+	bottomValue := stack.GetValue(stk, stack.GetSize(stk)-1)
 	if bottomValue == stack.NullValue() {
 		return
 	}
@@ -28,22 +28,16 @@ func reverseRotate(stk *stack.Stack) {
 
 func ReverseRotateA(ps *	SortingState) {
 	reverseRotate(ps.A)
-	if ps.WritingMode {
-		SaveOp(ps, RRA)
-	}
+	SaveOp(ps, RRA)
 }
 
 func ReverseRotateB(ps *SortingState) {
 	reverseRotate(ps.B)
-	if ps.WritingMode {
-		SaveOp(ps, RRB)
-	}
+	SaveOp(ps, RRB)
 }
 
 func ReverseRotateAB(ps *SortingState) {
 	reverseRotate(ps.A)
 	reverseRotate(ps.B)
-	if ps.WritingMode {
-		SaveOp(ps, RRR)
-	}
+	SaveOp(ps, RRR)
 }

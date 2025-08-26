@@ -16,8 +16,8 @@ func InitStack(size int) *Stack {
 	stack := &Stack{
 		stack:  make([]int, size),
 		capacity:   size,
-		top:    0, // Empty stack has top at 0
-		bottom: -1, // -1 means empty stack
+		top:    nullValue, 
+		bottom: nullValue,
 	}
 	
 	for i := range stack.stack {
@@ -27,35 +27,42 @@ func InitStack(size int) *Stack {
 	return stack
 }
 
-func GettSize(s *Stack) int {
-	if s.bottom == -1 {
-		return 0 
+func GetSize(s *Stack) int {
+	if s.top == -1 && s.bottom == -1 {
+		// empty stack
+		return 0
 	}
-	
+
 	if s.top <= s.bottom {
-		// Normal case: Top <= Bottom
+		// top is before bottom (normal case)
 		return s.bottom - s.top + 1
-	} else {
-		// Wrapped case: Top > Bottom (wrapped around)
-		return (s.capacity - s.top) + (s.bottom + 1)
 	}
+
+	// wrapped case (top is "after" bottom in the circle)
+	return (s.capacity - s.top) + (s.bottom + 1)
 }
 
 
 func IsFull(s *Stack) bool {
-	return GettSize(s) == s.capacity
+	return GetSize(s) == s.capacity
 }
 
 func GetTop(s *Stack) int {
 	return s.top
 }
 
-func GetBottom(s *Stack) int {
+func GetBottom(s *Stack) int {type Stack struct {
+	stack  []int
+	capacity   int
+	top    int 
+	bottom int
+}
+
 	return s.bottom
 }
 
 func GetValue(s *Stack, pos int) int {
-	if pos < 0 || pos >= GettSize(s) {
+	if pos < 0 || pos >= GetSize(s) {
 		return nullValue
 	}
 	

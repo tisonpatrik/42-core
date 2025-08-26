@@ -10,8 +10,8 @@ const (
 )
 
 type Chunk struct {
-	Loc  Loc
-	Size int
+	loc  Loc
+	size int
 }
 
 type SplitDest struct {
@@ -22,5 +22,21 @@ type SplitDest struct {
 
 
 func NewChunk(loc Loc, size int) *Chunk {
-	return &Chunk{Loc: loc, Size: size}
+	return &Chunk{loc: loc, size: size}
+}
+
+func GetSize(c *Chunk) int {
+	return c.size
+}
+
+func GetLoc(c *Chunk) Loc {
+	return c.loc
+}
+
+func SetSize(c *Chunk, size int) {
+	c.size = size
+}
+
+func SetLoc(c *Chunk, loc Loc) {
+	c.loc = loc
 }
