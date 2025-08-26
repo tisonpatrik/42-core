@@ -3,121 +3,121 @@ package solver
 import (
 	"fmt"
 	"push_swap_prototype/internal/chunk"
-	"push_swap_prototype/internal/stack"
+	"push_swap_prototype/internal/ops"
 )
 
 // MoveFromTo moves an element from one location to another and returns 1 if successful
-func MoveFromTo(ps *stack.SortingState, from, to chunk.Loc) int {
+func MoveFromTo(ps *ops.SortingState, from, to chunk.Loc) int {
 	// Enhanced logging and validation
-	stack.LogOperation(fmt.Sprintf("MoveFromTo(%d->%d)", from, to), ps)
+	ops.LogOperation(fmt.Sprintf("MoveFromTo(%d->%d)", from, to), ps)
 	
 	// Validate stack state before operation
-	result := stack.ValidateStackState(ps, fmt.Sprintf("before MoveFromTo(%d->%d)", from, to))
+	result := ops.ValidateStackState(ps, fmt.Sprintf("before MoveFromTo(%d->%d)", from, to))
 	if !result.IsValid {
-		stack.LogError("Stack validation failed before MoveFromTo:")
+		ops.LogError("Stack validation failed before MoveFromTo:")
 		for _, err := range result.Errors {
-			stack.LogError("  - %s", err)
+			ops.LogError("  - %s", err)
 		}
 		// Continue with operation but log the issue
 	}
 	
 	// Log warnings if any
 	for _, warning := range result.Warnings {
-		stack.LogWarning("  - %s", warning)
+		ops.LogWarning("  - %s", warning)
 	}
 	
 	// Perform the move operation
 	switch from {
 	case chunk.TOP_A:
-		stack.LogInfo("Moving from TOP_A")
+		ops.LogInfo("Moving from TOP_A")
 		MoveFromTopA(ps, to)
 	case chunk.TOP_B:
-		stack.LogInfo("Moving from TOP_B")
+		ops.LogInfo("Moving from TOP_B")
 		MoveFromTopB(ps, to)
 	case chunk.BOTTOM_A:
-		stack.LogInfo("Moving from BOTTOM_A")
+		ops.LogInfo("Moving from BOTTOM_A")
 		MoveFromBottomA(ps, to)
 	case chunk.BOTTOM_B:
-		stack.LogInfo("Moving from BOTTOM_B")
+		ops.LogInfo("Moving from BOTTOM_B")
 		MoveFromBottomB(ps, to)
 	}
 	
 	// Validate stack state after operation
-	result = stack.ValidateStackState(ps, fmt.Sprintf("after MoveFromTo(%d->%d)", from, to))
+	result = ops.ValidateStackState(ps, fmt.Sprintf("after MoveFromTo(%d->%d)", from, to))
 	if !result.IsValid {
-		stack.LogError("Stack validation failed after MoveFromTo:")
+		ops.LogError("Stack validation failed after MoveFromTo:")
 		for _, err := range result.Errors {
-			stack.LogError("  - %s", err)
+			ops.LogError("  - %s", err)
 		}
 	}
 	
 	// Log warnings if any
 	for _, warning := range result.Warnings {
-		stack.LogWarning("  - %s", warning)
+		ops.LogWarning("  - %s", warning)
 	}
 	
-	stack.LogOperationResult(fmt.Sprintf("MoveFromTo(%d->%d)", from, to), ps)
+	ops.LogOperationResult(fmt.Sprintf("MoveFromTo(%d->%d)", from, to), ps)
 	return 1
 }
 
 // MoveFromTopA moves an element from TOP_A to the specified location
-func MoveFromTopA(ps *stack.SortingState, to chunk.Loc) {
+func MoveFromTopA(ps *ops.SortingState, to chunk.Loc) {
 	
 	switch to {
 	case chunk.TOP_B:
-		stack.PushB(ps)
+		ops.PushB(ps)
 	case chunk.BOTTOM_A:
-		stack.RotateA(ps)
+		ops.RotateA(ps)
 	case chunk.BOTTOM_B:
-		stack.PushB(ps)
-		stack.RotateB(ps)
+		ops.PushB(ps)
+		ops.RotateB(ps)
 	}
 	
 }
 
 // MoveFromTopB moves an element from TOP_B to the specified location
-func MoveFromTopB(ps *stack.SortingState, to chunk.Loc) {
+func MoveFromTopB(ps *ops.SortingState, to chunk.Loc) {
 	
 	switch to {
 	case chunk.TOP_A:
-		stack.PushA(ps)
+		ops.PushA(ps)
 	case chunk.BOTTOM_B:
-		stack.RotateB(ps)
+		ops.RotateB(ps)
 	case chunk.BOTTOM_A:
-		stack.PushA(ps)
-		stack.RotateA(ps)
+		ops.PushA(ps)
+		ops.RotateA(ps)
 	}
 }
 
 // MoveFromBottomA moves an element from BOTTOM_A to the specified location
-func MoveFromBottomA(ps *stack.SortingState, to chunk.Loc) {
+func MoveFromBottomA(ps *ops.SortingState, to chunk.Loc) {
 	
 	switch to {
 	case chunk.TOP_A:
-		stack.ReverseRotateA(ps)
+		ops.ReverseRotateA(ps)
 	case chunk.TOP_B:
-		stack.ReverseRotateA(ps)
-		stack.PushB(ps)
+		ops.ReverseRotateA(ps)
+		ops.PushB(ps)
 	case chunk.BOTTOM_B:
-		stack.ReverseRotateA(ps)
-		stack.PushB(ps)
-		stack.RotateB(ps)
+		ops.ReverseRotateA(ps)
+		ops.PushB(ps)
+		ops.RotateB(ps)
 	}
 	
 }
 
 // MoveFromBottomB moves an element from BOTTOM_B to the specified location
-func MoveFromBottomB(ps *stack.SortingState, to chunk.Loc) {
+func MoveFromBottomB(ps *ops.SortingState, to chunk.Loc) {
 
 	switch to {
 	case chunk.TOP_A:
-		stack.ReverseRotateB(ps)
-		stack.PushA(ps)
+		ops.ReverseRotateB(ps)
+		ops.PushA(ps)
 	case chunk.TOP_B:
-		stack.ReverseRotateB(ps)
+		ops.ReverseRotateB(ps)
 	case chunk.BOTTOM_A:
-		stack.ReverseRotateB(ps)
-		stack.PushA(ps)
-		stack.RotateA(ps)
+		ops.ReverseRotateB(ps)
+		ops.PushA(ps)
+		ops.RotateA(ps)
 	}
 }

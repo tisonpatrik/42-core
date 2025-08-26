@@ -2,10 +2,11 @@ package solver
 
 import (
 	"push_swap_prototype/internal/chunk"
+	"push_swap_prototype/internal/ops"
 	"push_swap_prototype/internal/stack"
 )
 
-func EasySort(ps *stack.SortingState, to_sort *chunk.Chunk) {
+func EasySort(ps *ops.SortingState, to_sort *chunk.Chunk) {
 	
 	for ; to_sort.Loc != chunk.TOP_A && to_sort.Size > 0; {
 		
@@ -20,7 +21,7 @@ func EasySort(ps *stack.SortingState, to_sort *chunk.Chunk) {
 	
 }
 
-func EasySortSecond(ps *stack.SortingState, to_sort *chunk.Chunk) {
+func EasySortSecond(ps *ops.SortingState, to_sort *chunk.Chunk) {
 	switch to_sort.Loc {
 	case chunk.TOP_B:
 		HandleTopB(ps, to_sort)
@@ -32,35 +33,35 @@ func EasySortSecond(ps *stack.SortingState, to_sort *chunk.Chunk) {
 	to_sort.Size--
 }
 
-func HandleTopB(ps *stack.SortingState, to_sort *chunk.Chunk) {
-	stack.SwapB(ps)
-	stack.PushA(ps)
+func HandleTopB(ps *ops.SortingState, to_sort *chunk.Chunk) {
+	ops.SwapB(ps)
+	ops.PushA(ps)
 	if stack.Value(ps.B, 1) == stack.Value(ps.A, 1) - 1 {
-		stack.PushA(ps)
+		ops.PushA(ps)
 		to_sort.Size--
 	}
 }
 
-func HandleBottomA(ps *stack.SortingState, to_sort *chunk.Chunk) {
-	stack.ReverseRotateA(ps)
-	stack.ReverseRotateA(ps)
-	stack.SwapA(ps)
+func HandleBottomA(ps *ops.SortingState, to_sort *chunk.Chunk) {
+	ops.ReverseRotateA(ps)
+	ops.ReverseRotateA(ps)
+	ops.SwapA(ps)
 	if stack.Value(ps.A, 1) == stack.Value(ps.A, 2) - 1 {
 		to_sort.Size--
 	} else {
-		stack.RotateA(ps)
+		ops.RotateA(ps)
 	}
 }
 
-func HandleBottomB(ps *stack.SortingState, to_sort *chunk.Chunk) {
-	stack.ReverseRotateB(ps)
-	stack.ReverseRotateB(ps)
+func HandleBottomB(ps *ops.SortingState, to_sort *chunk.Chunk) {
+	ops.ReverseRotateB(ps)
+	ops.ReverseRotateB(ps)
 
-	stack.PushA(ps)  // FIXED: Match C implementation - push_a first, then swap_b
+	ops.PushA(ps)  // FIXED: Match C implementation - push_a first, then swap_b
 	if stack.Value(ps.B, 1) == stack.Value(ps.A, 1) - 1 {
-		stack.PushA(ps)
+		ops.PushA(ps)
 		to_sort.Size--
 	} else {
-		stack.RotateB(ps)
+		ops.RotateB(ps)
 	}
 }

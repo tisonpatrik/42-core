@@ -3,27 +3,28 @@ package solver
 import (
 	"fmt"
 	"push_swap_prototype/internal/chunk"
+	"push_swap_prototype/internal/ops"
 	"push_swap_prototype/internal/stack"
 )
 
 // Returns SplitDest instead of modifying a pointer parameter
-func ChunkSplit(ps *stack.SortingState, to_split *chunk.Chunk, dest *chunk.SplitDest) {
+func ChunkSplit(ps *ops.SortingState, to_split *chunk.Chunk, dest *chunk.SplitDest) {
 	
 	fmt.Printf("=== CHUNK_SPLIT START ===\n")
 	fmt.Printf("Splitting chunk: loc=%d, size=%d\n", to_split.Loc, to_split.Size)
 	
 	// Validate input chunk before splitting
 	if to_split.Size <= 0 {
-		stack.LogError("Invalid chunk size for splitting: %d", to_split.Size)
+		ops.LogError("Invalid chunk size for splitting: %d", to_split.Size)
 		return
 	}
 	
 	// Validate stack state before splitting
-	result := stack.ValidateStackState(ps, "before ChunkSplit")
+	result := ops.ValidateStackState(ps, "before ChunkSplit")
 	if !result.IsValid {
-		stack.LogError("Stack validation failed before ChunkSplit:")
+		ops.LogError("Stack validation failed before ChunkSplit:")
 		for _, err := range result.Errors {
-			stack.LogError("  - %s", err)
+			ops.LogError("  - %s", err)
 		}
 	}
 	
@@ -75,16 +76,16 @@ func ChunkSplit(ps *stack.SortingState, to_split *chunk.Chunk, dest *chunk.Split
 	
 	totalDistributed := dest.Max.Size + dest.Mid.Size + dest.Min.Size
 	if totalDistributed != to_split.Size {
-		stack.LogError("Chunk size mismatch: expected %d, distributed %d", to_split.Size, totalDistributed)
-		stack.LogError("  - Max: %d, Mid: %d, Min: %d", dest.Max.Size, dest.Mid.Size, dest.Min.Size)
+		ops.LogError("Chunk size mismatch: expected %d, distributed %d", to_split.Size, totalDistributed)
+		ops.LogError("  - Max: %d, Mid: %d, Min: %d", dest.Max.Size, dest.Mid.Size, dest.Min.Size)
 	}
 	
 	// Check for empty MID chunk (this is the bug we're investigating)
 	if dest.Mid.Size == 0 {
-		stack.LogWarning("MID chunk has size 0 - this may cause assembly issues")
-		stack.LogWarning("  - Max chunk: loc=%d, size=%d", dest.Max.Loc, dest.Max.Size)
-		stack.LogWarning("  - Mid chunk: loc=%d, size=%d", dest.Mid.Loc, dest.Mid.Size)
-		stack.LogWarning("  - Min chunk: loc=%d, size=%d", dest.Min.Loc, dest.Min.Size)
+		ops.LogWarning("MID chunk has size 0 - this may cause assembly issues")
+		ops.LogWarning("  - Max chunk: loc=%d, size=%d", dest.Max.Loc, dest.Max.Size)
+		ops.LogWarning("  - Mid chunk: loc=%d, size=%d", dest.Mid.Loc, dest.Mid.Size)
+		ops.LogWarning("  - Min chunk: loc=%d, size=%d", dest.Min.Loc, dest.Min.Size)
 	}
 	
 	fmt.Printf("=== FINAL DISTRIBUTION ===\n")

@@ -2,18 +2,19 @@ package solver
 
 import (
 	"push_swap_prototype/internal/chunk"
+	"push_swap_prototype/internal/ops"
 	"push_swap_prototype/internal/stack"
 )
 
 // ChunkSort sorts the entire stack A using chunk-based sorting
-func ChunkSort(ps *stack.SortingState) {
+func ChunkSort(ps *ops.SortingState) {
 	
 	chunkAll := chunk.Chunk{Loc: chunk.TOP_A, Size: stack.GettSize(ps.A)}
 	RecChunkSort(ps, &chunkAll)
 }
 
 // RecChunkSort recursively sorts chunks using divide and conquer approach
-func RecChunkSort(ps *stack.SortingState, toSort *chunk.Chunk) {
+func RecChunkSort(ps *ops.SortingState, toSort *chunk.Chunk) {
 	
 	ChunkToTheTop(ps, toSort)
 	EasySort(ps, toSort)
@@ -39,7 +40,7 @@ func RecChunkSort(ps *stack.SortingState, toSort *chunk.Chunk) {
 }
 
 // SortTwo sorts two elements in a chunk
-func SortTwo(ps *stack.SortingState, to_sort *chunk.Chunk) {
+func SortTwo(ps *ops.SortingState, to_sort *chunk.Chunk) {
 
 	if to_sort.Loc == chunk.BOTTOM_A || to_sort.Loc == chunk.BOTTOM_B || to_sort.Loc == chunk.TOP_B {
 		MoveFromTo(ps, to_sort.Loc, chunk.TOP_A)
@@ -47,14 +48,14 @@ func SortTwo(ps *stack.SortingState, to_sort *chunk.Chunk) {
 	}
 
 	if stack.Value(ps.A, 1) > stack.Value(ps.A, 2) {
-		stack.SwapA(ps)
+		ops.SwapA(ps)
 	}
 
 	to_sort.Size -= 2
 }
 
 // SortOne handles a single element in a chunk
-func SortOne(ps *stack.SortingState, to_sort *chunk.Chunk) {
+func SortOne(ps *ops.SortingState, to_sort *chunk.Chunk) {
 	
 	if to_sort.Loc == chunk.BOTTOM_A || to_sort.Loc == chunk.BOTTOM_B || to_sort.Loc == chunk.TOP_B {
 		MoveFromTo(ps, to_sort.Loc, chunk.TOP_A)

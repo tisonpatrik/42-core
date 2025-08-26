@@ -2,11 +2,12 @@ package solver
 
 import (
 	"push_swap_prototype/internal/chunk"
+	"push_swap_prototype/internal/ops"
 	"push_swap_prototype/internal/stack"
 )
 
 // Equivalent to chunk_value in C implementation
-func ChunkValue(ps *stack.SortingState, chunk_item *chunk.Chunk, n int) int {
+func ChunkValue(ps *ops.SortingState, chunk_item *chunk.Chunk, n int) int {
 
 	loc := chunk_item.Loc
 	stk := locToStack(ps, loc)
@@ -35,7 +36,7 @@ func ChunkValue(ps *stack.SortingState, chunk_item *chunk.Chunk, n int) int {
 }
 
 // Equivalent to chunk_max_value in C implementation
-func ChunkMaxValue(ps *stack.SortingState, chunk_item *chunk.Chunk) int {
+func ChunkMaxValue(ps *ops.SortingState, chunk_item *chunk.Chunk) int {
 	if chunk_item == nil || chunk_item.Size <= 0 {
 		return 0
 	}
@@ -69,7 +70,7 @@ func ChunkMaxValue(ps *stack.SortingState, chunk_item *chunk.Chunk) int {
 	return maxVal
 }
 
-func locToStack(ps *stack.SortingState, loc chunk.Loc) *stack.Stack {
+func locToStack(ps *ops.SortingState, loc chunk.Loc) *stack.Stack {
 	if loc == chunk.TOP_A || loc == chunk.BOTTOM_A {
 		return ps.A
 	} else {

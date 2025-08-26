@@ -2,10 +2,11 @@ package solver
 
 import (
 	"push_swap_prototype/internal/chunk"
+	"push_swap_prototype/internal/ops"
 	"push_swap_prototype/internal/stack"
 )
 
-func SplitMaxReduction(ps *stack.SortingState, max *chunk.Chunk) {
+func SplitMaxReduction(ps *ops.SortingState, max *chunk.Chunk) {
 
 	a := ps.A
 
@@ -19,7 +20,7 @@ func SplitMaxReduction(ps *stack.SortingState, max *chunk.Chunk) {
 
 	if max.Loc == chunk.TOP_A && stack.Value(a, 1) == stack.Value(a, 3)-1 &&
 		APartlySort(ps, 3) {
-		stack.SwapA(ps)
+		ops.SwapA(ps)
 		max.Size--
 	}
 
@@ -28,7 +29,7 @@ func SplitMaxReduction(ps *stack.SortingState, max *chunk.Chunk) {
 	}
 }
 
-func APartlySort(ps *stack.SortingState, from int) bool {
+func APartlySort(ps *ops.SortingState, from int) bool {
 	
 	a := ps.A
 

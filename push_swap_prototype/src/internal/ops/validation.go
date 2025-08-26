@@ -1,7 +1,8 @@
-package stack
+package ops
 
 import (
 	"fmt"
+	"push_swap_prototype/internal/stack"
 	"time"
 )
 
@@ -66,28 +67,28 @@ func ValidateStackState(ps *SortingState, context string) *ValidationResult {
 }
 
 // validateStack validates individual stack integrity
-func validateStack(stk *Stack, stackName string, result *ValidationResult) error {
+func validateStack(stk *stack.Stack, stackName string, result *ValidationResult) error {
 	// Check index bounds
-	if stk.Top < 0 || stk.Top >= GettSize(stk) {
+	if stk.Top < 0 || stk.Top >= stack.GettSize(stk) {
 		result.Errors = append(result.Errors, 
-			fmt.Sprintf("%s: invalid top index %d (size: %d)", stackName, stk.Top, GettSize(stk)))
+			fmt.Sprintf("%s: invalid top index %d (size: %d)", stackName, stk.Top, stack.GettSize(stk)))
 	}
 
-	if stk.Bottom < 0 || stk.Bottom >= GettSize(stk) {
+	if stk.Bottom < 0 || stk.Bottom >= stack.GettSize(stk) {
 		result.Errors = append(result.Errors, 
-			fmt.Sprintf("%s: invalid bottom index %d (size: %d)", stackName, stk.Bottom, GettSize(stk)))
+			fmt.Sprintf("%s: invalid bottom index %d (size: %d)", stackName, stk.Bottom, stack.GettSize(stk)))
 	}
 
 	// Check current size logic
-	currentSize := GettSize(stk)
+	currentSize := stack.GettSize(stk)
 	if currentSize < 0 {
 		result.Errors = append(result.Errors, 
 			fmt.Sprintf("%s: invalid current size %d", stackName, currentSize))
 	}
 
-	if currentSize > GettSize(stk) {
+	if currentSize > stack.GettSize(stk) {
 		result.Errors = append(result.Errors, 
-			fmt.Sprintf("%s: current size %d exceeds max size %d", stackName, currentSize, GettSize(stk)))
+			fmt.Sprintf("%s: current size %d exceeds max size %d", stackName, currentSize, stack.GettSize(stk)))
 	}
 
 	// Validate circular buffer logic
@@ -104,17 +105,17 @@ func validateStack(stk *Stack, stackName string, result *ValidationResult) error
 }
 
 // validateCircularBuffer validates circular buffer integrity
-func validateCircularBuffer(stk *Stack, stackName string, result *ValidationResult) error {
+func validateCircularBuffer(stk *stack.Stack, stackName string, result *ValidationResult) error {
 	if stk.Top > stk.Bottom {
 		// Top is greater than bottom - check wraparound logic
-		if stk.Top >= GettSize(stk) || stk.Bottom < 0 {
+		if stk.Top >= stack.GettSize(stk) || stk.Bottom < 0 {
 			result.Errors = append(result.Errors, 
 				fmt.Sprintf("%s: invalid wraparound indices: top=%d, bottom=%d", 
 					stackName, stk.Top, stk.Bottom))
 		}
 	} else {
 		// Top is less than bottom - normal order
-		if stk.Top < 0 || stk.Bottom >= GettSize(stk) {
+		if stk.Top < 0 || stk.Bottom >= stack.GettSize(stk) {
 			result.Errors = append(result.Errors, 
 				fmt.Sprintf("%s: invalid normal indices: top=%d, bottom=%d", 
 					stackName, stk.Top, stk.Bottom))
@@ -125,8 +126,8 @@ func validateCircularBuffer(stk *Stack, stackName string, result *ValidationResu
 }
 
 // validateStackValues validates that stack values are consistent
-func validateStackValues(stk *Stack, stackName string, result *ValidationResult) error {
-	currentSize := GettSize(stk)
+func validateStackValues(stk *stack.Stack, stackName string, result *ValidationResult) error {
+	currentSize := stack.GettSize(stk)
 	
 	// Check if stack is empty but has non-zero indices
 	if currentSize == 0 {
@@ -139,7 +140,7 @@ func validateStackValues(stk *Stack, stackName string, result *ValidationResult)
 
 	// Check for potential data corruption
 	nonZeroCount := 0
-	for i := 0; i < GettSize(stk); i++ {
+	for i := 0; i < stack.GettSize(stk); i++ {
 		if stk.Stack[i] != 0 {
 			nonZeroCount++
 		}
@@ -158,9 +159,9 @@ func validateStackValues(stk *Stack, stackName string, result *ValidationResult)
 func validateChunkConsistency(ps *SortingState, result *ValidationResult) error {
 	// This is a placeholder for future chunk validation logic
 	// For now, we'll just check basic stack relationship
-	if GettSize(ps.A) != GettSize(ps.B) {
+	if stack.GettSize(ps.A) != stack.GettSize(ps.B) {
 		result.Warnings = append(result.Warnings, 
-			fmt.Sprintf("Stack size mismatch: A=%d, B=%d", GettSize(ps.A), GettSize(ps.B)))
+			fmt.Sprintf("Stack size mismatch: A=%d, B=%d", stack.GettSize(ps.A), stack.GettSize(ps.B)))
 	}
 
 	return nil
@@ -177,18 +178,18 @@ func LogStackState(ps *SortingState, context string) {
 	
 	if ps.A != nil {
 		fmt.Printf("Stack A: top=%d, bottom=%d, size=%d, current_size=%d\n", 
-			ps.A.Top, ps.A.Bottom, GettSize(ps.A), GettSize(ps.A))
+			ps.A.Top, ps.A.Bottom, stack.GettSize(ps.A), stack.GettSize(ps.A))
 		fmt.Printf("Stack A top 5 values: [%d %d %d %d %d]\n",
-			Value(ps.A, 1), Value(ps.A, 2), Value(ps.A, 3), Value(ps.A, 4), Value(ps.A, 5))
+			stack.Value(ps.A, 1), stack.Value(ps.A, 2), stack.Value(ps.A, 3), stack.Value(ps.A, 4), stack.Value(ps.A, 5))
 	} else {
 		fmt.Printf("Stack A: nil\n")
 	}
 
 	if ps.B != nil {
 		fmt.Printf("Stack B: top=%d, bottom=%d, size=%d, current_size=%d\n", 
-			ps.B.Top, ps.B.Bottom, GettSize(ps.B), GettSize(ps.B))
+			ps.B.Top, ps.B.Bottom, stack.GettSize(ps.B), stack.GettSize(ps.B))
 		fmt.Printf("Stack B top 5 values: [%d %d %d %d %d]\n",
-			Value(ps.B, 1), Value(ps.B, 2), Value(ps.B, 3), Value(ps.B, 4), Value(ps.B, 5))
+			stack.Value(ps.B, 1), stack.Value(ps.B, 2), stack.Value(ps.B, 3), stack.Value(ps.B, 4), stack.Value(ps.B, 5))
 	} else {
 		fmt.Printf("Stack B: nil\n")
 	}

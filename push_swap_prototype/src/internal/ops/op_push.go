@@ -1,17 +1,20 @@
-package stack
+package ops
 
-import "push_swap_prototype/internal/ops"
+import (
+	"push_swap_prototype/internal/stack"
+)
 
 
-func push(src *Stack, dest *Stack) {
-	if IsFull(dest) {
+
+func push(src *stack.Stack, dest *stack.Stack) {
+	if stack.IsFull(dest) {
 		return
 	}
-	dest_i := NextUp(dest, dest.Top)
+	dest_i := stack.NextUp(dest, dest.Top)
 	dest.Stack[dest_i] = src.Stack[src.Top]
 	dest.Top = dest_i
 	src.Stack[src.Top] = 0
-	src.Top = NextDown(src, src.Top)
+	src.Top = stack.NextDown(src, src.Top)
 }
 
 func PushA(ps *SortingState) {
@@ -47,7 +50,7 @@ func PushA(ps *SortingState) {
 	
 	// Save operation if in writing mode
 	if ps.WritingMode {
-		SaveOp(ps, ops.PA)
+		SaveOp(ps, PA)
 	}
 	
 	LogOperationResult("PushA", ps)
@@ -56,7 +59,7 @@ func PushA(ps *SortingState) {
 func PushB(ps *SortingState) {
 	// Enhanced logging and validation
 	LogOperation("PushB", ps)
-	
+
 	// Validate stack state before operatioPushSwapDatan
 	result := ValidateStackState(ps, "before PushB")
 	if !result.IsValid {
@@ -86,7 +89,7 @@ func PushB(ps *SortingState) {
 	
 	// Save operation if in writing mode
 	if ps.WritingMode {
-		SaveOp(ps, ops.PB)
+		SaveOp(ps, PB)
 	}
 	
 	LogOperationResult("PushB", ps)
