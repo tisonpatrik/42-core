@@ -1,5 +1,7 @@
 package stack
 
+import "push_swap_prototype/internal/ops"
+
 func NewPushSwapData() *SortingState {
 	return &SortingState{
 		A: &Stack{
@@ -35,7 +37,7 @@ func InitStacks(ps *SortingState, size int) {
 }
 
 
-func SaveOp(ps *SortingState, op Operation) {
+func SaveOp(ps *SortingState, op ops.Operation) {
 	ps.OpList = append(ps.OpList, op)
 }
 

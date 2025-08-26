@@ -1,9 +1,11 @@
 package stack
 
+import "push_swap_prototype/internal/ops"
+
 type SortingState struct {
 	A           *Stack
 	B           *Stack
-	OpList      []Operation
+	OpList      []ops.Operation
 	WritingMode bool
 }
 
@@ -14,7 +16,7 @@ func InitData(numbers []int) *SortingState {
 	ps := &SortingState{
 		A: stack_a,
 		B: stack_b,
-		OpList: make([]Operation, 0),
+		OpList: make([]ops.Operation, 0),
 	}
 	return ps
 }

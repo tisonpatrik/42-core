@@ -1,5 +1,7 @@
 package stack
 
+import "push_swap_prototype/internal/ops"
+
 
 func push(src *Stack, dest *Stack) {
 	if IsFull(dest) {
@@ -45,7 +47,7 @@ func PushA(ps *SortingState) {
 	
 	// Save operation if in writing mode
 	if ps.WritingMode {
-		SaveOp(ps, PA)
+		SaveOp(ps, ops.PA)
 	}
 	
 	LogOperationResult("PushA", ps)
@@ -55,7 +57,7 @@ func PushB(ps *SortingState) {
 	// Enhanced logging and validation
 	LogOperation("PushB", ps)
 	
-	// Validate stack state before operation
+	// Validate stack state before operatioPushSwapDatan
 	result := ValidateStackState(ps, "before PushB")
 	if !result.IsValid {
 		LogError("Stack validation failed before PushB:")
@@ -84,7 +86,7 @@ func PushB(ps *SortingState) {
 	
 	// Save operation if in writing mode
 	if ps.WritingMode {
-		SaveOp(ps, PB)
+		SaveOp(ps, ops.PB)
 	}
 	
 	LogOperationResult("PushB", ps)

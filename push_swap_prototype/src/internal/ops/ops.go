@@ -1,4 +1,4 @@
-package stack
+package ops
 
 type Operation int
 

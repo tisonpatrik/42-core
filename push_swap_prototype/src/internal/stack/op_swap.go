@@ -1,5 +1,7 @@
 package stack
 
+import "push_swap_prototype/internal/ops"
+
 // swap swaps the first 2 elements at the top of a stack (exactly like C swap)
 func swap(stk *Stack) {
 
@@ -15,19 +17,19 @@ func swap(stk *Stack) {
 func SwapA(ps *SortingState) {
 	swap(ps.A)
 	if ps.WritingMode {
-		SaveOp(ps, SA)
+		SaveOp(ps, ops.SA)
 	}
 }
 func SwapB(ps *SortingState) {
 	swap(ps.B)
 	if ps.WritingMode {
-		SaveOp(ps, SB)
+		SaveOp(ps, ops.SB)
 	}
 }
 func SwapAB(ps *SortingState) {
 	swap(ps.A)
 	swap(ps.B)
 	if ps.WritingMode {
-		SaveOp(ps, SS)
+		SaveOp(ps, ops.SS)
 	}
 }

@@ -1,5 +1,7 @@
 package stack
 
+import "push_swap_prototype/internal/ops"
+
 func rotate(stk *Stack) {
 	if IsFull(stk) {
 		stk.Bottom = stk.Top
@@ -15,14 +17,14 @@ func rotate(stk *Stack) {
 func RotateA(ps *SortingState) {
 	rotate(ps.A)
 	if ps.WritingMode {
-		SaveOp(ps, RA)
+		SaveOp(ps, ops.RA)
 	}
 }
 
 func RotateB(ps *SortingState) {
 	rotate(ps.B)
 	if ps.WritingMode {
-		SaveOp(ps, RB)
+		SaveOp(ps, ops.RB)
 	}
 }
 
@@ -30,6 +32,6 @@ func RotateAB(ps *SortingState) {
 	rotate(ps.A)
 	rotate(ps.B)
 	if ps.WritingMode {
-		SaveOp(ps, RR)
+		SaveOp(ps, ops.RR)
 	}
 }
