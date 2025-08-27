@@ -8,8 +8,8 @@ import (
 )
 
 func main() {
-	numbers := GenerateRandomNumbers(500)
-	// numbers := []int{1, 5, 3, 4, 9, 2, 6, 8, 7, 10}
+	// numbers := GenerateRandomNumbers(100)
+	numbers := []int{1, 5, 3, 4, 9, 2, 6, 8, 7, 10}
 	fmt.Println(numbers)
 
 	ps := ops.InitData(numbers)

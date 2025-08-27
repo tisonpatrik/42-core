@@ -34,9 +34,8 @@ func sort(ps *ops.SortingState) {
 			continue
 		}
 		pos.StackB = executeCalc(currentNode, ps.A, ps.B, stack.GetSize(ps.A), true)
-		
+
 		mode := lcm(pos, stack.GetSize(ps.A), stack.GetSize(ps.B), true)
-		
 		if mode == 1 {
 			reversePos(ps, &pos)
 		}
@@ -313,7 +312,7 @@ func minLcm(arr []int, len int, returnIndex bool) int {
 func lcm(pos Position, lenA, lenB int, returnMove bool) int {
 	nlcm := make([]int, 4)
 	tempPosB := -1
-	
+	result := 0
 	if pos.StackB == 0 {
 		tempPosB = pos.StackB
 		pos.StackB = pos.StackA
@@ -331,9 +330,11 @@ func lcm(pos Position, lenA, lenB int, returnMove bool) int {
 	}
 	
 	if returnMove {
-		return minLcm(nlcm, 4, true)
+		result = minLcm(nlcm, 4, true)
+	} else {
+		result = minLcm(nlcm, 4, false)
 	}
-	return minLcm(nlcm, 4, false)
+	return result
 }
 
 // findTarget finds the best position to insert a value in stack_to (equivalent to find_target in C)
