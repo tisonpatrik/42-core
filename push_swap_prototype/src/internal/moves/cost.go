@@ -5,8 +5,9 @@ import (
 	"push_swap_prototype/internal/stack"
 )
 
-// executeCalc calculates the number of moves needed to position an element correctly
-func ExecuteCalc(node *stack.Node, stackA, stackB *stack.Stack, len int, returnPosB bool) int {
+// FindOptimalInsertionPosition finds the optimal position in stack B to insert an element from stack A
+// This is the core of our greedy insertion sort algorithm
+func FindOptimalInsertionPosition(node *stack.Node, stackA, stackB *stack.Stack, len int, returnPosB bool) int {
 
 	nmoves := 0
 	nodeContent := node.GetContent()
