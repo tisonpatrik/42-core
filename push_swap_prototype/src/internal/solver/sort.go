@@ -19,7 +19,6 @@ func SolvePushSwap(ps *ops.SortingState) {
 func sort(ps *ops.SortingState) {
 	multiExecute(ps, ops.PB, 2)
 
-	stack.PrintStack(ps.A, "A")
 	pos := make([]int, 2)
 	for stack.GetSize(ps.A) > 3 {
 		
@@ -41,7 +40,7 @@ func sort(ps *ops.SortingState) {
 		ops.PushB(ps)
 	}
 	
-	sortThree(ps)
+	SortThree(ps)
 	
 	for stack.GetSize(ps.B) > 0 {
 		target := findTarget(ps.B, ps.A)
@@ -131,68 +130,6 @@ func reversePos(ps *ops.SortingState, pos []int) {
 	pos[0] = stack.GetSize(ps.A) - pos[0]
 	pos[1] = stack.GetSize(ps.B) - pos[1]
 }
-
-// sortThree sorts a stack with 3 elements (equivalent to sort_three in C)
-func sortThree(ps *ops.SortingState) {
-	if stack.IsEmpty(ps.A) || stack.GetSize(ps.A) < 3 {
-		return
-	}
-	
-	// Get the first three nodes
-	first := stack.GetTop(ps.A)
-	if first == nil {
-		return
-	}
-	
-	second := first.GetNext()
-	if second == nil {
-		return
-	}
-	
-	third := second.GetNext()
-	if third == nil {
-		return
-	}
-	
-	// if (stack_a->content > stack_a->next->content)
-	if first.GetContent() > second.GetContent() {
-		// if (stack_a->content < stack_a->next->next->content)
-		if first.GetContent() < third.GetContent() {
-			// execute(&stack_a, NULL, "sa", false);
-			ops.SwapA(ps)
-		} else if second.GetContent() > third.GetContent() {
-			// else if (stack_a->next->content > stack_a->next->next->content)
-			// {
-			//     execute(&stack_a, NULL, "sa", false);
-			//     execute(&stack_a, NULL, "rra", false);
-			// }
-			ops.SwapA(ps)
-			ops.ReverseRotateA(ps)
-		} else {
-			// else
-			//     execute(&stack_a, NULL, "ra", false);
-			ops.RotateA(ps)
-		}
-	} else if first.GetContent() < second.GetContent() {
-		// else if (stack_a->content < stack_a->next->content)
-		// {
-		if first.GetContent() > third.GetContent() {
-			// if (stack_a->content > stack_a->next->next->content)
-			//     execute(&stack_a, NULL, "rra", false);
-			ops.ReverseRotateA(ps)
-		} else if second.GetContent() > third.GetContent() {
-			// else if (stack_a->next->content > stack_a->next->next->content)
-			// {
-			//     execute(&stack_a, NULL, "sa", false);
-			//     execute(&stack_a, NULL, "ra", false);
-			// }
-			ops.SwapA(ps)
-			ops.RotateA(ps)
-		}
-		// }
-	}
-}
-
 
 // findMinIndex finds the index of the element that requires the least moves to sort
 // Equivalent to find_min_index in C
