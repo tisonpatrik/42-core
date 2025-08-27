@@ -41,21 +41,31 @@ func findBestStrategy(pos position.Position, lenA, lenB int) Strategy {
 		pos.StackB = tempPosB
 	}
 	
-	// Find minimum without array operations
+	// Find minimum with deterministic tie-breaking
+	// Priority order: BothRotate (0) > BothReverse (1) > RotateAReverseB (2) > ReverseARotateB (3)
 	minMoves := bothRotate
 	bestStrategy := BothRotate
 	
 	if bothReverse < minMoves {
 		minMoves = bothReverse
 		bestStrategy = BothReverse
+	} else if bothReverse == minMoves {
+		// Tie: prefer BothRotate (higher priority)
+		// bestStrategy stays BothRotate
 	}
+	
 	if rotateAReverseB < minMoves {
 		minMoves = rotateAReverseB
 		bestStrategy = RotateAReverseB
+	} else if rotateAReverseB == minMoves {
+		// Tie: prefer current best strategy (higher priority)
+		// bestStrategy stays unchanged
 	}
+	
 	if reverseARotateB < minMoves {
 		bestStrategy = ReverseARotateB
 	}
+	// Note: ReverseARotateB has lowest priority, so no tie-breaking needed
 	
 	return bestStrategy
 }

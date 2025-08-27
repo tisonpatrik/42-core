@@ -99,6 +99,7 @@ func isBetterInsertionPosition(currentValue, targetValue, newElementValue int) b
 	
 	// Case 2: Current value is smaller than new element but target is larger than new element
 	// This means we found a better "lower bound" for insertion
+	// Equivalent to C: (tmp->content < stack_a->content && target > stack_a->content)
 	if currentValue < newElementValue && targetValue > newElementValue {
 		return true
 	}
