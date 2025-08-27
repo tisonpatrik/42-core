@@ -25,7 +25,6 @@ func SolvePushSwap(ps *ops.SortingState) {
 func sort(ps *ops.SortingState) {
 	multiExecute(ps, ops.PB, 2)
 
-	stack.PrintStack(ps.A, "A")
 	pos := Position{}
 	for stack.GetSize(ps.A) > 3 {
 		
