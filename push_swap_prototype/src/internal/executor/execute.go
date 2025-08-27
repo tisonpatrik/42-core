@@ -52,10 +52,7 @@ func execSmt(ps *ops.SortingState, pos position.Position, mode int) {
 	switch mode {
 	case 0:
 		// rr mode
-		minMoves := pos.StackA
-		if pos.StackB < pos.StackA {
-			minMoves = pos.StackB
-		}
+		minMoves := min(pos.StackB, pos.StackA)
 		multiExecute(ps, ops.RR, minMoves)
 		
 		if pos.StackA > pos.StackB && pos.StackA != pos.StackB {
@@ -65,10 +62,7 @@ func execSmt(ps *ops.SortingState, pos position.Position, mode int) {
 		}
 	case 1:
 		// rrr mode
-		minMoves := pos.StackA
-		if pos.StackB < pos.StackA {
-			minMoves = pos.StackB
-		}
+		minMoves := min(pos.StackB, pos.StackA)
 		multiExecute(ps, ops.RRR, minMoves)
 		
 		if pos.StackA > pos.StackB && pos.StackA != pos.StackB {

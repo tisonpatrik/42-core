@@ -31,7 +31,6 @@ func sort(ps *ops.SortingState) {
 			pos.StackA = stack.GetSize(ps.A) - pos.StackA
 			pos.StackB = stack.GetSize(ps.B) - pos.StackB
 		}
-		
 		executor.ExecutePs(ps, pos, mode)
 		ops.PushB(ps)
 	}
