@@ -1,15 +1,13 @@
 package solver
 
 import (
+	"push_swap_prototype/internal/moves"
 	"push_swap_prototype/internal/ops"
+	"push_swap_prototype/internal/position"
 	"push_swap_prototype/internal/stack"
 )
 
 // Position represents the positions of elements in stacks A and B
-type Position struct {
-	StackA int // Position in stack A
-	StackB int // Position in stack B
-}
 
 // PushSwap is the main function that handles different stack sizes (equivalent to push_swap in C)
 func SolvePushSwap(ps *ops.SortingState) {
@@ -25,7 +23,7 @@ func SolvePushSwap(ps *ops.SortingState) {
 func sort(ps *ops.SortingState) {
 	multiExecute(ps, ops.PB, 2)
 
-	pos := Position{}
+	pos := position.Position{}
 	for stack.GetSize(ps.A) > 3 {
 		
 		pos.StackA = findMinIndex(ps.A, ps.B, stack.GetSize(ps.A))
@@ -35,7 +33,7 @@ func sort(ps *ops.SortingState) {
 		}
 		pos.StackB = executeCalc(currentNode, ps.A, ps.B, stack.GetSize(ps.A), true)
 
-		mode := lcm(pos, stack.GetSize(ps.A), stack.GetSize(ps.B), true)
+		mode := moves.LeastCommonMove(pos, stack.GetSize(ps.A), stack.GetSize(ps.B), true)
 		if mode == 1 {
 			reversePos(ps, &pos)
 		}
@@ -83,7 +81,7 @@ func multiExecute(ps *ops.SortingState, op ops.Operation, n int) {
 }
 
 // execSmt executes simultaneous moves (equivalent to exec_smt in C)
-func execSmt(ps *ops.SortingState, pos Position, mode int) {
+func execSmt(ps *ops.SortingState, pos position.Position, mode int) {
 	switch mode {
 	case 0:
 		// rr mode
@@ -115,7 +113,7 @@ func execSmt(ps *ops.SortingState, pos Position, mode int) {
 }
 
 // executePs executes the positioning strategy based on mode (equivalent to execute_ps in C)
-func executePs(ps *ops.SortingState, pos Position, mode int) {
+func executePs(ps *ops.SortingState, pos position.Position, mode int) {
 	switch mode {
 	case 0, 1:
 		execSmt(ps, pos, mode)
@@ -129,7 +127,7 @@ func executePs(ps *ops.SortingState, pos Position, mode int) {
 }
 
 // reversePos reverses positions when mode is 1 (equivalent to reverse_pos in C)
-func reversePos(ps *ops.SortingState, pos *Position) {
+func reversePos(ps *ops.SortingState, pos *position.Position) {
 	// This function is called when mode == 1, which means we need to reverse the positions
 	// In the C code, this function modifies the pos array to reverse the positions
 	pos.StackA = stack.GetSize(ps.A) - pos.StackA
@@ -180,7 +178,8 @@ func executeCalc(node *stack.Node, stackA, stackB *stack.Stack, len int, returnP
 		if returnPosB == true {
 			nmoves = posB
 		} else {
-			nmoves = lcm(Position{StackA: posA, StackB: posB}, len, stack.GetSize(stackB), false) + 1
+			pos := position.Position{StackA: posA, StackB: posB}
+			nmoves = moves.LeastCommonMove(pos, len, stack.GetSize(stackB), false) + 1
 		}
 	} else {
 		nmoves = calc(node, stackA, stackB, len, returnPosB)  // Fixed: pass stackA to calc
@@ -218,7 +217,8 @@ func calc(node *stack.Node, stackA, stackB *stack.Stack, len int, returnPosB boo
 	}
 	
 	// Return LCM of moves + 1 for push
-	return lcm(Position{StackA: posA, StackB: posB}, len, stack.GetSize(stackB), false) + 1
+	pos := position.Position{StackA: posA, StackB: posB}
+	return moves.LeastCommonMove(pos, len, stack.GetSize(stackB), false) + 1
 }
 
 // getNodeIndex returns the index of a node in its stack
@@ -290,52 +290,7 @@ func getMinMaxPos(s *stack.Stack, wantMax bool, returnPos bool) int {
 	return target
 }
 
-// minLcm finds the minimum value in an array (equivalent to min_lcm in C)
-func minLcm(arr []int, len int, returnIndex bool) int {
-	min := arr[0]
-	targetIndex := 0
-	
-	for i := 1; i < len; i++ {
-		if arr[i] < min && arr[i] >= 0 {
-			min = arr[i]
-			targetIndex = i
-		}
-	}
-	
-	if returnIndex {
-		return targetIndex
-	}
-	return min
-}
 
-// lcm calculates the least common move (equivalent to lcm in C)
-func lcm(pos Position, lenA, lenB int, returnMove bool) int {
-	nlcm := make([]int, 4)
-	tempPosB := -1
-	result := 0
-	if pos.StackB == 0 {
-		tempPosB = pos.StackB
-		pos.StackB = pos.StackA
-	}
-	
-	nlcm[0] = max(pos.StackA, pos.StackB)
-	
-	nlcm[1] = max(lenA - pos.StackA, lenB - pos.StackB)
-	
-	nlcm[2] = pos.StackA + (lenB - pos.StackB)
-	nlcm[3] = (lenA - pos.StackA) + pos.StackB
-	
-	if tempPosB != -1 {
-		pos.StackB = tempPosB
-	}
-	
-	if returnMove {
-		result = minLcm(nlcm, 4, true)
-	} else {
-		result = minLcm(nlcm, 4, false)
-	}
-	return result
-}
 
 // findTarget finds the best position to insert a value in stack_to (equivalent to find_target in C)
 func findTarget(stackFrom, stackTo *stack.Stack) int {
