@@ -5,14 +5,11 @@ import (
 )
 
 func push(src, dest *stack.Stack) bool {
-	if stack.IsFull(dest) || stack.GetSize(src) == 0 {
+	if stack.GetSize(src) == 0 {
 		return false
 	}
-	v := stack.Pop(src)                  // safe: src has at least 1 element
-	if v == stack.NullValue() {          // defensively, we should not get here
-		return false
-	}
-	stack.Push(dest, v)                  // safe: dest is not full
+	v := stack.Pop(src)
+	stack.Push(dest, v)
 	return true
 }
 

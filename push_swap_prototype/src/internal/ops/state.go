@@ -11,8 +11,8 @@ type SortingState struct {
 }
 
 func InitData(numbers []int) *SortingState {
-	stack_a := stack.InitStack(len(numbers))
-	stack_b := stack.InitStack(len(numbers))
+	stack_a := stack.InitStack()
+	stack_b := stack.InitStack()
 	stack.FillStack(stack_a, numbers)
 	ps := &SortingState{
 		A: stack_a,

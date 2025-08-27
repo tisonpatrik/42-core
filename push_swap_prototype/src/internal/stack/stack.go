@@ -1,84 +1,66 @@
 package stack
 
-const nullValue = -1
+import "fmt"
 
-// circular buffer with top and bottom indices
-// no negative values in the stack
-
+// Stack represents a doubly-linked list stack
 type Stack struct {
-	stack  []int
-	capacity   int
-	top    int 
-	bottom int
+	head *Node // pointer to first node
+	tail *Node // pointer to last node
+	size int   // current size
 }
 
-func InitStack(size int) *Stack {
-	stack := &Stack{
-		stack:  make([]int, size),
-		capacity:   size,
-		top:    nullValue, 
-		bottom: nullValue,
+// InitStack creates a new empty stack
+func InitStack() *Stack {
+	return &Stack{
+		head: nil,
+		tail: nil,
+		size: 0,
 	}
-	
-	for i := range stack.stack {
-		stack.stack[i] = nullValue
-	}
-	
-	return stack
 }
 
+// GetSize returns the current number of elements in the stack
 func GetSize(s *Stack) int {
-	if s.top == -1 && s.bottom == -1 {
-		// empty stack
-		return 0
+	return s.size
+}
+
+// IsEmpty checks if the stack is empty
+func IsEmpty(s *Stack) bool {
+	return s.size == 0
+}
+
+
+// GetTop returns the top element of the stack (first element)
+func GetTop(s *Stack) *Node {
+	return s.head
+}
+
+// GetBottom returns the bottom element of the stack (last element)
+func GetBottom(s *Stack) *Node {
+	return s.tail
+}
+
+
+// ClearStack removes all nodes and frees memory
+func ClearStack(s *Stack) {
+	current := s.head
+	for current != nil {
+		next := current.next
+		current.prev = nil
+		current.next = nil
+		current = next
 	}
+	s.head = nil
+	s.tail = nil
+	s.size = 0
+}
 
-	if s.top <= s.bottom {
-		// top is before bottom (normal case)
-		return s.bottom - s.top + 1
+// PrintStack prints the stack contents for debugging
+func PrintStack(s *Stack, name string) {
+	fmt.Printf("----Printing Stack %s (Top to Down)-------\n", name)
+	current := s.head
+	for current != nil {
+		fmt.Printf("%d ", current.content)
+		current = current.next
 	}
-
-	// wrapped case (top is "after" bottom in the circle)
-	return (s.capacity - s.top) + (s.bottom + 1)
-}
-
-
-func IsFull(s *Stack) bool {
-	return GetSize(s) == s.capacity
-}
-
-func GetTop(s *Stack) int {
-	return s.top
-}
-
-func GetBottom(s *Stack) int {type Stack struct {
-	stack  []int
-	capacity   int
-	top    int 
-	bottom int
-}
-
-	return s.bottom
-}
-
-func GetValue(s *Stack, pos int) int {
-	if pos < 0 || pos >= GetSize(s) {
-		return nullValue
-	}
-	
-	// Convert 0-based position to actual index
-	index := (s.top + pos) % s.capacity
-	return s.stack[index]
-}
-
-// NullValue returns the null value constant
-func NullValue() int {
-	return nullValue
-}
-
-// SetValueAt sets a value at a specific index in the stack
-func SetValueAt(s *Stack, index int, value int) {
-	if index >= 0 && index < s.capacity {
-		s.stack[index] = value
-	}
+	fmt.Println()
 }
