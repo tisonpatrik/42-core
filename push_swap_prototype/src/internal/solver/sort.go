@@ -1,6 +1,7 @@
 package solver
 
 import (
+	"math"
 	"push_swap_prototype/internal/executor"
 	"push_swap_prototype/internal/finalizer"
 	"push_swap_prototype/internal/moves"
@@ -78,21 +79,32 @@ func findCheapestElementToMove(stackA, stackB *stack.Stack, len int) int {
 	// Pre-calculate stack B properties once to avoid repeated calculations
 	stackBProps := precalculateStackBProperties(stackB)
 	
+	// Create a temporary stack for iteration
+	tempStack := stack.InitStack()
+	
 	// Find the element with minimum cost
-	current := stack.GetTop(stackA)
-	minCost := calculateInsertionCost(current, stackA, stackB, len, stackBProps)
+	minCost := math.MaxInt32
 	cheapestIndex := 0
 	currentIndex := 0
 	
-	// Iterate through all elements in stack A to find the cheapest one
-	for current != nil {
+	// Iterate through all elements using stack operations
+	for !stack.IsEmpty(stackA) {
+		current := stack.GetTop(stackA)
 		currentCost := calculateInsertionCost(current, stackA, stackB, len, stackBProps)
+		
 		if currentCost < minCost {
 			minCost = currentCost
 			cheapestIndex = currentIndex
 		}
-		current = current.GetNext()
+		
+		// Move element to temp stack
+		stack.Push(tempStack, stack.Pop(stackA))
 		currentIndex++
+	}
+	
+	// Restore stack A
+	for !stack.IsEmpty(tempStack) {
+		stack.Push(stackA, stack.Pop(tempStack))
 	}
 	
 	return cheapestIndex
