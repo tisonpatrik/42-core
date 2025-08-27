@@ -1,7 +1,6 @@
 package solver
 
 import (
-	"math"
 	"push_swap_prototype/internal/executor"
 	"push_swap_prototype/internal/finalizer"
 	"push_swap_prototype/internal/moves"
@@ -21,52 +20,37 @@ func SolvePushSwap(ps *ops.SortingState) {
 
 }
 
-// sort implements the main greedy insertion sort algorithm for push_swap
-// Algorithm: Greedy Insertion Sort with Cost Optimization
-// 1. Push first two elements to stack B to start building sorted sequence
-// 2. For each remaining element in stack A:
-//    a) Find the cheapest element to move (least moves required)
-//    b) Find optimal insertion position in stack B
-//    c) Execute moves using least common move strategy
-//    d) Push element to stack B
-// 3. Sort remaining 3 elements in stack A
-// 4. Finalize by moving all elements back to stack A in correct order
 func sort(ps *ops.SortingState) {
-	// Start with 2 elements in stack B to establish initial sorted sequence
 	ops.PushB(ps)
 	ops.PushB(ps)
 
-	pos := position.Position{}
-	
-	// Main sorting loop: move elements from A to B one by one
+
 	for stack.GetSize(ps.A) > 3 {
-		// Step 1: Find the element that costs least to move
-		pos.StackA = findCheapestElementToMove(ps.A, ps.B, stack.GetSize(ps.A))
-		currentNode := stack.GetNodeAt(ps.A, pos.StackA)
-
-		// Step 2: Find optimal insertion position in stack B
-		pos.StackB = moves.FindOptimalInsertionPosition(currentNode, ps.A, ps.B, stack.GetSize(ps.A), true)
-
-		// Step 3: Determine best move strategy (rotate vs reverse)
+		
+		pos := findCheapestElementToMoveOptimized(ps.A, ps.B, stack.GetSize(ps.A))
 		mode := moves.LeastCommonMove(pos, stack.GetSize(ps.A), stack.GetSize(ps.B), true)
 		if mode == 1 {
-			// Adjust positions for reverse strategy
 			pos.StackA = stack.GetSize(ps.A) - pos.StackA
 			pos.StackB = stack.GetSize(ps.B) - pos.StackB
 		}
 		
-		// Step 4: Execute the moves and push element to B
 		executor.ExecutePs(ps, pos, mode)
 		ops.PushB(ps)
 	}
 	
-	// Sort remaining 3 elements in stack A using specialized algorithm
 	SortThree(ps)
 	
-	// Move all elements back to stack A in correct sorted order
 	finalizer.FinalizeSorting(ps)
 }
 
+func findCheapestElementToMoveOptimized(stackA, stackB *stack.Stack, len int) position.Position {
+	pos := position.Position{}
+	pos.StackA = findCheapestElementToMove(stackA, stackB, len)
+	currentNode := stack.GetNodeAt(stackA, pos.StackA)
+
+	pos.StackB = moves.FindOptimalInsertionPosition(currentNode, stackA, stackB, len, true)
+	return pos
+}
 
 // findCheapestElementToMove finds the element in stack A that requires the least moves
 // to be inserted into the correct position in stack B
@@ -79,32 +63,21 @@ func findCheapestElementToMove(stackA, stackB *stack.Stack, len int) int {
 	// Pre-calculate stack B properties once to avoid repeated calculations
 	stackBProps := precalculateStackBProperties(stackB)
 	
-	// Create a temporary stack for iteration
-	tempStack := stack.InitStack()
-	
 	// Find the element with minimum cost
-	minCost := math.MaxInt32
+	current := stack.GetTop(stackA)
+	minCost := calculateInsertionCost(current, stackA, stackB, len, stackBProps)
 	cheapestIndex := 0
 	currentIndex := 0
 	
-	// Iterate through all elements using stack operations
-	for !stack.IsEmpty(stackA) {
-		current := stack.GetTop(stackA)
+	// Iterate through all elements in stack A to find the cheapest one
+	for current != nil {
 		currentCost := calculateInsertionCost(current, stackA, stackB, len, stackBProps)
-		
 		if currentCost < minCost {
 			minCost = currentCost
 			cheapestIndex = currentIndex
 		}
-		
-		// Move element to temp stack
-		stack.Push(tempStack, stack.Pop(stackA))
+		current = current.GetNext()
 		currentIndex++
-	}
-	
-	// Restore stack A
-	for !stack.IsEmpty(tempStack) {
-		stack.Push(stackA, stack.Pop(tempStack))
 	}
 	
 	return cheapestIndex
@@ -126,21 +99,89 @@ func precalculateStackBProperties(stackB *stack.Stack) StackBProperties {
 	}
 }
 
-// calculateInsertionCost calculates the total cost to insert an element from stack A into stack B
-// This is the core cost function for our greedy algorithm
+// calculateInsertionCost calculates the cost to insert an element from stack A into the correct position in stack B
 func calculateInsertionCost(node *stack.Node, stackA, stackB *stack.Stack, len int, props StackBProperties) int {
-	// Get positions for the element
+	nodeContent := node.GetContent()
+	
+	// Check if element is smaller than min or larger than max in stack B
+	// This is the simple case that we can handle directly
+	if nodeContent < props.min || nodeContent > props.max {
+		posA := stack.GetNodeIndex(node, stackA)
+		posB := stack.GetMaxPos(stackB)
+		
+		pos := position.Position{StackA: posA, StackB: posB}
+		return moves.LeastCommonMove(pos, len, props.size, false) + 1
+	}
+	
+	// For complex cases (element goes between existing elements), we need the full calculation
+	// But we can optimize by passing the pre-calculated properties
+	return calculateComplexElementCost(node, stackA, stackB, len, props)
+}
+
+// calculateComplexElementCost handles the complex case where element goes between existing elements
+func calculateComplexElementCost(node *stack.Node, stackA, stackB *stack.Stack, len int, props StackBProperties) int {
 	posA := stack.GetNodeIndex(node, stackA)
 	
-	// Find optimal insertion position in stack B using the moves package
-	posB := moves.FindOptimalInsertionPosition(node, stackA, stackB, len, true)
+	// If stack B is empty, just return position in A + 1 (for push operation)
+	if props.size == 0 {
+		return posA + 1
+	}
 	
-	// Calculate total moves: position moves + 1 for push operation
+	// Find the optimal insertion position in stack B
+	targetValue := findOptimalInsertionPosition(node, stackB)
+	posB := stack.GetNodeIndexByValue(stackB, targetValue)
+	
+	// Calculate total moves needed: LCM of positions + 1 for push operation
 	pos := position.Position{StackA: posA, StackB: posB}
 	return moves.LeastCommonMove(pos, len, props.size, false) + 1
 }
 
+// findOptimalInsertionPosition finds the best value in stack B to position the new element after
+// This is extracted from moves package to avoid dependency and optimize further
+func findOptimalInsertionPosition(node *stack.Node, stackB *stack.Stack) int {
+	if stack.IsEmpty(stackB) {
+		return 0
+	}
+	
+	current := stack.GetTop(stackB)
+	if current == nil {
+		return 0
+	}
+	
+	// Start with the first element as potential target
+	targetValue := current.GetContent()
+	newElementValue := node.GetContent()
+	
+	// Traverse stack B to find the optimal insertion point
+	for current != nil {
+		currentValue := current.GetContent()
+		
+		// Check if this position is better for insertion
+		// We want to find the largest value that's smaller than our new element
+		// OR the smallest value that's larger than our new element
+		if isBetterInsertionPosition(currentValue, targetValue, newElementValue) {
+			targetValue = currentValue
+		}
+		
+		current = current.GetNext()
+	}
+	
+	return targetValue
+}
 
-
-
-
+// isBetterInsertionPosition determines if a new position is better for insertion
+func isBetterInsertionPosition(currentValue, targetValue, newElementValue int) bool {
+	// Case 1: Current value is larger than target but smaller than new element
+	// This means we found a better "upper bound" for insertion
+	if currentValue > targetValue && currentValue < newElementValue {
+		return true
+	}
+	
+	// Case 2: Current value is smaller than new element but target is larger than new element
+	// This means we found a better "lower bound" for insertion
+	if currentValue < newElementValue && targetValue > newElementValue {
+		return true
+	}
+	
+	return false
+}
