@@ -12,24 +12,21 @@ import (
 
 
 func SolvePushSwap(ps *ops.SortingState) {
-
 	if stack.IsSorted(ps.A) {
 		return
-	}	else {
-		sort(ps)
 	}
-
+	
+	sort(ps)
 }
 
 func sort(ps *ops.SortingState) {
 	ops.PushB(ps)
 	ops.PushB(ps)
 
-
 	for stack.GetSize(ps.A) > 3 {
-		
 		pos := findCheapestElementToMoveOptimized(ps.A, ps.B)
 		mode := moves.LeastCommonMove(pos, stack.GetSize(ps.A), stack.GetSize(ps.B), true)
+		
 		if mode == 1 {
 			pos.StackA = stack.GetSize(ps.A) - pos.StackA
 			pos.StackB = stack.GetSize(ps.B) - pos.StackB
@@ -40,7 +37,6 @@ func sort(ps *ops.SortingState) {
 	}
 	
 	SortThree(ps)
-	
 	finalizer.FinalizeSorting(ps)
 }
 
@@ -56,7 +52,7 @@ func findCheapestElementToMoveOptimized(stackA, stackB *stack.Stack) position.Po
 
 func findCheapestElementToMove(stackA, stackB *stack.Stack) int {
 	// Pre-calculate stack B properties once to avoid repeated calculations
-	stackBProps := precalculateStackBProperties(stackB)
+	stackBProps := moves.PrecalculateStackBProperties(stackB)
 	
 	// Find the element with minimum cost using index-based iteration
 	stackSize := stack.GetSize(stackA)
@@ -67,7 +63,7 @@ func findCheapestElementToMove(stackA, stackB *stack.Stack) int {
 	for index := range stackSize {
 		// Get node at specific index without modifying any variables
 		currentNode := stack.GetNodeAt(stackA, index)
-		currentCost := calculateInsertionCost(currentNode, stackA, stackB, stackBProps)
+		currentCost := moves.CalculateInsertionCost(currentNode, stackA, stackB, stackBProps)
 		
 		if currentCost < minCost {
 			minCost = currentCost
@@ -78,94 +74,3 @@ func findCheapestElementToMove(stackA, stackB *stack.Stack) int {
 	return cheapestIndex
 }
 
-// StackBProperties holds pre-calculated properties of stack B
-type StackBProperties struct {
-	size int
-	min  int
-	max  int
-}
-
-// precalculateStackBProperties calculates and caches stack B properties
-func precalculateStackBProperties(stackB *stack.Stack) StackBProperties {
-	return StackBProperties{
-		size: stack.GetSize(stackB),
-		min:  stack.GetMin(stackB),
-		max:  stack.GetMax(stackB),
-	}
-}
-
-// calculateInsertionCost calculates the cost to insert an element from stack A into the correct position in stack B
-func calculateInsertionCost(node *stack.Node, stackA, stackB *stack.Stack, props StackBProperties) int {
-	nodeContent := node.GetContent()
-	len := stack.GetSize(stackA)
-	
-	// Check if element is smaller than min or larger than max in stack B
-	// This is the simple case that we can handle directly
-	if nodeContent < props.min || nodeContent > props.max {
-		posA := stack.GetNodeIndex(node, stackA)
-		posB := stack.GetMaxPos(stackB)
-		
-		pos := position.Position{StackA: posA, StackB: posB}
-		return moves.LeastCommonMove(pos, len, props.size, false) + 1
-	}
-	
-	// For complex cases (element goes between existing elements), we need the full calculation
-	// But we can optimize by passing the pre-calculated properties
-	return calculateComplexElementCost(node, stackA, stackB,  props)
-}
-
-// calculateComplexElementCost handles the complex case where element goes between existing elements
-func calculateComplexElementCost(node *stack.Node, stackA, stackB *stack.Stack, props StackBProperties) int {
-	posA := stack.GetNodeIndex(node, stackA)
-	len := stack.GetSize(stackA)
-	// Find the optimal insertion position in stack B
-	targetValue := findOptimalInsertionPosition(node, stackB)
-	posB := stack.GetNodeIndexByValue(stackB, targetValue)
-	
-	// Calculate total moves needed: LCM of positions + 1 for push operation
-	pos := position.Position{StackA: posA, StackB: posB}
-	return moves.LeastCommonMove(pos, len, props.size, false) + 1
-}
-
-// findOptimalInsertionPosition finds the best value in stack B to position the new element after
-// This is extracted from moves package to avoid dependency and optimize further
-func findOptimalInsertionPosition(node *stack.Node, stackB *stack.Stack) int {
-
-	current := stack.GetTop(stackB)	
-	// Start with the first element as potential target
-	targetValue := current.GetContent()
-	newElementValue := node.GetContent()
-	
-	// Traverse stack B to find the optimal insertion point
-	for current != nil {
-		currentValue := current.GetContent()
-		
-		// Check if this position is better for insertion
-		// We want to find the largest value that's smaller than our new element
-		// OR the smallest value that's larger than our new element
-		if isBetterInsertionPosition(currentValue, targetValue, newElementValue) {
-			targetValue = currentValue
-		}
-		
-		current = current.GetNext()
-	}
-	
-	return targetValue
-}
-
-// isBetterInsertionPosition determines if a new position is better for insertion
-func isBetterInsertionPosition(currentValue, targetValue, newElementValue int) bool {
-	// Case 1: Current value is larger than target but smaller than new element
-	// This means we found a better "upper bound" for insertion
-	if currentValue > targetValue && currentValue < newElementValue {
-		return true
-	}
-	
-	// Case 2: Current value is smaller than new element but target is larger than new element
-	// This means we found a better "lower bound" for insertion
-	if currentValue < newElementValue && targetValue > newElementValue {
-		return true
-	}
-	
-	return false
-}
