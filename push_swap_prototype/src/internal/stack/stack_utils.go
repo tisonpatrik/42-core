@@ -23,12 +23,12 @@ func Push(s *Stack, value int)*Node  {
 
 
 // Pop removes and returns the top element
-func Pop(s *Stack) int {
+func Pop(s *Stack) *Node {
 	if s.size == 0 {
-		return -1
+		return nil
 	}
 
-	value := s.head.content
+	node := s.head
 	
 	if s.size == 1 {
 		// last element -> empty stack
@@ -41,7 +41,7 @@ func Pop(s *Stack) int {
 	}
 	
 	s.size--
-	return value
+	return node
 }
 
 // Rotate moves the top element to the bottom

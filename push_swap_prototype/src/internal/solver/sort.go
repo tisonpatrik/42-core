@@ -1,6 +1,7 @@
 package solver
 
 import (
+	"math"
 	"push_swap_prototype/internal/executor"
 	"push_swap_prototype/internal/finalizer"
 	"push_swap_prototype/internal/moves"
@@ -53,29 +54,25 @@ func findCheapestElementToMoveOptimized(stackA, stackB *stack.Stack) position.Po
 	return pos
 }
 
-// findCheapestElementToMove finds the element in stack A that requires the least moves
-// to be inserted into the correct position in stack B
-// This implements a greedy algorithm: always move the cheapest element first
 func findCheapestElementToMove(stackA, stackB *stack.Stack) int {
-	
 	// Pre-calculate stack B properties once to avoid repeated calculations
 	stackBProps := precalculateStackBProperties(stackB)
 	
-	// Find the element with minimum cost
-	current := stack.GetTop(stackA)
-	minCost := calculateInsertionCost(current, stackA, stackB, stackBProps)
+	// Find the element with minimum cost using index-based iteration
+	stackSize := stack.GetSize(stackA)
+	minCost := math.MaxInt
 	cheapestIndex := 0
-	currentIndex := 0
 	
-	// Iterate through all elements in stack A to find the cheapest one
-	for current != nil {
-		currentCost := calculateInsertionCost(current, stackA, stackB, stackBProps)
+	// Iterate through all indices to find the cheapest element
+	for index := range stackSize {
+		// Get node at specific index without modifying any variables
+		currentNode := stack.GetNodeAt(stackA, index)
+		currentCost := calculateInsertionCost(currentNode, stackA, stackB, stackBProps)
+		
 		if currentCost < minCost {
 			minCost = currentCost
-			cheapestIndex = currentIndex
+			cheapestIndex = index
 		}
-		current = current.GetNext()
-		currentIndex++
 	}
 	
 	return cheapestIndex

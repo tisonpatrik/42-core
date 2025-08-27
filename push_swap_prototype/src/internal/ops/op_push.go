@@ -9,7 +9,7 @@ func push(src, dest *stack.Stack) bool {
 		return false
 	}
 	v := stack.Pop(src)
-	stack.Push(dest, v)
+	stack.Push(dest, v.GetContent())
 	return true
 }
 
