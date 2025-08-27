@@ -56,9 +56,6 @@ func findCheapestElementToMoveOptimized(stackA, stackB *stack.Stack, len int) po
 // to be inserted into the correct position in stack B
 // This implements a greedy algorithm: always move the cheapest element first
 func findCheapestElementToMove(stackA, stackB *stack.Stack, len int) int {
-	if stack.IsEmpty(stackA) {
-		return -1
-	}
 	
 	// Pre-calculate stack B properties once to avoid repeated calculations
 	stackBProps := precalculateStackBProperties(stackB)
@@ -122,11 +119,6 @@ func calculateInsertionCost(node *stack.Node, stackA, stackB *stack.Stack, len i
 func calculateComplexElementCost(node *stack.Node, stackA, stackB *stack.Stack, len int, props StackBProperties) int {
 	posA := stack.GetNodeIndex(node, stackA)
 	
-	// If stack B is empty, just return position in A + 1 (for push operation)
-	if props.size == 0 {
-		return posA + 1
-	}
-	
 	// Find the optimal insertion position in stack B
 	targetValue := findOptimalInsertionPosition(node, stackB)
 	posB := stack.GetNodeIndexByValue(stackB, targetValue)
@@ -139,15 +131,8 @@ func calculateComplexElementCost(node *stack.Node, stackA, stackB *stack.Stack, 
 // findOptimalInsertionPosition finds the best value in stack B to position the new element after
 // This is extracted from moves package to avoid dependency and optimize further
 func findOptimalInsertionPosition(node *stack.Node, stackB *stack.Stack) int {
-	if stack.IsEmpty(stackB) {
-		return 0
-	}
-	
-	current := stack.GetTop(stackB)
-	if current == nil {
-		return 0
-	}
-	
+
+	current := stack.GetTop(stackB)	
 	// Start with the first element as potential target
 	targetValue := current.GetContent()
 	newElementValue := node.GetContent()
