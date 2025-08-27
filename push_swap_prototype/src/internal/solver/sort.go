@@ -31,9 +31,7 @@ func sort(ps *ops.SortingState) {
 		
 		pos.StackA = findMinIndex(ps.A, ps.B, stack.GetSize(ps.A))
 		currentNode := stack.GetNodeAt(ps.A, pos.StackA)
-		if currentNode == nil {
-			continue
-		}
+
 		pos.StackB = executeCalc(currentNode, ps.A, ps.B, stack.GetSize(ps.A), true)
 
 		mode := moves.LeastCommonMove(pos, stack.GetSize(ps.A), stack.GetSize(ps.B), true)
@@ -54,7 +52,9 @@ func sort(ps *ops.SortingState) {
 		ops.PushA(ps)
 	}
 	
-	minMaxPush(ps, false)
+	
+	minPos := stack.GetMinPos(ps.A)
+	targetPush(ps, minPos)
 }
 
 // reversePos reverses positions when mode is 1 (equivalent to reverse_pos in C)
@@ -92,20 +92,19 @@ func findMinIndex(stackA, stackB *stack.Stack, len int) int {
 }
 
 // executeCalc calculates the number of moves needed to position an element correctly
-// Equivalent to execute_calc in C
 func executeCalc(node *stack.Node, stackA, stackB *stack.Stack, len int, returnPosB bool) int {
 
 	nmoves := 0
 	nodeContent := node.GetContent()
 	
 	// Check if element is smaller than min or larger than max in stack B
-	minB := getMinMaxPos(stackB, false, false) // false = min
-	maxB := getMinMaxPos(stackB, true, false)  // true = max
+	minB := stack.GetMin(stackB)
+	maxB := stack.GetMax(stackB) 
 	
 	if nodeContent < minB || nodeContent > maxB {
 		// Element should go to top or bottom of stack B
-		posA := getNodeIndex(node, stackA)  // Fixed: use stackA instead of stackB
-		posB := getMinMaxPos(stackB, true, true) // true = max, true = return position
+		posA := stack.GetNodeIndex(node, stackA)  // Fixed: use stackA instead of stackB
+		posB := stack.GetMaxPos(stackB)
 		if returnPosB == true {
 			nmoves = posB
 		} else {
@@ -122,7 +121,7 @@ func executeCalc(node *stack.Node, stackA, stackB *stack.Stack, len int, returnP
 // This implements an insertion sort optimization algorithm that finds the best position
 // to insert an element from stack A into stack B to maintain sorted order
 func calculateStrategyCost(node *stack.Node, stackA, stackB *stack.Stack, len int, returnPosB bool) int {
-	posA := getNodeIndex(node, stackA)
+	posA := stack.GetNodeIndex(node, stackA)
 	
 	// If stack B is empty, just return position in A + 1 (for push operation)
 	if stack.IsEmpty(stackB) {
@@ -131,7 +130,7 @@ func calculateStrategyCost(node *stack.Node, stackA, stackB *stack.Stack, len in
 	
 	// Find the optimal insertion position in stack B
 	targetValue := findOptimalInsertionPosition(node, stackB)
-	posB := getNodeIndexByValue(stackB, targetValue)
+	posB := stack.GetNodeIndexByValue(stackB, targetValue)
 	
 	if returnPosB {
 		return posB
@@ -193,74 +192,7 @@ func isBetterInsertionPosition(currentValue, targetValue, newElementValue int) b
 	return false
 }
 
-// getNodeIndex returns the index of a node in its stack
-// Equivalent to node_index in C
-func getNodeIndex(node *stack.Node, s *stack.Stack) int {
-	if s == nil || node == nil {
-		return -1
-	}
-	
-	index := 0
-	current := stack.GetTop(s)
-	
-	for current != nil {
-		if current == node {
-			return index
-		}
-		current = current.GetNext()
-		index++
-	}
-	
-	return -1
-}
 
-// getNodeIndexByValue returns the index of a node with specific value in the stack
-// Equivalent to node_index in C
-func getNodeIndexByValue(s *stack.Stack, value int) int {
-	if s == nil {
-		return -1
-	}
-	
-	index := 0
-	current := stack.GetTop(s)
-	
-	for current != nil {
-		if current.GetContent() == value {
-			return index
-		}
-		current = current.GetNext()
-		index++
-	}
-	
-	return -1
-}
-
-// getMinMaxPos returns min/max value or position based on parameters
-// Equivalent to min_max_pos in C
-func getMinMaxPos(s *stack.Stack, wantMax bool, returnPos bool) int {
-	if stack.IsEmpty(s) {
-		return 0
-	}
-	
-	current := stack.GetTop(s)
-	target := current.GetContent()
-	traverseIndex := -1
-	targetIndex := 0
-	
-	for traverseIndex < stack.GetSize(s)-1 {
-		traverseIndex++
-		if (current.GetContent() > target && wantMax) || (current.GetContent() < target && !wantMax) {
-			target = current.GetContent()
-			targetIndex = traverseIndex
-		}
-		current = current.GetNext()
-	}
-	
-	if returnPos {
-		return targetIndex
-	}
-	return target
-}
 
 
 
@@ -282,8 +214,8 @@ func findTarget(stackFrom, stackTo *stack.Stack) int {
 	// if (stack_from->content > min_max_pos(stack_to, true, false))
 	//     return (min_max_pos(stack_to, false, true));
 	if stack.GetTop(stackFrom) != nil && 
-	   stack.GetTop(stackFrom).GetContent() > getMinMaxPos(stackTo, true, false) {
-		return getMinMaxPos(stackTo, false, true)
+	   stack.GetTop(stackFrom).GetContent() > stack.GetMax(stackTo) {
+		return stack.GetMinPos(stackTo)
 	}
 	
 
@@ -299,7 +231,7 @@ func findTarget(stackFrom, stackTo *stack.Stack) int {
 	}
 	
 	// return (node_index(stack_to, target));
-	return getNodeIndexByValue(stackTo, target)
+	return stack.GetNodeIndexByValue(stackTo, target)
 }
 
 // targetPush moves the element at position pos to the top of the stack (equivalent to target_push in C)
@@ -326,9 +258,3 @@ func targetPush(ps *ops.SortingState, pos int) {
 	}
 }
 
-// minMaxPush pushes the minimum or maximum element to the top (equivalent to min_max_push in C)
-func minMaxPush(ps *ops.SortingState, max bool) {
-
-	pos := getMinMaxPos(ps.A, max, true)
-	targetPush(ps, pos)
-}

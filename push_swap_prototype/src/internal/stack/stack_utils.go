@@ -21,13 +21,6 @@ func Push(s *Stack, value int)*Node  {
 	return newNode
 }
 
-// Peek returns the top element without removing it
-func Peek(s *Stack) *int {
-	if s.size == 0 {
-		return nil
-	}
-	return &s.head.content
-}
 
 // Pop removes and returns the top element
 func Pop(s *Stack) int {
@@ -144,30 +137,104 @@ func FillStack(s *Stack, values []int) {
 	}
 }
 
-// FindMinMaxPos finds position of min or max value
-func FindMinMaxPos(s *Stack, findMax bool) int {
-	if s.size == 0 {
+// GetMin returns the minimum value in the stack
+func GetMin(s *Stack) int {
+	if IsEmpty(s) {
+		return 0
+	}
+	
+	current := GetTop(s)
+	min := current.GetContent()
+	
+	for i := 0; i < GetSize(s); i++ {
+		if current.GetContent() < min {
+			min = current.GetContent()
+		}
+		current = current.GetNext()
+	}
+	
+	return min
+}
+
+// GetMax returns the maximum value in the stack
+func GetMax(s *Stack) int {
+	if IsEmpty(s) {
+		return 0
+	}
+	
+	current := GetTop(s)
+	max := current.GetContent()
+	
+	for i := 0; i < GetSize(s); i++ {
+		if current.GetContent() > max {
+			max = current.GetContent()
+		}
+		current = current.GetNext()
+	}
+	
+	return max
+}
+
+// GetMinPos returns the position of the minimum value in the stack
+func GetMinPos(s *Stack) int {
+	if IsEmpty(s) {
+		return 0
+	}
+	
+	current := GetTop(s)
+	min := current.GetContent()
+	minPos := 0
+	
+	for i := 0; i < GetSize(s); i++ {
+		if current.GetContent() < min {
+			min = current.GetContent()
+			minPos = i
+		}
+		current = current.GetNext()
+	}
+	
+	return minPos
+}
+
+// GetMaxPos returns the position of the maximum value in the stack
+func GetMaxPos(s *Stack) int {
+	if IsEmpty(s) {
+		return 0
+	}
+	
+	current := GetTop(s)
+	max := current.GetContent()
+	maxPos := 0
+	
+	for i := 0; i < GetSize(s); i++ {
+		if current.GetContent() > max {
+			max = current.GetContent()
+			maxPos = i
+		}
+		current = current.GetNext()
+	}
+	
+	return maxPos
+}
+
+// getNodeIndex returns the index of a node in its stack
+func GetNodeIndex(node *Node, s *Stack) int {
+	if s == nil || node == nil {
 		return -1
 	}
 	
-	current := s.head
-	pos := 0
-	bestPos := 0
-	bestValue := current.content
+	index := 0
+	current := GetTop(s)
 	
-	for i := 0; i < s.size; i++ {
-		if findMax && current.content > bestValue {
-			bestValue = current.content
-			bestPos = pos
-		} else if !findMax && current.content < bestValue {
-			bestValue = current.content
-			bestPos = pos
+	for current != nil {
+		if current == node {
+			return index
 		}
-		current = current.next
-		pos++
+		current = current.GetNext()
+		index++
 	}
 	
-	return bestPos
+	return -1
 }
 
 // GetNodeAt returns the node at a specific position
@@ -183,105 +250,23 @@ func GetNodeAt(s *Stack, pos int) *Node {
 	return current
 }
 
-// IsSortedAscending checks if stack is sorted in ascending order
-func IsSortedAscending(s *Stack) bool {
-	if s.size <= 1 {
-		return true
-	}
-	
-	current := s.head
-	next := current.next
-	
-	for next != nil {
-		if current.content > next.content {
-			return false
-		}
-		current = next
-		next = next.next
-	}
-	return true
-}
 
-// IsSortedDescending checks if stack is sorted in descending order
-func IsSortedDescending(s *Stack) bool {
-	if s.size <= 1 {
-		return true
-	}
-	
-	current := s.head
-	next := current.next
-	
-	for next != nil {
-		if current.content < next.content {
-			return false
-		}
-		current = next
-		next = next.next
-	}
-	return true
-}
-
-// FindTarget finds the best position to insert a value in a sorted stack
-func FindTarget(s *Stack, value int) int {
-	if s.size == 0 {
-		return 0
-	}
-	
-	current := s.head
-	pos := 0
-	
-	for pos < s.size {
-		if value < current.content {
-			return pos
-		}
-		current = current.next
-		pos++
-	}
-	
-	return s.size
-}
-
-// GetMinMaxValue returns the minimum or maximum value in the stack
-func GetMinMaxValue(s *Stack, findMax bool) int {
-	if s.size == 0 {
+// getNodeIndexByValue returns the index of a node with specific value in the stack
+func GetNodeIndexByValue(s *Stack, value int) int {
+	if s == nil {
 		return -1
 	}
 	
-	current := s.head
-	bestValue := current.content
+	index := 0
+	current := GetTop(s)
 	
-	for i := 1; i < s.size; i++ {
-		current = current.next
-		if findMax && current.content > bestValue {
-			bestValue = current.content
-		} else if !findMax && current.content < bestValue {
-			bestValue = current.content
+	for current != nil {
+		if current.GetContent() == value {
+			return index
 		}
+		current = current.GetNext()
+		index++
 	}
 	
-	return bestValue
-}
-
-// GetMinMaxPosition returns the position of minimum or maximum value
-func GetMinMaxPosition(s *Stack, findMax bool) int {
-	if s.size == 0 {
-		return -1
-	}
-	
-	current := s.head
-	bestPos := 0
-	bestValue := current.content
-	
-	for i := 1; i < s.size; i++ {
-		current = current.next
-		if findMax && current.content > bestValue {
-			bestValue = current.content
-			bestPos = i
-		} else if !findMax && current.content < bestValue {
-			bestValue = current.content
-			bestPos = i
-		}
-	}
-	
-	return bestPos
+	return -1
 }

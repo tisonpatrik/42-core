@@ -34,12 +34,6 @@ func GetTop(s *Stack) *Node {
 	return s.head
 }
 
-// GetBottom returns the bottom element of the stack (last element)
-func GetBottom(s *Stack) *Node {
-	return s.tail
-}
-
-
 // ClearStack removes all nodes and frees memory
 func ClearStack(s *Stack) {
 	current := s.head
