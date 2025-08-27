@@ -1,6 +1,7 @@
 package solver
 
 import (
+	"push_swap_prototype/internal/executor"
 	"push_swap_prototype/internal/moves"
 	"push_swap_prototype/internal/ops"
 	"push_swap_prototype/internal/position"
@@ -21,7 +22,9 @@ func SolvePushSwap(ps *ops.SortingState) {
 }
 
 func sort(ps *ops.SortingState) {
-	multiExecute(ps, ops.PB, 2)
+	ops.PushB(ps)
+	ops.PushB(ps)
+
 
 	pos := position.Position{}
 	for stack.GetSize(ps.A) > 3 {
@@ -38,7 +41,7 @@ func sort(ps *ops.SortingState) {
 			reversePos(ps, &pos)
 		}
 		
-		executePs(ps, pos, mode)
+		executor.ExecutePs(ps, pos, mode)
 		
 		ops.PushB(ps)
 	}
@@ -52,78 +55,6 @@ func sort(ps *ops.SortingState) {
 	}
 	
 	minMaxPush(ps, false)
-}
-
-// multiExecute executes an operation n times (equivalent to multi_execute in C)
-func multiExecute(ps *ops.SortingState, op ops.Operation, n int) {
-	for range n {
-		switch op {
-		case ops.PB:
-			ops.PushB(ps)
-		case ops.PA:
-			ops.PushA(ps)
-		case ops.RA:
-			ops.RotateA(ps)
-		case ops.RB:
-			ops.RotateB(ps)
-		case ops.RRA:
-			ops.ReverseRotateA(ps)
-		case ops.RRB:
-			ops.ReverseRotateB(ps)
-		case ops.RR:
-			ops.RotateA(ps)
-			ops.RotateB(ps)
-		case ops.RRR:
-			ops.ReverseRotateA(ps)
-			ops.ReverseRotateB(ps)
-		}
-	}
-}
-
-// execSmt executes simultaneous moves (equivalent to exec_smt in C)
-func execSmt(ps *ops.SortingState, pos position.Position, mode int) {
-	switch mode {
-	case 0:
-		// rr mode
-		minMoves := pos.StackA
-		if pos.StackB < pos.StackA {
-			minMoves = pos.StackB
-		}
-		multiExecute(ps, ops.RR, minMoves)
-		
-		if pos.StackA > pos.StackB && pos.StackA != pos.StackB {
-			multiExecute(ps, ops.RA, pos.StackA-pos.StackB)
-		} else if pos.StackB > pos.StackA && pos.StackA != pos.StackB {
-			multiExecute(ps, ops.RB, pos.StackB-pos.StackA)
-		}
-	case 1:
-		// rrr mode
-		minMoves := pos.StackA
-		if pos.StackB < pos.StackA {
-			minMoves = pos.StackB
-		}
-		multiExecute(ps, ops.RRR, minMoves)
-		
-		if pos.StackA > pos.StackB && pos.StackA != pos.StackB {
-			multiExecute(ps, ops.RRA, pos.StackA-pos.StackB)
-		} else if pos.StackB > pos.StackA && pos.StackA != pos.StackB && pos.StackB != 0 {
-			multiExecute(ps, ops.RRB, pos.StackB-pos.StackA)
-		}
-	}
-}
-
-// executePs executes the positioning strategy based on mode (equivalent to execute_ps in C)
-func executePs(ps *ops.SortingState, pos position.Position, mode int) {
-	switch mode {
-	case 0, 1:
-		execSmt(ps, pos, mode)
-	case 2:
-		multiExecute(ps, ops.RA, pos.StackA)
-		multiExecute(ps, ops.RRB, stack.GetSize(ps.B)-pos.StackB)
-	case 3:
-		multiExecute(ps, ops.RRA, stack.GetSize(ps.A)-pos.StackA)
-		multiExecute(ps, ops.RB, pos.StackB)
-	}
 }
 
 // reversePos reverses positions when mode is 1 (equivalent to reverse_pos in C)
@@ -182,43 +113,84 @@ func executeCalc(node *stack.Node, stackA, stackB *stack.Stack, len int, returnP
 			nmoves = moves.LeastCommonMove(pos, len, stack.GetSize(stackB), false) + 1
 		}
 	} else {
-		nmoves = calc(node, stackA, stackB, len, returnPosB)  // Fixed: pass stackA to calc
+		nmoves = calculateStrategyCost(node, stackA, stackB, len, returnPosB)  // Fixed: pass stackA to calc
 	}
 	return nmoves
 }
 
-// calc calculates moves for positioning element between existing elements in stack B
-// Equivalent to calc in C
-func calc(node *stack.Node, stackA, stackB *stack.Stack, len int, returnPosB bool) int {
+// calculateStrategyCost calculates moves for positioning element between existing elements in stack B
+// This implements an insertion sort optimization algorithm that finds the best position
+// to insert an element from stack A into stack B to maintain sorted order
+func calculateStrategyCost(node *stack.Node, stackA, stackB *stack.Stack, len int, returnPosB bool) int {
 	posA := getNodeIndex(node, stackA)
+	
+	// If stack B is empty, just return position in A + 1 (for push operation)
 	if stack.IsEmpty(stackB) {
 		return posA + 1
 	}
 	
-	// Find target position in stack B - equivalent to C implementation
-	tmp := stack.GetTop(stackB)
-	if tmp == nil {
-		return posA + 1
-	}
-	
-	target := tmp.GetContent()
-	for tmp != nil {
-		if (tmp.GetContent() > target && tmp.GetContent() < node.GetContent()) ||
-			(tmp.GetContent() < node.GetContent() && target > node.GetContent()) {
-			target = tmp.GetContent()
-		}
-		tmp = tmp.GetNext()
-	}
-	
-	posB := getNodeIndexByValue(stackB, target)
+	// Find the optimal insertion position in stack B
+	targetValue := findOptimalInsertionPosition(node, stackB)
+	posB := getNodeIndexByValue(stackB, targetValue)
 	
 	if returnPosB {
 		return posB
 	}
 	
-	// Return LCM of moves + 1 for push
+	// Calculate total moves needed: LCM of positions + 1 for push operation
 	pos := position.Position{StackA: posA, StackB: posB}
 	return moves.LeastCommonMove(pos, len, stack.GetSize(stackB), false) + 1
+}
+
+// findOptimalInsertionPosition finds the best value in stack B to position the new element after
+// This implements the core logic of finding where to insert an element to maintain sorted order
+func findOptimalInsertionPosition(node *stack.Node, stackB *stack.Stack) int {
+	if stack.IsEmpty(stackB) {
+		return 0
+	}
+	
+	current := stack.GetTop(stackB)
+	if current == nil {
+		return 0
+	}
+	
+	// Start with the first element as potential target
+	targetValue := current.GetContent()
+	newElementValue := node.GetContent()
+	
+	// Traverse stack B to find the optimal insertion point
+	for current != nil {
+		currentValue := current.GetContent()
+		
+		// Check if this position is better for insertion
+		// We want to find the largest value that's smaller than our new element
+		// OR the smallest value that's larger than our new element
+		if isBetterInsertionPosition(currentValue, targetValue, newElementValue) {
+			targetValue = currentValue
+		}
+		
+		current = current.GetNext()
+	}
+	
+	return targetValue
+}
+
+// isBetterInsertionPosition determines if a new position is better for insertion
+// This implements the logic for finding the optimal insertion point in a sorted sequence
+func isBetterInsertionPosition(currentValue, targetValue, newElementValue int) bool {
+	// Case 1: Current value is larger than target but smaller than new element
+	// This means we found a better "upper bound" for insertion
+	if currentValue > targetValue && currentValue < newElementValue {
+		return true
+	}
+	
+	// Case 2: Current value is smaller than new element but target is larger than new element
+	// This means we found a better "lower bound" for insertion
+	if currentValue < newElementValue && targetValue > newElementValue {
+		return true
+	}
+	
+	return false
 }
 
 // getNodeIndex returns the index of a node in its stack
