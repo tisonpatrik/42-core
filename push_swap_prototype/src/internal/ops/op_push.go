@@ -4,6 +4,8 @@ import (
 	"push_swap_prototype/internal/stack"
 )
 
+
+
 func push(src, dest *stack.Stack) bool {
 	if stack.GetSize(src) == 0 {
 		return false

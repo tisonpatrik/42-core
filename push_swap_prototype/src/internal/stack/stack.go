@@ -34,6 +34,10 @@ func GetTop(s *Stack) *Node {
 	return s.head
 }
 
+func GetBottom(s *Stack) *Node {
+	return s.tail
+}
+
 // ClearStack removes all nodes and frees memory
 func ClearStack(s *Stack) {
 	current := s.head
@@ -50,7 +54,6 @@ func ClearStack(s *Stack) {
 
 // PrintStack prints the stack contents for debugging
 func PrintStack(s *Stack, name string) {
-	fmt.Printf("----Printing Stack %s (Top to Down)-------\n", name)
 	current := s.head
 	for current != nil {
 		fmt.Printf("%d ", current.content)

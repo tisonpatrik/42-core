@@ -38,11 +38,9 @@ func multiExecute(ps *ops.SortingState, op ops.Operation, n int) {
 		case ops.RRB:
 			ops.ReverseRotateB(ps)
 		case ops.RR:
-			ops.RotateA(ps)
-			ops.RotateB(ps)
+			ops.RotateAB(ps)
 		case ops.RRR:
-			ops.ReverseRotateA(ps)
-			ops.ReverseRotateB(ps)
+			ops.ReverseRotateAB(ps)
 		}
 	}
 }
@@ -54,10 +52,10 @@ func execSmt(ps *ops.SortingState, pos position.Position, mode int) {
 		// rr mode
 		minMoves := min(pos.StackB, pos.StackA)
 		multiExecute(ps, ops.RR, minMoves)
-		
-		if pos.StackA > pos.StackB && pos.StackA != pos.StackB {
+
+		if max(pos.StackA, pos.StackB) == pos.StackA && pos.StackA != pos.StackB {
 			multiExecute(ps, ops.RA, pos.StackA-pos.StackB)
-		} else if pos.StackB > pos.StackA && pos.StackA != pos.StackB {
+		} else if max(pos.StackA, pos.StackB) == pos.StackB && pos.StackA != pos.StackB {
 			multiExecute(ps, ops.RB, pos.StackB-pos.StackA)
 		}
 	case 1:
@@ -65,9 +63,9 @@ func execSmt(ps *ops.SortingState, pos position.Position, mode int) {
 		minMoves := min(pos.StackB, pos.StackA)
 		multiExecute(ps, ops.RRR, minMoves)
 		
-		if pos.StackA > pos.StackB && pos.StackA != pos.StackB {
+		if max(pos.StackA, pos.StackB) > pos.StackB && pos.StackA != pos.StackB {
 			multiExecute(ps, ops.RRA, pos.StackA-pos.StackB)
-		} else if pos.StackB > pos.StackA && pos.StackA != pos.StackB && pos.StackB != 0 {
+		} else if max(pos.StackA, pos.StackB)> pos.StackA && pos.StackA != pos.StackB && pos.StackB != 0 {
 			multiExecute(ps, ops.RRB, pos.StackB-pos.StackA)
 		}
 	}

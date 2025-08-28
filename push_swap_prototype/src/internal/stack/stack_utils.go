@@ -1,5 +1,7 @@
 package stack
 
+import "math"
+
 // Push adds a value to the top of the stack
 func Push(s *Stack, value int)*Node  {
 	if value < 0 {
@@ -182,9 +184,10 @@ func GetMinPos(s *Stack) int {
 	}
 	
 	current := GetTop(s)
-	min := current.GetContent()
+	min := math.MaxInt // Inicializujeme na velmi vysokou hodnotu
 	minPos := 0
 	
+	// Procházíme všechny prvky včetně prvního
 	for i := 0; i < GetSize(s); i++ {
 		if current.GetContent() < min {
 			min = current.GetContent()

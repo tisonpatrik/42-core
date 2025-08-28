@@ -25,16 +25,19 @@ func sort(ps *ops.SortingState) {
 
 	for stack.GetSize(ps.A) > 3 {
 		pos := findCheapestElementToMoveOptimized(ps.A, ps.B)
+
 		mode := moves.LeastCommonMove(pos, stack.GetSize(ps.A), stack.GetSize(ps.B), true)
 		
 		if mode == 1 {
 			pos.StackA = stack.GetSize(ps.A) - pos.StackA
-			pos.StackB = stack.GetSize(ps.B) - pos.StackB
+			if pos.StackB != 0 {
+				pos.StackB = stack.GetSize(ps.B) - pos.StackB
+			}
 		}
 		executor.ExecutePs(ps, pos, mode)
 		ops.PushB(ps)
 	}
-	
+
 	SortThree(ps)
 	finalizer.FinalizeSorting(ps)
 }

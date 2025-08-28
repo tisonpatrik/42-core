@@ -59,6 +59,7 @@ func findTarget(stackFrom, stackTo *stack.Stack) int {
 }
 
 // targetPush moves the element at position pos to the top of the stack (equivalent to target_push in C)
+// NOTE: This replicates the C bug where pos-- is evaluated first, causing one less operation
 func targetPush(ps *ops.SortingState, pos int) {
 	if ps.A == nil {
 		return
@@ -67,17 +68,20 @@ func targetPush(ps *ops.SortingState, pos int) {
 	// stack = last_first_node(stack, false);
 	// len = stack_len(stack);
 	len := stack.GetSize(ps.A)
-	
 	if pos <= len/2 {
+		// Replicate C bug: while (pos--) - pos is decremented first, then checked
+		// This means we do one less operation than expected
 		for pos > 0 {
-			ops.RotateA(ps)
 			pos--
+			ops.RotateA(ps)
 		}
 	} else {
 		reversePos := len - pos
+		// Replicate C bug: while (reversePos--) - reversePos is decremented first, then checked
+		// This means we do one less operation than expected
 		for reversePos > 0 {
-			ops.ReverseRotateA(ps)
 			reversePos--
+			ops.ReverseRotateA(ps)
 		}
 	}
 }
