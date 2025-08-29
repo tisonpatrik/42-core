@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	numbers := GenerateRandomNumbers(100)
+	numbers := GenerateRandomNumbers(500)
 
 	ps := ops.InitData(numbers)
 	solver.SolvePushSwap(ps)

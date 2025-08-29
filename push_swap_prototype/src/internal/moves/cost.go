@@ -17,6 +17,7 @@ type Position struct {
 }
 
 
+
 func CheapestAtoB(ps *ops.SortingState) Position {
     sizeA, sizeB := stack.GetSize(ps.A), stack.GetSize(ps.B)
 
@@ -135,4 +136,63 @@ func isBetterInsertionPosition(currentValue, targetValue, newElementValue int) b
 	}
 	
 	return false
+}
+
+func CheapestBtoA(ps *ops.SortingState) Position {
+	sizeA, sizeB := stack.GetSize(ps.A), stack.GetSize(ps.B)
+	best := Position{Total: math.MaxInt}
+
+	i := 0
+	for n := stack.GetHead(ps.B); n != nil; n, i = n.GetNext(), i+1 {
+		tgtA := FindTargetPosInA(ps.A, n.GetContent())
+
+		costA := SignedCost(tgtA, sizeA) // cílový index v A
+		costB := SignedCost(i,    sizeB) // kandidátův index v B (musí na top)
+
+		total := MergedCost(costA, costB)
+
+		// Tie-breaker: preferuj menší |CostA|, pak blíž topu cílového stacku
+		if total < best.Total ||
+			(total == best.Total && abs(costA) < abs(best.CostA)) ||
+			(total == best.Total && abs(costA) == abs(best.CostA) && tgtA < best.ToIndex) {
+			best = Position{
+				FromIndex: i, ToIndex: tgtA,
+				CostA: costA, CostB: costB, Total: total,
+			}
+		}
+	}
+	return best
+}
+
+func FindTargetPosInA(a *stack.Stack, val int) int {
+	if stack.GetSize(a) == 0 {
+		return 0
+	}
+	// 1) najdi prvek s nejmenší hodnotou > val
+	bestIdx := -1
+	bestVal := 0
+	i := 0
+	for n := stack.GetHead(a); n != nil; n, i = n.GetNext(), i+1 {
+		if n.GetContent() > val {
+			if bestIdx == -1 || n.GetContent() < bestVal {
+				bestVal = n.GetContent()
+				bestIdx = i
+			}
+		}
+	}
+	if bestIdx != -1 {
+		return bestIdx
+	}
+
+	// 2) není nic většího → target je index minima (wrap)
+	minIdx := 0
+	minVal := stack.GetHead(a).GetContent()
+	i = 0
+	for n := stack.GetHead(a); n != nil; n, i = n.GetNext(), i+1 {
+		if n.GetContent() < minVal {
+			minVal = n.GetContent()
+			minIdx = i
+		}
+	}
+	return minIdx
 }
