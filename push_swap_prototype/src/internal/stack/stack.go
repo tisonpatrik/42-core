@@ -29,13 +29,9 @@ func IsEmpty(s *Stack) bool {
 }
 
 
-// GetTop returns the top element of the stack (first element)
-func GetTop(s *Stack) *Node {
+// GetHead returns the top element of the stack (first element)
+func GetHead(s *Stack) *Node {
 	return s.head
-}
-
-func GetBottom(s *Stack) *Node {
-	return s.tail
 }
 
 // ClearStack removes all nodes and frees memory

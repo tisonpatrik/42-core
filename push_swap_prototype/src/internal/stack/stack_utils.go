@@ -145,7 +145,7 @@ func GetMin(s *Stack) int {
 		return 0
 	}
 	
-	current := GetTop(s)
+	current := GetHead(s)
 	min := current.GetContent()
 	
 	for i := 0; i < GetSize(s); i++ {
@@ -164,7 +164,7 @@ func GetMax(s *Stack) int {
 		return 0
 	}
 	
-	current := GetTop(s)
+	current := GetHead(s)
 	max := current.GetContent()
 	
 	for i := 0; i < GetSize(s); i++ {
@@ -183,7 +183,7 @@ func GetMinPos(s *Stack) int {
 		return 0
 	}
 	
-	current := GetTop(s)
+	current := GetHead(s)
 	min := math.MaxInt // Inicializujeme na velmi vysokou hodnotu
 	minPos := 0
 	
@@ -205,7 +205,7 @@ func GetMaxPos(s *Stack) int {
 		return 0
 	}
 	
-	current := GetTop(s)
+	current := GetHead(s)
 	max := current.GetContent()
 	maxPos := 0
 	
@@ -227,7 +227,7 @@ func GetNodeIndex(node *Node, s *Stack) int {
 	}
 	
 	index := 0
-	current := GetTop(s)
+	current := GetHead(s)
 	
 	for current != nil {
 		if current == node {
@@ -261,7 +261,7 @@ func GetNodeIndexByValue(s *Stack, value int) int {
 	}
 	
 	index := 0
-	current := GetTop(s)
+	current := GetHead(s)
 	
 	for current != nil {
 		if current.GetContent() == value {

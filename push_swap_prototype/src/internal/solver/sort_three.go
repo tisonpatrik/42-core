@@ -12,7 +12,7 @@ func SortThree(ps *ops.SortingState) {
 	}
 	
 	// Get the first three nodes
-	first := stack.GetTop(ps.A)
+	first := stack.GetHead(ps.A)
 	second := first.GetNext()
 	third := second.GetNext()
 	

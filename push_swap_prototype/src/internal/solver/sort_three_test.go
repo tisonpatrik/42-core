@@ -156,7 +156,7 @@ func isStackSorted(s *stack.Stack, expected []int) bool {
 		return false
 	}
 	
-	current := stack.GetTop(s)
+	current := stack.GetHead(s)
 	for _, expectedVal := range expected {
 		if current == nil || current.GetContent() != expectedVal {
 			return false
@@ -173,7 +173,7 @@ func stackToString(s *stack.Stack) string {
 	}
 	
 	result := "["
-	current := stack.GetTop(s)
+	current := stack.GetHead(s)
 	for current != nil {
 		if result != "[" {
 			result += ","

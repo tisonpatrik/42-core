@@ -1,9 +1,46 @@
 package moves
 
 import (
-	"push_swap_prototype/internal/position"
+	"math"
+	"push_swap_prototype/internal/ops"
 	"push_swap_prototype/internal/stack"
 )
+
+type Position struct {
+	FromIndex int
+	ToIndex int
+
+	CostA int
+	CostB int
+
+	Total   int
+}
+
+
+func CheapestAtoB(ps *ops.SortingState) Position {
+    sizeA, sizeB := stack.GetSize(ps.A), stack.GetSize(ps.B)
+
+    best := Position{Total: math.MaxInt}
+
+    for node, i := stack.GetHead(ps.A), 0; node != nil; node, i = node.GetNext(), i+1 {
+        // Najdi cílový index v B (tvá stávající logika; posílám sizeB, ne sizeA)
+        tgtB := FindOptimalInsertionPosition(node, ps.A, ps.B, sizeB, true)
+
+        costA := SignedCost(i, sizeA)
+        costB := SignedCost(tgtB, sizeB)
+        total := MergedCost(costA, costB)
+
+        // volitelný tie-breaker: preferuj menší |costA|
+        if total < best.Total || (total == best.Total && abs(costA) < abs(best.CostA)) {
+            best = Position{
+                FromIndex: i, ToIndex: tgtB,
+                CostA: costA, CostB: costB, Total: total,
+            }
+        }
+    }
+    return best
+}
+
 
 // FindOptimalInsertionPosition finds the optimal position in stack B to insert an element from stack A
 // This is the core of our greedy insertion sort algorithm
@@ -23,7 +60,7 @@ func FindOptimalInsertionPosition(node *stack.Node, stackA, stackB *stack.Stack,
 		if returnPosB == true {
 			nmoves = posB
 		} else {
-			pos := position.Position{StackA: posA, StackB: posB}
+			pos := Position{CostA: posA, CostB: posB}
 			nmoves = LeastCommonMove(pos, len, stack.GetSize(stackB), false) + 1
 		}
 	} else {
@@ -52,7 +89,50 @@ func calculateStrategyCost(node *stack.Node, stackA, stackB *stack.Stack, len in
 	}
 	
 	// Calculate total moves needed: LCM of positions + 1 for push operation
-	pos := position.Position{StackA: posA, StackB: posB}
+	pos := Position{CostA: posA, CostB: posB}
 	return LeastCommonMove(pos, len, stack.GetSize(stackB), false) + 1
 }
 
+
+// findOptimalInsertionPosition finds the best value in stack B to position the new element after
+// This is extracted from moves package to avoid dependency and optimize further
+func findOptimalInsertionPosition(node *stack.Node, stackB *stack.Stack) int {
+
+	current := stack.GetHead(stackB)	
+	// Start with the first element as potential target
+	targetValue := current.GetContent()
+	newElementValue := node.GetContent()
+	
+	// Traverse stack B to find the optimal insertion point
+	for current != nil {
+		currentValue := current.GetContent()
+		
+		// Check if this position is better for insertion
+		// We want to find the largest value that's smaller than our new element
+		// OR the smallest value that's larger than our new element
+		if isBetterInsertionPosition(currentValue, targetValue, newElementValue) {
+			targetValue = currentValue
+		}
+		
+		current = current.GetNext()
+	}
+	
+	return targetValue
+}
+
+// isBetterInsertionPosition determines if a new position is better for insertion
+func isBetterInsertionPosition(currentValue, targetValue, newElementValue int) bool {
+	// Case 1: Current value is larger than target but smaller than new element
+	// This means we found a better "upper bound" for insertion
+	if currentValue > targetValue && currentValue < newElementValue {
+		return true
+	}
+	
+	// Case 2: Current value is smaller than new element but target is larger than new element
+	// This means we found a better "lower bound" for insertion
+	if currentValue < newElementValue && targetValue > newElementValue {
+		return true
+	}
+	
+	return false
+}

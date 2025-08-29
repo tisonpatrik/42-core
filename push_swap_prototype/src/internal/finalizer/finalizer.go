@@ -27,7 +27,7 @@ func findTarget(stackFrom, stackTo *stack.Stack) int {
 	}
 	
 	// tmp = last_first_node(stack_to, false);
-	tmp := stack.GetTop(stackTo)
+	tmp := stack.GetHead(stackTo)
 	if tmp == nil {
 		return 0
 	}
@@ -37,15 +37,15 @@ func findTarget(stackFrom, stackTo *stack.Stack) int {
 	
 	// if (stack_from->content > min_max_pos(stack_to, true, false))
 	//     return (min_max_pos(stack_to, false, true));
-	if stack.GetTop(stackFrom) != nil && 
-	   stack.GetTop(stackFrom).GetContent() > stack.GetMax(stackTo) {
+	if stack.GetHead(stackFrom) != nil && 
+	   stack.GetHead(stackFrom).GetContent() > stack.GetMax(stackTo) {
 		return stack.GetMinPos(stackTo)
 	}
 	
 
 	for tmp != nil {
-		if stack.GetTop(stackFrom) != nil {
-			fromContent := stack.GetTop(stackFrom).GetContent()
+		if stack.GetHead(stackFrom) != nil {
+			fromContent := stack.GetHead(stackFrom).GetContent()
 			if (tmp.GetContent() < target && tmp.GetContent() > fromContent) ||
 			   (tmp.GetContent() > fromContent && target < fromContent) {
 				target = tmp.GetContent()

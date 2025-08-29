@@ -1,9 +1,5 @@
 package moves
 
-import (
-	"push_swap_prototype/internal/position"
-)
-
 // Strategy represents different strategies for moving elements between stacks
 type Strategy int
 
@@ -15,7 +11,7 @@ const (
 )
 
 // lcm calculates the least common move (equivalent to lcm in C)
-func LeastCommonMove(pos position.Position, lenA, lenB int, returnMove bool) int {
+func LeastCommonMove(pos Position, lenA, lenB int, returnMove bool) int {
 	if returnMove {
 		return int(findBestStrategy(pos, lenA, lenB))
 	}
@@ -23,22 +19,22 @@ func LeastCommonMove(pos position.Position, lenA, lenB int, returnMove bool) int
 }
 
 // findBestStrategy finds the best strategy for given positions
-func findBestStrategy(pos position.Position, lenA, lenB int) Strategy {
+func findBestStrategy(pos Position, lenA, lenB int) Strategy {
 	// Handle edge case where StackB is 0
-	tempPosB := pos.StackB
-	if pos.StackB == 0 {
-		pos.StackB = pos.StackA
+	tempPosB := pos.CostB
+	if pos.CostB == 0 {
+		pos.CostB = pos.CostA
 	}
 	
 	// Calculate move costs for each strategy
-	bothRotate := calculateMoveCost(pos.StackA, pos.StackB)
-	bothReverse := calculateMoveCost(lenA-pos.StackA, lenB-pos.StackB)
-	rotateAReverseB := pos.StackA + (lenB - pos.StackB)
-	reverseARotateB := (lenA - pos.StackA) + pos.StackB
+	bothRotate := calculateMoveCost(pos.CostA, pos.CostB)
+	bothReverse := calculateMoveCost(lenA-pos.CostA, lenB-pos.CostB)
+	rotateAReverseB := pos.CostA + (lenB - pos.CostB)
+	reverseARotateB := (lenA - pos.CostA) + pos.CostB
 	
 	// Restore original StackB value
 	if tempPosB == 0 {
-		pos.StackB = tempPosB
+		pos.CostB = tempPosB
 	}
 	
 	// Find minimum with deterministic tie-breaking
@@ -71,22 +67,22 @@ func findBestStrategy(pos position.Position, lenA, lenB int) Strategy {
 }
 
 // findMinMoves finds the minimum number of moves needed
-func findMinMoves(pos position.Position, lenA, lenB int) int {
+func findMinMoves(pos Position, lenA, lenB int) int {
 	// Handle edge case where StackB is 0
-	tempPosB := pos.StackB
-	if pos.StackB == 0 {
-		pos.StackB = pos.StackA
+	tempPosB := pos.CostB
+	if pos.CostB == 0 {
+		pos.CostB = pos.CostA
 	}
 	
 	// Calculate move costs for each strategy
-	bothRotate := calculateMoveCost(pos.StackA, pos.StackB)
-	bothReverse := calculateMoveCost(lenA-pos.StackA, lenB-pos.StackB)
-	rotateAReverseB := pos.StackA + (lenB - pos.StackB)
-	reverseARotateB := (lenA - pos.StackA) + pos.StackB
+	bothRotate := calculateMoveCost(pos.CostA, pos.CostB)
+	bothReverse := calculateMoveCost(lenA-pos.CostA, lenB-pos.CostB)
+	rotateAReverseB := pos.CostA + (lenB - pos.CostB)
+	reverseARotateB := (lenA - pos.CostA) + pos.CostB
 	
 	// Restore original StackB value
 	if tempPosB == 0 {
-		pos.StackB = tempPosB
+		pos.CostB = tempPosB
 	}
 	
 	// Find minimum without array operations
