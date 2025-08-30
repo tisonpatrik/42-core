@@ -8,31 +8,19 @@ import (
 
 
 
+
 func AlignMinToTop(ps *ops.SortingState) {
 	sizeA := stack.GetSize(ps.A)
-	if sizeA == 0 {
-		return
-	}
+	if sizeA == 0 { return }
 
-	// Najdi index minima v A (0 = top)
 	minIdx := 0
 	minVal := stack.GetHead(ps.A).GetContent()
-	i := 0
-	for n := stack.GetHead(ps.A); n != nil; n, i = n.GetNext(), i+1 {
-		if n.GetContent() < minVal {
-			minVal = n.GetContent()
-			minIdx = i
+	for i, n := 0, stack.GetHead(ps.A); n != nil; n, i = n.GetNext(), i+1 {
+		if v := n.GetContent(); v < minVal {
+			minVal, minIdx = v, i
 		}
 	}
-
-	// Podepsaný náklad a prosté dotočení A
 	cost := moves.SignedCost(minIdx, sizeA)
-	for cost > 0 {
-		ops.RotateA(ps)   // ra
-		cost--
-	}
-	for cost < 0 {
-		ops.ReverseRotateA(ps) // rra
-		cost++
-	}
+	for cost > 0 { ops.RotateA(ps); cost-- }
+	for cost < 0 { ops.ReverseRotateA(ps); cost++ }
 }

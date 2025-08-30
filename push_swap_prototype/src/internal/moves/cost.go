@@ -10,16 +10,14 @@ import (
 
 type Position struct {
 	FromIndex int
-	ToIndex int
-
-	CostA int
-	CostB int
-
-	Total   int
+	ToIndex   int
+	CostA     int
+	CostB     int
+	Total     int // čistý base cost = MergedCost(CostA, CostB)
 }
 
+// ----------------- PUBLIC API -----------------
 
-// Pro úplnost: když chceš jen "cheapest", můžeš použít:
 func CheapestAtoB(ps *ops.SortingState) Position {
 	best := Position{Total: math.MaxInt}
 	for _, p := range enumerateCandidatesAtoB(ps.A, ps.B, 0) { // 0 => všichni
@@ -40,84 +38,86 @@ func CheapestBtoA(ps *ops.SortingState) Position {
 	return best
 }
 
-// Jemná penalizace: pokud by vložení "val" na pozici toIdx v B rozbilo lokální klesající pořadí,
-// vrať 1, jinak 0. Používej jen jako tie-breaker (nikdy nepřičítej velké hodnoty).
-func localOrderPenaltyInB(b *stack.Stack, toIdx int, val int) int {
-	size := stack.GetSize(b)
-	if size < 2 {
-		return 0
-	}
+// ----------------- ENUMERÁTORY -----------------
 
-	// sousedé okolo toIdx (cyklicky)
-	prevIdx := (toIdx - 1 + size) % size
-	nextIdx := toIdx % size
-
-	prev := stack.GetNodeAt(b, prevIdx).GetContent() // uprav Value podle tvého názvu pole
-	next := stack.GetNodeAt(b, nextIdx).GetContent()
-
-	// „správné“ lokální klesání je: prev > val > next
-	if prev > val && val > next {
-		return 0
-	}
-	return 1
-}
-
-// Comparator pro tie-breakery: menší Total je lepší, pak menší |CostA|, pak menší ToIdx, pak menší FromIdx.
-func better(a, b Position) bool {
-	if a.Total != b.Total {
-		return a.Total < b.Total
-	}
-	if utils.Abs(a.CostA) != utils.Abs(b.CostA) {
-		return utils.Abs(a.CostA) < utils.Abs(b.CostA)
-	}
-	if a.ToIndex != b.ToIndex {
-		return a.ToIndex < b.ToIndex
-	}
-	return a.FromIndex < b.FromIndex
-}
-
-// ---- Enumerátoři kandidátů ----
-
-// Vrátí top-K kandidátů pro A->B seřazených podle (Total + lokální penalizace v B) a tie-breakerů.
+// enumerateCandidatesAtoB: vrátí top-K kandidátů podle skóre (base + jemná penalizace),
+// ale do Position.Total ukládá **jen base** (MergedCost).
 func enumerateCandidatesAtoB(a, b *stack.Stack, k int) []Position {
-	sizeA, sizeB := stack.GetSize(a), stack.GetSize(b)
+	sizeA := stack.GetSize(a)
 	if sizeA == 0 {
 		return nil
 	}
 
-	cands := make([]Position, 0, sizeA)
+	// 1) Jednou si načti B do slice (rychlejší penalizace/targeting sousedů)
+	bvals := snapshotValues(b)
 
-	// projdeme uzly A (0 = top)
+	type scored struct {
+		pos   Position
+		score int // base + penalty
+	}
+	ss := make([]scored, 0, sizeA)
+
+	// 2) Projdeme A shora dolů
 	i := 0
 	for n := stack.GetHead(a); n != nil; n, i = n.GetNext(), i+1 {
-		// Kam v B vložit (tvá existující logika; pozor: posílej sizeB, ne sizeA)
-		toIdx := findInsertionIndexInB(b, n.GetContent())
+		val := n.GetContent()
+		toIdx := insertionIndexInBVals(bvals, val) // targeting nad slice
 
-		costA := SignedCost(i, sizeA)     // kandidát dopředu/dozadu v A
-		costB := SignedCost(toIdx, sizeB) // target dopředu/dozadu v B
+		costA := SignedCost(i, sizeA)
+		costB := SignedCost(toIdx, len(bvals))
 
-		total := MergedCost(costA, costB)
+		base := MergedCost(costA, costB)                    // reálné rotace
+		pen  := localOrderPenaltyInBV(bvals, toIdx, val)    // 0/1 jemný tie-break
 
-		// jemná penalizace lokálního pořadí v B (descending) – použij jen jako tie-breaker
-		totalWithPenalty := total + localOrderPenaltyInB(b, toIdx, n.GetContent())
-
-		cands = append(cands, Position{
-			FromIndex: i, ToIndex: toIdx,
-			CostA: costA, CostB: costB,
-			Total: totalWithPenalty,
+		ss = append(ss, scored{
+			pos: Position{
+				FromIndex: i,
+				ToIndex:   toIdx,
+				CostA:     costA,
+				CostB:     costB,
+				Total:     base, // <<< důležité: ukládáme čistý base
+			},
+			score: base + pen, // pořadí kandidátů
 		})
 	}
 
-	// seřadit dle našich pravidel (pozor: pracujeme s Total+penalty)
-	sort.Slice(cands, func(i, j int) bool { return better(cands[i], cands[j]) })
+	// 3) Seřazení dle score + tie-breakery
+	sort.Slice(ss, func(i, j int) bool {
+		if ss[i].score != ss[j].score {
+			return ss[i].score < ss[j].score
+		}
+		ai, aj := ss[i].pos, ss[j].pos
+		if utils.Abs(ai.CostA) != utils.Abs(aj.CostA) {
+			return utils.Abs(ai.CostA) < utils.Abs(aj.CostA)
+		}
+		if ai.ToIndex != aj.ToIndex {
+			return ai.ToIndex < aj.ToIndex
+		}
+		return ai.FromIndex < aj.FromIndex
+	})
 
-	if k <= 0 || k >= len(cands) {
-		return cands
+	// 4) (volitelný, ale doporučený) gating: nech jen base ≤ minBase+2
+	minBase := math.MaxInt
+	for _, s := range ss {
+		if s.pos.Total < minBase {
+			minBase = s.pos.Total
+		}
 	}
-	return cands[:k]
+	filtered := make([]Position, 0, len(ss))
+	threshold := minBase + 2
+	for _, s := range ss {
+		if s.pos.Total <= threshold {
+			filtered = append(filtered, s.pos)
+		}
+	}
+
+	if k > 0 && k < len(filtered) {
+		return filtered[:k]
+	}
+	return filtered
 }
 
-// Vrátí top-K kandidátů pro B->A (žádná B-penalizace; cíl v A je "nejmenší > val", wrap na min).
+// enumerateCandidatesBtoA: B-penalizaci nepoužívá; `Total` = base.
 func enumerateCandidatesBtoA(a, b *stack.Stack, k int) []Position {
 	sizeA, sizeB := stack.GetSize(a), stack.GetSize(b)
 	if sizeB == 0 {
@@ -125,91 +125,107 @@ func enumerateCandidatesBtoA(a, b *stack.Stack, k int) []Position {
 	}
 
 	cands := make([]Position, 0, sizeB)
-
 	i := 0
 	for n := stack.GetHead(b); n != nil; n, i = n.GetNext(), i+1 {
 		toIdx := findTargetPosInA(a, n.GetContent())
-
-		costA := SignedCost(toIdx, sizeA) // target v A na top
-		costB := SignedCost(i,    sizeB)  // kandidát v B na top
-
-		total := MergedCost(costA, costB)
-
+		costA := SignedCost(toIdx, sizeA)
+		costB := SignedCost(i, sizeB)
+		base  := MergedCost(costA, costB)
 		cands = append(cands, Position{
 			FromIndex: i, ToIndex: toIdx,
 			CostA: costA, CostB: costB,
-			Total: total, // zde bez penalizace
+			Total: base,
 		})
 	}
 
 	sort.Slice(cands, func(i, j int) bool { return better(cands[i], cands[j]) })
-
-	if k <= 0 || k >= len(cands) {
-		return cands
+	if k > 0 && k < len(cands) {
+		return cands[:k]
 	}
-	return cands[:k]
+	return cands
 }
 
-func findTargetPosInA(a *stack.Stack, val int) int {
-	if stack.GetSize(a) == 0 {
+// ----------------- HELPERY (B snapshot/penalizace) -----------------
+
+// rychlé čtení hodnot B do slice (top..bottom)
+func snapshotValues(s *stack.Stack) []int {
+	out := make([]int, 0, stack.GetSize(s))
+	for n := stack.GetHead(s); n != nil; n = n.GetNext() {
+		out = append(out, n.GetContent())
+	}
+	return out
+}
+
+// insertionIndexInBVals: index v B (nad slice), kam vložit val, chceme lokální "prev > val > next"
+func insertionIndexInBVals(b []int, val int) int {
+	n := len(b)
+	if n == 0 {
 		return 0
 	}
-	// 1) najdi prvek s nejmenší hodnotou > val
-	bestIdx := -1
-	bestVal := 0
+	// wrap: mimo rozsah => za maximum
+	minB, maxB, idxMax := b[0], b[0], 0
+	for i, x := range b {
+		if x < minB { minB = x }
+		if x > maxB { maxB = x; idxMax = i }
+	}
+	if val < minB || val > maxB {
+		return (idxMax + 1) % n
+	}
+	for j := 0; j < n; j++ {
+		prev := b[(j-1+n)%n]
+		next := b[j]
+		if prev > val && val > next {
+			return j
+		}
+	}
+	return 0
+}
+
+// jemná penalizace nad slice (0/1)
+func localOrderPenaltyInBV(b []int, toIdx int, val int) int {
+	n := len(b)
+	if n < 2 {
+		return 0
+	}
+	prev := b[(toIdx-1+n)%n]
+	next := b[toIdx%n]
+	if prev > val && val > next {
+		return 0
+	}
+	return 1
+}
+
+// ----------------- OSTATNÍ (beze změny) -----------------
+
+func findTargetPosInA(a *stack.Stack, val int) int {
+	if stack.GetSize(a) == 0 { return 0 }
+	bestIdx, bestVal := -1, 0
 	i := 0
 	for n := stack.GetHead(a); n != nil; n, i = n.GetNext(), i+1 {
-		if n.GetContent() > val {
-			if bestIdx == -1 || n.GetContent() < bestVal {
-				bestVal = n.GetContent()
-				bestIdx = i
+		if x := n.GetContent(); x > val {
+			if bestIdx == -1 || x < bestVal {
+				bestVal, bestIdx = x, i
 			}
 		}
 	}
-	if bestIdx != -1 {
-		return bestIdx
-	}
-
-	// 2) není nic většího → target je index minima (wrap)
+	if bestIdx != -1 { return bestIdx }
+	// wrap na minimum
 	minIdx := 0
 	minVal := stack.GetHead(a).GetContent()
 	i = 0
 	for n := stack.GetHead(a); n != nil; n, i = n.GetNext(), i+1 {
-		if n.GetContent() < minVal {
-			minVal = n.GetContent()
-			minIdx = i
+		if x := n.GetContent(); x < minVal {
+			minVal, minIdx = x, i
 		}
 	}
 	return minIdx
 }
 
-
-// Najde index v B (0 = top), před který máš vložit hodnotu val, aby B zůstalo v "descending"
-// (pokud B udržuješ jako descending). Pokud B je prázdné, vrať 0.
-// Povolený rozsah návratu: 0..sizeB (toIdx==sizeB = vložit za poslední => cyklicky před top).
-func findInsertionIndexInB(b *stack.Stack, val int) int {
-	sizeB := stack.GetSize(b)
-	if sizeB == 0 { return 0 }
-
-	minB := stack.GetMin(b)
-	maxB := stack.GetMax(b)
-
-	// wrap: mimo rozsah -> vložit „za maximum“
-	if val < minB || val > maxB {
-		idxMax := stack.GetMaxPos(b)
-		return (idxMax + 1) % sizeB
+func better(a, b Position) bool {
+	if a.Total != b.Total { return a.Total < b.Total }
+	if utils.Abs(a.CostA) != utils.Abs(b.CostA) {
+		return utils.Abs(a.CostA) < utils.Abs(b.CostA)
 	}
-
-	// hledej první „mezeru“ prev > val > next (cyklicky)
-	for j := 0; j < sizeB; j++ {
-		prevIdx := (j - 1 + sizeB) % sizeB
-		nextIdx := j
-		prev := stack.GetNodeAt(b, prevIdx).GetContent()
-		next := stack.GetNodeAt(b, nextIdx).GetContent()
-		if prev > val && val > next {
-			return j
-		}
-	}
-	return 0 // fallback
+	if a.ToIndex != b.ToIndex { return a.ToIndex < b.ToIndex }
+	return a.FromIndex < b.FromIndex
 }
-
