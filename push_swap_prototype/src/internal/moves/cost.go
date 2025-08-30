@@ -4,6 +4,7 @@ import (
 	"math"
 	"push_swap_prototype/internal/ops"
 	"push_swap_prototype/internal/stack"
+	"sort"
 )
 
 type Position struct {
@@ -17,154 +18,138 @@ type Position struct {
 }
 
 
-
+// Pro úplnost: když chceš jen "cheapest", můžeš použít:
 func CheapestAtoB(ps *ops.SortingState) Position {
-    sizeA, sizeB := stack.GetSize(ps.A), stack.GetSize(ps.B)
-
-    best := Position{Total: math.MaxInt}
-
-    for node, i := stack.GetHead(ps.A), 0; node != nil; node, i = node.GetNext(), i+1 {
-        // Najdi cílový index v B (tvá stávající logika; posílám sizeB, ne sizeA)
-        tgtB := FindOptimalInsertionPosition(node, ps.A, ps.B, sizeB, true)
-
-        costA := SignedCost(i, sizeA)
-        costB := SignedCost(tgtB, sizeB)
-        total := MergedCost(costA, costB)
-
-        // volitelný tie-breaker: preferuj menší |costA|
-        if total < best.Total || (total == best.Total && abs(costA) < abs(best.CostA)) {
-            best = Position{
-                FromIndex: i, ToIndex: tgtB,
-                CostA: costA, CostB: costB, Total: total,
-            }
-        }
-    }
-    return best
-}
-
-
-// FindOptimalInsertionPosition finds the optimal position in stack B to insert an element from stack A
-// This is the core of our greedy insertion sort algorithm
-func FindOptimalInsertionPosition(node *stack.Node, stackA, stackB *stack.Stack, len int, returnPosB bool) int {
-
-	nmoves := 0
-	nodeContent := node.GetContent()
-	
-	// Check if element is smaller than min or larger than max in stack B
-	minB := stack.GetMin(stackB)
-	maxB := stack.GetMax(stackB) 
-	
-	if nodeContent < minB || nodeContent > maxB {
-		// Element should go to top or bottom of stack B
-		posA := stack.GetNodeIndex(node, stackA)  // Fixed: use stackA instead of stackB
-		posB := stack.GetMaxPos(stackB)
-		if returnPosB == true {
-			nmoves = posB
-		} else {
-			pos := Position{CostA: posA, CostB: posB}
-			nmoves = LeastCommonMove(pos, len, stack.GetSize(stackB), false) + 1
-		}
-	} else {
-		nmoves = calculateStrategyCost(node, stackA, stackB, len, returnPosB)  // Fixed: pass stackA to calc
-	}
-	return nmoves
-}
-
-// calculateStrategyCost calculates moves for positioning element between existing elements in stack B
-// This implements an insertion sort optimization algorithm that finds the best position
-// to insert an element from stack A into stack B to maintain sorted order
-func calculateStrategyCost(node *stack.Node, stackA, stackB *stack.Stack, len int, returnPosB bool) int {
-	posA := stack.GetNodeIndex(node, stackA)
-	
-	// If stack B is empty, just return position in A + 1 (for push operation)
-	if stack.IsEmpty(stackB) {
-		return posA + 1
-	}
-	
-	// Find the optimal insertion position in stack B
-	targetValue := findOptimalInsertionPosition(node, stackB)
-	posB := stack.GetNodeIndexByValue(stackB, targetValue)
-	
-	if returnPosB {
-		return posB
-	}
-	
-	// Calculate total moves needed: LCM of positions + 1 for push operation
-	pos := Position{CostA: posA, CostB: posB}
-	return LeastCommonMove(pos, len, stack.GetSize(stackB), false) + 1
-}
-
-
-// findOptimalInsertionPosition finds the best value in stack B to position the new element after
-// This is extracted from moves package to avoid dependency and optimize further
-func findOptimalInsertionPosition(node *stack.Node, stackB *stack.Stack) int {
-
-	current := stack.GetHead(stackB)	
-	// Start with the first element as potential target
-	targetValue := current.GetContent()
-	newElementValue := node.GetContent()
-	
-	// Traverse stack B to find the optimal insertion point
-	for current != nil {
-		currentValue := current.GetContent()
-		
-		// Check if this position is better for insertion
-		// We want to find the largest value that's smaller than our new element
-		// OR the smallest value that's larger than our new element
-		if isBetterInsertionPosition(currentValue, targetValue, newElementValue) {
-			targetValue = currentValue
-		}
-		
-		current = current.GetNext()
-	}
-	
-	return targetValue
-}
-
-// isBetterInsertionPosition determines if a new position is better for insertion
-func isBetterInsertionPosition(currentValue, targetValue, newElementValue int) bool {
-	// Case 1: Current value is larger than target but smaller than new element
-	// This means we found a better "upper bound" for insertion
-	if currentValue > targetValue && currentValue < newElementValue {
-		return true
-	}
-	
-	// Case 2: Current value is smaller than new element but target is larger than new element
-	// This means we found a better "lower bound" for insertion
-	if currentValue < newElementValue && targetValue > newElementValue {
-		return true
-	}
-	
-	return false
-}
-
-func CheapestBtoA(ps *ops.SortingState) Position {
-	sizeA, sizeB := stack.GetSize(ps.A), stack.GetSize(ps.B)
 	best := Position{Total: math.MaxInt}
-
-	i := 0
-	for n := stack.GetHead(ps.B); n != nil; n, i = n.GetNext(), i+1 {
-		tgtA := FindTargetPosInA(ps.A, n.GetContent())
-
-		costA := SignedCost(tgtA, sizeA) // cílový index v A
-		costB := SignedCost(i,    sizeB) // kandidátův index v B (musí na top)
-
-		total := MergedCost(costA, costB)
-
-		// Tie-breaker: preferuj menší |CostA|, pak blíž topu cílového stacku
-		if total < best.Total ||
-			(total == best.Total && abs(costA) < abs(best.CostA)) ||
-			(total == best.Total && abs(costA) == abs(best.CostA) && tgtA < best.ToIndex) {
-			best = Position{
-				FromIndex: i, ToIndex: tgtA,
-				CostA: costA, CostB: costB, Total: total,
-			}
+	for _, p := range enumerateCandidatesAtoB(ps.A, ps.B, 0) { // 0 => všichni
+		if better(p, best) {
+			best = p
 		}
 	}
 	return best
 }
 
-func FindTargetPosInA(a *stack.Stack, val int) int {
+func CheapestBtoA(ps *ops.SortingState) Position {
+	best := Position{Total: math.MaxInt}
+	for _, p := range enumerateCandidatesBtoA(ps.A, ps.B, 0) {
+		if better(p, best) {
+			best = p
+		}
+	}
+	return best
+}
+
+// Jemná penalizace: pokud by vložení "val" na pozici toIdx v B rozbilo lokální klesající pořadí,
+// vrať 1, jinak 0. Používej jen jako tie-breaker (nikdy nepřičítej velké hodnoty).
+func localOrderPenaltyInB(b *stack.Stack, toIdx int, val int) int {
+	size := stack.GetSize(b)
+	if size < 2 {
+		return 0
+	}
+
+	// sousedé okolo toIdx (cyklicky)
+	prevIdx := (toIdx - 1 + size) % size
+	nextIdx := toIdx % size
+
+	prev := stack.GetNodeAt(b, prevIdx).GetContent() // uprav Value podle tvého názvu pole
+	next := stack.GetNodeAt(b, nextIdx).GetContent()
+
+	// „správné“ lokální klesání je: prev > val > next
+	if prev > val && val > next {
+		return 0
+	}
+	return 1
+}
+
+// Comparator pro tie-breakery: menší Total je lepší, pak menší |CostA|, pak menší ToIdx, pak menší FromIdx.
+func better(a, b Position) bool {
+	if a.Total != b.Total {
+		return a.Total < b.Total
+	}
+	if abs(a.CostA) != abs(b.CostA) {
+		return abs(a.CostA) < abs(b.CostA)
+	}
+	if a.ToIndex != b.ToIndex {
+		return a.ToIndex < b.ToIndex
+	}
+	return a.FromIndex < b.FromIndex
+}
+
+// ---- Enumerátoři kandidátů ----
+
+// Vrátí top-K kandidátů pro A->B seřazených podle (Total + lokální penalizace v B) a tie-breakerů.
+func enumerateCandidatesAtoB(a, b *stack.Stack, k int) []Position {
+	sizeA, sizeB := stack.GetSize(a), stack.GetSize(b)
+	if sizeA == 0 {
+		return nil
+	}
+
+	cands := make([]Position, 0, sizeA)
+
+	// projdeme uzly A (0 = top)
+	i := 0
+	for n := stack.GetHead(a); n != nil; n, i = n.GetNext(), i+1 {
+		// Kam v B vložit (tvá existující logika; pozor: posílej sizeB, ne sizeA)
+		toIdx := findInsertionIndexInB(b, n.GetContent())
+
+		costA := SignedCost(i, sizeA)     // kandidát dopředu/dozadu v A
+		costB := SignedCost(toIdx, sizeB) // target dopředu/dozadu v B
+
+		total := MergedCost(costA, costB)
+
+		// jemná penalizace lokálního pořadí v B (descending) – použij jen jako tie-breaker
+		totalWithPenalty := total + localOrderPenaltyInB(b, toIdx, n.GetContent())
+
+		cands = append(cands, Position{
+			FromIndex: i, ToIndex: toIdx,
+			CostA: costA, CostB: costB,
+			Total: totalWithPenalty,
+		})
+	}
+
+	// seřadit dle našich pravidel (pozor: pracujeme s Total+penalty)
+	sort.Slice(cands, func(i, j int) bool { return better(cands[i], cands[j]) })
+
+	if k <= 0 || k >= len(cands) {
+		return cands
+	}
+	return cands[:k]
+}
+
+// Vrátí top-K kandidátů pro B->A (žádná B-penalizace; cíl v A je "nejmenší > val", wrap na min).
+func enumerateCandidatesBtoA(a, b *stack.Stack, k int) []Position {
+	sizeA, sizeB := stack.GetSize(a), stack.GetSize(b)
+	if sizeB == 0 {
+		return nil
+	}
+
+	cands := make([]Position, 0, sizeB)
+
+	i := 0
+	for n := stack.GetHead(b); n != nil; n, i = n.GetNext(), i+1 {
+		toIdx := findTargetPosInA(a, n.GetContent())
+
+		costA := SignedCost(toIdx, sizeA) // target v A na top
+		costB := SignedCost(i,    sizeB)  // kandidát v B na top
+
+		total := MergedCost(costA, costB)
+
+		cands = append(cands, Position{
+			FromIndex: i, ToIndex: toIdx,
+			CostA: costA, CostB: costB,
+			Total: total, // zde bez penalizace
+		})
+	}
+
+	sort.Slice(cands, func(i, j int) bool { return better(cands[i], cands[j]) })
+
+	if k <= 0 || k >= len(cands) {
+		return cands
+	}
+	return cands[:k]
+}
+
+func findTargetPosInA(a *stack.Stack, val int) int {
 	if stack.GetSize(a) == 0 {
 		return 0
 	}
@@ -196,3 +181,34 @@ func FindTargetPosInA(a *stack.Stack, val int) int {
 	}
 	return minIdx
 }
+
+
+// Najde index v B (0 = top), před který máš vložit hodnotu val, aby B zůstalo v "descending"
+// (pokud B udržuješ jako descending). Pokud B je prázdné, vrať 0.
+// Povolený rozsah návratu: 0..sizeB (toIdx==sizeB = vložit za poslední => cyklicky před top).
+func findInsertionIndexInB(b *stack.Stack, val int) int {
+	sizeB := stack.GetSize(b)
+	if sizeB == 0 { return 0 }
+
+	minB := stack.GetMin(b)
+	maxB := stack.GetMax(b)
+
+	// wrap: mimo rozsah -> vložit „za maximum“
+	if val < minB || val > maxB {
+		idxMax := stack.GetMaxPos(b)
+		return (idxMax + 1) % sizeB
+	}
+
+	// hledej první „mezeru“ prev > val > next (cyklicky)
+	for j := 0; j < sizeB; j++ {
+		prevIdx := (j - 1 + sizeB) % sizeB
+		nextIdx := j
+		prev := stack.GetNodeAt(b, prevIdx).GetContent()
+		next := stack.GetNodeAt(b, nextIdx).GetContent()
+		if prev > val && val > next {
+			return j
+		}
+	}
+	return 0 // fallback
+}
+
