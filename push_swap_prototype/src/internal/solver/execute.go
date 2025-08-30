@@ -1,4 +1,4 @@
-package executor
+package solver
 
 import (
 	"push_swap_prototype/internal/moves"

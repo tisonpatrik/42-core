@@ -2,17 +2,17 @@ package moves
 
 import "push_swap_prototype/internal/stack"
 
-// BreakpointsCyclicA spo\u010d�t�, kolikr�t v A (v\u010detn\u011b wrapu last->first) plat� A[i] > A[i+1].
-// To je u\u017eite\u010dn� jako hrub� heuristika "jak daleko jsme od cyklick�ho vzestupn�ho po\u0159ad�".
+// BreakpointsCyclicA spočítá, kolikrát v A (včetně wrapu last->first) platí A[i] > A[i+1].
+// To je užitečná jako hrubá heuristika "jak daleko jsme od cyklického vzestupného pořadí".
 func BreakpointsCyclicA(a *stack.Stack) int {
 	size := stack.GetSize(a)
 	if size <= 1 {
 		return 0
 	}
-	// na\u010dti hodnoty do slice (top->bottom)
+	// naštíti hodnoty do slice (top->bottom)
 	vals := make([]int, 0, size)
 	for n := stack.GetHead(a); n != nil; n = n.GetNext() {
-		vals = append(vals, n.GetContent()) // uprav Value podle tv�ho n�zvu pole
+		vals = append(vals, n.GetContent()) // uprav Value podle tvého názvu pole
 	}
 
 	br := 0

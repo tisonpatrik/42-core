@@ -1,4 +1,4 @@
-package finalizer
+package solver
 
 import (
 	"push_swap_prototype/internal/moves"

@@ -1,9 +1,9 @@
-package moves
+package separator
 
 import "push_swap_prototype/internal/stack"
 
 func ComputeLISNodes(a *stack.Stack) map[*stack.Node]bool {
-    // 1) Zkop�ruj uzly i hodnoty do slice (po\u0159ad�: top -> bottom)
+    // 1) Zkopruj uzly i hodnoty do slice (pořad�: top -> bottom)
     nodes := make([]*stack.Node, 0, stack.GetSize(a))
     vals  := make([]int, 0, stack.GetSize(a))
     for n := stack.GetHead(a); n != nil; n = n.GetNext() {
@@ -20,7 +20,7 @@ func ComputeLISNodes(a *stack.Stack) map[*stack.Node]bool {
     prev   := make([]int, n)
     bestLen, bestEnd := 0, 0
 
-    for i := 0; i < n; i++ {
+    for i := range n {
         lisLen[i] = 1
         prev[i]   = -1
         for j := 0; j < i; j++ {
