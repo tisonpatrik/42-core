@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../libft/libft.h"
 #include <unistd.h>
 
 void	ft_putnbr_unsigned(unsigned int n)
