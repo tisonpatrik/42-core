@@ -5,6 +5,7 @@ import (
 	"os"
 	"push_swap_prototype/internal/ops"
 	"push_swap_prototype/internal/solver"
+	"push_swap_prototype/internal/stack"
 )
 
 func main() {
@@ -25,7 +26,16 @@ func main() {
 
 		ps := ops.InitData(numbers)
 		solver.SolvePushSwap(ps)
-
+		res := Validate(numbers, ps.OpList)
+		if !res.OK {
+			fmt.Printf("INVALID: %v (at op %d)\n", res.Error, res.ErrorIndex)
+			fmt.Printf("Input numbers: %v\n", numbers)
+			fmt.Print("Stack A: ")
+			stack.PrintStack(ps.A, "A")
+			fmt.Print("Stack B: ")
+			stack.PrintStack(ps.B, "B")
+			panic("Validation failed - see above for details")
+		}
 		opCount := len(ps.OpList)
 
 		// Write results to file

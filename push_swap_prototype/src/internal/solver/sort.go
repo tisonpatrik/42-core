@@ -2,6 +2,7 @@ package solver
 
 import (
 	"push_swap_prototype/internal/ops"
+	optimizer "push_swap_prototype/internal/peephole"
 	"push_swap_prototype/internal/selector"
 	"push_swap_prototype/internal/separator"
 	"push_swap_prototype/internal/stack"
@@ -37,5 +38,6 @@ func SolvePushSwap(ps *ops.SortingState) {
 
     // 5) Dorovnání A (min na vrch nejkratší cestou)
     AlignMinToTop(ps)
+    optimizer.OptimizeOps(ps.OpList)
 }
 
