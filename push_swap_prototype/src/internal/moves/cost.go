@@ -4,6 +4,7 @@ import (
 	"math"
 	"push_swap_prototype/internal/ops"
 	"push_swap_prototype/internal/stack"
+	"push_swap_prototype/internal/utils"
 	"sort"
 )
 
@@ -66,8 +67,8 @@ func better(a, b Position) bool {
 	if a.Total != b.Total {
 		return a.Total < b.Total
 	}
-	if abs(a.CostA) != abs(b.CostA) {
-		return abs(a.CostA) < abs(b.CostA)
+	if utils.Abs(a.CostA) != utils.Abs(b.CostA) {
+		return utils.Abs(a.CostA) < utils.Abs(b.CostA)
 	}
 	if a.ToIndex != b.ToIndex {
 		return a.ToIndex < b.ToIndex

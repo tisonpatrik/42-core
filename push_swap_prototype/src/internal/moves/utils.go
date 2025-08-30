@@ -1,5 +1,7 @@
 package moves
 
+import "push_swap_prototype/internal/utils"
+
 func SignedCost(idx, size int) int {
     if idx <= size/2 {
         return idx
@@ -10,10 +12,9 @@ func SignedCost(idx, size int) int {
 func MergedCost(a, b int) int {
     same := (a >= 0 && b >= 0) || (a < 0 && b < 0)
     if same {
-        if abs(a) > abs(b) { return abs(a) }
-        return abs(b)
+        if utils.Abs(a) > utils.Abs(b) { return utils.Abs(a) }
+        return utils.Abs(b)
     }
-    return abs(a) + abs(b)
+    return utils.Abs(a) + utils.Abs(b)
 }
 
-func abs(x int) int { if x < 0 { return -x }; return x }
