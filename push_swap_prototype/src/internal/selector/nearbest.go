@@ -4,41 +4,26 @@ import (
 	"math"
 	"sort"
 
-	"push_swap_prototype/internal/moves"
 	"push_swap_prototype/internal/ops"
 	"push_swap_prototype/internal/stack"
 	"push_swap_prototype/internal/utils"
 )
 
-// Public API
-// ----------
-
-func PickNearBestAtoB(ps *ops.SortingState, candK int) moves.Position {
-	a := snapshot(ps.A)
-	b := snapshot(ps.B)
-
-	cands := enumerateAtoB(a, b) // Total = base, Score = base + tiny penalty
-	if len(cands) == 0 {
-		return moves.CheapestBtoA(ps) // nucený návrat (teoreticky nenastane)
-	}
-	return pickNearBest(a, b, cands, candK, true)
-}
-
-func PickNearBestBtoA(ps *ops.SortingState, candK int) moves.Position {
+// PickNearBest selects the best position for moving an element from B to A using near-optimal strategy.
+// It considers multiple candidates and uses micro-lookahead to make the best choice.
+func PickNearBest(ps *ops.SortingState, candK int) Position {
 	a := snapshot(ps.A)
 	b := snapshot(ps.B)
 
 	cands := enumerateBtoA(a, b) // Total = base
 	if len(cands) == 0 {
-		return moves.CheapestAtoB(ps)
+		return CheapestAtoB(ps)
 	}
 	return pickNearBest(a, b, cands, candK, false)
 }
 
-// Core
-// ----
 
-func pickNearBest(a, b []int, all []scoredPos, candK int, phaseAtoB bool) moves.Position {
+func pickNearBest(a, b []int, all []scoredPos, candK int, phaseAtoB bool) Position {
 	// 1) minBase + gating (≤ minBase+1)
 	minBase := math.MaxInt
 	for _, s := range all {
@@ -55,7 +40,7 @@ func pickNearBest(a, b []int, all []scoredPos, candK int, phaseAtoB bool) moves.
 		}
 	}
 
-	// 2) top-K podle Score (Score = base + penalizace) – aby zůstalo stabilní pořadí
+	// 2) top-K by Score (Score = base + penalty) – to maintain stable ordering
 	sort.Slice(filter, func(i, j int) bool {
 		if filter[i].score != filter[j].score {
 			return filter[i].score < filter[j].score
@@ -73,14 +58,14 @@ func pickNearBest(a, b []int, all []scoredPos, candK int, phaseAtoB bool) moves.
 		filter = filter[:candK]
 	}
 
-	// 3) micro lookahead (hloubka 1): vyhodnoť g+h a vyber
+	// 3) micro lookahead (depth 1): evaluate g+h and select
 	best := filter[0].pos
 	bestScore := math.MaxInt
 
 	for _, s := range filter {
 		p := s.pos
 		na, _, g := simulateOnce(a, b, p, phaseAtoB)
-		// levná heuristika: ceil(breakpoints/2)
+		// cheap heuristic: ceil(breakpoints/2)
 		h := (breakpointsCyclic(na) + 1) / 2
 		score := g + h
 
@@ -92,55 +77,12 @@ func pickNearBest(a, b []int, all []scoredPos, candK int, phaseAtoB bool) moves.
 	return best
 }
 
-// Enumerace (slice verze, rychlé)
+// Enumeration (slice version, fast)
 // -------------------------------
 
 type scoredPos struct {
-	pos   moves.Position // Total = base
-	score int            // base + tiny penalty (jen pro řazení)
-}
-
-func enumerateAtoB(a, b []int) []scoredPos {
-	sizeA, sizeB := len(a), len(b)
-	if sizeA == 0 {
-		return nil
-	}
-	out := make([]scoredPos, 0, sizeA)
-
-	// předdopočítej min/max/idxMax pro wrap ať to nepočítáme v každé smyčce znovu
-	minB, maxB, idxMax := 0, 0, 0
-	if sizeB > 0 {
-		minB, maxB, idxMax = b[0], b[0], 0
-		for i, x := range b {
-			if x < minB {
-				minB = x
-			}
-			if x > maxB {
-				maxB, idxMax = x, i
-			}
-		}
-	}
-
-	for i := range sizeA {
-		val := a[i]
-		toIdx := insertionIndexInB(b, minB, maxB, idxMax, val)
-
-		costA := moves.SignedCost(i, sizeA)
-		costB := moves.SignedCost(toIdx, sizeB)
-
-		base := moves.MergedCost(costA, costB) // reálné rotace
-		pen := localPenaltyInB(b, toIdx, val)  // 0/1
-
-		out = append(out, scoredPos{
-			pos: moves.Position{
-				FromIndex: i, ToIndex: toIdx,
-				CostA: costA, CostB: costB,
-				Total: base,
-			},
-			score: base + pen,
-		})
-	}
-	return out
+	pos   Position // Total = base
+	score int            // base + tiny penalty (for ordering only)
 }
 
 func enumerateBtoA(a, b []int) []scoredPos {
@@ -154,28 +96,28 @@ func enumerateBtoA(a, b []int) []scoredPos {
 		val := b[i]
 		toIdx := targetPosInA(a, val)
 
-		costA := moves.SignedCost(toIdx, sizeA)
-		costB := moves.SignedCost(i, sizeB)
+		costA := SignedCost(toIdx, sizeA)
+		costB := SignedCost(i, sizeB)
 
-		base := moves.MergedCost(costA, costB)
+		base := MergedCost(costA, costB)
 
 		out = append(out, scoredPos{
-			pos: moves.Position{
+			pos: Position{
 				FromIndex: i, ToIndex: toIdx,
 				CostA: costA, CostB: costB,
 				Total: base,
 			},
-			score: base, // bez penalizace
+			score: base, // without penalty
 		})
 	}
 	return out
 }
 
-// Simulace hloubky 1 (bez rotací slice)
+// Simulation depth 1 (without slice rotations)
 // -------------------------------------
 
-func simulateOnce(a, b []int, p moves.Position, phaseAtoB bool) ([]int, []int, int) {
-	rot := moves.MergedCost(p.CostA, p.CostB) // skutečné rotace
+func simulateOnce(a, b []int, p Position, phaseAtoB bool) ([]int, []int, int) {
+	rot := MergedCost(p.CostA, p.CostB) // actual rotations
 	if phaseAtoB {
 		ia := norm(len(a), p.CostA)
 		ib := norm(len(b), p.CostB)
@@ -213,7 +155,7 @@ func insertAt(s []int, i, x int) []int {
 	return out
 }
 
-// Heuristika (levná)
+// Heuristic (cheap)
 // ------------------
 
 func breakpointsCyclic(a []int) int {
@@ -233,26 +175,10 @@ func breakpointsCyclic(a []int) int {
 	return br
 }
 
-// Lokální pomocníci (targeting/penalizace) nad slicem
+// Local helpers (targeting/penalty) over slice
 // ---------------------------------------------------
 
-func insertionIndexInB(b []int, minB, maxB, idxMax int, val int) int {
-	n := len(b)
-	if n == 0 {
-		return 0
-	}
-	if val < minB || val > maxB {
-		return (idxMax + 1) % n // wrap: „za maximum“
-	}
-	for j := 0; j < n; j++ {
-		prev := b[(j-1+n)%n]
-		next := b[j]
-		if prev > val && val > next {
-			return j
-		}
-	}
-	return 0
-}
+
 
 func targetPosInA(a []int, val int) int {
 	n := len(a)
@@ -270,7 +196,7 @@ func targetPosInA(a []int, val int) int {
 	if bestIdx != -1 {
 		return bestIdx
 	}
-	// index minima
+	// index of minimum
 	minIdx, minVal := 0, a[0]
 	for i, x := range a {
 		if x < minVal {
@@ -280,23 +206,11 @@ func targetPosInA(a []int, val int) int {
 	return minIdx
 }
 
-func localPenaltyInB(b []int, toIdx int, val int) int {
-	n := len(b)
-	if n < 2 {
-		return 0
-	}
-	prev := b[(toIdx-1+n)%n]
-	next := b[toIdx%n]
-	if prev > val && val > next {
-		return 0
-	}
-	return 1
-}
 
 // Utility
 // -------
 
-func betterPos(a, b moves.Position) bool {
+func betterPos(a, b Position) bool {
 	if a.Total != b.Total {
 		return a.Total < b.Total
 	}

@@ -15,8 +15,6 @@ func push(src, dest *stack.Stack) bool {
 	return true
 }
 
-// Take the first element at the top of b and put it at the top of a.
-// Do nothing if b is empty.
 func PushA(ps *SortingState) {
 
 	operationSucceeded := push(ps.B, ps.A)
@@ -25,8 +23,6 @@ func PushA(ps *SortingState) {
 	}
 }
 
-//Take the first element at the top of a and put it at the top of b.
-//Do nothing if a is empty.
 func PushB(ps *SortingState) {
 
 	operationSucceeded := push(ps.A, ps.B)

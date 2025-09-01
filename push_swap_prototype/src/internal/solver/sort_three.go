@@ -5,7 +5,8 @@ import (
 	"push_swap_prototype/internal/stack"
 )
 
-// sortThree sorts a stack with 3 elements (equivalent to sort_three in C)
+// SortThree sorts a stack with exactly 3 elements using the optimal sequence of operations.
+// It handles all 6 possible permutations of 3 elements with minimal operations.
 func SortThree(ps *ops.SortingState) {
 	if stack.GetSize(ps.A) != 3 { return }
 
@@ -15,7 +16,7 @@ func SortThree(ps *ops.SortingState) {
 
 	x, y, z := a.GetContent(), b.GetContent(), c.GetContent()
 
-	// 5 případů (6 perms, 1 už seřazená)
+	// 5 cases (6 perms, 1 already sorted)
 	if x < y && y < z { return }             // sorted
 	if x > y && y < z && x < z { ops.SwapA(ps); return }             // 213
 	if x > y && y > z { ops.SwapA(ps); ops.ReverseRotateA(ps); return } // 321

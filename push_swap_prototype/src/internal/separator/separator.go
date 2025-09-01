@@ -5,13 +5,14 @@ import (
 	"push_swap_prototype/internal/stack"
 )
 
-
+// PushNonLISIntoB pushes all elements that are not part of the Longest Increasing Subsequence to stack B.
+// When enableBShaping is true, it also applies simple shaping to maintain B's order.
 func PushNonLISIntoB(ps *ops.SortingState, enableBShaping bool) {
 	inLIS := ComputeLISNodes(ps.A)
 	sizeA := stack.GetSize(ps.A)
 	if sizeA <= 3 { return }
 
-	// průběžně drž min/max B (rychlá aproximace "median rule")
+	// continuously maintain min/max B (fast approximation "median rule")
 	minB, maxB := 0, 0
 	hasBRange := false
 
@@ -25,7 +26,7 @@ func PushNonLISIntoB(ps *ops.SortingState, enableBShaping bool) {
 		ops.PushB(ps)
 
 		if enableBShaping {
-			// O(1) shaping přes min/max
+			// O(1) shaping via min/max
 			val := stack.GetHead(ps.B).GetContent()
 			if !hasBRange {
 				minB, maxB, hasBRange = val, val, true

@@ -7,21 +7,17 @@ import (
 	"push_swap_prototype/internal/stack"
 )
 
-// V�sledek validace s detailn�m kontextem.
 type Result struct {
 	OK         bool
-	ErrorIndex int          // index operace, kde to spadlo (-1 = bez chyby)
+	ErrorIndex int
 	Error      error
 	OpCount    int
 }
 
-// Validate zreplikuje operace nad \u010dist�m stavem vytvo\u0159en�m z `numbers`.
-// Vrac� nil chybu, pokud je sekvence korektn� (A vzestupn\u011b se\u0159azen�, B pr�zdn�).
-func Validate(numbers []int, opsList []ops.Operation) Result {
-	ps := ops.InitData(numbers) // vytvo\u0159� \u010dist� stav se stackem A napln\u011bn�m "numbers"
 
-	// Aplikuj postupn\u011b v\u0161echny operace s lehkou kontrolou pre-podm�nek,
-	// aby bylo jasn�, kde p\u0159�padn\u011b vznikla chyba.
+func Validate(numbers []int, opsList []ops.Operation) Result {
+	ps := ops.InitData(numbers) 
+
 	for i, op := range opsList {
 		if err := applyChecked(ps, op); err != nil {
 			return Result{
@@ -33,9 +29,6 @@ func Validate(numbers []int, opsList []ops.Operation) Result {
 		}
 	}
 
-	// Kone\u010dn� podm�nky push_swap:
-	//  - A je vzestupn\u011b se\u0159azen�
-	//  - B je pr�zdn�
 	if !stack.IsSorted(ps.A) {
 		return Result{
 			OK:         false,
@@ -56,9 +49,6 @@ func Validate(numbers []int, opsList []ops.Operation) Result {
 	return Result{OK: true, ErrorIndex: -1, Error: nil, OpCount: len(opsList)}
 }
 
-// applyChecked provede jednu operaci a zvaliduje z�kladn� pre-podm�nky.
-// (V\u011bt\u0161ina tv�ch ops.* je tolerantn� a nic neud\u011bl�, ale jako validator
-// chceme chybu chytit a hl�sit.)
 func applyChecked(ps *ops.SortingState, op ops.Operation) error {
 	switch op {
 	case ops.SA:
@@ -126,7 +116,6 @@ func applyChecked(ps *ops.SortingState, op ops.Operation) error {
 	return nil
 }
 
-// OpToString: pohodln� p\u0159evod enumu na text pro error hl�\u0161ky / tisk.
 func OpToString(op ops.Operation) string {
 	switch op {
 	case ops.SA:

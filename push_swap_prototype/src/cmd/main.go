@@ -9,7 +9,6 @@ import (
 )
 
 func main() {
-	// Create/open file for writing
 	file, err := os.Create("v2.txt")
 	if err != nil {
 		fmt.Printf("Error creating file: %v\n", err)
@@ -17,10 +16,8 @@ func main() {
 	}
 	defer file.Close()
 
-	// Write header
 	fmt.Fprintln(file, "Run\tIsSorted\tOpCount")
 
-	// Run 1000 times
 	for i := 1; i <= 1000; i++ {
 		numbers := GenerateRandomNumbers(500)
 
@@ -38,10 +35,8 @@ func main() {
 		}
 		opCount := len(ps.OpList)
 
-		// Write results to file
 		fmt.Fprintf(file, "%d\n", opCount)
 
-		// Also print to console every 100 runs for progress tracking
 		if i%100 == 0 {
 			fmt.Printf("Completed %d runs...\n", i)
 		}

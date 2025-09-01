@@ -9,35 +9,30 @@ import (
 )
 
 
-
 func SolvePushSwap(ps *ops.SortingState) {
-    if stack.IsSorted(ps.A) { return }
+	if stack.IsSorted(ps.A) { return }
 
-    // 1) LIS bootstrap: pushni non-LIS do B (doporučeno)
-    separator.PushNonLISIntoB(ps, true) // true = zapni jednoduchý shaping
+	separator.PushNonLISIntoB(ps, true)
 
-    // Pokud LIS zatím nechceš, můžeš dočasně použít původní 2×pb:
-    // ops.PushB(ps); ops.PushB(ps)
 
-    candK := 30
 
-    // 2) Dotlač A na 3 prvky (v LIS scénáři to často už bude skoro hotové)
-    for stack.GetSize(ps.A) > 3 {
-        pos := selector.PickNearBestBtoA(ps, candK) // tvoje sjednocená verze s podepsanými costy
-        ApplyCombined(ps, pos, true) // pb
-    }
+	candK := 30
 
-    // 3) Minisort tří prvků v A
-    SortThree(ps)
+	for stack.GetSize(ps.A) > 3 {
+		pos := selector.PickNearBest(ps, candK)
+		ApplyCombined(ps, pos, true)
+	}
 
-    // 4) Návrat B -> A stejnou sjednocenou logikou
-    for !stack.IsEmpty(ps.B) {
-        pos := selector.PickNearBestBtoA(ps, candK)
-        ApplyCombined(ps, pos, false) // pa
-    }
+	SortThree(ps)
 
-    // 5) Dorovnání A (min na vrch nejkratší cestou)
-    AlignMinToTop(ps)
-    optimizer.OptimizeOps(ps.OpList)
+	for !stack.IsEmpty(ps.B) {
+		pos := selector.PickNearBest(ps, candK)
+		ApplyCombined(ps, pos, false) // pa
+	}
+
+	AlignMinToTop(ps)
+
+	optimizer.OptimizeOps(ps.OpList)
 }
+
 

@@ -1,14 +1,13 @@
 package solver
 
 import (
-	"push_swap_prototype/internal/moves"
 	"push_swap_prototype/internal/ops"
+	"push_swap_prototype/internal/selector"
 	"push_swap_prototype/internal/stack"
 )
 
-
-
-
+// AlignMinToTop rotates stack A to bring the minimum element to the top via the shortest path.
+// This is the final step in the push_swap algorithm to ensure proper ordering.
 func AlignMinToTop(ps *ops.SortingState) {
 	sizeA := stack.GetSize(ps.A)
 	if sizeA == 0 { return }
@@ -20,7 +19,7 @@ func AlignMinToTop(ps *ops.SortingState) {
 			minVal, minIdx = v, i
 		}
 	}
-	cost := moves.SignedCost(minIdx, sizeA)
+	cost := selector.SignedCost(minIdx, sizeA)
 	for cost > 0 { ops.RotateA(ps); cost-- }
 	for cost < 0 { ops.ReverseRotateA(ps); cost++ }
 }

@@ -1,4 +1,4 @@
-package moves
+package selector
 
 import (
 	"math"
@@ -13,14 +13,15 @@ type Position struct {
 	ToIndex   int
 	CostA     int
 	CostB     int
-	Total     int // čistý base cost = MergedCost(CostA, CostB)
+	Total     int // pure base cost = MergedCost(CostA, CostB)
 }
 
-// ----------------- PUBLIC API -----------------
 
+// CheapestAtoB finds the position with the lowest cost for moving an element from stack A to stack B.
+// It evaluates all possible positions and returns the one with minimal rotation cost.
 func CheapestAtoB(ps *ops.SortingState) Position {
 	best := Position{Total: math.MaxInt}
-	for _, p := range enumerateCandidatesAtoB(ps.A, ps.B, 0) { // 0 => všichni
+	for _, p := range enumerateCandidatesAtoB(ps.A, ps.B, 0) { // 0 => all
 		if better(p, best) {
 			best = p
 		}
@@ -28,6 +29,8 @@ func CheapestAtoB(ps *ops.SortingState) Position {
 	return best
 }
 
+// CheapestBtoA finds the position with the lowest cost for moving an element from stack B to stack A.
+// It evaluates all possible positions and returns the one with minimal rotation cost.
 func CheapestBtoA(ps *ops.SortingState) Position {
 	best := Position{Total: math.MaxInt}
 	for _, p := range enumerateCandidatesBtoA(ps.A, ps.B, 0) {
@@ -38,17 +41,16 @@ func CheapestBtoA(ps *ops.SortingState) Position {
 	return best
 }
 
-// ----------------- ENUMERÁTORY -----------------
 
-// enumerateCandidatesAtoB: vrátí top-K kandidátů podle skóre (base + jemná penalizace),
-// ale do Position.Total ukládá **jen base** (MergedCost).
+// enumerateCandidatesAtoB: returns top-K candidates by score (base + fine penalty),
+// but stores **only base** (MergedCost) in Position.Total.
 func enumerateCandidatesAtoB(a, b *stack.Stack, k int) []Position {
 	sizeA := stack.GetSize(a)
 	if sizeA == 0 {
 		return nil
 	}
 
-	// 1) Jednou si načti B do slice (rychlejší penalizace/targeting sousedů)
+	// 1) Load B into slice once (faster penalty/targeting neighbors)
 	bvals := snapshotValues(b)
 
 	type scored struct {
@@ -57,17 +59,17 @@ func enumerateCandidatesAtoB(a, b *stack.Stack, k int) []Position {
 	}
 	ss := make([]scored, 0, sizeA)
 
-	// 2) Projdeme A shora dolů
+	// 2) Go through A from top to bottom
 	i := 0
 	for n := stack.GetHead(a); n != nil; n, i = n.GetNext(), i+1 {
 		val := n.GetContent()
-		toIdx := insertionIndexInBVals(bvals, val) // targeting nad slice
+		toIdx := insertionIndexInBVals(bvals, val) // targeting over slice
 
 		costA := SignedCost(i, sizeA)
 		costB := SignedCost(toIdx, len(bvals))
 
-		base := MergedCost(costA, costB)                    // reálné rotace
-		pen  := localOrderPenaltyInBV(bvals, toIdx, val)    // 0/1 jemný tie-break
+		base := MergedCost(costA, costB)                    // actual rotations
+		pen  := localOrderPenaltyInBV(bvals, toIdx, val)    // 0/1 fine tie-break
 
 		ss = append(ss, scored{
 			pos: Position{
@@ -75,13 +77,13 @@ func enumerateCandidatesAtoB(a, b *stack.Stack, k int) []Position {
 				ToIndex:   toIdx,
 				CostA:     costA,
 				CostB:     costB,
-				Total:     base, // <<< důležité: ukládáme čistý base
+				Total:     base, // <<< important: storing pure base
 			},
-			score: base + pen, // pořadí kandidátů
+			score: base + pen, // candidate ordering
 		})
 	}
 
-	// 3) Seřazení dle score + tie-breakery
+	// 3) Sorting by score + tie-breakers
 	sort.Slice(ss, func(i, j int) bool {
 		if ss[i].score != ss[j].score {
 			return ss[i].score < ss[j].score
@@ -96,7 +98,7 @@ func enumerateCandidatesAtoB(a, b *stack.Stack, k int) []Position {
 		return ai.FromIndex < aj.FromIndex
 	})
 
-	// 4) (volitelný, ale doporučený) gating: nech jen base ≤ minBase+2
+	// 4) (optional, but recommended) gating: keep only base ≤ minBase+2
 	minBase := math.MaxInt
 	for _, s := range ss {
 		if s.pos.Total < minBase {
@@ -117,7 +119,7 @@ func enumerateCandidatesAtoB(a, b *stack.Stack, k int) []Position {
 	return filtered
 }
 
-// enumerateCandidatesBtoA: B-penalizaci nepoužívá; `Total` = base.
+// enumerateCandidatesBtoA: does not use B-penalty; `Total` = base.
 func enumerateCandidatesBtoA(a, b *stack.Stack, k int) []Position {
 	sizeA, sizeB := stack.GetSize(a), stack.GetSize(b)
 	if sizeB == 0 {
@@ -145,9 +147,7 @@ func enumerateCandidatesBtoA(a, b *stack.Stack, k int) []Position {
 	return cands
 }
 
-// ----------------- HELPERY (B snapshot/penalizace) -----------------
-
-// rychlé čtení hodnot B do slice (top..bottom)
+// fast reading of B values into slice (top..bottom)
 func snapshotValues(s *stack.Stack) []int {
 	out := make([]int, 0, stack.GetSize(s))
 	for n := stack.GetHead(s); n != nil; n = n.GetNext() {
@@ -156,13 +156,13 @@ func snapshotValues(s *stack.Stack) []int {
 	return out
 }
 
-// insertionIndexInBVals: index v B (nad slice), kam vložit val, chceme lokální "prev > val > next"
+// insertionIndexInBVals: index in B (over slice), where to insert val, we want local "prev > val > next"
 func insertionIndexInBVals(b []int, val int) int {
 	n := len(b)
 	if n == 0 {
 		return 0
 	}
-	// wrap: mimo rozsah => za maximum
+	// wrap: out of range => after maximum
 	minB, maxB, idxMax := b[0], b[0], 0
 	for i, x := range b {
 		if x < minB { minB = x }
@@ -181,7 +181,7 @@ func insertionIndexInBVals(b []int, val int) int {
 	return 0
 }
 
-// jemná penalizace nad slice (0/1)
+// fine penalty over slice (0/1)
 func localOrderPenaltyInBV(b []int, toIdx int, val int) int {
 	n := len(b)
 	if n < 2 {
@@ -195,7 +195,7 @@ func localOrderPenaltyInBV(b []int, toIdx int, val int) int {
 	return 1
 }
 
-// ----------------- OSTATNÍ (beze změny) -----------------
+// ----------------- OTHER (unchanged) -----------------
 
 func findTargetPosInA(a *stack.Stack, val int) int {
 	if stack.GetSize(a) == 0 { return 0 }
@@ -209,7 +209,7 @@ func findTargetPosInA(a *stack.Stack, val int) int {
 		}
 	}
 	if bestIdx != -1 { return bestIdx }
-	// wrap na minimum
+	// wrap to minimum
 	minIdx := 0
 	minVal := stack.GetHead(a).GetContent()
 	i = 0
