@@ -5,16 +5,21 @@
 bool swap(t_stack **stack)
 {
     int temp_content;
+    t_node *first_node;
+    t_node *second_node;
     
     if (!stack || !*stack)
         return false;
     if (get_size(*stack) < 2)
         return false;
     
+    first_node = get_head(*stack);
+    second_node = get_next(first_node);
+    
     // Swap the content of the first two nodes
-    temp_content = (*stack)->head->content;
-    (*stack)->head->content = (*stack)->head->next->content;
-    (*stack)->head->next->content = temp_content;
+    temp_content = get_content(first_node);
+    first_node->content = get_content(second_node);
+    second_node->content = temp_content;
     
     return true;
 }

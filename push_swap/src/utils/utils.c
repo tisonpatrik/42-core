@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 21:00:44 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/19 21:02:43 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/02 13:45:22 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../include/validator.h"
 #include <stdlib.h>
 #include <unistd.h>
 

@@ -3,17 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 21:17:51 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/19 21:18:55 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/02 13:45:22 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/push_swap.h"
+#include "../../include/validator.h"
 #include <errno.h>
-
-void	fatal_cleanup_and_exit(int *buf, char **tmp);
 
 int	count_parts(char **parts)
 {

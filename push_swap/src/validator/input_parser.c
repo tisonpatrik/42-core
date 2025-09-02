@@ -3,23 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   input_parser.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 21:00:04 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/19 21:20:24 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/02 13:45:22 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/push_swap.h"
+#include "../../include/validator.h"
 #include <stdlib.h>
 #include <unistd.h>
-
-void			free_array(char **splitted);
-void			fatal_cleanup_and_exit(int *buf, char **tmp);
-
-void			store_token(const char *tok, int *out, int *out_index,
-					char **parts_for_cleanup);
-int				count_parts(char **parts);
 
 int	get_count_of_arguments(int argc, char *argv[])
 {

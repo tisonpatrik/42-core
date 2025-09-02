@@ -6,23 +6,24 @@
 bool reverse_rotate(t_stack **stack)
 {
     t_node *bottom_node;
+    t_node *head_node;
+    t_node *prev_tail;
     
     if (!stack || !*stack)
         return false;
     if (get_size(*stack) <= 1)
         return false;
     
-    // Get the bottom node
-    bottom_node = (*stack)->tail;
+    bottom_node = get_tail(*stack);
+    head_node = get_head(*stack);
+    prev_tail = get_prev(bottom_node);
     
-    // Update tail to point to the previous node
-    (*stack)->tail = (*stack)->tail->prev;
-    (*stack)->tail->next = NULL;
+    (*stack)->tail = prev_tail;
+    prev_tail->next = NULL;
     
-    // Move bottom node to the top
     bottom_node->prev = NULL;
-    bottom_node->next = (*stack)->head;
-    (*stack)->head->prev = bottom_node;
+    bottom_node->next = head_node;
+    head_node->prev = bottom_node;
     (*stack)->head = bottom_node;
     
     return true;

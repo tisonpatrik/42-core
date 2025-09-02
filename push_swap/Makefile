@@ -6,7 +6,7 @@
 #    By: patrik <patrik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/17 11:16:00 by ptison            #+#    #+#              #
-#    Updated: 2025/09/02 13:30:18 by patrik           ###   ########.fr        #
+#    Updated: 2025/09/02 13:30:18 by patrik           ###   ########.fr       #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,16 +27,19 @@ LIBFT_DIR   := libft
 LIBFT       := $(LIBFT_DIR)/libft.a
 
 # Main source files
-SRCS        := src/input_parser.c \
-			   src/normalization.c \
+SRCS        := src/validator/input_parser.c \
+			   src/validator/normalization.c \
+			   src/validator/tokenizer.c \
 			   src/ops/push.c \
 			   src/ops/reverse_rotate.c \
 			   src/ops/rotate.c \
 			   src/ops/swap.c \
-			   src/push_swap.c \
+			   src/ops/sorting_state.c \
+			   src/stack/stack.c \
+			   src/stack/ops.c \
 			   src/stack/node.c \
-			   src/tokenizer.c \
-			   src/utils.c
+			   src/utils/utils.c \
+			   src/main.c
 
 # Bonus source files (if any)
 SRCS_BONUS  :=
@@ -70,6 +73,14 @@ bin/ops/%.o: src/ops/%.c | $(BIN_DIR)
 
 bin/stack/%.o: src/stack/%.c | $(BIN_DIR)
 	@$(MKDIR_P) bin/stack
+	@$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+
+bin/validator/%.o: src/validator/%.c | $(BIN_DIR)
+	@$(MKDIR_P) bin/validator
+	@$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+
+bin/utils/%.o: src/utils/%.c | $(BIN_DIR)
+	@$(MKDIR_P) bin/utils
 	@$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 bonus:
