@@ -6,7 +6,7 @@
 #    By: patrik <patrik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/17 11:16:00 by ptison            #+#    #+#              #
-#    Updated: 2025/09/02 10:49:00 by patrik           ###   ########.fr        #
+#    Updated: 2025/09/02 13:30:18 by patrik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -75,6 +75,9 @@ bin/stack/%.o: src/stack/%.c | $(BIN_DIR)
 bonus:
 	@$(MAKE) BONUS=1 all
 
+test:
+	@$(MAKE) -C test test
+
 clean:
 	@$(RM) $(OBJS) $(OBJS_BONUS) $(DEPS)
 	@$(MAKE) -C $(LIBFT_DIR) clean
@@ -88,4 +91,4 @@ re: fclean all
 
 -include $(DEPS)
 
-.PHONY: all clean fclean re bonus
+.PHONY: all clean fclean re bonus test

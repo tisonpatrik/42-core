@@ -4,20 +4,22 @@
 
 bool rotate(t_stack **stack)
 {
-    t_node *popped_node;
+    t_node *top_node;
     
     if (!stack || !*stack)
         return false;
     if (get_size(*stack) <= 1)
         return false;
     
-    // Pop the top element
-    popped_node = pop(stack);
-    if (!popped_node)
-        return false;
+    top_node = (*stack)->head;
     
-    // Push it back to the bottom
-    push_to_stack(*stack, popped_node);
+    (*stack)->head = (*stack)->head->next;
+    (*stack)->head->prev = NULL;
+    
+    top_node->next = NULL;
+    top_node->prev = (*stack)->tail;
+    (*stack)->tail->next = top_node;
+    (*stack)->tail = top_node;
     
     return true;
 }

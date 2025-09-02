@@ -13,6 +13,26 @@ t_stack *create_stack(void)
     return stack;
 }
 
+int get_size(t_stack *stack)
+{
+    if (!stack)
+        return 0;
+    return stack->size;
+}
+
+t_node *get_head(t_stack *stack)
+{
+    if (!stack)
+        return NULL;
+    return stack->head;
+}
+
+t_node *get_tail(t_stack *stack)
+{
+    if (!stack)
+        return NULL;
+    return stack->tail;
+}
 
 void clear_stack(t_stack *stack)
 {
@@ -43,7 +63,7 @@ void fill_stack(t_stack *stack, int *numbers, int n)
     t_node *node;
     int i = n - 1;
     
-    while (i >=0) {
+    while (i >= 0) {
         node = create_node(numbers[i]);
         push_to_stack(stack, node);
         i--;
