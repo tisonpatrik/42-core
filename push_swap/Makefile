@@ -6,7 +6,7 @@
 #    By: patrik <patrik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/17 11:16:00 by ptison            #+#    #+#              #
-#    Updated: 2025/08/19 12:01:58 by patrik           ###   ########.fr        #
+#    Updated: 2025/09/02 10:49:00 by patrik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,19 +29,20 @@ LIBFT       := $(LIBFT_DIR)/libft.a
 # Main source files
 SRCS        := src/input_parser.c \
 			   src/normalization.c \
-			   src/push.c \
+			   src/ops/push.c \
+			   src/ops/reverse_rotate.c \
+			   src/ops/rotate.c \
+			   src/ops/swap.c \
 			   src/push_swap.c \
-               src/reverse_rotate.c \
-               src/rotate.c \
-               src/swap.c \
+			   src/stack/node.c \
 			   src/tokenizer.c \
 			   src/utils.c
 
 # Bonus source files (if any)
 SRCS_BONUS  :=
 
-OBJS        := $(SRCS:.c=.o)
-OBJS_BONUS  := $(SRCS_BONUS:.c=.o)
+OBJS        := $(SRCS:src/%.c=bin/%.o)
+OBJS_BONUS  := $(SRCS_BONUS:src/%.c=bin/%.o)
 
 ifdef BONUS
   OBJS      += $(OBJS_BONUS)
@@ -53,7 +54,6 @@ all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJS) | $(BIN_DIR)
 	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
-	@echo "Built executable: $(NAME)"
 
 $(BIN_DIR):    
 	@$(MKDIR_P) $(BIN_DIR)
@@ -61,7 +61,15 @@ $(BIN_DIR):
 $(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR) bonus
 
-%.o: %.c
+bin/%.o: src/%.c | $(BIN_DIR)
+	@$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+
+bin/ops/%.o: src/ops/%.c | $(BIN_DIR)
+	@$(MKDIR_P) bin/ops
+	@$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+
+bin/stack/%.o: src/stack/%.c | $(BIN_DIR)
+	@$(MKDIR_P) bin/stack
 	@$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 bonus:
