@@ -35,9 +35,11 @@ SRCS        := src/validator/input_parser.c \
 			   src/ops/rotate.c \
 			   src/ops/swap.c \
 			   src/ops/sorting_state.c \
+			   src/solver/sort.c \
 			   src/stack/stack.c \
 			   src/stack/ops.c \
 			   src/stack/node.c \
+			   src/stack/tools.c \
 			   src/utils/utils.c \
 			   src/main.c
 
@@ -65,22 +67,7 @@ $(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR) bonus
 
 bin/%.o: src/%.c | $(BIN_DIR)
-	@$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
-
-bin/ops/%.o: src/ops/%.c | $(BIN_DIR)
-	@$(MKDIR_P) bin/ops
-	@$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
-
-bin/stack/%.o: src/stack/%.c | $(BIN_DIR)
-	@$(MKDIR_P) bin/stack
-	@$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
-
-bin/validator/%.o: src/validator/%.c | $(BIN_DIR)
-	@$(MKDIR_P) bin/validator
-	@$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
-
-bin/utils/%.o: src/utils/%.c | $(BIN_DIR)
-	@$(MKDIR_P) bin/utils
+	@$(MKDIR_P) $(dir $@)
 	@$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 bonus:

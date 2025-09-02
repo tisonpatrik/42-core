@@ -5,14 +5,15 @@ LIBFT = ../libft/libft.a
 
 # Directories
 BIN_DIR = bin
-TEST_SRCS = $(wildcard *.c)
+TEST_SRCS = test_main.c test_swap.c test_push.c test_rotate.c test_reverse_rotate.c test_is_sorted.c
 TEST_OBJS = $(TEST_SRCS:%.c=$(BIN_DIR)/%.o)
-TEST_BIN = $(BIN_DIR)/test_operations
+TEST_BIN = $(BIN_DIR)/test_main
 
 # Explicitly list all project source files needed for tests
 PROJECT_SRCS = ../src/stack/stack.c \
                ../src/stack/ops.c \
                ../src/stack/node.c \
+               ../src/stack/tools.c \
                ../src/ops/push.c \
                ../src/ops/swap.c \
                ../src/ops/rotate.c \
@@ -52,6 +53,9 @@ $(BIN_DIR)/ops.o: ../src/stack/ops.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(BIN_DIR)/node.o: ../src/stack/node.c
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+$(BIN_DIR)/tools.o: ../src/stack/tools.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(BIN_DIR)/push.o: ../src/ops/push.c

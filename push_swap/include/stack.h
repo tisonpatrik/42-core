@@ -1,6 +1,8 @@
 #ifndef STACK_H
 # define STACK_H
 
+#include <stdbool.h>
+
 typedef struct s_node
 {
 	int			content;
@@ -24,6 +26,7 @@ t_node *pop(t_stack **stack);
 t_node *create_node(int content);
 void clear_stack(t_stack *stack);
 void fill_stack(t_stack *stack, int *numbers, int n);
+bool is_sorted(t_stack *stack);
 t_node *get_head(t_stack *stack);
 t_node *get_tail(t_stack *stack);
 int get_content(t_node *node);
