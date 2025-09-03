@@ -18,5 +18,6 @@ void test_push_operations(void);
 void test_rotate_operations(void);
 void test_reverse_rotate_operations(void);
 void test_is_sorted_function(void);
+void test_lis_operations(void);
 
 #endif

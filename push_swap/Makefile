@@ -35,6 +35,8 @@ SRCS        := src/validator/input_parser.c \
 			   src/ops/rotate.c \
 			   src/ops/swap.c \
 			   src/ops/sorting_state.c \
+			   src/separator/separator.c \
+			   src/separator/lis.c \
 			   src/solver/sort.c \
 			   src/stack/stack.c \
 			   src/stack/ops.c \

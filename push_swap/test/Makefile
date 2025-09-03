@@ -5,7 +5,7 @@ LIBFT = ../libft/libft.a
 
 # Directories
 BIN_DIR = bin
-TEST_SRCS = test_main.c test_swap.c test_push.c test_rotate.c test_reverse_rotate.c test_is_sorted.c
+TEST_SRCS = test_main.c test_swap.c test_push.c test_rotate.c test_reverse_rotate.c test_is_sorted.c test_lis.c
 TEST_OBJS = $(TEST_SRCS:%.c=$(BIN_DIR)/%.o)
 TEST_BIN = $(BIN_DIR)/test_main
 
@@ -19,7 +19,8 @@ PROJECT_SRCS = ../src/stack/stack.c \
                ../src/ops/rotate.c \
                ../src/ops/reverse_rotate.c \
                ../src/ops/sorting_state.c \
-               ../src/utils/utils.c
+               ../src/utils/utils.c \
+               ../src/separator/lis.c
 
 PROJECT_OBJS = $(addprefix $(BIN_DIR)/,$(notdir $(PROJECT_SRCS:.c=.o)))
 
@@ -74,6 +75,9 @@ $(BIN_DIR)/sorting_state.o: ../src/ops/sorting_state.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(BIN_DIR)/utils.o: ../src/utils/utils.c
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+$(BIN_DIR)/lis.o: ../src/separator/lis.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 # Build libft if needed
