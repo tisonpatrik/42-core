@@ -6,7 +6,6 @@ import (
 
 	"push_swap_prototype/internal/ops"
 	"push_swap_prototype/internal/stack"
-	"push_swap_prototype/internal/utils"
 )
 
 // PickNearBest selects the best position for moving an element from B to A using near-optimal strategy.
@@ -65,15 +64,8 @@ func selectTopKCandidatesBtoA(candidates []scoredPos, maxCandidates int) []score
 		if candidates[i].score != candidates[j].score {
 			return candidates[i].score < candidates[j].score
 		}
-		// Tie-breakers: prefer lower absolute costs, then by indices
-		posI, posJ := candidates[i].pos, candidates[j].pos
-		if utils.Abs(posI.CostA) != utils.Abs(posJ.CostA) {
-			return utils.Abs(posI.CostA) < utils.Abs(posJ.CostA)
-		}
-		if posI.ToIndex != posJ.ToIndex {
-			return posI.ToIndex < posJ.ToIndex
-		}
-		return posI.FromIndex < posJ.FromIndex
+		// Use BetterPosition for tie-breakers
+		return BetterPosition(candidates[i].pos, candidates[j].pos)
 	})
 
 	// Limit to top K candidates if specified
@@ -104,7 +96,8 @@ func evaluateCandidatesWithLookahead(a, b []int, candidates []scoredPos, phaseAt
 		// Calculate heuristic estimate of remaining work (h)
 		// Using breakpoints/2 as a cheap heuristic for stack disorder
 		breakpoints := breakpointsCyclic(newA)
-		heuristicEstimate := (breakpoints + 1) / 2
+		sizePenalty := len(newA) / 10 // Penalty for larger stacks
+		heuristicEstimate := (breakpoints + sizePenalty + 1) / 2
 
 		// Combined score = actual cost + heuristic estimate
 		totalScore := actualCost + heuristicEstimate
@@ -236,30 +229,25 @@ func targetPosInA(a []int, val int) int {
 	if n == 0 {
 		return 0
 	}
-	bestIdx, bestVal := -1, 0
-	for i, x := range a {
-		if x > val {
-			if bestIdx == -1 || x < bestVal {
-				bestVal, bestIdx = x, i
-			}
+	// Binary search for the first element > val
+	left, right := 0, n
+	for left < right {
+		mid := (left + right) / 2
+		if a[mid] <= val {
+			left = mid + 1
+		} else {
+			right = mid
 		}
 	}
-	if bestIdx != -1 {
-		return bestIdx
+	if left < n {
+		return left
 	}
-	// index of minimum
-	minIdx, minVal := 0, a[0]
-	for i, x := range a {
-		if x < minVal {
-			minVal, minIdx = x, i
-		}
-	}
-	return minIdx
+	// If val >= all elements, return index of minimum (0 in sorted ascending stack)
+	return 0
 }
 
 // Utility
 // -------
-
 
 func snapshot(s *stack.Stack) []int {
 	return SnapshotStack(s)
