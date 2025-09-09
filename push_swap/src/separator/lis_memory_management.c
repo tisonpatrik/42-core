@@ -16,7 +16,7 @@
 #include <stdlib.h>
 
 /* Forward declarations for functions defined in other files */
-void				get_longent_increasing_lengths(t_lis_computation_data *data,
+void				compute_longest_increasing_lengths(t_lis_comp_data *data,
 						t_lis_result *result);
 t_node_bool_array	*build_lis_result(t_lis_arrays *arrays,
 						t_lis_result *lis_result);

@@ -36,11 +36,11 @@ void	initialize_lis_tracking_for_position(t_lis_comp_data *computation_data,
 void	try_extend_lis_from_previous_element(t_lis_comp_data *data,
 		int current_position, int previous_position)
 {
-	if (computation_data->vals[previous_position] < data->vals[current_position]
-		&& computation_data->lis[previous_position]
-		+ 1 > computation_data->lis[current_position])
+	if (data->vals[previous_position] < data->vals[current_position]
+		&& data->lis[previous_position]
+		+ 1 > data->lis[current_position])
 	{
-		data->lis[current_position] = computation_data->lis[previous_position]
+		data->lis[current_position] = data->lis[previous_position]
 			+ 1;
 		data->prev[current_position] = previous_position;
 	}
@@ -63,7 +63,7 @@ t_node_bool_array	*execute_lis_algorithm(t_stack *stack, int element_count)
 {
 	t_lis_arrays			algorithm_data;
 	t_lis_result			computation_result;
-	t_lis_comp_data	computation_input;
+	t_lis_comp_data			computation_data;
 	t_allocation_data		memory_allocation;
 	t_node_bool_array		*final_result;
 
@@ -76,11 +76,11 @@ t_node_bool_array	*execute_lis_algorithm(t_stack *stack, int element_count)
 		return (NULL);
 	extract_stack_values_to_arrays(stack, algorithm_data.nodes,
 		algorithm_data.vals, element_count);
-	computation_input.vals = algorithm_data.vals;
-	computation_input.n = element_count;
-	computation_input.lis = algorithm_data.lis;
-	computation_input.prev = algorithm_data.prev;
-	compute_longest_increasing_lengths(&computation_input, &computation_result);
+	computation_data.vals = algorithm_data.vals;
+	computation_data.n = element_count;
+	computation_data.lis = algorithm_data.lis;
+	computation_data.prev = algorithm_data.prev;
+	compute_longest_increasing_lengths(&computation_data, &computation_result);
 	final_result = build_lis_result(&algorithm_data,
 			&computation_result);
 	free_lis_computation_memory(algorithm_data.nodes, algorithm_data.vals,

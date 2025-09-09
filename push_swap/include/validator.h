@@ -13,7 +13,7 @@
 #ifndef VALIDATOR_H
 # define VALIDATOR_H
 
-#include "../libft/include/libft.h"
+# include "../libft/include/libft.h"
 
 typedef struct s_parser_result
 {
