@@ -18,15 +18,15 @@ func SolvePushSwap(ps *ops.SortingState) {
 
 	candK := 30
 
+	// Open log file once and keep it open
+	logFile := openLogFile()
+	defer logFile.Close()
+
 	iterationCount := 0
 	for stack.GetSize(ps.A) > 3 {
-		if iterationCount == 0 {
-			logInput(ps.A, ps.B, candK)
-		}
+		logInput(logFile, ps.A, ps.B, candK, iterationCount)
 		pos := selector.PickNearBest(ps, candK)
-		if iterationCount == 0 {
-			logOutput(pos)
-		}
+		logOutput(logFile, pos, iterationCount)
 		ApplyCombined(ps, pos, true)
 		iterationCount++
 	}
@@ -43,28 +43,29 @@ func SolvePushSwap(ps *ops.SortingState) {
 	optimizer.OptimizeOps(ps.OpList)
 }
 
-func logInput(a, b *stack.Stack, candK int) {
-	numbersA := stack.ToArray(a)
-	numbersB := stack.ToArray(b)
+func openLogFile() *os.File {
 	file, err := os.OpenFile("PickNearBest1.txt", os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0644)
 	if err != nil {
-		fmt.Printf("Error opening file: %v\n", err)
-		return
+		fmt.Printf("Error opening log file: %v\n", err)
+		return nil
 	}
-	defer file.Close()
-	
-	fmt.Fprintf(file, "input: A=%v B=%v candK=%d\n", numbersA, numbersB, candK)
+	return file
 }
 
-func logOutput(result selector.Position) {
-	file, err := os.OpenFile("PickNearBest1.txt", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
-	if err != nil {
-		fmt.Printf("Error opening file: %v\n", err)
+func logInput(logFile *os.File, a, b *stack.Stack, candK int, iteration int) {
+	if logFile == nil {
 		return
 	}
-	defer file.Close()
+	numbersA := stack.ToArray(a)
+	numbersB := stack.ToArray(b)
+	fmt.Fprintf(logFile, "\nIteration %d input: A=%v B=%v candK=%d\n", iteration, numbersA, numbersB, candK)
+}
 
-	fmt.Fprintf(file, "output: Position=%+v\n", result)
+func logOutput(logFile *os.File, result selector.Position, iteration int) {
+	if logFile == nil {
+		return
+	}
+	fmt.Fprintf(logFile, "Iteration %d output: Position=%+v\n", iteration, result)
 }
 
 
