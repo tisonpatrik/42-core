@@ -22,7 +22,7 @@ type Position struct {
 func CheapestAtoB(ps *ops.SortingState) Position {
 	best := Position{Total: math.MaxInt}
 	for _, p := range enumerateCandidatesAtoB(ps.A, ps.B, 0) { // 0 => all
-		if better(p, best) {
+		if BetterPosition(p, best) {
 			best = p
 		}
 	}
@@ -38,45 +38,64 @@ func enumerateCandidatesAtoB(a, b *stack.Stack, k int) []Position {
 		return nil
 	}
 
-	// 1) Load B into slice once (faster penalty/targeting neighbors)
-	bvals := snapshotValues(b)
+	// Build candidates from stack A
+	candidates := buildCandidatesFromStackA(a, b)
+	
+	// Sort candidates by score with tie-breakers
+	sortCandidatesByScore(candidates)
+	
+	// Filter candidates by cost threshold
+	filtered := filterCandidatesByCostThresholdAtoB(candidates)
+	
+	// Return top K candidates
+	return selectTopKCandidatesAtoB(filtered, k)
+}
 
-	type scored struct {
-		pos   Position
-		score int // base + penalty
-	}
-	ss := make([]scored, 0, sizeA)
+// scoredCandidate represents a position with its calculated score
+type scoredCandidate struct {
+	pos   Position
+	score int // base + penalty
+}
 
-	// 2) Go through A from top to bottom
+// buildCandidatesFromStackA builds candidate positions by evaluating each element in stack A
+func buildCandidatesFromStackA(a, b *stack.Stack) []scoredCandidate {
+	sizeA := stack.GetSize(a)
+	bvals := SnapshotStack(b)
+	candidates := make([]scoredCandidate, 0, sizeA)
+
 	i := 0
 	for n := stack.GetHead(a); n != nil; n, i = n.GetNext(), i+1 {
 		val := n.GetContent()
-		toIdx := insertionIndexInBVals(bvals, val) // targeting over slice
+		toIdx := insertionIndexInBVals(bvals, val)
 
 		costA := SignedCost(i, sizeA)
 		costB := SignedCost(toIdx, len(bvals))
 
-		base := MergedCost(costA, costB)                    // actual rotations
-		pen  := localOrderPenaltyInBV(bvals, toIdx, val)    // 0/1 fine tie-break
+		base := MergedCost(costA, costB)
+		penalty := localOrderPenaltyInBV(bvals, toIdx, val)
 
-		ss = append(ss, scored{
+		candidates = append(candidates, scoredCandidate{
 			pos: Position{
 				FromIndex: i,
 				ToIndex:   toIdx,
 				CostA:     costA,
 				CostB:     costB,
-				Total:     base, // <<< important: storing pure base
+				Total:     base, // storing pure base cost
 			},
-			score: base + pen, // candidate ordering
+			score: base + penalty, // candidate ordering
 		})
 	}
 
-	// 3) Sorting by score + tie-breakers
-	sort.Slice(ss, func(i, j int) bool {
-		if ss[i].score != ss[j].score {
-			return ss[i].score < ss[j].score
+	return candidates
+}
+
+// sortCandidatesByScore sorts candidates by score with tie-breakers
+func sortCandidatesByScore(candidates []scoredCandidate) {
+	sort.Slice(candidates, func(i, j int) bool {
+		if candidates[i].score != candidates[j].score {
+			return candidates[i].score < candidates[j].score
 		}
-		ai, aj := ss[i].pos, ss[j].pos
+		ai, aj := candidates[i].pos, candidates[j].pos
 		if utils.Abs(ai.CostA) != utils.Abs(aj.CostA) {
 			return utils.Abs(ai.CostA) < utils.Abs(aj.CostA)
 		}
@@ -85,22 +104,36 @@ func enumerateCandidatesAtoB(a, b *stack.Stack, k int) []Position {
 		}
 		return ai.FromIndex < aj.FromIndex
 	})
+}
 
-	// 4) (optional, but recommended) gating: keep only base ≤ minBase+2
+// filterCandidatesByCostThresholdAtoB filters candidates to keep only those within cost threshold for AtoB operations
+func filterCandidatesByCostThresholdAtoB(candidates []scoredCandidate) []Position {
+	if len(candidates) == 0 {
+		return nil
+	}
+
+	// Find minimum base cost
 	minBase := math.MaxInt
-	for _, s := range ss {
-		if s.pos.Total < minBase {
-			minBase = s.pos.Total
-		}
-	}
-	filtered := make([]Position, 0, len(ss))
-	threshold := minBase + 2
-	for _, s := range ss {
-		if s.pos.Total <= threshold {
-			filtered = append(filtered, s.pos)
+	for _, candidate := range candidates {
+		if candidate.pos.Total < minBase {
+			minBase = candidate.pos.Total
 		}
 	}
 
+	// Filter by threshold
+	threshold := minBase + DefaultCostThreshold
+	filtered := make([]Position, 0, len(candidates))
+	for _, candidate := range candidates {
+		if candidate.pos.Total <= threshold {
+			filtered = append(filtered, candidate.pos)
+		}
+	}
+
+	return filtered
+}
+
+// selectTopKCandidatesAtoB returns the top K candidates from the filtered list for AtoB operations
+func selectTopKCandidatesAtoB(filtered []Position, k int) []Position {
 	if k > 0 && k < len(filtered) {
 		return filtered[:k]
 	}
@@ -109,14 +142,6 @@ func enumerateCandidatesAtoB(a, b *stack.Stack, k int) []Position {
 
 
 
-// fast reading of B values into slice (top..bottom)
-func snapshotValues(s *stack.Stack) []int {
-	out := make([]int, 0, stack.GetSize(s))
-	for n := stack.GetHead(s); n != nil; n = n.GetNext() {
-		out = append(out, n.GetContent())
-	}
-	return out
-}
 
 // insertionIndexInBVals: index in B (over slice), where to insert val, we want local "prev > val > next"
 func insertionIndexInBVals(b []int, val int) int {
@@ -158,11 +183,4 @@ func localOrderPenaltyInBV(b []int, toIdx int, val int) int {
 }
 
 
-func better(a, b Position) bool {
-	if a.Total != b.Total { return a.Total < b.Total }
-	if utils.Abs(a.CostA) != utils.Abs(b.CostA) {
-		return utils.Abs(a.CostA) < utils.Abs(b.CostA)
-	}
-	if a.ToIndex != b.ToIndex { return a.ToIndex < b.ToIndex }
-	return a.FromIndex < b.FromIndex
-}
+

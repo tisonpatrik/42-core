@@ -23,9 +23,9 @@ func PickNearBest(ps *ops.SortingState, maxCandidates int) Position {
 	return pickNearBest(a, b, candidates, maxCandidates, false)
 }
 
-// filterCandidatesByCostThreshold filters candidates to keep only those within a cost threshold
+// filterCandidatesByCostThresholdBtoA filters candidates to keep only those within a cost threshold
 // of the minimum base cost, reducing the search space for more efficient processing.
-func filterCandidatesByCostThreshold(candidates []scoredPos) []scoredPos {
+func filterCandidatesByCostThresholdBtoA(candidates []scoredPos) []scoredPos {
 	if len(candidates) == 0 {
 		return candidates
 	}
@@ -40,8 +40,7 @@ func filterCandidatesByCostThreshold(candidates []scoredPos) []scoredPos {
 
 	// Keep candidates within threshold (minBase + 1) to maintain good options
 	// while filtering out obviously suboptimal ones
-	const costThresholdOffset = 1
-	threshold := minBaseCost + costThresholdOffset
+	threshold := minBaseCost + DefaultCostThresholdOffset
 
 	filteredCandidates := make([]scoredPos, 0, len(candidates))
 	for _, candidate := range candidates {
@@ -53,10 +52,10 @@ func filterCandidatesByCostThreshold(candidates []scoredPos) []scoredPos {
 	return filteredCandidates
 }
 
-// selectTopKCandidates sorts candidates by score and returns the top K candidates.
+// selectTopKCandidatesBtoA sorts candidates by score and returns the top K candidates.
 // Score includes base cost plus penalty for stable ordering. If maxCandidates is 0 or
 // greater than available candidates, returns all candidates.
-func selectTopKCandidates(candidates []scoredPos, maxCandidates int) []scoredPos {
+func selectTopKCandidatesBtoA(candidates []scoredPos, maxCandidates int) []scoredPos {
 	if len(candidates) == 0 {
 		return candidates
 	}
@@ -111,7 +110,7 @@ func evaluateCandidatesWithLookahead(a, b []int, candidates []scoredPos, phaseAt
 		totalScore := actualCost + heuristicEstimate
 
 		// Select better position (lower score, or same score with better position)
-		if totalScore < bestScore || (totalScore == bestScore && betterPos(position, bestPosition)) {
+		if totalScore < bestScore || (totalScore == bestScore && BetterPosition(position, bestPosition)) {
 			bestPosition = position
 			bestScore = totalScore
 		}
@@ -122,10 +121,10 @@ func evaluateCandidatesWithLookahead(a, b []int, candidates []scoredPos, phaseAt
 
 func pickNearBest(a, b []int, candidates []scoredPos, maxCandidates int, phaseAtoB bool) Position {
 	// 1) Filter candidates by cost threshold
-	filteredCandidates := filterCandidatesByCostThreshold(candidates)
+	filteredCandidates := filterCandidatesByCostThresholdBtoA(candidates)
 
 	// 2) Select top-K candidates by score for further evaluation
-	filteredCandidates = selectTopKCandidates(filteredCandidates, maxCandidates)
+	filteredCandidates = selectTopKCandidatesBtoA(filteredCandidates, maxCandidates)
 
 	// 3) Evaluate candidates with micro-lookahead and select the best
 	return evaluateCandidatesWithLookahead(a, b, filteredCandidates, phaseAtoB)
@@ -261,23 +260,7 @@ func targetPosInA(a []int, val int) int {
 // Utility
 // -------
 
-func betterPos(a, b Position) bool {
-	if a.Total != b.Total {
-		return a.Total < b.Total
-	}
-	if utils.Abs(a.CostA) != utils.Abs(b.CostA) {
-		return utils.Abs(a.CostA) < utils.Abs(b.CostA)
-	}
-	if a.ToIndex != b.ToIndex {
-		return a.ToIndex < b.ToIndex
-	}
-	return a.FromIndex < b.FromIndex
-}
 
 func snapshot(s *stack.Stack) []int {
-	out := make([]int, 0, stack.GetSize(s))
-	for n := stack.GetHead(s); n != nil; n = n.GetNext() {
-		out = append(out, n.GetContent())
-	}
-	return out
+	return SnapshotStack(s)
 }
