@@ -1,9 +1,5 @@
 package selector
 
-import (
-	"push_swap_prototype/internal/utils"
-)
-
 // MoveDirection represents the direction of movement between stacks
 type MoveDirection int
 
@@ -44,15 +40,3 @@ func (ms *MoveSimulator) SimulateMove(a, b []int, pos Position, direction MoveDi
 	return na, nb, rot + 1
 }
 
-// MergedCost calculates the total cost when combining two operations,
-// accounting for common rotations (rr/rrr)
-func MergedCost(a, b int) int {
-	same := (a >= 0 && b >= 0) || (a < 0 && b < 0)
-	if same {
-		if utils.Abs(a) > utils.Abs(b) {
-			return utils.Abs(a)
-		}
-		return utils.Abs(b)
-	}
-	return utils.Abs(a) + utils.Abs(b)
-}

@@ -32,11 +32,11 @@ func SnapshotStack(s *stack.Stack) []int {
 
 // CalculateBreakpoints calculates the number of breakpoints in a cyclic array
 func CalculateBreakpoints(a []int) int {
-	n := len(a)
-	if n <= 1 {
+	if IsEmptyOrSingle(a) {
 		return 0
 	}
 	
+	n := len(a)
 	breakpoints := 0
 	for i := 0; i < n-1; i++ {
 		if a[i] > a[i+1] {

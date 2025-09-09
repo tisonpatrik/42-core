@@ -38,7 +38,7 @@ func (ce *CandidateEnumerator) EnumerateAtoB(a, b *stack.Stack) []Candidate {
 // EnumerateBtoA enumerates all possible positions for moving elements from stack B to stack A
 func (ce *CandidateEnumerator) EnumerateBtoA(a, b []int) []Candidate {
 	sizeA, sizeB := len(a), len(b)
-	if sizeB == 0 {
+	if IsEmpty(b) {
 		return nil
 	}
 	
@@ -52,7 +52,7 @@ func (ce *CandidateEnumerator) EnumerateBtoA(a, b []int) []Candidate {
 		// CostA is calculated from toIdx and sizeA, CostB from fromIdx and sizeB
 		costA := SignedCost(toIdx, sizeA)
 		costB := SignedCost(i, sizeB)
-		base := ce.costCalc.CalculateMergedCost(costA, costB)
+		base := MergedCost(costA, costB)
 
 		position := Position{
 			FromIndex: i,     // index in stack B

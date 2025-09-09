@@ -23,8 +23,7 @@ func BinarySearchInsertionPoint(arr []int, val int, comparator func(int, int) bo
 // FindInsertionIndex finds the insertion index in a sorted descending array (stack B)
 // maintaining local order "prev > val > next"
 func FindInsertionIndex(sortedArr []int, val int) int {
-	n := len(sortedArr)
-	if n == 0 {
+	if IsEmpty(sortedArr) {
 		return 0
 	}
 	
@@ -33,6 +32,7 @@ func FindInsertionIndex(sortedArr []int, val int) int {
 		return arrVal < targetVal
 	})
 	
+	n := len(sortedArr)
 	idx = idx % n
 	
 	// Check circular neighbors for proper local order
@@ -56,8 +56,7 @@ func FindInsertionIndex(sortedArr []int, val int) int {
 // FindTargetPosition finds the target position in a sorted ascending array (stack A)
 // for inserting a value to maintain ascending order
 func FindTargetPosition(sortedArr []int, val int) int {
-	n := len(sortedArr)
-	if n == 0 {
+	if IsEmpty(sortedArr) {
 		return 0
 	}
 	
@@ -66,6 +65,7 @@ func FindTargetPosition(sortedArr []int, val int) int {
 		return arrVal <= targetVal
 	})
 	
+	n := len(sortedArr)
 	if idx < n {
 		return idx
 	}

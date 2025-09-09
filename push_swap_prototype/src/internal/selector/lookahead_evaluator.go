@@ -6,13 +6,15 @@ import (
 
 // LookaheadEvaluator handles micro-lookahead evaluation of candidates
 type LookaheadEvaluator struct {
-	config SelectorConfig
+	config   SelectorConfig
+	simulator *MoveSimulator
 }
 
 // NewLookaheadEvaluator creates a new LookaheadEvaluator with the given configuration
 func NewLookaheadEvaluator(config SelectorConfig) *LookaheadEvaluator {
 	return &LookaheadEvaluator{
-		config: config,
+		config:    config,
+		simulator: NewMoveSimulator(),
 	}
 }
 
@@ -49,8 +51,7 @@ func (le *LookaheadEvaluator) EvaluateWithLookahead(a, b []int, candidates []Can
 
 // simulateMove simulates a single move and returns the resulting stacks and cost
 func (le *LookaheadEvaluator) simulateMove(a, b []int, pos Position, direction MoveDirection) ([]int, []int, int) {
-	simulator := NewMoveSimulator()
-	return simulator.SimulateMove(a, b, pos, direction)
+	return le.simulator.SimulateMove(a, b, pos, direction)
 }
 
 // calculateHeuristic calculates a heuristic estimate of remaining work

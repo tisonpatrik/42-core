@@ -8,12 +8,11 @@ import (
 
 // SelectorConfig holds configuration parameters for the selector package
 type SelectorConfig struct {
-	MaxCandidates        int     // Maximum number of candidates to evaluate
-	CostThresholdOffset  int     // Offset added to minimum base cost for filtering
-	HeuristicWeight      float64 // Weight for heuristic calculations
-	SizePenaltyFactor    int     // Factor for size-based penalties
-	HeuristicOffset      int     // Offset for heuristic calculations
-	HeuristicDivisor     int     // Divisor for heuristic calculations
+	MaxCandidates        int // Maximum number of candidates to evaluate
+	CostThresholdOffset  int // Offset added to minimum base cost for filtering
+	SizePenaltyFactor    int // Factor for size-based penalties
+	HeuristicOffset      int // Offset for heuristic calculations
+	HeuristicDivisor     int // Divisor for heuristic calculations
 }
 
 // DefaultSelectorConfig returns the default configuration for the selector
@@ -21,35 +20,10 @@ func DefaultSelectorConfig() SelectorConfig {
 	return SelectorConfig{
 		MaxCandidates:       30,
 		CostThresholdOffset: 1,
-		HeuristicWeight:     0.5,
 		SizePenaltyFactor:   10,
 		HeuristicOffset:     1,
 		HeuristicDivisor:    2,
 	}
-}
-
-// WithDefaults returns a config with default values for any zero values
-func (sc *SelectorConfig) WithDefaults() SelectorConfig {
-	config := *sc
-	if config.MaxCandidates == 0 {
-		config.MaxCandidates = 30
-	}
-	if config.CostThresholdOffset == 0 {
-		config.CostThresholdOffset = 1
-	}
-	if config.HeuristicWeight == 0 {
-		config.HeuristicWeight = 0.5
-	}
-	if config.SizePenaltyFactor == 0 {
-		config.SizePenaltyFactor = 10
-	}
-	if config.HeuristicOffset == 0 {
-		config.HeuristicOffset = 1
-	}
-	if config.HeuristicDivisor == 0 {
-		config.HeuristicDivisor = 2
-	}
-	return config
 }
 
 // BetterPosition compares two positions and returns true if the first position is better than the second
@@ -142,5 +116,37 @@ func SelectBestCandidate(candidates []Candidate) Position {
 		}
 	}
 	return best
+}
+
+// MergedCost calculates the total cost when combining two operations,
+// accounting for common rotations (rr/rrr)
+func MergedCost(a, b int) int {
+	same := (a >= 0 && b >= 0) || (a < 0 && b < 0)
+	if same {
+		if utils.Abs(a) > utils.Abs(b) {
+			return utils.Abs(a)
+		}
+		return utils.Abs(b)
+	}
+	return utils.Abs(a) + utils.Abs(b)
+}
+
+// SignedCost calculates the signed cost (positive for rotate, negative for reverse rotate)
+// to move an element to a specific index
+func SignedCost(idx, size int) int {
+	if idx <= size/2 {
+		return idx
+	}
+	return idx - size
+}
+
+// IsEmpty returns true if the slice is empty
+func IsEmpty(s []int) bool {
+	return len(s) == 0
+}
+
+// IsEmptyOrSingle returns true if the slice has 0 or 1 elements
+func IsEmptyOrSingle(s []int) bool {
+	return len(s) <= 1
 }
 
