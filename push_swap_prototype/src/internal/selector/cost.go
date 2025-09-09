@@ -29,18 +29,6 @@ func CheapestAtoB(ps *ops.SortingState) Position {
 	return best
 }
 
-// CheapestBtoA finds the position with the lowest cost for moving an element from stack B to stack A.
-// It evaluates all possible positions and returns the one with minimal rotation cost.
-func CheapestBtoA(ps *ops.SortingState) Position {
-	best := Position{Total: math.MaxInt}
-	for _, p := range enumerateCandidatesBtoA(ps.A, ps.B, 0) {
-		if better(p, best) {
-			best = p
-		}
-	}
-	return best
-}
-
 
 // enumerateCandidatesAtoB: returns top-K candidates by score (base + fine penalty),
 // but stores **only base** (MergedCost) in Position.Total.
@@ -119,33 +107,7 @@ func enumerateCandidatesAtoB(a, b *stack.Stack, k int) []Position {
 	return filtered
 }
 
-// enumerateCandidatesBtoA: does not use B-penalty; `Total` = base.
-func enumerateCandidatesBtoA(a, b *stack.Stack, k int) []Position {
-	sizeA, sizeB := stack.GetSize(a), stack.GetSize(b)
-	if sizeB == 0 {
-		return nil
-	}
 
-	cands := make([]Position, 0, sizeB)
-	i := 0
-	for n := stack.GetHead(b); n != nil; n, i = n.GetNext(), i+1 {
-		toIdx := findTargetPosInA(a, n.GetContent())
-		costA := SignedCost(toIdx, sizeA)
-		costB := SignedCost(i, sizeB)
-		base  := MergedCost(costA, costB)
-		cands = append(cands, Position{
-			FromIndex: i, ToIndex: toIdx,
-			CostA: costA, CostB: costB,
-			Total: base,
-		})
-	}
-
-	sort.Slice(cands, func(i, j int) bool { return better(cands[i], cands[j]) })
-	if k > 0 && k < len(cands) {
-		return cands[:k]
-	}
-	return cands
-}
 
 // fast reading of B values into slice (top..bottom)
 func snapshotValues(s *stack.Stack) []int {
