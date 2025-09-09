@@ -14,8 +14,6 @@ func SolvePushSwap(ps *ops.SortingState) {
 
 	separator.PushNonLISIntoB(ps, true)
 
-
-
 	candK := 30
 
 	for stack.GetSize(ps.A) > 3 {

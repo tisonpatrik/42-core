@@ -25,9 +25,5 @@ func RotateAB(ps *SortingState) {
     rotatedB := rotate(ps.B)
     if rotatedA && rotatedB {
         SaveOp(ps, RR)
-    } else if rotatedA {
-        SaveOp(ps, RA)
-    } else if rotatedB {
-        SaveOp(ps, RB)
     }
 }

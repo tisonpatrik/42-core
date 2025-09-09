@@ -23,12 +23,7 @@ func SwapB(ps *SortingState) {
 func SwapAB(ps *SortingState) {
 	a := swap(ps.A)
 	b := swap(ps.B)
-	switch {
-	case a && b:
+	if a && b {
 		SaveOp(ps, SS)
-	case a:
-		SaveOp(ps, SA)
-	case b:
-		SaveOp(ps, SB)
 	}
 }

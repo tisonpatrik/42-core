@@ -23,9 +23,5 @@ func ReverseRotateAB(ps *SortingState) {
     rb := reverseRotate(ps.B)
     if ra && rb {
         SaveOp(ps, RRR)
-    } else if ra {
-        SaveOp(ps, RRA)
-    } else if rb {
-        SaveOp(ps, RRB)
-    }
+    } 
 }

@@ -53,3 +53,11 @@ func PrintStack(s *Stack, name string) {
 	}
 	fmt.Println()
 }
+
+func ToArray(s *Stack) []int {
+	out := make([]int, 0, s.size)
+	for n := s.head; n != nil; n = n.next {
+		out = append(out, n.content)
+	}
+	return out
+}
