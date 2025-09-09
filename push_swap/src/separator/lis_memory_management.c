@@ -16,14 +16,13 @@
 #include <stdlib.h>
 
 /* Forward declarations for functions defined in other files */
-void					compute_longest_increasing_lengths(
-							t_lis_computation_data *data, t_lis_result *result);
-t_node_bool_array		*build_lis_result_from_computation(t_lis_arrays *arrays,
-							t_lis_result *lis_result);
+void				get_longent_increasing_lengths(t_lis_computation_data *data,
+						t_lis_result *result);
+t_node_bool_array	*build_lis_result(t_lis_arrays *arrays,
+						t_lis_result *lis_result);
 
-
-int	extract_stack_values_to_arrays(t_stack *stack,
-				t_node **nodes, int *values, int count)
+int	extract_stack_values_to_arrays(t_stack *stack, t_node **nodes, int *values,
+		int count)
 {
 	t_node	*current_node;
 	int		index;
@@ -40,9 +39,7 @@ int	extract_stack_values_to_arrays(t_stack *stack,
 	return (0);
 }
 
-
-t_node_bool_array	*allocate_lis_computation_memory(
-							t_allocation_data *allocation_data)
+t_node_bool_array	*allocate_lis_memory(t_allocation_data *allocation_data)
 {
 	*allocation_data->nodes = malloc(sizeof(**allocation_data->nodes)
 			* (size_t)allocation_data->n);
@@ -69,20 +66,11 @@ t_node_bool_array	*allocate_lis_computation_memory(
 	return ((t_node_bool_array *)1);
 }
 
-
 void	free_lis_computation_memory(t_node **nodes, int *values,
-				int *subsequence_lengths, int *previous_indices)
+		int *subsequence_lengths, int *previous_indices)
 {
 	free(nodes);
 	free(values);
 	free(subsequence_lengths);
 	free(previous_indices);
 }
-
-
-
-
-
-
-
-

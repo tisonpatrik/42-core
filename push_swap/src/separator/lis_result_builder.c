@@ -14,18 +14,16 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-
-void	reconstruct_lis_sequence_from_tracking(
-		t_node_bool_array *result, t_lis_arrays *algorithm_data,
-		t_lis_result *computation_result)
+void	reconstruct_lis_sequence_from_tracking(t_node_bool_array *result,
+		t_lis_arrays *algorithm_data, t_lis_result *computation_result)
 {
 	size_t	result_index;
 	int		current_index;
 
 	result_index = 0;
 	current_index = computation_result->best_end;
-	while (current_index != -1 && result_index
-		< (size_t)computation_result->best_len)
+	while (current_index != -1
+		&& result_index < (size_t)computation_result->best_len)
 	{
 		result->items[result_index].node = algorithm_data->nodes[current_index];
 		result->items[result_index].value = true;
@@ -34,7 +32,6 @@ void	reconstruct_lis_sequence_from_tracking(
 	}
 	result->count = result_index;
 }
-
 
 void	reverse_sequence_to_correct_order(t_node_bool_array *result)
 {
@@ -55,9 +52,8 @@ void	reverse_sequence_to_correct_order(t_node_bool_array *result)
 /**
  * Builds the LIS result array from computation data.
  */
-t_node_bool_array	*build_lis_result_from_computation(
-			t_lis_arrays *algorithm_data,
-			t_lis_result *computation_result)
+t_node_bool_array	*build_lis_result(t_lis_arrays *algorithm_data,
+		t_lis_result *computation_result)
 {
 	t_node_bool_array	*result;
 
@@ -65,13 +61,14 @@ t_node_bool_array	*build_lis_result_from_computation(
 	if (!result)
 		return (NULL);
 	result->items = ft_calloc((size_t)computation_result->best_len,
-		sizeof(t_node_bool));
+			sizeof(t_node_bool));
 	if (!result->items)
 	{
 		free(result);
 		return (NULL);
 	}
-	reconstruct_lis_sequence_from_tracking(result, algorithm_data, computation_result);
+	reconstruct_lis_sequence_from_tracking(result, algorithm_data,
+		computation_result);
 	reverse_sequence_to_correct_order(result);
 	return (result);
 }
