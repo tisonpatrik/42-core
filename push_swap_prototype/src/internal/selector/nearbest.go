@@ -11,70 +11,124 @@ import (
 
 // PickNearBest selects the best position for moving an element from B to A using near-optimal strategy.
 // It considers multiple candidates and uses micro-lookahead to make the best choice.
-func PickNearBest(ps *ops.SortingState, candK int) Position {
+func PickNearBest(ps *ops.SortingState, maxCandidates int) Position {
 	a := snapshot(ps.A)
 	b := snapshot(ps.B)
 
-	cands := enumerateBtoA(a, b) // Total = base
-	if len(cands) == 0 {
+	candidates := enumerateBtoA(a, b) // Total = base
+	if len(candidates) == 0 {
 		return CheapestAtoB(ps)
 	}
-	return pickNearBest(a, b, cands, candK, false)
+
+	return pickNearBest(a, b, candidates, maxCandidates, false)
 }
 
-
-func pickNearBest(a, b []int, all []scoredPos, candK int, phaseAtoB bool) Position {
-	// 1) minBase + gating (≤ minBase+1)
-	minBase := math.MaxInt
-	for _, s := range all {
-		if s.pos.Total < minBase {
-			minBase = s.pos.Total
-		}
+// filterCandidatesByCostThreshold filters candidates to keep only those within a cost threshold
+// of the minimum base cost, reducing the search space for more efficient processing.
+func filterCandidatesByCostThreshold(candidates []scoredPos) []scoredPos {
+	if len(candidates) == 0 {
+		return candidates
 	}
-	threshold := minBase + 1
 
-	filter := make([]scoredPos, 0, len(all))
-	for _, s := range all {
-		if s.pos.Total <= threshold {
-			filter = append(filter, s)
+	// Find the minimum base cost among all candidates
+	minBaseCost := math.MaxInt
+	for _, candidate := range candidates {
+		if candidate.pos.Total < minBaseCost {
+			minBaseCost = candidate.pos.Total
 		}
 	}
 
-	// 2) top-K by Score (Score = base + penalty) – to maintain stable ordering
-	sort.Slice(filter, func(i, j int) bool {
-		if filter[i].score != filter[j].score {
-			return filter[i].score < filter[j].score
+	// Keep candidates within threshold (minBase + 1) to maintain good options
+	// while filtering out obviously suboptimal ones
+	const costThresholdOffset = 1
+	threshold := minBaseCost + costThresholdOffset
+
+	filteredCandidates := make([]scoredPos, 0, len(candidates))
+	for _, candidate := range candidates {
+		if candidate.pos.Total <= threshold {
+			filteredCandidates = append(filteredCandidates, candidate)
 		}
-		pi, pj := filter[i].pos, filter[j].pos
-		if utils.Abs(pi.CostA) != utils.Abs(pj.CostA) {
-			return utils.Abs(pi.CostA) < utils.Abs(pj.CostA)
+	}
+
+	return filteredCandidates
+}
+
+// selectTopKCandidates sorts candidates by score and returns the top K candidates.
+// Score includes base cost plus penalty for stable ordering. If maxCandidates is 0 or
+// greater than available candidates, returns all candidates.
+func selectTopKCandidates(candidates []scoredPos, maxCandidates int) []scoredPos {
+	if len(candidates) == 0 {
+		return candidates
+	}
+
+	// Sort by score (base + penalty) with tie-breakers for stable ordering
+	sort.Slice(candidates, func(i, j int) bool {
+		if candidates[i].score != candidates[j].score {
+			return candidates[i].score < candidates[j].score
 		}
-		if pi.ToIndex != pj.ToIndex {
-			return pi.ToIndex < pj.ToIndex
+		// Tie-breakers: prefer lower absolute costs, then by indices
+		posI, posJ := candidates[i].pos, candidates[j].pos
+		if utils.Abs(posI.CostA) != utils.Abs(posJ.CostA) {
+			return utils.Abs(posI.CostA) < utils.Abs(posJ.CostA)
 		}
-		return pi.FromIndex < pj.FromIndex
+		if posI.ToIndex != posJ.ToIndex {
+			return posI.ToIndex < posJ.ToIndex
+		}
+		return posI.FromIndex < posJ.FromIndex
 	})
-	if candK > 0 && candK < len(filter) {
-		filter = filter[:candK]
+
+	// Limit to top K candidates if specified
+	if maxCandidates > 0 && maxCandidates < len(candidates) {
+		return candidates[:maxCandidates]
 	}
 
-	// 3) micro lookahead (depth 1): evaluate g+h and select
-	best := filter[0].pos
+	return candidates
+}
+
+// evaluateCandidatesWithLookahead performs micro-lookahead evaluation (depth 1) on candidates.
+// It simulates each move, calculates a heuristic estimate of remaining work, and selects
+// the candidate with the best combined score (actual cost + heuristic estimate).
+func evaluateCandidatesWithLookahead(a, b []int, candidates []scoredPos, phaseAtoB bool) Position {
+	if len(candidates) == 0 {
+		return Position{}
+	}
+
+	bestPosition := candidates[0].pos
 	bestScore := math.MaxInt
 
-	for _, s := range filter {
-		p := s.pos
-		na, _, g := simulateOnce(a, b, p, phaseAtoB)
-		// cheap heuristic: ceil(breakpoints/2)
-		h := (breakpointsCyclic(na) + 1) / 2
-		score := g + h
+	for _, candidate := range candidates {
+		position := candidate.pos
 
-		if score < bestScore || (score == bestScore && betterPos(p, best)) {
-			best, bestScore = p, score
+		// Simulate the move and get the actual cost (g)
+		newA, _, actualCost := simulateOnce(a, b, position, phaseAtoB)
+
+		// Calculate heuristic estimate of remaining work (h)
+		// Using breakpoints/2 as a cheap heuristic for stack disorder
+		breakpoints := breakpointsCyclic(newA)
+		heuristicEstimate := (breakpoints + 1) / 2
+
+		// Combined score = actual cost + heuristic estimate
+		totalScore := actualCost + heuristicEstimate
+
+		// Select better position (lower score, or same score with better position)
+		if totalScore < bestScore || (totalScore == bestScore && betterPos(position, bestPosition)) {
+			bestPosition = position
+			bestScore = totalScore
 		}
 	}
 
-	return best
+	return bestPosition
+}
+
+func pickNearBest(a, b []int, candidates []scoredPos, maxCandidates int, phaseAtoB bool) Position {
+	// 1) Filter candidates by cost threshold
+	filteredCandidates := filterCandidatesByCostThreshold(candidates)
+
+	// 2) Select top-K candidates by score for further evaluation
+	filteredCandidates = selectTopKCandidates(filteredCandidates, maxCandidates)
+
+	// 3) Evaluate candidates with micro-lookahead and select the best
+	return evaluateCandidatesWithLookahead(a, b, filteredCandidates, phaseAtoB)
 }
 
 // Enumeration (slice version, fast)
@@ -82,7 +136,7 @@ func pickNearBest(a, b []int, all []scoredPos, candK int, phaseAtoB bool) Positi
 
 type scoredPos struct {
 	pos   Position // Total = base
-	score int            // base + tiny penalty (for ordering only)
+	score int      // base + tiny penalty (for ordering only)
 }
 
 func enumerateBtoA(a, b []int) []scoredPos {
@@ -178,8 +232,6 @@ func breakpointsCyclic(a []int) int {
 // Local helpers (targeting/penalty) over slice
 // ---------------------------------------------------
 
-
-
 func targetPosInA(a []int, val int) int {
 	n := len(a)
 	if n == 0 {
@@ -205,7 +257,6 @@ func targetPosInA(a []int, val int) int {
 	}
 	return minIdx
 }
-
 
 // Utility
 // -------

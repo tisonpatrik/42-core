@@ -157,31 +157,6 @@ func localOrderPenaltyInBV(b []int, toIdx int, val int) int {
 	return 1
 }
 
-// ----------------- OTHER (unchanged) -----------------
-
-func findTargetPosInA(a *stack.Stack, val int) int {
-	if stack.GetSize(a) == 0 { return 0 }
-	bestIdx, bestVal := -1, 0
-	i := 0
-	for n := stack.GetHead(a); n != nil; n, i = n.GetNext(), i+1 {
-		if x := n.GetContent(); x > val {
-			if bestIdx == -1 || x < bestVal {
-				bestVal, bestIdx = x, i
-			}
-		}
-	}
-	if bestIdx != -1 { return bestIdx }
-	// wrap to minimum
-	minIdx := 0
-	minVal := stack.GetHead(a).GetContent()
-	i = 0
-	for n := stack.GetHead(a); n != nil; n, i = n.GetNext(), i+1 {
-		if x := n.GetContent(); x < minVal {
-			minVal, minIdx = x, i
-		}
-	}
-	return minIdx
-}
 
 func better(a, b Position) bool {
 	if a.Total != b.Total { return a.Total < b.Total }
