@@ -11,6 +11,7 @@
 # **************************************************************************** #
 
 NAME        := bin/libft.a
+MAKEFLAGS   += --silent
 
 CC          := cc
 CFLAGS      := -Wall -Wextra -Werror -Iinclude
@@ -106,10 +107,12 @@ bin/%.o: src/%.c
 	@$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 bonus:
-	$(MAKE) BONUS=1 all
+	@$(MAKE) BONUS=1 all
 
 clean:
 	@$(RM) -r bin/
+	@find src/ -name "*.o" -delete 2>/dev/null || true
+	@find src/ -name "*.d" -delete 2>/dev/null || true
 
 fclean: clean
 	@$(RM) $(NAME)

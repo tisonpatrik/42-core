@@ -10,8 +10,9 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME        := bin/push_swap   
-BIN_DIR     := bin              
+NAME        := bin/push_swap
+BIN_DIR     := bin
+MAKEFLAGS   += --silent              
 
 CC          := cc
 CFLAGS      := -Wall -Wextra -Werror -Iinclude -Ilibft/include -Isrc
@@ -37,6 +38,7 @@ SRCS        := src/validator/input_parser.c \
 			   src/ops/sorting_state.c \
 			   src/separator/separator.c \
 			   src/separator/lis.c \
+			   src/separator/lis_helpers.c \
 			   src/solver/sort.c \
 			   src/stack/stack.c \
 			   src/stack/ops.c \

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   validator.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/09 19:24:56 by patrik            #+#    #+#             */
+/*   Updated: 2025/09/09 19:25:06 by patrik           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef VALIDATOR_H
 # define VALIDATOR_H
 
@@ -9,26 +21,22 @@ typedef struct s_parser_result
 	int			count;
 }				t_parser_result;
 
-// Input parsing functions
 int				get_count_of_arguments(int argc, char *argv[]);
 void			fill_from_parts(char **parts, int *out, int *out_index);
 void			fill_numbers(int argc, char *argv[], int *out);
 void			check_duplicates(int *arr, int n);
 t_parser_result	parse_args(int argc, char *argv[]);
 
-// Tokenizer functions
 int				count_parts(char **parts);
 void			store_token(const char *tok, int *out, int *out_index,
 					char **parts_for_cleanup);
 
-// Normalization functions
 void			swap_int(int *a, int *b);
 void			sift_down(int *a, int n, int i);
 void			heap_sort(int *a, int n);
 int				lower_bound(const int *a, int n, int x);
 int				*indexize_array(const int *values, int n);
 
-// Utility functions
 void			fatal_cleanup_and_exit(int *buf, char **tmp);
 void			free_array(char **splitted);
 

@@ -1,7 +1,7 @@
 # Test Makefile for Push Swap Operations
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -I../include -I../libft/include
-LIBFT = ../libft/libft.a
+LIBFT = ../libft/bin/libft.a
 
 # Directories
 BIN_DIR = bin
@@ -20,7 +20,8 @@ PROJECT_SRCS = ../src/stack/stack.c \
                ../src/ops/reverse_rotate.c \
                ../src/ops/sorting_state.c \
                ../src/utils/utils.c \
-               ../src/separator/lis.c
+               ../src/separator/lis.c \
+               ../src/separator/lis_helpers.c
 
 PROJECT_OBJS = $(addprefix $(BIN_DIR)/,$(notdir $(PROJECT_SRCS:.c=.o)))
 
@@ -78,6 +79,9 @@ $(BIN_DIR)/utils.o: ../src/utils/utils.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(BIN_DIR)/lis.o: ../src/separator/lis.c
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+$(BIN_DIR)/lis_helpers.o: ../src/separator/lis_helpers.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 # Build libft if needed
