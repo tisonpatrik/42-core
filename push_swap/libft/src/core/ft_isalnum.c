@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/ft/core.h"
+#include "../../include/core.h"
 
 /**
  * @brief Tests if a character is alphanumeric

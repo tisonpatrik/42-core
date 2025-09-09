@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 13:28:28 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/18 16:53:29 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/09 18:25:43 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 # define LIBFT_H
 
 /* Include all libft modules */
-# include "ft/core.h"
-# include "ft/mem.h"
-# include "ft/str.h"
-# include "ft/io.h"
-# include "ft/conv.h"
-# include "ft/list.h"
-# include "ft/printf.h"
-# include "ft/ft_strtoi.h"
+# include "core.h"
+# include "mem.h"
+# include "str.h"
+# include "io.h"
+# include "conv.h"
+# include "list.h"
+# include "printf.h"
+# include "ft_strtoi.h"
 
 #endif

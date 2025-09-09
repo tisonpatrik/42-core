@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../include/ft/io.h"
+#include "../../../include/io.h"
 #include <stdarg.h>
 
 int	handle_char(va_list args)

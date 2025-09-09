@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/ft/str.h"
+#include "../../include/str.h"
 
 int	within_len(size_t i, size_t j, size_t len)
 {

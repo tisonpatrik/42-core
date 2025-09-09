@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/ft/str.h"
+#include "../../include/str.h"
 
 /**
  * @brief Calculates the length of a string

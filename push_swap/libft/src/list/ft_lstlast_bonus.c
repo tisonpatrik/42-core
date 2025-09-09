@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/ft/list.h"
+#include "../../include/list.h"
 
 /**
  * @brief Returns the last node of the list

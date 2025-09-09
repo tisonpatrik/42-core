@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/ft/conv.h"
+#include "../../include/conv.h"
 #include <stdlib.h>
 
 static int	get_len(int n)

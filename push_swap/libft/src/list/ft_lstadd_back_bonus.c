@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/ft/list.h"
+#include "../../include/list.h"
 
 /**
  * @brief Adds a node at the end of the list

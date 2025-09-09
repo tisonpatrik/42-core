@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/ft/str.h"
+#include "../../include/str.h"
 
 /**
  * @brief Applies a function to each character of a string with index

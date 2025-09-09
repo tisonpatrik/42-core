@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/ft/core.h"
+#include "../../include/core.h"
 
 /**
  * @brief Converts a character to lowercase

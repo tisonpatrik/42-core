@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/ft/mem.h"
+#include "../../include/mem.h"
 #include <stddef.h>
 #include <strings.h>
 

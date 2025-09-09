@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/ft/core.h"
+#include "../../include/core.h"
 
 void	ft_skip_whitespace(const char **current_position)
 {

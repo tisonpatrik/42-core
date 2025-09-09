@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/ft/list.h"
+#include "../../include/list.h"
 
 /**
  * @brief Counts the number of nodes in a list

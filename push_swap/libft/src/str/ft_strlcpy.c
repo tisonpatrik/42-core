@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/ft/str.h"
+#include "../../include/str.h"
 
 /**
  * @brief Copy string to a specific size

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/ft/list.h"
+#include "../../include/list.h"
 
 /**
  * @brief Iterates through the list and applies a function to each node

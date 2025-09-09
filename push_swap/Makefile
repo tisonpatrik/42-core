@@ -14,7 +14,7 @@ NAME        := bin/push_swap
 BIN_DIR     := bin              
 
 CC          := cc
-CFLAGS      := -Wall -Wextra -Werror -Iinclude -Ilibft -Isrc
+CFLAGS      := -Wall -Wextra -Werror -Iinclude -Ilibft/include -Isrc
 
 AR          := ar
 ARFLAGS     := rcs
@@ -24,7 +24,7 @@ RM_RF		:= rm -rf
 
 SRC_DIR     := src
 LIBFT_DIR   := libft
-LIBFT       := $(LIBFT_DIR)/libft.a
+LIBFT       := $(LIBFT_DIR)/bin/libft.a
 
 # Main source files
 SRCS        := src/validator/input_parser.c \

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/ft/mem.h"
+#include "../../include/mem.h"
 
 /**
  * @brief Fills memory with a constant byte

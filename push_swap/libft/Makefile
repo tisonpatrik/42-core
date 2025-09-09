@@ -6,11 +6,11 @@
 #    By: patrik <patrik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/17 11:24:23 by ptison            #+#    #+#              #
-#    Updated: 2025/08/19 12:00:35 by patrik           ###   ########.fr        #
+#    Updated: 2025/09/09 18:31:34 by patrik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME        := libft.a
+NAME        := bin/libft.a
 
 CC          := cc
 CFLAGS      := -Wall -Wextra -Werror -Iinclude
@@ -93,23 +93,23 @@ ifdef BONUS
   SRCS      += $(LIST_SRCS)
 endif
 
-OBJS        := $(SRCS:.c=.o)
+OBJS        := $(patsubst src/%.c,bin/%.o,$(SRCS))
 DEPS        := $(OBJS:.o=.d)
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
 	@$(AR) $(ARFLAGS) $@ $^
-	@echo "Built $@"
 
-%.o: %.c
+bin/%.o: src/%.c
+	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 bonus:
 	$(MAKE) BONUS=1 all
 
 clean:
-	@$(RM) $(OBJS) $(DEPS)
+	@$(RM) -r bin/
 
 fclean: clean
 	@$(RM) $(NAME)

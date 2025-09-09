@@ -6,12 +6,11 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:12:25 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/17 12:35:10 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/09 18:27:09 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/ft/io.h"
-#include "../../include/ft/str.h"
+#include "../../include/io.h"
 #include <unistd.h>
 
 void	ft_putstr_fd(char *s, int fd);

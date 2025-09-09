@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtoi.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 18:54:44 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/19 20:49:10 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/09 18:26:28 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../include/ft/conv.h"
-#include "../../../include/ft/core.h"
-#include "../../../include/ft/ft_strtoi.h"
-#include "../../../include/ft/utils.h"
+#include "../../../include/conv.h"
+#include "../../../include/core.h"
+#include "../../../include/ft_strtoi.h"
+#include "../../../include/utils.h"
 #include <limits.h>
 
 unsigned int			calculate_cutoff(int is_negative);

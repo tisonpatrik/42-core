@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/ft/printf.h"
-#include "../../include/ft/io.h"
+#include "../../include/printf.h"
+#include "../../include/io.h"
 #include <stdarg.h>
 #include <unistd.h>
 

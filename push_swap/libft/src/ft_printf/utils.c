@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/ft/io.h"
+#include "../../include/io.h"
 
 void	ft_putnbr_unsigned(unsigned int n)
 {

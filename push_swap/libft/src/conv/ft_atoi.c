@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/ft/conv.h"
-#include "../../include/ft/core.h"
-#include "../../include/ft/utils.h"
+#include "../../include/conv.h"
+#include "../../include/core.h"
+#include "../../include/utils.h"
 
 int	convert_number(const char *str, int idx)
 {

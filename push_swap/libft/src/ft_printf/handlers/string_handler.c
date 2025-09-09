@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../include/ft/io.h"
-#include "../../../include/ft/str.h"
+#include "../../../include/io.h"
+#include "../../../include/str.h"
 #include <stdarg.h>
 
 int	handle_string(va_list args)

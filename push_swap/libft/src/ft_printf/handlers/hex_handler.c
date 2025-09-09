@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../include/ft/printf.h"
-#include "../../../include/ft/io.h"
-#include "../../../include/ft/conv.h"
+#include "../../../include/printf.h"
+#include "../../../include/io.h"
+#include "../../../include/conv.h"
 #include <stdarg.h>
 
 int	handle_hex(char type, va_list args)

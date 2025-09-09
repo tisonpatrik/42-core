@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../include/ft/printf.h"
+#include "../../../include/printf.h"
 #include <stdarg.h>
 
 int	handle_unsigned(va_list args)
