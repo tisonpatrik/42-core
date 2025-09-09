@@ -1,56 +1,64 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   rotate.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/09 18:58:29 by ptison            #+#    #+#             */
+/*   Updated: 2025/09/09 18:58:41 by ptison           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/ops.h"
-#include <unistd.h>
 #include <stdbool.h>
+#include <unistd.h>
 
-bool rotate(t_stack **stack)
+bool	rotate(t_stack **stack)
 {
-    t_node *top_node;
-    t_node *tail_node;
-    
-    if (!stack || !*stack)
-        return false;
-    if (get_size(*stack) <= 1)
-        return false;
-    
-    top_node = get_head(*stack);
-    tail_node = get_tail(*stack);
-    
-    // Update head to point to the next node
-    (*stack)->head = get_next(top_node);
-    (*stack)->head->prev = NULL;
-    
-    // Move top node to the bottom
-    top_node->next = NULL;
-    top_node->prev = tail_node;
-    tail_node->next = top_node;
-    (*stack)->tail = top_node;
-    
-    return true;
+	t_node	*top_node;
+	t_node	*tail_node;
+
+	if (!stack || !*stack)
+		return (false);
+	if (get_size(*stack) <= 1)
+		return (false);
+	top_node = get_head(*stack);
+	tail_node = get_tail(*stack);
+	(*stack)->head = get_next(top_node);
+	(*stack)->head->prev = NULL;
+	top_node->next = NULL;
+	top_node->prev = tail_node;
+	tail_node->next = top_node;
+	(*stack)->tail = top_node;
+	return (true);
 }
 
-// Shift up all elements of stack a by 1.
-// The first element becomes the last one.
-void rotate_a(t_sorting_state *state)
+void	rotate_a(t_sorting_state *state)
 {
-    bool success = rotate(&state->a);
-    if (success)
-        save_operation(state, RA);
+	bool	success;
+
+	success = rotate(&state->a);
+	if (success)
+		save_operation(state, RA);
 }
 
-// Shift up all elements of stack b by 1.
-// The first element becomes the last one
-void rotate_b(t_sorting_state *state)
+void	rotate_b(t_sorting_state *state)
 {
-    bool success = rotate(&state->b);
-    if (success)
-        save_operation(state, RB);
+	bool	success;
+
+	success = rotate(&state->b);
+	if (success)
+		save_operation(state, RB);
 }
 
-// Rotate both stacks a and b at the same time.
-void rotate_ab(t_sorting_state *state)
+void	rotate_ab(t_sorting_state *state)
 {
-    bool success_a = rotate(&state->a);
-    bool success_b = rotate(&state->b);
-    if (success_a && success_b)
-        save_operation(state, RR);
+	bool	success_a;
+	bool	success_b;
+
+	success_a = rotate(&state->a);
+	success_b = rotate(&state->b);
+	if (success_a && success_b)
+		save_operation(state, RR);
 }

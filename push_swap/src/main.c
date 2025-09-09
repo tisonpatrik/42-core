@@ -6,19 +6,20 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 20:56:32 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/02 14:14:52 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/09 18:46:54 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../include/ops.h"
+#include "../include/solver.h"
 #include "../include/validator.h"
 #include <stdlib.h>
 #include <unistd.h>
-#include "../include/ops.h"
-#include "../include/solver.h"
 
 int	main(int argc, char *argv[])
 {
 	t_parser_result	result;
+	t_sorting_state	*state;
 
 	result = parse_args(argc, argv);
 	if (result.input == NULL)
@@ -26,7 +27,7 @@ int	main(int argc, char *argv[])
 		return (1);
 	}
 	free(result.input);
-	t_sorting_state *state = create_sorting_state(result.input, result.count);
+	state = create_sorting_state(result.input, result.count);
 	solve_push_swap(state);
 	free_sorting_state(state);
 	return (0);

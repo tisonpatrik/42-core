@@ -1,19 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lis.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/09 18:49:46 by ptison            #+#    #+#             */
+/*   Updated: 2025/09/09 18:56:11 by ptison           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/separator.h"
 #include "../../include/stack.h"
-#include <stdlib.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
-
-
-
-void cleanup_tmp(t_node **nodes, int *vals, int *lis, int *prev) {
-    free(nodes);
-    free(vals);
-    free(lis);
-    free(prev);
+void	cleanup_tmp(t_node **nodes, int *vals, int *lis, int *prev)
+{
+	free(nodes);
+	free(vals);
+	free(lis);
+	free(prev);
 }
-
-
 
 static int	fill_nodes_vals(t_stack *stack, t_node **nodes, int *vals, int n)
 {
@@ -33,7 +41,7 @@ static int	fill_nodes_vals(t_stack *stack, t_node **nodes, int *vals, int n)
 }
 
 static void	compute_lis_prev(int *vals, int n, int *lis, int *prev,
-							int *best_len, int *best_end)
+		int *best_len, int *best_end)
 {
 	int	i;
 	int	j;
@@ -64,8 +72,8 @@ static void	compute_lis_prev(int *vals, int n, int *lis, int *prev,
 	}
 }
 
-static t_node_bool_array	*build_result_and_reverse(
-			t_node **nodes, int *prev, int best_end, int best_len)
+static t_node_bool_array	*build_result_and_reverse(t_node **nodes, int *prev,
+		int best_end, int best_len)
 {
 	t_node_bool_array	*result;
 	size_t				k;
@@ -102,8 +110,6 @@ static t_node_bool_array	*build_result_and_reverse(
 	}
 	return (result);
 }
-
-/* ********************** Public API ********************** */
 
 t_node_bool_array	*get_lis_nodes(t_stack *stack)
 {
