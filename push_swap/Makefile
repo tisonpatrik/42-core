@@ -37,8 +37,10 @@ SRCS        := src/validator/input_parser.c \
 			   src/ops/swap.c \
 			   src/ops/sorting_state.c \
 			   src/separator/separator.c \
-			   src/separator/lis.c \
-			   src/separator/lis_helpers.c \
+			   src/separator/lis_interface.c \
+			   src/separator/lis_memory_management.c \
+			   src/separator/lis_algorithm.c \
+			   src/separator/lis_result_builder.c \
 			   src/solver/sort.c \
 			   src/stack/stack.c \
 			   src/stack/ops.c \

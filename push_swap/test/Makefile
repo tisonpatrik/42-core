@@ -20,8 +20,10 @@ PROJECT_SRCS = ../src/stack/stack.c \
                ../src/ops/reverse_rotate.c \
                ../src/ops/sorting_state.c \
                ../src/utils/utils.c \
-               ../src/separator/lis.c \
-               ../src/separator/lis_helpers.c
+               ../src/separator/lis_interface.c \
+               ../src/separator/lis_memory_management.c \
+               ../src/separator/lis_algorithm.c \
+               ../src/separator/lis_result_builder.c
 
 PROJECT_OBJS = $(addprefix $(BIN_DIR)/,$(notdir $(PROJECT_SRCS:.c=.o)))
 
@@ -78,10 +80,16 @@ $(BIN_DIR)/sorting_state.o: ../src/ops/sorting_state.c
 $(BIN_DIR)/utils.o: ../src/utils/utils.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
-$(BIN_DIR)/lis.o: ../src/separator/lis.c
+$(BIN_DIR)/lis_interface.o: ../src/separator/lis_interface.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
-$(BIN_DIR)/lis_helpers.o: ../src/separator/lis_helpers.c
+$(BIN_DIR)/lis_memory_management.o: ../src/separator/lis_memory_management.c
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+$(BIN_DIR)/lis_algorithm.o: ../src/separator/lis_algorithm.c
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+$(BIN_DIR)/lis_result_builder.o: ../src/separator/lis_result_builder.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 # Build libft if needed

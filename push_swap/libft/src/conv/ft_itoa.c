@@ -6,14 +6,14 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:12:25 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/17 13:30:19 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/09 20:53:24 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/conv.h"
 #include <stdlib.h>
 
-static int	get_len(int n)
+int	get_len(int n)
 {
 	int	len;
 

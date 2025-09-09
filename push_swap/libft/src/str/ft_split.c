@@ -6,14 +6,14 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:12:25 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/17 12:35:08 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/09 20:53:19 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/str.h"
 #include <stdlib.h>
 
-static int	count_words(const char *str, char c)
+int	count_words(const char *str, char c)
 {
 	int	i;
 	int	count;
@@ -32,7 +32,7 @@ static int	count_words(const char *str, char c)
 	return (count);
 }
 
-static char	*get_next_word(const char *str, char c, size_t *start)
+char	*get_next_word(const char *str, char c, size_t *start)
 {
 	size_t	i;
 	size_t	word_len;

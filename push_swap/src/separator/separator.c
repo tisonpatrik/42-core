@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:49:32 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/09 19:26:01 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/09 20:53:08 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "../../include/separator.h"
 #include <stdlib.h>
 
-static void	update_b_range(int val, int *min_b, int *max_b, bool *has_b_range)
+void	update_b_range(int val, int *min_b, int *max_b, bool *has_b_range)
 {
 	if (!*has_b_range)
 	{
@@ -31,7 +31,7 @@ static void	update_b_range(int val, int *min_b, int *max_b, bool *has_b_range)
 	}
 }
 
-static void	process_stack_elements(t_sorting_state *state, int size_a)
+void	process_stack_elements(t_sorting_state *state, int size_a)
 {
 	int		min_b;
 	int		max_b;

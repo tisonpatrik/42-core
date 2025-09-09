@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lis.c                                              :+:      :+:    :+:   */
+/*   lis_interface.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,19 +10,24 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../../include/separator.h"
 #include "../../include/stack.h"
 #include <stdbool.h>
 #include <stdlib.h>
 
+/* Forward declaration for algorithm execution */
+t_node_bool_array	*execute_lis_algorithm(t_stack *stack, int element_count);
+
+/**
+ * Finds the Longest Increasing Subsequence (LIS) in a stack.
+ */
 t_node_bool_array	*get_lis_nodes(t_stack *stack)
 {
-	int					n;
+	int					stack_size;
 	t_node_bool_array	*result;
 
-	n = get_size(stack);
-	if (n <= 0)
+	stack_size = get_size(stack);
+	if (stack_size <= 0)
 	{
 		result = malloc(sizeof(*result));
 		if (!result)
@@ -31,5 +36,5 @@ t_node_bool_array	*get_lis_nodes(t_stack *stack)
 		result->count = 0;
 		return (result);
 	}
-	return (get_lis_nodes_impl(stack, n));
+	return (execute_lis_algorithm(stack, stack_size));
 }
