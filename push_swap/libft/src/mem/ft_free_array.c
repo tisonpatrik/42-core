@@ -1,43 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   normalization.c                                    :+:      :+:    :+:   */
+/*   ft_free_array.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/17 17:59:38 by ptison            #+#    #+#             */
+/*   Created: 2025/09/10 22:04:05 by patrik            #+#    #+#             */
 /*   Updated: 2025/09/10 22:07:04 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/validator.h"
+
 #include <stdlib.h>
 
-int	*indexize_array(const int *values, int n)
+/**
+ * @brief Frees a dynamically allocated array of strings
+ *
+ * This function safely frees a dynamically allocated array of strings (char**).
+ * It first frees each individual string in the array, then frees the array itself.
+ * The function handles NULL pointers gracefully.
+ *
+ * @param array Pointer to the array of strings to free
+ */
+void	ft_free_array(char **array)
 {
-	int	*sorted;
-	int	*res;
 	int	i;
 
-	if (!values || n <= 0)
-		return (NULL);
-	sorted = malloc(sizeof(int) * n);
-	if (!sorted)
-		return (NULL);
-	ft_memcpy(sorted, values, (size_t)n * sizeof values[0]);
-	ft_heap_sort(sorted, n);
-	res = malloc(sizeof(int) * n);
-	if (!res)
-	{
-		free(sorted);
-		return (NULL);
-	}
 	i = 0;
-	while (i < n)
+	if (!array)
+		return ;
+	while (array[i] != NULL)
 	{
-		res[i] = ft_lower_bound(sorted, n, values[i]);
+		free(array[i]);
 		i++;
 	}
-	free(sorted);
-	return (res);
+	free(array);
 }

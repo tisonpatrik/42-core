@@ -6,14 +6,13 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 21:41:06 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/10 21:41:07 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/10 21:50:32 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../../include/selector.h"
 
-// NewMoveSimulator creates a new MoveSimulator
 t_move_simulator	*new_move_simulator(void)
 {
 	t_move_simulator	*simulator;
@@ -24,14 +23,12 @@ t_move_simulator	*new_move_simulator(void)
 	return (simulator);
 }
 
-// FreeMoveSimulator frees the memory allocated for a MoveSimulator
 void	free_move_simulator(t_move_simulator *simulator)
 {
 	if (simulator)
 		free(simulator);
 }
 
-// SimulateMove simulates a single move and returns the resulting stacks and cost
 int	simulate_move(t_move_simulator *simulator, int *a, int size_a, 
 	int *b, int size_b, t_position pos, t_move_direction direction, 
 	int **new_a, int **new_b)
@@ -43,8 +40,8 @@ int	simulate_move(t_move_simulator *simulator, int *a, int size_a,
 	int	new_a_size;
 	int	new_b_size;
 
-	(void)simulator; // Unused parameter
-	rot = merged_cost(pos.cost_a, pos.cost_b); // actual rotations
+	(void)simulator; 
+	rot = merged_cost(pos.cost_a, pos.cost_b);
 	if (direction == MOVE_A_TO_B)
 	{
 		ia = normalize_index(size_a, pos.cost_a);
@@ -61,7 +58,6 @@ int	simulate_move(t_move_simulator *simulator, int *a, int size_a,
 		}
 		return (rot + 1);
 	}
-	// BtoA direction
 	ib = normalize_index(size_b, pos.cost_b);
 	ia = normalize_index(size_a, pos.cost_a);
 	x = b[ib];

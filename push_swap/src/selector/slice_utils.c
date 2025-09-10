@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 21:40:52 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/10 21:40:53 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/10 21:51:29 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 #include "../../include/selector.h"
 
-// RemoveElementAt removes an element at the specified index from an array
 int	*remove_element_at(int *arr, int size, int index, int *new_size)
 {
 	int	*result;
@@ -44,7 +43,6 @@ int	*remove_element_at(int *arr, int size, int index, int *new_size)
 	return (result);
 }
 
-// InsertElementAt inserts an element at the specified index into an array
 int	*insert_element_at(int *arr, int size, int index, int value, int *new_size)
 {
 	int	*result;
@@ -75,7 +73,6 @@ int	*insert_element_at(int *arr, int size, int index, int value, int *new_size)
 	return (result);
 }
 
-// SnapshotStack converts a stack to an array representation for efficient processing
 int	*snapshot_stack(t_stack *stack, int *size)
 {
 	int		*result;
@@ -99,7 +96,6 @@ int	*snapshot_stack(t_stack *stack, int *size)
 	return (result);
 }
 
-// CalculateBreakpoints calculates the number of breakpoints in a cyclic array
 int	calculate_breakpoints(int *arr, int size)
 {
 	int	breakpoints;

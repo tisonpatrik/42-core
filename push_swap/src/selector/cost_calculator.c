@@ -6,14 +6,13 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 21:41:15 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/10 21:41:15 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/10 21:49:44 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../../include/selector.h"
 
-// NewCostCalculator creates a new CostCalculator with the given configuration
 t_cost_calculator	*new_cost_calculator(t_selector_config config)
 {
 	t_cost_calculator	*calc;
@@ -25,15 +24,12 @@ t_cost_calculator	*new_cost_calculator(t_selector_config config)
 	return (calc);
 }
 
-// FreeCostCalculator frees the memory allocated for a CostCalculator
 void	free_cost_calculator(t_cost_calculator *calc)
 {
 	if (calc)
 		free(calc);
 }
 
-// CalculatePositionCost calculates the complete cost for moving an element
-// from fromIdx to toIdx between stacks of given sizes
 t_position	calculate_position_cost(t_cost_calculator *calc, int from_idx, 
 	int to_idx, int size_a, int size_b)
 {
@@ -53,7 +49,6 @@ t_position	calculate_position_cost(t_cost_calculator *calc, int from_idx,
 	return (position);
 }
 
-// CalculatePenalty calculates penalty for local order violation in stack B
 int	calculate_penalty(t_cost_calculator *calc, int *stack, int size, 
 	int to_idx, int val)
 {
@@ -72,8 +67,6 @@ int	calculate_penalty(t_cost_calculator *calc, int *stack, int size,
 	return (1);
 }
 
-// CalculateMergedCost calculates the total cost when combining two operations,
-// accounting for common rotations (rr/rrr)
 int	calculate_merged_cost(t_cost_calculator *calc, int cost_a, int cost_b)
 {
 	(void)calc; // Unused parameter

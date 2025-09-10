@@ -6,14 +6,13 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 21:41:09 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/10 21:41:10 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/10 21:50:16 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../../include/selector.h"
 
-// NewLookaheadEvaluator creates a new LookaheadEvaluator with the given configuration
 t_lookahead_evaluator	*new_lookahead_evaluator(t_selector_config config)
 {
 	t_lookahead_evaluator	*evaluator;
@@ -31,7 +30,6 @@ t_lookahead_evaluator	*new_lookahead_evaluator(t_selector_config config)
 	return (evaluator);
 }
 
-// FreeLookaheadEvaluator frees the memory allocated for a LookaheadEvaluator
 void	free_lookahead_evaluator(t_lookahead_evaluator *evaluator)
 {
 	if (evaluator)
@@ -42,7 +40,6 @@ void	free_lookahead_evaluator(t_lookahead_evaluator *evaluator)
 	}
 }
 
-// EvaluateWithLookahead performs micro-lookahead evaluation (depth 1) on candidates
 t_position	evaluate_with_lookahead(t_lookahead_evaluator *evaluator, 
 	int *a, int size_a, int *b, int size_b, t_candidate *candidates, 
 	int count, t_move_direction direction)
@@ -66,7 +63,6 @@ t_position	evaluate_with_lookahead(t_lookahead_evaluator *evaluator,
 	i = 0;
 	while (i < count)
 	{
-		// Simulate the move and get the actual cost (g)
 		actual_cost = simulate_move(evaluator->simulator, a, size_a, b, size_b, 
 			candidates[i].position, direction, &new_a, &new_b);
 		if (actual_cost == INT_MAX)
@@ -74,11 +70,8 @@ t_position	evaluate_with_lookahead(t_lookahead_evaluator *evaluator,
 			i++;
 			continue;
 		}
-		// Calculate heuristic estimate of remaining work (h)
 		heuristic_estimate = calculate_heuristic(evaluator, new_a, size_a);
-		// Combined score = actual cost + heuristic estimate
 		total_score = actual_cost + heuristic_estimate;
-		// Select better position (lower score, or same score with better position)
 		if (total_score < best_score || (total_score == best_score && 
 			better_position(candidates[i].position, best_position)))
 		{
@@ -92,7 +85,6 @@ t_position	evaluate_with_lookahead(t_lookahead_evaluator *evaluator,
 	return (best_position);
 }
 
-// CalculateHeuristic calculates a heuristic estimate of remaining work
 int	calculate_heuristic(t_lookahead_evaluator *evaluator, int *stack, int size)
 {
 	int	breakpoints;
@@ -100,7 +92,6 @@ int	calculate_heuristic(t_lookahead_evaluator *evaluator, int *stack, int size)
 
 	if (!evaluator || !stack)
 		return (0);
-	// Using breakpoints and size penalty as a cheap heuristic for stack disorder
 	breakpoints = calculate_breakpoints(stack, size);
 	size_penalty = size / evaluator->config.size_penalty_factor;
 	return ((breakpoints + size_penalty + evaluator->config.heuristic_offset) / 

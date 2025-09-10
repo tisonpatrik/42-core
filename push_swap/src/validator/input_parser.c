@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 21:00:04 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/02 13:45:22 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/10 22:07:04 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	get_count_of_arguments(int argc, char *argv[])
 		{
 			parts = ft_split(argv[i], ' ');
 			total += count_parts(parts);
-			free_array(parts);
+			ft_free_array(parts);
 		}
 		else
 		{
@@ -53,7 +53,7 @@ void	fill_from_parts(char **parts, int *out, int *out_index)
 		store_token(parts[j], out, out_index, parts);
 		j++;
 	}
-	free_array(parts);
+	ft_free_array(parts);
 }
 
 void	fill_numbers(int argc, char *argv[], int *out)

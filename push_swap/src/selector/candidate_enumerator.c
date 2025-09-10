@@ -6,14 +6,13 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 21:41:17 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/10 21:41:18 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/10 21:49:30 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../../include/selector.h"
 
-// NewCandidateEnumerator creates a new CandidateEnumerator with the given configuration
 t_candidate_enumerator	*new_candidate_enumerator(t_selector_config config)
 {
 	t_candidate_enumerator	*enumerator;
@@ -31,7 +30,6 @@ t_candidate_enumerator	*new_candidate_enumerator(t_selector_config config)
 	return (enumerator);
 }
 
-// FreeCandidateEnumerator frees the memory allocated for a CandidateEnumerator
 void	free_candidate_enumerator(t_candidate_enumerator *enumerator)
 {
 	if (enumerator)
@@ -42,7 +40,6 @@ void	free_candidate_enumerator(t_candidate_enumerator *enumerator)
 	}
 }
 
-// EnumerateAtoB enumerates all possible positions for moving elements from stack A to stack B
 t_candidate	*enumerate_a_to_b(t_candidate_enumerator *enumerator, 
 	t_stack *a, t_stack *b, int *count)
 {
@@ -61,14 +58,12 @@ t_candidate	*enumerate_a_to_b(t_candidate_enumerator *enumerator,
 		*count = 0;
 		return (NULL);
 	}
-	// Build candidates from stack A
 	candidates = build_candidates_from_stack_a(enumerator, a, b, &candidate_count);
 	if (!candidates)
 	{
 		*count = 0;
 		return (NULL);
 	}
-	// Filter candidates by cost threshold
 	filtered = filter_candidates_by_threshold(candidates, candidate_count, 
 		enumerator->config.cost_threshold_offset, &filtered_count);
 	free(candidates);
@@ -77,13 +72,11 @@ t_candidate	*enumerate_a_to_b(t_candidate_enumerator *enumerator,
 		*count = 0;
 		return (NULL);
 	}
-	// Return top K candidates (0 means all)
 	result = select_top_k_candidates(filtered, filtered_count, 0, count);
 	free(filtered);
 	return (result);
 }
 
-// EnumerateBtoA enumerates all possible positions for moving elements from stack B to stack A
 t_candidate	*enumerate_b_to_a(t_candidate_enumerator *enumerator, 
 	int *a, int size_a, int *b, int size_b, int *count)
 {
@@ -111,13 +104,11 @@ t_candidate	*enumerate_b_to_a(t_candidate_enumerator *enumerator,
 	{
 		val = b[i];
 		to_idx = find_target_position(a, size_a, val);
-		// For BtoA moves: fromIdx=i (in stack B), toIdx=toIdx (in stack A)
-		// CostA is calculated from toIdx and sizeA, CostB from fromIdx and sizeB
 		cost_a = signed_cost(to_idx, size_a);
 		cost_b = signed_cost(i, size_b);
 		base = merged_cost(cost_a, cost_b);
-		position.from_index = i; // index in stack B
-		position.to_index = to_idx; // index in stack A
+		position.from_index = i;
+		position.to_index = to_idx;
 		position.cost_a = cost_a;
 		position.cost_b = cost_b;
 		position.total = base;
@@ -128,7 +119,6 @@ t_candidate	*enumerate_b_to_a(t_candidate_enumerator *enumerator,
 	return (candidates);
 }
 
-// BuildCandidatesFromStackA builds candidate positions by evaluating each element in stack A
 t_candidate	*build_candidates_from_stack_a(t_candidate_enumerator *enumerator, 
 	t_stack *a, t_stack *b, int *count)
 {

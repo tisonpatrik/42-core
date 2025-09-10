@@ -6,14 +6,13 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 21:41:00 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/10 21:41:02 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/10 21:55:29 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../../include/selector.h"
 
-// DefaultSelectorConfig returns the default configuration for the selector
 t_selector_config	default_selector_config(void)
 {
 	t_selector_config	config;
@@ -26,7 +25,6 @@ t_selector_config	default_selector_config(void)
 	return (config);
 }
 
-// BetterPosition compares two positions and returns true if the first position is better than the second
 bool	better_position(t_position a, t_position b)
 {
 	if (a.total != b.total)
@@ -38,7 +36,6 @@ bool	better_position(t_position a, t_position b)
 	return (a.from_index < b.from_index);
 }
 
-// NewCandidate creates a new Candidate with the given position and score
 t_candidate	new_candidate(t_position pos, int score)
 {
 	t_candidate	candidate;
@@ -48,7 +45,6 @@ t_candidate	new_candidate(t_position pos, int score)
 	return (candidate);
 }
 
-// FilterCandidatesByThreshold filters candidates to keep only those within the cost threshold
 t_candidate	*filter_candidates_by_threshold(t_candidate *candidates, 
 	int count, int threshold_offset, int *filtered_count)
 {
@@ -63,7 +59,6 @@ t_candidate	*filter_candidates_by_threshold(t_candidate *candidates,
 		*filtered_count = 0;
 		return (NULL);
 	}
-	// Find minimum base cost
 	min_base_cost = INT_MAX;
 	i = 0;
 	while (i < count)
@@ -72,7 +67,6 @@ t_candidate	*filter_candidates_by_threshold(t_candidate *candidates,
 			min_base_cost = candidates[i].position.total;
 		i++;
 	}
-	// Filter by threshold
 	threshold = min_base_cost + threshold_offset;
 	filtered = malloc(sizeof(t_candidate) * count);
 	if (!filtered)
@@ -92,7 +86,6 @@ t_candidate	*filter_candidates_by_threshold(t_candidate *candidates,
 	return (filtered);
 }
 
-// Compare function for sorting candidates
 static int	compare_candidates(const void *a, const void *b)
 {
 	const t_candidate	*candidate_a = (const t_candidate *)a;
@@ -106,7 +99,6 @@ static int	compare_candidates(const void *a, const void *b)
 	return (1);
 }
 
-// SelectTopKCandidates sorts candidates by score and returns the top K candidates
 t_candidate	*select_top_k_candidates(t_candidate *candidates, 
 	int count, int max_k, int *result_count)
 {
@@ -122,9 +114,7 @@ t_candidate	*select_top_k_candidates(t_candidate *candidates,
 	if (!sorted)
 		return (NULL);
 	ft_memcpy(sorted, candidates, sizeof(t_candidate) * count);
-	// Sort by score with tie-breakers
 	qsort(sorted, count, sizeof(t_candidate), compare_candidates);
-	// Limit to top K candidates if specified
 	if (max_k > 0 && max_k < count)
 		result_size = max_k;
 	else
@@ -133,7 +123,6 @@ t_candidate	*select_top_k_candidates(t_candidate *candidates,
 	return (sorted);
 }
 
-// SelectBestCandidate selects the best candidate from a list of candidates
 t_position	select_best_candidate(t_candidate *candidates, int count)
 {
 	t_position	best;
@@ -155,8 +144,6 @@ t_position	select_best_candidate(t_candidate *candidates, int count)
 	return (best);
 }
 
-// MergedCost calculates the total cost when combining two operations,
-// accounting for common rotations (rr/rrr)
 int	merged_cost(int a, int b)
 {
 	bool	same;
@@ -171,8 +158,6 @@ int	merged_cost(int a, int b)
 	return (ft_abs(a) + ft_abs(b));
 }
 
-// SignedCost calculates the signed cost (positive for rotate, negative for reverse rotate)
-// to move an element to a specific index
 int	signed_cost(int idx, int size)
 {
 	if (idx <= size / 2)
@@ -180,24 +165,14 @@ int	signed_cost(int idx, int size)
 	return (idx - size);
 }
 
-// IsEmpty returns true if the array is empty
 bool	is_empty(int *arr, int size)
 {
 	(void)arr;
 	return (size == 0);
 }
 
-// IsEmptyOrSingle returns true if the array has 0 or 1 elements
 bool	is_empty_or_single(int *arr, int size)
 {
 	(void)arr;
 	return (size <= 1);
-}
-
-// ft_abs returns the absolute value of an integer
-int	ft_abs(int n)
-{
-	if (n < 0)
-		return (-n);
-	return (n);
 }

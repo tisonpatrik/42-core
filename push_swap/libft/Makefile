@@ -6,7 +6,7 @@
 #    By: patrik <patrik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/17 11:24:23 by ptison            #+#    #+#              #
-#    Updated: 2025/09/09 18:31:34 by patrik           ###   ########.fr        #
+#    Updated: 2025/09/10 22:07:04 by patrik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,6 +32,7 @@ CORE_SRCS   := 	src/core/ft_isalnum.c \
 
 MEM_SRCS    :=  src/mem/ft_bzero.c \
                 src/mem/ft_calloc.c \
+                src/mem/ft_free_array.c \
                 src/mem/ft_memchr.c \
                 src/mem/ft_memcmp.c \
                 src/mem/ft_memcpy.c \
@@ -88,7 +89,14 @@ LIST_SRCS   :=  src/list/ft_lstadd_back_bonus.c \
                 src/list/ft_lstnew_bonus.c \
                 src/list/ft_lstsize_bonus.c
 
-SRCS        := $(CORE_SRCS) $(MEM_SRCS) $(STR_SRCS) $(IO_SRCS) $(CONV_SRCS) $(UTILS_SRCS) $(PRINTF_SRCS)
+MATH_SRCS   :=  src/math/ft_abs.c \
+                src/math/ft_swap_int.c
+
+SORT_SRCS   :=  src/sort/ft_heap_sort.c
+
+SEARCH_SRCS :=  src/search/ft_lower_bound.c
+
+SRCS        := $(CORE_SRCS) $(MEM_SRCS) $(STR_SRCS) $(IO_SRCS) $(CONV_SRCS) $(UTILS_SRCS) $(PRINTF_SRCS) $(MATH_SRCS) $(SORT_SRCS) $(SEARCH_SRCS)
 
 ifdef BONUS
   SRCS      += $(LIST_SRCS)

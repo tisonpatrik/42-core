@@ -6,15 +6,13 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 21:41:12 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/10 21:41:13 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/10 21:49:54 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../../include/selector.h"
 
-// SelectBestAtoBMove finds the position with the lowest cost for moving an element from stack A to stack B.
-// It evaluates all possible positions and returns the one with minimal rotation cost.
 t_position	select_best_a_to_b_move(t_sorting_state *ps)
 {
 	t_candidate_enumerator	*enumerator;
@@ -46,7 +44,6 @@ t_position	select_best_a_to_b_move(t_sorting_state *ps)
 	return (best);
 }
 
-// CheapestAtoB is kept for backward compatibility - delegates to SelectBestAtoBMove
 t_position	cheapest_a_to_b(t_sorting_state *ps)
 {
 	return (select_best_a_to_b_move(ps));
