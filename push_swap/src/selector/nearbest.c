@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 21:41:03 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/10 21:50:49 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/10 22:37:49 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ t_position	select_best_b_to_a_move(t_sorting_state *ps, int max_candidates)
 			free(candidates);
 		return (select_best_a_to_b_move(ps));
 	}
-	result = select_best_candidate_with_lookahead(a, size_a, b, size_b, 
+	result = select_best_candidate_with_lookahead(ps->a, ps->b, 
 		candidates, candidate_count, max_candidates, config, MOVE_B_TO_A);
 	free(a);
 	free(b);
@@ -74,8 +74,8 @@ t_position	pick_near_best(t_sorting_state *ps, int max_candidates)
 	return (select_best_b_to_a_move(ps, max_candidates));
 }
 
-t_position	select_best_candidate_with_lookahead(int *a, int size_a, int *b, 
-	int size_b, t_candidate *candidates, int count, int max_candidates, 
+t_position	select_best_candidate_with_lookahead(t_stack *stack_a, t_stack *stack_b, 
+	t_candidate *candidates, int count, int max_candidates, 
 	t_selector_config config, t_move_direction direction)
 {
 	t_candidate			*filtered_candidates;
@@ -85,7 +85,7 @@ t_position	select_best_candidate_with_lookahead(int *a, int size_a, int *b,
 	t_lookahead_evaluator	*evaluator;
 	t_position			result;
 
-	if (!a || !b || !candidates || count == 0)
+	if (!stack_a || !stack_b || !candidates || count == 0)
 	{
 		result.total = INT_MAX;
 		return (result);
@@ -112,7 +112,7 @@ t_position	select_best_candidate_with_lookahead(int *a, int size_a, int *b,
 		result.total = INT_MAX;
 		return (result);
 	}
-	result = evaluate_with_lookahead(evaluator, a, size_a, b, size_b, 
+	result = evaluate_with_lookahead(evaluator, stack_a, stack_b, 
 		top_k_candidates, top_k_count, direction);
 	free_lookahead_evaluator(evaluator);
 	free(top_k_candidates);

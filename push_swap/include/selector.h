@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 21:41:42 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/10 21:48:27 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/10 22:37:49 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,20 +96,20 @@ t_candidate			*build_candidates_from_stack_a(
 
 t_move_simulator	*new_move_simulator(void);
 void				free_move_simulator(t_move_simulator *simulator);
-int					simulate_move(t_move_simulator *simulator, int *a,
-						int size_a, int *b, int size_b, t_position pos,
-						t_move_direction direction, int **new_a, int **new_b);
+int					simulate_move(t_move_simulator *simulator, t_stack *stack_a,
+						t_stack *stack_b, t_position position,
+						t_move_direction direction, t_stack **new_stack_a, t_stack **new_stack_b);
 
 t_lookahead_evaluator	*new_lookahead_evaluator(t_selector_config config);
 void					free_lookahead_evaluator(
 							t_lookahead_evaluator *evaluator);
 t_position				evaluate_with_lookahead(
 							t_lookahead_evaluator *evaluator,
-							int *a, int size_a, int *b, int size_b,
+							t_stack *stack_a, t_stack *stack_b,
 							t_candidate *candidates, int count,
 							t_move_direction direction);
 int						calculate_heuristic(t_lookahead_evaluator *evaluator,
-							int *stack, int size);
+							t_stack *stack);
 
 bool				better_position(t_position a, t_position b);
 
@@ -145,8 +145,8 @@ t_position		select_best_b_to_a_move(t_sorting_state *ps,
 					int max_candidates);
 t_position		pick_near_best(t_sorting_state *ps, int max_candidates);
 
-t_position		select_best_candidate_with_lookahead(int *a, int size_a,
-					int *b, int size_b, t_candidate *candidates, int count,
+t_position		select_best_candidate_with_lookahead(t_stack *stack_a,
+					t_stack *stack_b, t_candidate *candidates, int count,
 					int max_candidates, t_selector_config config,
 					t_move_direction direction);
 

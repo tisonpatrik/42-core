@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 19:24:41 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/09 19:24:42 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/10 22:37:49 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,5 +43,12 @@ t_node			*get_tail(t_stack *stack);
 int				get_content(t_node *node);
 t_node			*get_next(t_node *node);
 t_node			*get_prev(t_node *node);
+
+// Simulation helper functions
+t_stack			*clone_stack(t_stack *original);
+void			free_stack(t_stack *stack);
+t_node			*get_node_at_index(t_stack *stack, int index);
+void			remove_node_from_stack(t_stack *stack, t_node *node);
+void			insert_node_at_index(t_stack *stack, t_node *node, int index);
 
 #endif
