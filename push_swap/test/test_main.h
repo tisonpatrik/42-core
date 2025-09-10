@@ -19,5 +19,6 @@ void test_rotate_operations(void);
 void test_reverse_rotate_operations(void);
 void test_is_sorted_function(void);
 void test_lis_operations(void);
+void test_pick_near_best_operations(void);
 
 #endif

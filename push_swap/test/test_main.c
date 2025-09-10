@@ -41,6 +41,7 @@ int main()
     test_reverse_rotate_operations();
     test_is_sorted_function();
     test_lis_operations();
+    test_pick_near_best_operations();
     
     printf("\n✨ All tests completed!\n");
     return 0;

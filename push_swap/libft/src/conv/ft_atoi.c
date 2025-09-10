@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 21:49:31 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/19 11:53:09 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/10 20:26:57 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,20 +27,20 @@ int	convert_number(const char *str, int idx)
 	return (res);
 }
 
-int	get_sign(const char *current_position)
+int	get_sign(const char **current_position)
 {
 	int	sign;
 
 	sign = 0;
-	if (*current_position == '-')
+	if (**current_position == '-')
 	{
 		sign = -1;
-		current_position++;
+		(*current_position)++;
 	}
-	else if (*current_position == '+')
+	else if (**current_position == '+')
 	{
 		sign = 1;
-		current_position++;
+		(*current_position)++;
 	}
 	else
 		sign = 1;
@@ -71,7 +71,7 @@ int	ft_atoi(const char *str)
 	current_position = str;
 	res = 0;
 	ft_skip_whitespace(&current_position);
-	sign = get_sign(current_position);
+	sign = get_sign(&current_position);
 	res = convert_number(current_position, 0);
 	return (res * sign);
 }
