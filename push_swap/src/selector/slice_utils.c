@@ -6,72 +6,13 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 21:40:52 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/10 21:51:29 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/10 22:49:55 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 
 #include "../../include/selector.h"
-
-int	*remove_element_at(int *arr, int size, int index, int *new_size)
-{
-	int	*result;
-	int	i;
-	int	j;
-
-	if (index < 0 || index >= size)
-	{
-		*new_size = size;
-		return (NULL);
-	}
-	result = malloc(sizeof(int) * (size - 1));
-	if (!result)
-		return (NULL);
-	i = 0;
-	j = 0;
-	while (i < size)
-	{
-		if (i != index)
-		{
-			result[j] = arr[i];
-			j++;
-		}
-		i++;
-	}
-	*new_size = size - 1;
-	return (result);
-}
-
-int	*insert_element_at(int *arr, int size, int index, int value, int *new_size)
-{
-	int	*result;
-	int	i;
-
-	if (index < 0 || index > size)
-	{
-		*new_size = size;
-		return (NULL);
-	}
-	result = malloc(sizeof(int) * (size + 1));
-	if (!result)
-		return (NULL);
-	i = 0;
-	while (i < index)
-	{
-		result[i] = arr[i];
-		i++;
-	}
-	result[i] = value;
-	i++;
-	while (i <= size)
-	{
-		result[i] = arr[i - 1];
-		i++;
-	}
-	*new_size = size + 1;
-	return (result);
-}
 
 int	*snapshot_stack(t_stack *stack, int *size)
 {
@@ -101,7 +42,7 @@ int	calculate_breakpoints(int *arr, int size)
 	int	breakpoints;
 	int	i;
 
-	if (is_empty_or_single(arr, size))
+	if (size <= 1)
 		return (0);
 	breakpoints = 0;
 	i = 0;

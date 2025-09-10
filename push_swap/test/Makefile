@@ -28,15 +28,14 @@ PROJECT_SRCS = ../src/stack/stack.c \
                ../src/selector/selector_config.c \
                ../src/selector/candidate_manager.c \
                ../src/selector/cost_utils.c \
-               ../src/selector/array_utils.c \
+               ../src/selector/algo.c \
                ../src/selector/slice_utils.c \
                ../src/selector/nearbest.c \
                ../src/selector/move_direction.c \
                ../src/selector/lookahead_evaluator.c \
                ../src/selector/cost.c \
                ../src/selector/cost_calculator.c \
-               ../src/selector/candidate_enumerator.c \
-               ../src/selector/algo.c
+               ../src/selector/candidate_enumerator.c
 
 PROJECT_OBJS = $(addprefix $(BIN_DIR)/,$(notdir $(PROJECT_SRCS:.c=.o)))
 
@@ -117,8 +116,6 @@ $(BIN_DIR)/candidate_manager.o: ../src/selector/candidate_manager.c
 $(BIN_DIR)/cost_utils.o: ../src/selector/cost_utils.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
-$(BIN_DIR)/array_utils.o: ../src/selector/array_utils.c
-	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(BIN_DIR)/selector_utils_core.o: ../src/selector/selector_utils_core.c
 	@$(CC) $(CFLAGS) -c $< -o $@

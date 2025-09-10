@@ -34,7 +34,7 @@ SRCS        := src/validator/input_parser.c \
 			   src/selector/selector_config.c \
 			   src/selector/candidate_manager.c \
 			   src/selector/cost_utils.c \
-			   src/selector/array_utils.c \
+			   src/selector/algo.c \
 			   src/selector/slice_utils.c \
 			   src/selector/nearbest.c \
 			   src/selector/move_direction.c \
@@ -42,7 +42,6 @@ SRCS        := src/validator/input_parser.c \
 			   src/selector/cost.c \
 			   src/selector/cost_calculator.c \
 			   src/selector/candidate_enumerator.c \
-			   src/selector/algo.c \
 			   src/solver/sort.c \
 			   src/stack/stack.c \
 			   src/stack/ops.c \

@@ -6,82 +6,82 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 21:41:22 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/10 22:26:32 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/10 22:44:33 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../../include/selector.h"
 
-int	binary_search_insertion_point(int *arr, int size, int val, 
+int	binary_search_insertion_point(int *sorted_array, int array_size, int target_value, 
 	bool (*comparator)(int, int))
 {
-	int	left;
-	int	right;
-	int	mid;
+	int	left_bound;
+	int	right_bound;
+	int	middle_index;
 
-	if (size == 0)
+	if (array_size == 0)
 		return (0);
-	left = 0;
-	right = size;
-	while (left < right)
+	left_bound = 0;
+	right_bound = array_size;
+	while (left_bound < right_bound)
 	{
-		mid = (left + right) / 2;
-		if (comparator(arr[mid], val))
-			left = mid + 1;
+		middle_index = (left_bound + right_bound) / 2;
+		if (comparator(sorted_array[middle_index], target_value))
+			left_bound = middle_index + 1;
 		else
-			right = mid;
+			right_bound = middle_index;
 	}
-	return (left);
+	return (left_bound);
 }
 
-int	find_insertion_index(int *sorted_arr, int size, int val)
+int	find_insertion_index(int *sorted_array, int array_size, int target_value)
 {
-	int	idx;
-	int	n;
-	int	prev;
-	int	next;
-	int	j;
+	int	insertion_index;
+	int	array_length;
+	int	previous_element;
+	int	next_element;
+	int	current_index;
 
-	if (is_empty(sorted_arr, size))
+	if (array_size == 0)
 		return (0);
-	idx = binary_search_insertion_point(sorted_arr, size, val, ft_less_than);
-	n = size;
-	idx = idx % n;
-	prev = sorted_arr[(idx - 1 + n) % n];
-	next = sorted_arr[idx % n];
-	if (prev > val && val > next)
-		return (idx);
-	j = 0;
-	while (j < n)
+	insertion_index = binary_search_insertion_point(sorted_array, array_size, target_value, ft_less_than);
+	array_length = array_size;
+	insertion_index = insertion_index % array_length;
+	previous_element = sorted_array[(insertion_index - 1 + array_length) % array_length];
+	next_element = sorted_array[insertion_index % array_length];
+	if (previous_element > target_value && target_value > next_element)
+		return (insertion_index);
+	current_index = 0;
+	while (current_index < array_length)
 	{
-		prev = sorted_arr[(j - 1 + n) % n];
-		next = sorted_arr[j];
-		if (prev > val && val > next)
-			return (j);
-		j++;
+		previous_element = sorted_array[(current_index - 1 + array_length) % array_length];
+		next_element = sorted_array[current_index];
+		if (previous_element > target_value && target_value > next_element)
+			return (current_index);
+		current_index++;
 	}
 	return (0);
 }
 
-int	find_target_position(int *sorted_arr, int size, int val)
+int	find_target_position(int *sorted_array, int array_size, int target_value)
 {
-	int	idx;
-	int	n;
+	int	target_index;
+	int	array_length;
 
-	if (is_empty(sorted_arr, size))
+	if (array_size == 0)
 		return (0);
-	idx = binary_search_insertion_point(sorted_arr, size, val, ft_less_than_or_equal);
-	n = size;
-	if (idx < n)
-		return (idx);
+	target_index = binary_search_insertion_point(sorted_array, array_size, target_value, ft_less_than_or_equal);
+	array_length = array_size;
+	if (target_index < array_length)
+		return (target_index);
 	return (0);
 }
 
-int	normalize_index(int n, int k)
+int	normalize_index(int array_size, int raw_index)
 {
-	if (n == 0)
+	if (array_size == 0)
 		return (0);
-	k = ((k % n) + n) % n;
-	return (k);
+	raw_index = ((raw_index % array_size) + array_size) % array_size;
+	return (raw_index);
 }

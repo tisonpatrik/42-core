@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 21:41:17 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/10 21:49:30 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/10 22:41:14 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ t_candidate	*enumerate_b_to_a(t_candidate_enumerator *enumerator,
 
 	if (!enumerator || !a || !b || !count)
 		return (NULL);
-	if (is_empty(b, size_b))
+	if (size_b == 0)
 	{
 		*count = 0;
 		return (NULL);

@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 21:41:15 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/10 21:49:44 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/10 22:42:55 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	calculate_penalty(t_cost_calculator *calc, int *stack, int size,
 	int	next;
 
 	(void)calc; // Unused parameter
-	if (is_empty_or_single(stack, size))
+	if (size <= 1)
 		return (0);
 	n = size;
 	prev = stack[(to_idx - 1 + n) % n];

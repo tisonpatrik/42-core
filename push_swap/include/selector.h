@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 21:41:42 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/10 22:37:49 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/10 22:48:53 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,33 +123,22 @@ t_position		select_best_candidate(t_candidate *candidates, int count);
 int				merged_cost(int a, int b);
 int				signed_cost(int idx, int size);
 
-bool			is_empty(int *arr, int size);
-bool			is_empty_or_single(int *arr, int size);
-
-int				*remove_element_at(int *arr, int size, int index,
-					int *new_size);
-int				*insert_element_at(int *arr, int size, int index,
-					int value, int *new_size);
 int				*snapshot_stack(t_stack *stack, int *size);
 int				calculate_breakpoints(int *arr, int size);
 
-int				binary_search_insertion_point(int *arr, int size, int val,
+int				binary_search_insertion_point(int *sorted_array, int array_size, int target_value,
 					bool (*comparator)(int, int));
-int				find_insertion_index(int *sorted_arr, int size, int val);
-int				find_target_position(int *sorted_arr, int size, int val);
-int				normalize_index(int n, int k);
+int				find_insertion_index(int *sorted_array, int array_size, int target_value);
+int				find_target_position(int *sorted_array, int array_size, int target_value);
+int				normalize_index(int array_size, int raw_index);
 
 t_position		select_best_a_to_b_move(t_sorting_state *ps);
-t_position		cheapest_a_to_b(t_sorting_state *ps);
-t_position		select_best_b_to_a_move(t_sorting_state *ps,
-					int max_candidates);
+
 t_position		pick_near_best(t_sorting_state *ps, int max_candidates);
 
 t_position		select_best_candidate_with_lookahead(t_stack *stack_a,
 					t_stack *stack_b, t_candidate *candidates, int count,
 					int max_candidates, t_selector_config config,
 					t_move_direction direction);
-
-int				ft_abs(int n);
 
 #endif
