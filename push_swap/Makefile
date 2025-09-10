@@ -31,7 +31,6 @@ SRCS        := src/validator/input_parser.c \
 			   src/separator/lis_algorithm.c \
 			   src/separator/lis_result_builder.c \
 			   src/selector/selector_utils.c \
-			   src/selector/selector_utils.c \
 			   src/selector/slice_utils.c \
 			   src/selector/nearbest.c \
 			   src/selector/move_direction.c \

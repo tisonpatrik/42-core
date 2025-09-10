@@ -1,3 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   slice_utils.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/10 21:40:52 by patrik            #+#    #+#             */
+/*   Updated: 2025/09/10 21:40:53 by patrik           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+
 
 #include "../../include/selector.h"
 
@@ -75,12 +88,12 @@ int	*snapshot_stack(t_stack *stack, int *size)
 	result = malloc(sizeof(int) * *size);
 	if (!result)
 		return (NULL);
-	current = get_head(stack);
+	current = get_tail(stack);
 	i = 0;
 	while (current != NULL)
 	{
 		result[i] = get_content(current);
-		current = get_next(current);
+		current = get_prev(current);
 		i++;
 	}
 	return (result);

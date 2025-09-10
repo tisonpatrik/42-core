@@ -20,5 +20,10 @@ void test_reverse_rotate_operations(void);
 void test_is_sorted_function(void);
 void test_lis_operations(void);
 void test_pick_near_best_operations(void);
+void test_enumerate_b_to_a_iteration0(void);
+void test_enumerate_a_to_b_iteration0(void);
+void test_snapshot_stack_iteration0(void);
+void test_snapshot_stack_empty_stack(void);
+void test_snapshot_stack_single_element(void);
 
 #endif

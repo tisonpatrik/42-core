@@ -42,6 +42,11 @@ int main()
     test_is_sorted_function();
     test_lis_operations();
     test_pick_near_best_operations();
+    test_enumerate_b_to_a_iteration0();
+    test_enumerate_a_to_b_iteration0();
+    test_snapshot_stack_iteration0();
+    test_snapshot_stack_empty_stack();
+    test_snapshot_stack_single_element();
     
     printf("\n✨ All tests completed!\n");
     return 0;

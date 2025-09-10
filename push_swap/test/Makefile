@@ -5,7 +5,7 @@ LIBFT = ../libft/bin/libft.a
 
 # Directories
 BIN_DIR = bin
-TEST_SRCS = test_main.c test_swap.c test_push.c test_rotate.c test_reverse_rotate.c test_is_sorted.c test_lis.c test_pick_near_best.c
+TEST_SRCS = test_main.c test_swap.c test_push.c test_rotate.c test_reverse_rotate.c test_is_sorted.c test_lis.c test_pick_near_best.c test_enumerate_b_to_a.c test_enumerate_a_to_b.c test_snapshot_stack.c
 TEST_OBJS = $(TEST_SRCS:%.c=$(BIN_DIR)/%.o)
 TEST_BIN = $(BIN_DIR)/test_main
 
@@ -24,7 +24,6 @@ PROJECT_SRCS = ../src/stack/stack.c \
                ../src/separator/lis_memory_management.c \
                ../src/separator/lis_algorithm.c \
                ../src/separator/lis_result_builder.c \
-               ../src/selector/selector_utils.c \
                ../src/selector/selector_utils.c \
                ../src/selector/slice_utils.c \
                ../src/selector/nearbest.c \
