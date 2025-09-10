@@ -1,14 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: patrik <patrik@student.42.fr>              +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/08/17 11:16:00 by ptison            #+#    #+#              #
-#    Updated: 2025/09/02 13:30:18 by patrik           ###   ########.fr       #
-#                                                                              #
-# **************************************************************************** #
 
 NAME        := bin/push_swap
 BIN_DIR     := bin
@@ -42,6 +31,15 @@ SRCS        := src/validator/input_parser.c \
 			   src/separator/lis_algorithm.c \
 			   src/separator/lis_result_builder.c \
 			   src/selector/selector_utils.c \
+			   src/selector/selector_utils.c \
+			   src/selector/slice_utils.c \
+			   src/selector/nearbest.c \
+			   src/selector/move_direction.c \
+			   src/selector/lookahead_evaluator.c \
+			   src/selector/cost.c \
+			   src/selector/cost_calculator.c \
+			   src/selector/candidate_enumerator.c \
+			   src/selector/algo.c \
 			   src/solver/sort.c \
 			   src/stack/stack.c \
 			   src/stack/ops.c \

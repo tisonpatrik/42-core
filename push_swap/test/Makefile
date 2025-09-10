@@ -24,7 +24,16 @@ PROJECT_SRCS = ../src/stack/stack.c \
                ../src/separator/lis_memory_management.c \
                ../src/separator/lis_algorithm.c \
                ../src/separator/lis_result_builder.c \
-               ../src/selector/selector_utils.c
+               ../src/selector/selector_utils.c \
+               ../src/selector/selector_utils.c \
+               ../src/selector/slice_utils.c \
+               ../src/selector/nearbest.c \
+               ../src/selector/move_direction.c \
+               ../src/selector/lookahead_evaluator.c \
+               ../src/selector/cost.c \
+               ../src/selector/cost_calculator.c \
+               ../src/selector/candidate_enumerator.c \
+               ../src/selector/algo.c
 
 PROJECT_OBJS = $(addprefix $(BIN_DIR)/,$(notdir $(PROJECT_SRCS:.c=.o)))
 
@@ -94,6 +103,33 @@ $(BIN_DIR)/lis_result_builder.o: ../src/separator/lis_result_builder.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(BIN_DIR)/selector_utils.o: ../src/selector/selector_utils.c
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+$(BIN_DIR)/selector_utils_core.o: ../src/selector/selector_utils_core.c
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+$(BIN_DIR)/slice_utils.o: ../src/selector/slice_utils.c
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+$(BIN_DIR)/nearbest.o: ../src/selector/nearbest.c
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+$(BIN_DIR)/move_direction.o: ../src/selector/move_direction.c
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+$(BIN_DIR)/lookahead_evaluator.o: ../src/selector/lookahead_evaluator.c
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+$(BIN_DIR)/cost.o: ../src/selector/cost.c
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+$(BIN_DIR)/cost_calculator.o: ../src/selector/cost_calculator.c
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+$(BIN_DIR)/candidate_enumerator.o: ../src/selector/candidate_enumerator.c
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+$(BIN_DIR)/algo.o: ../src/selector/algo.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 # Build libft if needed

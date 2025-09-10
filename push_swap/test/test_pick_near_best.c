@@ -26,9 +26,21 @@ static void create_test_data(t_sorting_state *state, int *stack_a, int stack_a_s
 
 // Helper function to parse array from string
 static int parse_array(const char *str, int **array, int *size) {
+    // Skip opening brace if present
+    const char *start = str;
+    if (*start == '{') {
+        start++;
+    }
+    
+    // Find closing brace to determine actual string length
+    const char *end = start;
+    while (*end && *end != '}') {
+        end++;
+    }
+    
     // Count commas to determine size
     int count = 1;
-    for (const char *p = str; *p; p++) {
+    for (const char *p = start; p < end; p++) {
         if (*p == ',') count++;
     }
     
@@ -37,8 +49,15 @@ static int parse_array(const char *str, int **array, int *size) {
     
     *size = count;
     
-    // Parse the string
-    char *copy = strdup(str);
+    // Parse the string (skip braces)
+    char *copy = malloc(end - start + 1);
+    if (!copy) {
+        free(*array);
+        return -1;
+    }
+    strncpy(copy, start, end - start);
+    copy[end - start] = '\0';
+    
     char *token = strtok(copy, ",");
     int i = 0;
     
@@ -100,8 +119,24 @@ void test_pick_near_best_operations(void)
         
         t_position expected_position = parse_expected_position(expected_positions[i]);
         
-        // Create SortingState with the test data
-        t_sorting_state *state = create_sorting_state(NULL, 0);
+        // Create SortingState with empty stacks
+        t_sorting_state *state = malloc(sizeof(t_sorting_state));
+        if (!state) {
+            printf("❌ Failed to allocate memory for sorting state\n");
+            failed++;
+            continue;
+        }
+        state->a = create_stack();
+        state->b = create_stack();
+        state->operations = NULL;
+        if (!state->a || !state->b) {
+            printf("❌ Failed to create stacks\n");
+            if (state->a) free(state->a);
+            if (state->b) free(state->b);
+            free(state);
+            failed++;
+            continue;
+        }
         
         // Populate stacks with test data
         create_test_data(state, stack_a, stack_a_size, stack_b, stack_b_size);
