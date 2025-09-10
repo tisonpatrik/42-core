@@ -1069,7 +1069,7 @@ func TestPickNearBest_Iteration19(t *testing.T) {
 	// Populate stack A
 	stack.FillStack(ps.A, stackA)
 
-	// Populate stack B
+	// Populate stack B3
 	stack.FillStack(ps.B, stackB)
 
 	// Act - Call PickNearBest with the test data
