@@ -6,23 +6,12 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 21:41:22 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/10 21:49:07 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/10 22:26:32 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../../include/selector.h"
-
-static bool	less_than(int arr_val, int target_val)
-{
-	return (arr_val < target_val);
-}
-
-static bool	less_than_or_equal(int arr_val, int target_val)
-{
-	return (arr_val <= target_val);
-}
-
 
 int	binary_search_insertion_point(int *arr, int size, int val, 
 	bool (*comparator)(int, int))
@@ -56,7 +45,7 @@ int	find_insertion_index(int *sorted_arr, int size, int val)
 
 	if (is_empty(sorted_arr, size))
 		return (0);
-	idx = binary_search_insertion_point(sorted_arr, size, val, less_than);
+	idx = binary_search_insertion_point(sorted_arr, size, val, ft_less_than);
 	n = size;
 	idx = idx % n;
 	prev = sorted_arr[(idx - 1 + n) % n];
@@ -82,7 +71,7 @@ int	find_target_position(int *sorted_arr, int size, int val)
 
 	if (is_empty(sorted_arr, size))
 		return (0);
-	idx = binary_search_insertion_point(sorted_arr, size, val, less_than_or_equal);
+	idx = binary_search_insertion_point(sorted_arr, size, val, ft_less_than_or_equal);
 	n = size;
 	if (idx < n)
 		return (idx);

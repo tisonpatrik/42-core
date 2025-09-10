@@ -6,7 +6,7 @@
 #    By: patrik <patrik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/17 11:24:23 by ptison            #+#    #+#              #
-#    Updated: 2025/09/10 22:07:04 by patrik           ###   ########.fr        #
+#    Updated: 2025/09/10 22:26:32 by patrik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -90,7 +90,9 @@ LIST_SRCS   :=  src/list/ft_lstadd_back_bonus.c \
                 src/list/ft_lstsize_bonus.c
 
 MATH_SRCS   :=  src/math/ft_abs.c \
-                src/math/ft_swap_int.c
+                src/math/ft_swap_int.c \
+                src/math/ft_less_than.c \
+                src/math/ft_less_than_or_equal.c
 
 SORT_SRCS   :=  src/sort/ft_heap_sort.c
 

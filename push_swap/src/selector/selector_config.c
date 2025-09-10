@@ -1,25 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   math.h                                             :+:      :+:    :+:   */
+/*   selector_config.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/10 21:54:22 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/10 22:26:32 by patrik           ###   ########.fr       */
+/*   Created: 2025/09/10 22:13:57 by patrik            #+#    #+#             */
+/*   Updated: 2025/09/10 22:14:13 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
-#ifndef MATH_H
-# define MATH_H
 
-# include <stdbool.h>
+#include "../../include/selector.h"
 
-/* Math functions */
-int	ft_abs(int n);
-void	ft_swap_int(int *a, int *b);
-bool	ft_less_than(int arr_val, int target_val);
-bool	ft_less_than_or_equal(int arr_val, int target_val);
+t_selector_config	default_selector_config(void)
+{
+	t_selector_config	config;
 
-#endif
+	config.max_candidates = 30;
+	config.cost_threshold_offset = 1;
+	config.size_penalty_factor = 10;
+	config.heuristic_offset = 1;
+	config.heuristic_divisor = 2;
+	return (config);
+}

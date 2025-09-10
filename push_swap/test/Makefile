@@ -25,6 +25,10 @@ PROJECT_SRCS = ../src/stack/stack.c \
                ../src/separator/lis_algorithm.c \
                ../src/separator/lis_result_builder.c \
                ../src/selector/selector_utils.c \
+               ../src/selector/selector_config.c \
+               ../src/selector/candidate_manager.c \
+               ../src/selector/cost_utils.c \
+               ../src/selector/array_utils.c \
                ../src/selector/slice_utils.c \
                ../src/selector/nearbest.c \
                ../src/selector/move_direction.c \
@@ -102,6 +106,18 @@ $(BIN_DIR)/lis_result_builder.o: ../src/separator/lis_result_builder.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(BIN_DIR)/selector_utils.o: ../src/selector/selector_utils.c
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+$(BIN_DIR)/selector_config.o: ../src/selector/selector_config.c
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+$(BIN_DIR)/candidate_manager.o: ../src/selector/candidate_manager.c
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+$(BIN_DIR)/cost_utils.o: ../src/selector/cost_utils.c
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+$(BIN_DIR)/array_utils.o: ../src/selector/array_utils.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(BIN_DIR)/selector_utils_core.o: ../src/selector/selector_utils_core.c

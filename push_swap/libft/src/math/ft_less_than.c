@@ -1,25 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   math.h                                             :+:      :+:    :+:   */
+/*   ft_less_than.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/10 21:54:22 by patrik            #+#    #+#             */
+/*   Created: 2025/09/10 22:25:12 by patrik            #+#    #+#             */
 /*   Updated: 2025/09/10 22:26:32 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../include/math.h"
 
-#ifndef MATH_H
-# define MATH_H
 
-# include <stdbool.h>
-
-/* Math functions */
-int	ft_abs(int n);
-void	ft_swap_int(int *a, int *b);
-bool	ft_less_than(int arr_val, int target_val);
-bool	ft_less_than_or_equal(int arr_val, int target_val);
-
-#endif
+bool	ft_less_than(int arr_val, int target_val)
+{
+	return (arr_val < target_val);
+}

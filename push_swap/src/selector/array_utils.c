@@ -1,25 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   math.h                                             :+:      :+:    :+:   */
+/*   array_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/10 21:54:22 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/10 22:26:32 by patrik           ###   ########.fr       */
+/*   Created: 2025/09/10 22:14:34 by patrik            #+#    #+#             */
+/*   Updated: 2025/09/10 22:14:36 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
-#ifndef MATH_H
-# define MATH_H
+#include "../../include/selector.h"
 
-# include <stdbool.h>
+bool	is_empty(int *arr, int size)
+{
+	(void)arr;
+	return (size == 0);
+}
 
-/* Math functions */
-int	ft_abs(int n);
-void	ft_swap_int(int *a, int *b);
-bool	ft_less_than(int arr_val, int target_val);
-bool	ft_less_than_or_equal(int arr_val, int target_val);
-
-#endif
+bool	is_empty_or_single(int *arr, int size)
+{
+	(void)arr;
+	return (size <= 1);
+}
