@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 22:14:22 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/10 22:14:24 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/10 23:16:16 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,7 @@ t_candidate	new_candidate(t_position pos, int score)
 	return (candidate);
 }
 
-static int	compare_candidates(const void *a, const void *b)
-{
-	const t_candidate	*candidate_a = (const t_candidate *)a;
-	const t_candidate	*candidate_b = (const t_candidate *)b;
-
-	if (candidate_a->score != candidate_b->score)
-		return (candidate_a->score - candidate_b->score);
-	if (better_position(candidate_a->position, candidate_b->position))
-		return (-1);
-	return (1);
-}
+static int	compare_candidates(const void *a, const void *b);
 
 t_candidate	*select_top_k_candidates(t_candidate *candidates,
 	int count, int max_k, int *result_count)
@@ -56,6 +46,18 @@ t_candidate	*select_top_k_candidates(t_candidate *candidates,
 		result_size = count;
 	*result_count = result_size;
 	return (sorted);
+}
+
+static int	compare_candidates(const void *a, const void *b)
+{
+	const t_candidate	*candidate_a = (const t_candidate *)a;
+	const t_candidate	*candidate_b = (const t_candidate *)b;
+
+	if (candidate_a->score != candidate_b->score)
+		return (candidate_a->score - candidate_b->score);
+	if (better_position(candidate_a->position, candidate_b->position))
+		return (-1);
+	return (1);
 }
 
 t_position	select_best_candidate(t_candidate *candidates, int count)

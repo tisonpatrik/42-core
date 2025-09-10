@@ -142,7 +142,7 @@ void test_pick_near_best_operations(void)
         create_test_data(state, stack_a, stack_a_size, stack_b, stack_b_size);
         
         // Act - Call PickNearBest with the test data
-        t_position result = select_best_b_to_a_move(state, max_candidates_values[i]);
+        t_position result = select_best_to_move(state, max_candidates_values[i]);
         
         // Assert - Verify the result matches the expected position
         bool test_passed = true;

@@ -41,7 +41,6 @@ SRCS        := src/validator/input_parser.c \
 			   src/selector/cost.c \
 			   src/selector/cost_calculator.c \
 			   src/selector/candidate_enumerator.c \
-			   src/selector/memory_helpers.c \
 			   src/solver/sort.c \
 			   src/stack/stack.c \
 			   src/stack/ops.c \

@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 21:41:42 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/10 23:01:18 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/10 23:23:24 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,6 @@ t_candidate			*enumerate_a_to_b(t_candidate_enumerator *enumerator,
 						t_stack *a, t_stack *b, int *count);
 t_candidate			*enumerate_b_to_a(t_candidate_enumerator *enumerator,
 						int *a, int size_a, int *b, int size_b, int *count);
-t_candidate			*build_candidates_from_stack_a(
-						t_candidate_enumerator *enumerator,
-						t_stack *a, t_stack *b, int *count);
 
 int						calculate_heuristic(t_lookahead_evaluator *evaluator,
 							t_stack *stack);
@@ -114,8 +111,6 @@ int				signed_cost(int idx, int size);
 int				*snapshot_stack(t_stack *stack, int *size);
 int				calculate_breakpoints(int *arr, int size);
 
-int				binary_search_insertion_point(int *sorted_array, int array_size, int target_value,
-					bool (*comparator)(int, int));
 int				find_insertion_index(int *sorted_array, int array_size, int target_value);
 int				find_target_position(int *sorted_array, int array_size, int target_value);
 int				normalize_index(int array_size, int raw_index);
@@ -129,11 +124,5 @@ t_position		select_best_candidate_with_lookahead(t_stack *stack_a,
 					int max_candidates, t_selector_config config,
 					t_move_direction direction);
 
-/* Memory management helpers */
-typedef struct s_cleanup_list	t_cleanup_list;
-t_cleanup_list	*new_cleanup_list(void);
-void			add_to_cleanup(t_cleanup_list *list, void *ptr);
-void			cleanup_all(t_cleanup_list *list);
-void			*safe_malloc_with_cleanup(size_t size, t_cleanup_list *cleanup);
 
 #endif

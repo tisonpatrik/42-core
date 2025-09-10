@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 22:14:10 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/10 22:14:17 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/10 23:03:59 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	merged_cost(int a, int b)
 	same = (a >= 0 && b >= 0) || (a < 0 && b < 0);
 	if (same)
 	{
-		if (ft_abs(a) > ft_abs(b))
+		if (ft_less_than(ft_abs(b), ft_abs(a)))
 			return (ft_abs(a));
 		return (ft_abs(b));
 	}
@@ -29,7 +29,7 @@ int	merged_cost(int a, int b)
 
 int	signed_cost(int idx, int size)
 {
-	if (idx <= size / 2)
+	if (ft_less_than_or_equal(idx, size / 2))
 		return (idx);
 	return (idx - size);
 }
