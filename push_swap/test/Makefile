@@ -31,11 +31,11 @@ PROJECT_SRCS = ../src/stack/stack.c \
                ../src/selector/algo.c \
                ../src/selector/slice_utils.c \
                ../src/selector/nearbest.c \
-               ../src/selector/move_direction.c \
                ../src/selector/lookahead_evaluator.c \
                ../src/selector/cost.c \
                ../src/selector/cost_calculator.c \
-               ../src/selector/candidate_enumerator.c
+               ../src/selector/candidate_enumerator.c \
+               ../src/selector/memory_helpers.c
 
 PROJECT_OBJS = $(addprefix $(BIN_DIR)/,$(notdir $(PROJECT_SRCS:.c=.o)))
 
@@ -126,7 +126,7 @@ $(BIN_DIR)/slice_utils.o: ../src/selector/slice_utils.c
 $(BIN_DIR)/nearbest.o: ../src/selector/nearbest.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
-$(BIN_DIR)/move_direction.o: ../src/selector/move_direction.c
+$(BIN_DIR)/memory_helpers.o: ../src/selector/memory_helpers.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(BIN_DIR)/lookahead_evaluator.o: ../src/selector/lookahead_evaluator.c

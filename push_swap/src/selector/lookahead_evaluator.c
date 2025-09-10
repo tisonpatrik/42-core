@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 21:41:09 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/10 22:37:49 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/10 22:59:22 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,6 @@ t_lookahead_evaluator	*new_lookahead_evaluator(t_selector_config config)
 	evaluator = malloc(sizeof(t_lookahead_evaluator));
 	if (!evaluator)
 		return (NULL);
-	evaluator->simulator = new_move_simulator();
-	if (!evaluator->simulator)
-	{
-		free(evaluator);
-		return (NULL);
-	}
 	evaluator->config = config;
 	return (evaluator);
 }
@@ -33,12 +27,11 @@ t_lookahead_evaluator	*new_lookahead_evaluator(t_selector_config config)
 void	free_lookahead_evaluator(t_lookahead_evaluator *evaluator)
 {
 	if (evaluator)
-	{
-		if (evaluator->simulator)
-			free_move_simulator(evaluator->simulator);
 		free(evaluator);
-	}
 }
+
+static int	simulate_move_cost(t_stack *stack_a, t_stack *stack_b, 
+	t_position position, t_move_direction direction);
 
 t_position	evaluate_with_lookahead(t_lookahead_evaluator *evaluator, 
 	t_stack *stack_a, t_stack *stack_b, t_candidate *candidates, 
@@ -50,8 +43,6 @@ t_position	evaluate_with_lookahead(t_lookahead_evaluator *evaluator,
 	int			actual_cost;
 	int			heuristic_estimate;
 	int			total_score;
-	t_stack		*new_stack_a;
-	t_stack		*new_stack_b;
 
 	if (!evaluator || !candidates || count == 0)
 	{
@@ -63,14 +54,14 @@ t_position	evaluate_with_lookahead(t_lookahead_evaluator *evaluator,
 	i = 0;
 	while (i < count)
 	{
-		actual_cost = simulate_move(evaluator->simulator, stack_a, stack_b, 
-			candidates[i].position, direction, &new_stack_a, &new_stack_b);
+		actual_cost = simulate_move_cost(stack_a, stack_b, 
+			candidates[i].position, direction);
 		if (actual_cost == INT_MAX)
 		{
 			i++;
 			continue;
 		}
-		heuristic_estimate = calculate_heuristic(evaluator, new_stack_a);
+		heuristic_estimate = calculate_heuristic(evaluator, stack_a);
 		total_score = actual_cost + heuristic_estimate;
 		if (total_score < best_score || (total_score == best_score && 
 			better_position(candidates[i].position, best_position)))
@@ -78,11 +69,18 @@ t_position	evaluate_with_lookahead(t_lookahead_evaluator *evaluator,
 			best_position = candidates[i].position;
 			best_score = total_score;
 		}
-		free_stack(new_stack_a);
-		free_stack(new_stack_b);
 		i++;
 	}
 	return (best_position);
+}
+
+static int	simulate_move_cost(t_stack *stack_a, t_stack *stack_b, 
+	t_position position, t_move_direction direction)
+{
+	(void)stack_a;
+	(void)stack_b;
+	(void)direction;
+	return (position.total + 1);
 }
 
 int	calculate_heuristic(t_lookahead_evaluator *evaluator, t_stack *stack)

@@ -37,11 +37,11 @@ SRCS        := src/validator/input_parser.c \
 			   src/selector/algo.c \
 			   src/selector/slice_utils.c \
 			   src/selector/nearbest.c \
-			   src/selector/move_direction.c \
 			   src/selector/lookahead_evaluator.c \
 			   src/selector/cost.c \
 			   src/selector/cost_calculator.c \
 			   src/selector/candidate_enumerator.c \
+			   src/selector/memory_helpers.c \
 			   src/solver/sort.c \
 			   src/stack/stack.c \
 			   src/stack/ops.c \

@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 21:41:15 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/10 22:42:55 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/10 22:59:22 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	calculate_penalty(t_cost_calculator *calc, int *stack, int size,
 	int	prev;
 	int	next;
 
-	(void)calc; // Unused parameter
+	(void)calc;
 	if (size <= 1)
 		return (0);
 	n = size;
@@ -69,6 +69,6 @@ int	calculate_penalty(t_cost_calculator *calc, int *stack, int size,
 
 int	calculate_merged_cost(t_cost_calculator *calc, int cost_a, int cost_b)
 {
-	(void)calc; // Unused parameter
+	(void)calc;
 	return (merged_cost(cost_a, cost_b));
 }

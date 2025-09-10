@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 21:41:03 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/10 22:37:49 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/10 22:59:22 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,6 @@ t_position	select_best_b_to_a_move(t_sorting_state *ps, int max_candidates)
 	free(b);
 	free(candidates);
 	return (result);
-}
-
-t_position	pick_near_best(t_sorting_state *ps, int max_candidates)
-{
-	return (select_best_b_to_a_move(ps, max_candidates));
 }
 
 t_position	select_best_candidate_with_lookahead(t_stack *stack_a, t_stack *stack_b, 

@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 21:41:42 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/10 22:48:53 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/10 23:01:18 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,14 +62,9 @@ typedef struct s_candidate_enumerator
 	t_selector_config	config;
 }	t_candidate_enumerator;
 
-typedef struct s_move_simulator
-{
-}	t_move_simulator;
-
 typedef struct s_lookahead_evaluator
 {
 	t_selector_config	config;
-	t_move_simulator	*simulator;
 }	t_lookahead_evaluator;
 
 t_selector_config	default_selector_config(void);
@@ -94,22 +89,15 @@ t_candidate			*build_candidates_from_stack_a(
 						t_candidate_enumerator *enumerator,
 						t_stack *a, t_stack *b, int *count);
 
-t_move_simulator	*new_move_simulator(void);
-void				free_move_simulator(t_move_simulator *simulator);
-int					simulate_move(t_move_simulator *simulator, t_stack *stack_a,
-						t_stack *stack_b, t_position position,
-						t_move_direction direction, t_stack **new_stack_a, t_stack **new_stack_b);
+int						calculate_heuristic(t_lookahead_evaluator *evaluator,
+							t_stack *stack);
 
 t_lookahead_evaluator	*new_lookahead_evaluator(t_selector_config config);
-void					free_lookahead_evaluator(
-							t_lookahead_evaluator *evaluator);
-t_position				evaluate_with_lookahead(
-							t_lookahead_evaluator *evaluator,
+void					free_lookahead_evaluator(t_lookahead_evaluator *evaluator);
+t_position				evaluate_with_lookahead(t_lookahead_evaluator *evaluator,
 							t_stack *stack_a, t_stack *stack_b,
 							t_candidate *candidates, int count,
 							t_move_direction direction);
-int						calculate_heuristic(t_lookahead_evaluator *evaluator,
-							t_stack *stack);
 
 bool				better_position(t_position a, t_position b);
 
@@ -134,11 +122,18 @@ int				normalize_index(int array_size, int raw_index);
 
 t_position		select_best_a_to_b_move(t_sorting_state *ps);
 
-t_position		pick_near_best(t_sorting_state *ps, int max_candidates);
+t_position		select_best_b_to_a_move(t_sorting_state *ps, int max_candidates);
 
 t_position		select_best_candidate_with_lookahead(t_stack *stack_a,
 					t_stack *stack_b, t_candidate *candidates, int count,
 					int max_candidates, t_selector_config config,
 					t_move_direction direction);
+
+/* Memory management helpers */
+typedef struct s_cleanup_list	t_cleanup_list;
+t_cleanup_list	*new_cleanup_list(void);
+void			add_to_cleanup(t_cleanup_list *list, void *ptr);
+void			cleanup_all(t_cleanup_list *list);
+void			*safe_malloc_with_cleanup(size_t size, t_cleanup_list *cleanup);
 
 #endif
