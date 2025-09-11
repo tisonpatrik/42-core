@@ -12,43 +12,29 @@ import (
 
 
 func SolvePushSwap(ps *ops.SortingState) {
-	fmt.Printf("[DEBUG] SolvePushSwap: Starting to solve push_swap\n")
-	
 	if stack.IsSorted(ps.A) { 
-		fmt.Printf("[DEBUG] SolvePushSwap: Stack A is already sorted, returning\n")
 		return 
 	}
 
-	fmt.Printf("[DEBUG] SolvePushSwap: Pushing non-LIS elements into B\n")
 	separator.PushNonLISIntoB(ps, true)
 
 	candK := 30
-	fmt.Printf("[DEBUG] SolvePushSwap: Starting main loop with candK=%d\n", candK)
 
 	for stack.GetSize(ps.A) > 3 {
-		fmt.Printf("[DEBUG] SolvePushSwap: Stack A size = %d, calling PickNearBest\n", stack.GetSize(ps.A))
 		pos := selector.PickNearBest(ps, candK)
-		fmt.Printf("[DEBUG] SolvePushSwap: Got position from PickNearBest: %+v\n", pos)
 		ApplyCombined(ps, pos, true)
 	}
 
-	fmt.Printf("[DEBUG] SolvePushSwap: Sorting remaining 3 elements\n")
 	SortThree(ps)
 
-	fmt.Printf("[DEBUG] SolvePushSwap: Moving elements back from B to A\n")
 	for !stack.IsEmpty(ps.B) {
-		fmt.Printf("[DEBUG] SolvePushSwap: Stack B size = %d, calling PickNearBest\n", stack.GetSize(ps.B))
 		pos := selector.PickNearBest(ps, candK)
-		fmt.Printf("[DEBUG] SolvePushSwap: Got position from PickNearBest: %+v\n", pos)
 		ApplyCombined(ps, pos, false) // pa
 	}
 
-	fmt.Printf("[DEBUG] SolvePushSwap: Aligning minimum to top\n")
 	AlignMinToTop(ps)
 
-	fmt.Printf("[DEBUG] SolvePushSwap: Optimizing operations\n")
 	optimizer.OptimizeOps(ps.OpList)
-	fmt.Printf("[DEBUG] SolvePushSwap: Finished solving\n")
 }
 
 func OpenLogFile() *os.File {
