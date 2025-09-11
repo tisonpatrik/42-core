@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ops.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:50:33 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/09 18:50:35 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/11 17:17:39 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef struct s_sorting_state
 t_sorting_state	*create_sorting_state(int *numbers, int n);
 void			free_sorting_state(t_sorting_state *state);
 void			save_operation(t_sorting_state *state, t_operation operation);
+void			print_operations(t_sorting_state *state);
 
 // Atomic operations
 void			swap_a(t_sorting_state *state);

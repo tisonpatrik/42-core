@@ -42,8 +42,53 @@ t_list	*optimize_ops(t_list *seq)
 			ft_lstclear(&temp, free);
 		changed = changed || c;
 		
-		// Skip other optimization steps for now
-		break;
+		// 2) Merge neighbors
+		temp = merge_neighbors(out);
+		c = (temp != out);
+		if (c)
+		{
+			ft_lstclear(&out, free);
+			out = temp;
+		}
+		else
+			ft_lstclear(&temp, free);
+		changed = changed || c;
+		
+		// 3) Cancel inverse pairs
+		temp = cancel_inverse_pairs(out);
+		c = (temp != out);
+		if (c)
+		{
+			ft_lstclear(&out, free);
+			out = temp;
+		}
+		else
+			ft_lstclear(&temp, free);
+		changed = changed || c;
+		
+		// 4) Cancel across other stack A
+		temp = cancel_across_other_stack_a(out);
+		c = (temp != out);
+		if (c)
+		{
+			ft_lstclear(&out, free);
+			out = temp;
+		}
+		else
+			ft_lstclear(&temp, free);
+		changed = changed || c;
+		
+		// 5) Cancel across other stack B
+		temp = cancel_across_other_stack_b(out);
+		c = (temp != out);
+		if (c)
+		{
+			ft_lstclear(&out, free);
+			out = temp;
+		}
+		else
+			ft_lstclear(&temp, free);
+		changed = changed || c;
 	}
 	
 	return (out);

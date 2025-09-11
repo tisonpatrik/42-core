@@ -105,7 +105,7 @@ bool	bubble_operation(t_list *out, int i, int j, bool is_a)
  * Bubble operation across other stack operations
  * @param src Source operation list
  * @param max_gap Maximum gap for bubbling
- * @return New list with bubbled operations
+ * @return New list with bubbled operations (always returns a copy)
  */
 t_list	*bubble_across_other_stack(t_list *src, int max_gap)
 {
@@ -113,13 +113,11 @@ t_list	*bubble_across_other_stack(t_list *src, int max_gap)
 		return (src);
 	int		n = ft_lstsize(src);
 	if (n < 3)
-		return (src);
+		return (list_copy(src));
 	
 	t_list	*out = list_copy(src);
 	if (out == NULL)
-		return (src);
-	
-	bool	changed = false;
+		return (NULL);
 	
 	// Go through sequence and look for pairs to merge within maxGap range
 	for (int i = 0; i < n - 1; i++)
@@ -137,7 +135,6 @@ t_list	*bubble_across_other_stack(t_list *src, int max_gap)
 				{
 					if (bubble_operation(out, i, j, true)) // bubble B-op through B-only block
 					{
-						changed = true;
 						// Move one step further, merge will handle next pass
 					}
 					break;
@@ -159,7 +156,7 @@ t_list	*bubble_across_other_stack(t_list *src, int max_gap)
 				{
 					if (bubble_operation(out, i, j, false)) // bubble A-op through A-only block
 					{
-						changed = true;
+						// Bubbling successful
 					}
 					break;
 				}
@@ -168,14 +165,6 @@ t_list	*bubble_across_other_stack(t_list *src, int max_gap)
 			}
 			continue;
 		}
-	}
-	
-	if (changed)
-		ft_lstclear(&src, free);
-	else
-	{
-		ft_lstclear(&out, free);
-		return (src);
 	}
 	
 	return (out);

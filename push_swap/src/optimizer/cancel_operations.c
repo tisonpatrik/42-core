@@ -40,16 +40,15 @@ bool	is_inverse(t_operation a, t_operation b)
 /**
  * Cancel adjacent inverse pairs in the operation sequence
  * @param src Source operation list
- * @return New list with inverse pairs removed
+ * @return New list with inverse pairs removed (always returns a copy)
  */
 t_list	*cancel_inverse_pairs(t_list *src)
 {
 	if (!src || ft_lstsize(src) < 2)
-		return (src);
+		return (list_copy(src));
 	
 	t_list	*dst = NULL;
 	t_list	*current = src;
-	bool	changed = false;
 	
 	while (current != NULL)
 	{
@@ -59,26 +58,20 @@ t_list	*cancel_inverse_pairs(t_list *src)
 		{
 			// Skip both operations (they cancel out)
 			current = current->next->next;
-			changed = true;
 		}
 		else
 		{
 			// Add operation to result
 			t_operation *op = malloc(sizeof(t_operation));
 			if (op == NULL)
-				return (src); // Memory allocation failed
+			{
+				ft_lstclear(&dst, free);
+				return (NULL);
+			}
 			*op = *(t_operation*)current->content;
 			ft_lstadd_back(&dst, ft_lstnew(op));
 			current = current->next;
 		}
-	}
-	
-	if (changed)
-		ft_lstclear(&src, free);
-	else
-	{
-		ft_lstclear(&dst, free);
-		return (src);
 	}
 	
 	return (dst);
@@ -87,16 +80,15 @@ t_list	*cancel_inverse_pairs(t_list *src)
 /**
  * Cancel inverses across other stack for A operations
  * @param src Source operation list
- * @return New list with cross-stack cancellations applied
+ * @return New list with cross-stack cancellations applied (always returns a copy)
  */
 t_list	*cancel_across_other_stack_a(t_list *src)
 {
 	if (!src || ft_lstsize(src) < 3)
-		return (src);
+		return (list_copy(src));
 	
 	t_list	*dst = NULL;
 	t_list	*current = src;
-	bool	changed = false;
 	
 	while (current != NULL)
 	{
@@ -119,13 +111,15 @@ t_list	*cancel_across_other_stack_a(t_list *src)
 					{
 						t_operation *op_copy = malloc(sizeof(t_operation));
 						if (op_copy == NULL)
-							return (src);
+						{
+							ft_lstclear(&dst, free);
+							return (NULL);
+						}
 						*op_copy = *(t_operation*)temp->content;
 						ft_lstadd_back(&dst, ft_lstnew(op_copy));
 						temp = temp->next;
 					}
 					current = search;
-					changed = true;
 					goto next;
 				}
 				search = search->next;
@@ -134,19 +128,14 @@ t_list	*cancel_across_other_stack_a(t_list *src)
 		// Add current operation
 		t_operation *op_copy = malloc(sizeof(t_operation));
 		if (op_copy == NULL)
-			return (src);
+		{
+			ft_lstclear(&dst, free);
+			return (NULL);
+		}
 		*op_copy = op;
 		ft_lstadd_back(&dst, ft_lstnew(op_copy));
 	next:
 		current = current->next;
-	}
-	
-	if (changed)
-		ft_lstclear(&src, free);
-	else
-	{
-		ft_lstclear(&dst, free);
-		return (src);
 	}
 	
 	return (dst);
@@ -155,16 +144,15 @@ t_list	*cancel_across_other_stack_a(t_list *src)
 /**
  * Cancel inverses across other stack for B operations
  * @param src Source operation list
- * @return New list with cross-stack cancellations applied
+ * @return New list with cross-stack cancellations applied (always returns a copy)
  */
 t_list	*cancel_across_other_stack_b(t_list *src)
 {
 	if (!src || ft_lstsize(src) < 3)
-		return (src);
+		return (list_copy(src));
 	
 	t_list	*dst = NULL;
 	t_list	*current = src;
-	bool	changed = false;
 	
 	while (current != NULL)
 	{
@@ -187,13 +175,15 @@ t_list	*cancel_across_other_stack_b(t_list *src)
 					{
 						t_operation *op_copy = malloc(sizeof(t_operation));
 						if (op_copy == NULL)
-							return (src);
+						{
+							ft_lstclear(&dst, free);
+							return (NULL);
+						}
 						*op_copy = *(t_operation*)temp->content;
 						ft_lstadd_back(&dst, ft_lstnew(op_copy));
 						temp = temp->next;
 					}
 					current = search;
-					changed = true;
 					goto next;
 				}
 				search = search->next;
@@ -202,19 +192,14 @@ t_list	*cancel_across_other_stack_b(t_list *src)
 		// Add current operation
 		t_operation *op_copy = malloc(sizeof(t_operation));
 		if (op_copy == NULL)
-			return (src);
+		{
+			ft_lstclear(&dst, free);
+			return (NULL);
+		}
 		*op_copy = op;
 		ft_lstadd_back(&dst, ft_lstnew(op_copy));
 	next:
 		current = current->next;
-	}
-	
-	if (changed)
-		ft_lstclear(&src, free);
-	else
-	{
-		ft_lstclear(&dst, free);
-		return (src);
 	}
 	
 	return (dst);
