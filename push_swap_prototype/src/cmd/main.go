@@ -1,8 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"push_swap_prototype/internal/ops"
 	"push_swap_prototype/internal/solver"
+	"push_swap_prototype/internal/stack"
 )
 
 // func main() {
@@ -43,13 +45,18 @@ import (
 // }
 
 func main() {
-	numbers := GenerateRandomNumbers(500)
+	numbers := []int{5, 4, 3, 2, 1}
+	// numbers := GenerateRandomNumbers(100)
 	ps := ops.InitData(numbers)
 	solver.SolvePushSwap(ps)
-	ps.PrintOps()
+	
+	for _, op := range ps.OpList {
+		fmt.Println(OpToString(op))
+	}
+	
 	// stack.PrintStack(ps.A, "A")
-	// fmt.Println(stack.IsSorted(ps.A))
-	// fmt.Println(stack.IsEmpty(ps.B))
-	// fmt.Println(len(ps.OpList))
+	fmt.Println(stack.IsSorted(ps.A))
+	fmt.Println(stack.IsEmpty(ps.B))
+	fmt.Println(len(ps.OpList))
 
 }

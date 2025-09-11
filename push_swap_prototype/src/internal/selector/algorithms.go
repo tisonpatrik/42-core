@@ -60,18 +60,27 @@ func FindTargetPosition(sortedArr []int, val int) int {
 		return 0
 	}
 	
-	// Binary search for the first element > val
-	idx := BinarySearchInsertionPoint(sortedArr, val, func(arrVal, targetVal int) bool {
-		return arrVal <= targetVal
-	})
-	
-	n := len(sortedArr)
-	if idx < n {
-		return idx
+ 	// Find the first element > val
+	bestIdx, bestVal := -1, 0
+	for i, x := range sortedArr {
+		if x > val {
+			if bestIdx == -1 || x < bestVal {
+				bestVal, bestIdx = x, i
+			}
+		}
+	}
+	if bestIdx != -1 {
+		return bestIdx
 	}
 	
-	// If val >= all elements, return index of minimum (0 in sorted ascending stack)
-	return 0
+	// If val >= all elements, return index of minimum
+	minIdx, minVal := 0, sortedArr[0]
+	for i, x := range sortedArr {
+		if x < minVal {
+			minVal, minIdx = x, i
+		}
+	}
+	return minIdx
 }
 
 // NormalizeIndex normalizes an index to be within bounds [0, n)

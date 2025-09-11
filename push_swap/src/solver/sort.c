@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:49:21 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/11 18:20:17 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/11 19:27:14 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,5 @@ void	solve_push_swap(t_sorting_state *state)
  
 	align_min_to_top(state);
 
-	// state->operations = optimize_ops(state->operations);
+	state->operations = optimize_ops(state->operations);
 }
