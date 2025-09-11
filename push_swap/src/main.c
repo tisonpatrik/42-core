@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 20:56:32 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/10 21:11:19 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/11 15:07:48 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ int	main(int argc, char *argv[])
 	{
 		return (1);
 	}
-	free(result.input);
 	state = create_sorting_state(result.input, result.count);
+	free(result.input);
 	solve_push_swap(state);
 	free_sorting_state(state);
 	return (0);

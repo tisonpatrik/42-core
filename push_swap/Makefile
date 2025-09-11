@@ -42,6 +42,14 @@ SRCS        := src/validator/input_parser.c \
 			   src/selector/cost_calculator.c \
 			   src/selector/candidate_enumerator.c \
 			   src/solver/sort.c \
+			   src/solver/sort_three.c \
+			   src/solver/apply_combined.c \
+			   src/solver/align_min_to_top.c \
+			   src/optimizer/optimizer.c \
+			   src/optimizer/bubble_operations.c \
+			   src/optimizer/merge_neighbors.c \
+			   src/optimizer/cancel_operations.c \
+			   src/optimizer/operation_properties.c \
 			   src/stack/stack.c \
 			   src/stack/ops.c \
 			   src/stack/node.c \

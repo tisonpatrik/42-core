@@ -1,20 +1,13 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   solver.h                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/09 19:24:37 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/09 19:24:38 by patrik           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #ifndef SOLVER_H
 # define SOLVER_H
 
 # include "ops.h"
+# include "selector.h"
 
 void	solve_push_swap(t_sorting_state *state);
+void	apply_combined(t_sorting_state *ps, t_position p, bool push_to_b);
+void	align_min_to_top(t_sorting_state *ps);
+void	sort_three(t_sorting_state *ps);
 
 #endif
