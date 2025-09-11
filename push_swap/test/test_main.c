@@ -41,7 +41,7 @@ int main()
     test_reverse_rotate_operations();
     test_is_sorted_function();
     test_lis_operations();
-    test_pick_near_best_operations();
+    test_select_best_b_to_a_move_all_combinations_1_2_3_4();
     test_enumerate_b_to_a_iteration0();
     test_enumerate_a_to_b_iteration0();
     test_snapshot_stack_iteration0();

@@ -6,11 +6,12 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:48:36 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/10 22:37:49 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/11 21:50:13 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/stack.h"
+#include "../../libft/include/libft.h"
 #include <stdbool.h>
 #include <stdlib.h>
 
@@ -177,4 +178,23 @@ void	insert_node_at_index(t_stack *stack, t_node *node, int index)
 		stack->head = node;
 	target_node->prev = node;
 	stack->size++;
+}
+
+void	print_stack_values(t_stack *stack)
+{
+	t_node	*current;
+
+	if (!stack)
+	{
+		ft_putstr_fd("(empty)", 1);
+		return ;
+	}
+	current = get_head(stack);
+	while (current)
+	{
+		ft_putnbr_fd(get_content(current), 1);
+		current = get_next(current);
+		if (current)
+			ft_putstr_fd(" ", 1);
+	}
 }

@@ -19,7 +19,7 @@ void test_rotate_operations(void);
 void test_reverse_rotate_operations(void);
 void test_is_sorted_function(void);
 void test_lis_operations(void);
-void test_pick_near_best_operations(void);
+void test_select_best_b_to_a_move_all_combinations_1_2_3_4(void);
 void test_enumerate_b_to_a_iteration0(void);
 void test_enumerate_a_to_b_iteration0(void);
 void test_snapshot_stack_iteration0(void);

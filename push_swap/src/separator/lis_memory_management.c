@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:49:46 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/09 20:29:21 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/11 22:53:09 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,9 @@ t_node_bool_array	*allocate_lis_memory(t_allocation_data *allocation_data)
 		free(*allocation_data->vals);
 		return (NULL);
 	}
+	// Initialize arrays to avoid non-deterministic behavior
+	ft_bzero(*allocation_data->lis, sizeof(**allocation_data->lis) * (size_t)allocation_data->n);
+	ft_bzero(*allocation_data->prev, sizeof(**allocation_data->prev) * (size_t)allocation_data->n);
 	return ((t_node_bool_array *)1);
 }
 
