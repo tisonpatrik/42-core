@@ -12,6 +12,7 @@
 
 #include "../../include/ops.h"
 #include <stdlib.h>
+#include <unistd.h>
 
 t_sorting_state	*create_sorting_state(int *numbers, int n)
 {
@@ -88,8 +89,8 @@ void	print_operations(t_sorting_state *state)
 {
 	t_list	*current;
 	char	*operation_strings[] = {
-		"sa", "sb", "ss", "pa", "pb", 
-		"ra", "rb", "rr", "rra", "rrb", "rrr"
+		"sa\n", "sb\n", "ss\n", "pa\n", "pb\n", 
+		"ra\n", "rb\n", "rr\n", "rra\n", "rrb\n", "rrr\n"
 	};
 
 	if (!state || !state->operations)
@@ -101,7 +102,7 @@ void	print_operations(t_sorting_state *state)
 		t_operation op = *(t_operation*)current->content;
 		if (op >= SA && op <= RRR)
 		{
-			ft_printf("%s\n", operation_strings[op]);
+			write(1, operation_strings[op], ft_strlen(operation_strings[op]));
 		}
 		current = current->next;
 	}

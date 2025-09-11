@@ -5,7 +5,7 @@ LIBFT = ../libft/bin/libft.a
 
 # Directories
 BIN_DIR = bin
-TEST_SRCS = test_main.c test_swap.c test_push.c test_rotate.c test_reverse_rotate.c test_is_sorted.c test_lis.c test_pick_near_best.c test_enumerate_b_to_a.c test_enumerate_a_to_b.c test_snapshot_stack.c
+TEST_SRCS = test_main.c test_swap.c test_push.c test_rotate.c test_reverse_rotate.c test_is_sorted.c test_lis.c test_pick_near_best.c test_enumerate_b_to_a.c test_enumerate_a_to_b.c test_snapshot_stack.c test_apply_combined.c test_align_min_to_top.c
 TEST_OBJS = $(TEST_SRCS:%.c=$(BIN_DIR)/%.o)
 TEST_BIN = $(BIN_DIR)/test_main
 
@@ -34,7 +34,9 @@ PROJECT_SRCS = ../src/stack/stack.c \
                ../src/selector/lookahead_evaluator.c \
                ../src/selector/cost.c \
                ../src/selector/cost_calculator.c \
-               ../src/selector/candidate_enumerator.c
+               ../src/selector/candidate_enumerator.c \
+               ../src/solver/apply_combined.c \
+               ../src/solver/align_min_to_top.c
 
 PROJECT_OBJS = $(addprefix $(BIN_DIR)/,$(notdir $(PROJECT_SRCS:.c=.o)))
 
@@ -139,6 +141,12 @@ $(BIN_DIR)/candidate_enumerator.o: ../src/selector/candidate_enumerator.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(BIN_DIR)/algo.o: ../src/selector/algo.c
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+$(BIN_DIR)/apply_combined.o: ../src/solver/apply_combined.c
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+$(BIN_DIR)/align_min_to_top.o: ../src/solver/align_min_to_top.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 # Build libft if needed

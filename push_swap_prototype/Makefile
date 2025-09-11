@@ -1,4 +1,4 @@
-name:= push_swap_prototype
+name:= push_swap
 bin_dir:= bin
 
 tidy:

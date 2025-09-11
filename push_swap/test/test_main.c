@@ -47,6 +47,14 @@ int main()
     test_snapshot_stack_iteration0();
     test_snapshot_stack_empty_stack();
     test_snapshot_stack_single_element();
+    test_apply_combined_iteration0();
+    test_apply_combined_iteration1();
+    test_apply_combined_iteration2();
+    test_apply_combined_push_to_a();
+    test_align_min_to_top_iteration0();
+    test_align_min_to_top_iteration1();
+    test_align_min_to_top_iteration2();
+    test_align_min_to_top_simple_case();
     
     printf("\n✨ All tests completed!\n");
     return 0;

@@ -25,5 +25,13 @@ void test_enumerate_a_to_b_iteration0(void);
 void test_snapshot_stack_iteration0(void);
 void test_snapshot_stack_empty_stack(void);
 void test_snapshot_stack_single_element(void);
+void test_apply_combined_iteration0(void);
+void test_apply_combined_iteration1(void);
+void test_apply_combined_iteration2(void);
+void test_apply_combined_push_to_a(void);
+void test_align_min_to_top_iteration0(void);
+void test_align_min_to_top_iteration1(void);
+void test_align_min_to_top_iteration2(void);
+void test_align_min_to_top_simple_case(void);
 
 #endif
