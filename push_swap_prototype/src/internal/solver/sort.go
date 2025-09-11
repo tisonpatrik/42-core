@@ -21,14 +21,14 @@ func SolvePushSwap(ps *ops.SortingState) {
 	candK := 30
 
 	for stack.GetSize(ps.A) > 3 {
-		pos := selector.PickNearBest(ps, candK)
+		pos := selector.SelectBestBtoAMove(ps, candK)
 		ApplyCombined(ps, pos, true)
 	}
 
 	SortThree(ps)
 
 	for !stack.IsEmpty(ps.B) {
-		pos := selector.PickNearBest(ps, candK)
+		pos := selector.SelectBestBtoAMove(ps, candK)
 		ApplyCombined(ps, pos, false) // pa
 	}
 

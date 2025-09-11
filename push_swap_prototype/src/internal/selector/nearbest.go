@@ -24,10 +24,6 @@ func SelectBestBtoAMove(ps *ops.SortingState, maxCandidates int) Position {
 	return selectBestCandidateWithLookahead(a, b, candidates, maxCandidates, config, BtoA)
 }
 
-// PickNearBest is kept for backward compatibility - delegates to SelectBestBtoAMove
-func PickNearBest(ps *ops.SortingState, maxCandidates int) Position {
-	return SelectBestBtoAMove(ps, maxCandidates)
-}
 
 // selectBestCandidateWithLookahead filters candidates and selects the best one using micro-lookahead
 func selectBestCandidateWithLookahead(a, b []int, candidates []Candidate, maxCandidates int, config SelectorConfig, direction MoveDirection) Position {
