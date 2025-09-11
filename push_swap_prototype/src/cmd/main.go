@@ -1,10 +1,13 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
 	"push_swap_prototype/internal/ops"
 	"push_swap_prototype/internal/solver"
-	"push_swap_prototype/internal/stack"
+	"strconv"
+	"strings"
 )
 
 // func main() {
@@ -45,18 +48,33 @@ import (
 // }
 
 func main() {
-	numbers := []int{5, 4, 3, 2, 1}
-	// numbers := GenerateRandomNumbers(100)
+	var numbers []int
+	
+	if len(os.Args) > 1 {
+		// Read from command line arguments
+		numbers = make([]int, len(os.Args)-1)
+		for i, arg := range os.Args[1:] {
+			num, _ := strconv.Atoi(arg)
+			numbers[i] = num
+		}
+	} else {
+		// Read from stdin
+		scanner := bufio.NewScanner(os.Stdin)
+		scanner.Scan()
+		line := scanner.Text()
+		
+		parts := strings.Fields(line)
+		numbers = make([]int, len(parts))
+		for i, part := range parts {
+			num, _ := strconv.Atoi(part)
+			numbers[i] = num
+		}
+	}
+	
 	ps := ops.InitData(numbers)
 	solver.SolvePushSwap(ps)
 	
 	for _, op := range ps.OpList {
 		fmt.Println(OpToString(op))
 	}
-	
-	// stack.PrintStack(ps.A, "A")
-	fmt.Println(stack.IsSorted(ps.A))
-	fmt.Println(stack.IsEmpty(ps.B))
-	fmt.Println(len(ps.OpList))
-
 }
