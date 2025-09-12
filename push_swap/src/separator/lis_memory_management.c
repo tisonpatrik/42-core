@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:49:46 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/11 22:53:09 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/12 03:07:32 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,6 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-/* Forward declarations for functions defined in other files */
-void				compute_longest_increasing_lengths(t_lis_comp_data *data,
-						t_lis_result *result);
-t_node_bool_array	*build_lis_result(t_lis_arrays *arrays,
-						t_lis_result *lis_result);
 
 int	extract_stack_values_to_arrays(t_stack *stack, t_node **nodes, int *values,
 		int count)
@@ -63,9 +58,6 @@ t_node_bool_array	*allocate_lis_memory(t_allocation_data *allocation_data)
 		free(*allocation_data->vals);
 		return (NULL);
 	}
-	// Initialize arrays to avoid non-deterministic behavior
-	ft_bzero(*allocation_data->lis, sizeof(**allocation_data->lis) * (size_t)allocation_data->n);
-	ft_bzero(*allocation_data->prev, sizeof(**allocation_data->prev) * (size_t)allocation_data->n);
 	return ((t_node_bool_array *)1);
 }
 

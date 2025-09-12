@@ -6,12 +6,55 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 21:41:03 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/11 22:21:13 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/12 00:21:53 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../../include/selector.h"
+#include <stdio.h>
+/* Utility function to print stack values */
+static void	print_nearbest_stack_values(t_stack *stack, const char *name)
+{
+	t_node	*current;
+	int		*values;
+	int		size;
+	int		i;
+
+	if (!stack)
+	{
+		printf("%s: (null)\n", name);
+		return ;
+	}
+	size = get_size(stack);
+	if (size == 0)
+	{
+		printf("%s: []\n", name);
+		return ;
+	}
+	values = malloc(size * sizeof(int));
+	if (!values)
+		return ;
+	current = get_head(stack);
+	i = 0;
+	while (current && i < size)
+	{
+		values[i] = get_content(current);
+		current = get_next(current);
+		i++;
+	}
+	printf("%s: [", name);
+	i = 0;
+	while (i < size)
+	{
+		printf("%d", values[i]);
+		if (i < size - 1)
+			printf(", ");
+		i++;
+	}
+	printf("]\n");
+	free(values);
+}
 
 
 t_position	select_best_b_to_a_move(t_sorting_state *ps, int max_candidates)
@@ -31,6 +74,14 @@ t_position	select_best_b_to_a_move(t_sorting_state *ps, int max_candidates)
 		result.total = INT_MAX;
 		return (result);
 	}
+	
+	printf("select_best_b_to_a_move called with max_candidates=%d\n", max_candidates);
+	printf("ps state:\n");
+	print_nearbest_stack_values(ps->a, "  A");
+	print_nearbest_stack_values(ps->b, "  B");
+	printf("  A size: %d\n", get_size(ps->a));
+	printf("  B size: %d\n", get_size(ps->b));
+	
 	config = default_selector_config();
 	a = snapshot_stack(ps->a, &size_a);
 	b = snapshot_stack(ps->b, &size_b);

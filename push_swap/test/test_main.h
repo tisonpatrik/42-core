@@ -18,7 +18,6 @@ void test_push_operations(void);
 void test_rotate_operations(void);
 void test_reverse_rotate_operations(void);
 void test_is_sorted_function(void);
-void test_lis_operations(void);
 void test_select_best_b_to_a_move_all_combinations_1_2_3_4(void);
 void test_enumerate_b_to_a_iteration0(void);
 void test_enumerate_a_to_b_iteration0(void);
@@ -33,5 +32,23 @@ void test_align_min_to_top_iteration0(void);
 void test_align_min_to_top_iteration1(void);
 void test_align_min_to_top_iteration2(void);
 void test_align_min_to_top_simple_case(void);
+void test_push_non_lis_into_b(void);
+void test_lis_debug_function(void);
+void test_main_app_flow_function(void);
+
+// indexize_array tests
+void test_indexize_array_basic_unique_values(void);
+void test_indexize_array_with_duplicates(void);
+void test_indexize_array_single_element(void);
+void test_indexize_array_all_same_values(void);
+void test_indexize_array_already_sorted(void);
+void test_indexize_array_reverse_sorted(void);
+void test_indexize_array_negative_values(void);
+void test_indexize_array_empty_array(void);
+void test_indexize_array_null_input(void);
+void test_indexize_array_negative_size(void);
+void test_indexize_array_idempotent_property(void);
+void test_indexize_array_user_specific_input(void);
+void test_lis_debug_function(void);
 
 #endif

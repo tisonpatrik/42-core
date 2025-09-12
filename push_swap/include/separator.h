@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 19:24:28 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/10 21:41:48 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/12 03:10:52 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,17 +80,13 @@ typedef struct s_lis_arrays
 	int				*prev;
 }	t_lis_arrays;
 
+t_node_bool_array	*allocate_lis_memory(t_allocation_data *allocation_data);
+t_node_bool_array	*execute_lis_algorithm(t_stack *stack, int element_count);
 t_node_bool_array	*get_lis_nodes(t_stack *stack);
-t_node_bool_array	*get_lis_nodes_impl(t_stack *stack, int n);
-void				compute_longest_increasing_lengths(t_lis_comp_data *data,
-						t_lis_result *result);
-t_node_bool_array	*build_lis_result_from_computation(t_lis_arrays *arrays,
-						t_lis_result *lis_result);
-void				reconstruct_lis_sequence_from_tracking(
-						t_node_bool_array *result, t_lis_arrays *arrays,
-						t_lis_result *lis_result);
-void				reverse_sequence_to_correct_order(
-						t_node_bool_array *result);
-void				push_non_lis_into_b(t_sorting_state *state);
-
+int	extract_stack_values_to_arrays(t_stack *stack, t_node **nodes, int *values,
+		int count);
+t_node_bool_array	*build_lis_result(t_lis_arrays *algorithm_data,
+		t_lis_result *computation_result);
+void	free_lis_computation_memory(t_node **nodes, int *values,
+		int *subsequence_lengths, int *previous_indices);
 #endif

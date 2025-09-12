@@ -5,7 +5,7 @@ LIBFT = ../libft/bin/libft.a
 
 # Directories
 BIN_DIR = bin
-TEST_SRCS = test_main.c test_swap.c test_push.c test_rotate.c test_reverse_rotate.c test_is_sorted.c test_lis.c test_pick_near_best.c test_enumerate_b_to_a.c test_enumerate_a_to_b.c test_snapshot_stack.c test_apply_combined.c test_align_min_to_top.c
+TEST_SRCS = test_main.c test_swap.c test_push.c test_rotate.c test_reverse_rotate.c test_is_sorted.c test_pick_near_best.c test_enumerate_b_to_a.c test_enumerate_a_to_b.c test_snapshot_stack.c test_apply_combined.c test_align_min_to_top.c test_lis_debug.c test_indexize_array.c
 TEST_OBJS = $(TEST_SRCS:%.c=$(BIN_DIR)/%.o)
 TEST_BIN = $(BIN_DIR)/test_main
 
@@ -20,10 +20,14 @@ PROJECT_SRCS = ../src/stack/stack.c \
                ../src/ops/reverse_rotate.c \
                ../src/ops/sorting_state.c \
                ../src/utils/utils.c \
+               ../src/validator/input_parser.c \
+               ../src/validator/tokenizer.c \
+               ../src/validator/normalization.c \
                ../src/separator/lis_interface.c \
                ../src/separator/lis_memory_management.c \
                ../src/separator/lis_algorithm.c \
                ../src/separator/lis_result_builder.c \
+               ../src/separator/separator.c \
                ../src/selector/selector_utils.c \
                ../src/selector/selector_config.c \
                ../src/selector/candidate_manager.c \
@@ -93,6 +97,15 @@ $(BIN_DIR)/sorting_state.o: ../src/ops/sorting_state.c
 $(BIN_DIR)/utils.o: ../src/utils/utils.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
+$(BIN_DIR)/input_parser.o: ../src/validator/input_parser.c
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+$(BIN_DIR)/tokenizer.o: ../src/validator/tokenizer.c
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+$(BIN_DIR)/normalization.o: ../src/validator/normalization.c
+	@$(CC) $(CFLAGS) -c $< -o $@
+
 $(BIN_DIR)/lis_interface.o: ../src/separator/lis_interface.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
@@ -103,6 +116,9 @@ $(BIN_DIR)/lis_algorithm.o: ../src/separator/lis_algorithm.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(BIN_DIR)/lis_result_builder.o: ../src/separator/lis_result_builder.c
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+$(BIN_DIR)/separator.o: ../src/separator/separator.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(BIN_DIR)/selector_utils.o: ../src/selector/selector_utils.c

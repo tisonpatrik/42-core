@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:49:21 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/11 23:03:04 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/12 01:33:09 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	solve_push_swap(t_sorting_state *state)
 	if (is_sorted(state->a))
 		return ;
 	
-	push_non_lis_into_b(state);
+	push_non_lis_into_b(state, true);
 
 	while (get_size(state->a) > 3)
 	{
@@ -33,11 +33,11 @@ void	solve_push_swap(t_sorting_state *state)
 
 	// sort_three(state);
 
-	// while (get_size(state->b) > 0)
-	// {
-	// 	t_position position = select_best_b_to_a_move(state, candidate_count);
-	// 	apply_combined(state, position, false); // pa
-	// }
+	while (get_size(state->b) > 0)
+	{
+		t_position position = select_best_b_to_a_move(state, 30);
+		apply_combined(state, position, false); // pa
+	}
  
 	// align_min_to_top(state);
 

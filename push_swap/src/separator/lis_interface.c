@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 19:25:49 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/10 21:11:27 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/12 03:07:17 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-/* Forward declaration for algorithm execution */
-t_node_bool_array	*execute_lis_algorithm(t_stack *stack, int element_count);
 
 /**
  * Finds the Longest Increasing Subsequence (LIS) in a stack.
