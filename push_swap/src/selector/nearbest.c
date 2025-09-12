@@ -6,161 +6,68 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 21:41:03 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/12 00:21:53 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/12 23:11:21 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../../include/selector.h"
-#include <stdio.h>
-/* Utility function to print stack values */
-static void	print_nearbest_stack_values(t_stack *stack, const char *name)
+
+
+t_position	find_best_move(t_sorting_state *state, t_move_direction direction,
+	t_selector_arena *arena)
 {
-	t_node	*current;
-	int		*values;
-	int		size;
-	int		i;
+	t_candidate	*candidates;
+	t_candidate	*filtered_candidates;
+	t_candidate	*top_k_candidates;
+	t_position	result;
 
-	if (!stack)
-	{
-		printf("%s: (null)\n", name);
-		return ;
-	}
-	size = get_size(stack);
-	if (size == 0)
-	{
-		printf("%s: []\n", name);
-		return ;
-	}
-	values = malloc(size * sizeof(int));
-	if (!values)
-		return ;
-	current = get_head(stack);
-	i = 0;
-	while (current && i < size)
-	{
-		values[i] = get_content(current);
-		current = get_next(current);
-		i++;
-	}
-	printf("%s: [", name);
-	i = 0;
-	while (i < size)
-	{
-		printf("%d", values[i]);
-		if (i < size - 1)
-			printf(", ");
-		i++;
-	}
-	printf("]\n");
-	free(values);
-}
+	candidates = enumerate_candidates(state, direction, arena);
 
+	filtered_candidates = build_filtered_candidates(candidates,
+		arena->config.cost_threshold_offset, arena);
 
-t_position	select_best_b_to_a_move(t_sorting_state *ps, int max_candidates)
-{
-	t_selector_config	config;
-	int					*a;
-	int					*b;
-	int					size_a;
-	int					size_b;
-	t_candidate_enumerator	*enumerator;
-	t_candidate			*candidates;
-	int					candidate_count;
-	t_position			result;
+	top_k_candidates = build_top_k_candidates(filtered_candidates,
+		arena->config.max_candidates, arena);
 
-	if (!ps)
-	{
-		result.total = INT_MAX;
-		return (result);
-	}
-	
-	printf("select_best_b_to_a_move called with max_candidates=%d\n", max_candidates);
-	printf("ps state:\n");
-	print_nearbest_stack_values(ps->a, "  A");
-	print_nearbest_stack_values(ps->b, "  B");
-	printf("  A size: %d\n", get_size(ps->a));
-	printf("  B size: %d\n", get_size(ps->b));
-	
-	config = default_selector_config();
-	a = snapshot_stack(ps->a, &size_a);
-	b = snapshot_stack(ps->b, &size_b);
-	if (!a || !b)
-	{
-		if (a)
-			free(a);
-		if (b)
-			free(b);
-		result.total = INT_MAX;
-		return (result);
-	}
-	enumerator = new_candidate_enumerator(config);
-	if (!enumerator)
-	{
-		free(a);
-		free(b);
-		result.total = INT_MAX;
-		return (result);
-	}
-	candidates = enumerate_b_to_a(enumerator, a, size_a, b, size_b, &candidate_count);
-	free_candidate_enumerator(enumerator);
-	if (!candidates || candidate_count == 0)
-	{
-		free(a);
-		free(b);
-		if (candidates)
-			free(candidates);
-		return (select_best_a_to_b_move(ps));
-	}
-	result = select_best_candidate_with_lookahead(ps->a, ps->b, 
-		candidates, candidate_count, max_candidates, config, MOVE_B_TO_A);
-	free(a);
-	free(b);
-	free(candidates);
+	result = evaluate_with_lookahead(state, top_k_candidates, arena);
 	return (result);
 }
 
-t_position	select_best_candidate_with_lookahead(t_stack *stack_a, t_stack *stack_b, 
-	t_candidate *candidates, int count, int max_candidates, 
-	t_selector_config config, t_move_direction direction)
+t_position	select_best_a_to_b_move(t_sorting_state *ps, int max_candidates, t_simulation_config config)
 {
-	t_candidate			*filtered_candidates;
-	int					filtered_count;
-	t_candidate			*top_k_candidates;
-	int					top_k_count;
-	t_lookahead_evaluator	*evaluator;
-	t_position			result;
+	t_selector_arena	*arena;
+	t_position		result;
+	int			max_stack_size;
 
-	if (!stack_a || !stack_b || !candidates || count == 0)
+	max_stack_size = get_max_stack_size(ps->a, ps->b);
+	arena = allocate_selector_arena(max_candidates, max_stack_size);
+	if (!arena)
 	{
 		result.total = INT_MAX;
 		return (result);
 	}
-	filtered_candidates = filter_candidates_by_threshold(candidates, count, 
-		config.cost_threshold_offset, &filtered_count);
-	if (!filtered_candidates)
+	arena->config = config;
+	result = find_best_move(ps, MOVE_A_TO_B, arena);
+	free_selector_arena(arena);
+	return (result);
+}
+
+t_position	select_best_b_to_a_move(t_sorting_state *ps, int max_candidates, t_simulation_config config)
+{
+	t_selector_arena	*arena;
+	t_position		result;
+	int			max_stack_size;
+
+	max_stack_size = (get_size(ps->a) > get_size(ps->b)) ? get_size(ps->a) : get_size(ps->b);
+	arena = allocate_selector_arena(max_candidates, max_stack_size);
+	if (!arena)
 	{
 		result.total = INT_MAX;
 		return (result);
 	}
-	top_k_candidates = select_top_k_candidates(filtered_candidates, 
-		filtered_count, max_candidates, &top_k_count);
-	free(filtered_candidates);
-	if (!top_k_candidates)
-	{
-		result.total = INT_MAX;
-		return (result);
-	}
-	evaluator = new_lookahead_evaluator(config);
-	if (!evaluator)
-	{
-		free(top_k_candidates);
-		result.total = INT_MAX;
-		return (result);
-	}
-	result = evaluate_with_lookahead(evaluator, stack_a, stack_b, 
-		top_k_candidates, top_k_count, direction);
-	free_lookahead_evaluator(evaluator);
-	free(top_k_candidates);
+	arena->config = config;
+	arena->config.max_candidates = max_candidates;
+	result = find_best_move(ps, MOVE_B_TO_A, arena);
+	free_selector_arena(arena);
 	return (result);
 }

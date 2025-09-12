@@ -40,9 +40,7 @@ int main()
     test_rotate_operations();
     test_reverse_rotate_operations();
     test_is_sorted_function();
-    test_snapshot_stack_iteration0();
-    test_snapshot_stack_empty_stack();
-    test_snapshot_stack_single_element();
+    test_snapshot_stack();
     test_apply_combined_iteration0();
     test_apply_combined_iteration1();
     test_apply_combined_iteration2();

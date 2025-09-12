@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 21:41:42 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/10 23:23:24 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/12 22:55:14 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <string.h>
 # include "stack.h"
 # include "ops.h"
+# include "simulation_config.h"
 
 typedef struct s_position
 {
@@ -42,87 +43,60 @@ typedef enum e_move_direction
 	MOVE_B_TO_A
 }	t_move_direction;
 
-typedef struct s_selector_config
+
+
+/**
+ * Unified arena structure for selector operations containing all memory allocations.
+ */
+typedef struct s_selector_arena
 {
-	int	max_candidates;
-	int	cost_threshold_offset;
-	int	size_penalty_factor;
-	int	heuristic_offset;
-	int	heuristic_divisor;
-}	t_selector_config;
+	t_simulation_config	config;					// Configuration parameters
+	t_candidate			*candidates;			// Array of candidates
+	int					candidate_count;		// Number of candidates generated
+	int					*stack_a_snapshot;		// Snapshot of stack A values
+	int					*stack_b_snapshot;		// Snapshot of stack B values
+	t_candidate			*filtered_candidates;	// Array of filtered candidates
+	int					filtered_count;			// Number of filtered candidates
+	t_candidate			*top_k_candidates;		// Array of top-k candidates
+	int					top_k_count;			// Number of top-k candidates
+	void				*arena_memory;			// Single memory block for all allocations
+	size_t				arena_size;				// Total size of allocated memory
+	int					max_candidates;			// Maximum number of candidates
+	int					max_stack_size;			// Maximum stack size
+}	t_selector_arena;
 
-typedef struct s_cost_calculator
-{
-	t_selector_config	config;
-}	t_cost_calculator;
+// Arena management
+t_selector_arena	*allocate_selector_arena(int max_candidates, int max_stack_size);
+void				free_selector_arena(t_selector_arena *arena);
 
-typedef struct s_candidate_enumerator
-{
-	t_cost_calculator	*cost_calc;
-	t_selector_config	config;
-}	t_candidate_enumerator;
+// Algorithm execution
+t_position			execute_selection_algorithm(t_sorting_state *state, 
+						t_move_direction direction, t_selector_arena *arena);
+// Result building
+t_candidate			*build_filtered_candidates(t_candidate *candidates,
+						int threshold_offset, t_selector_arena *arena);
+t_candidate			*build_top_k_candidates(t_candidate *candidates,
+						int max_k, t_selector_arena *arena);
+t_position			build_best_position(t_candidate *candidates);
 
-typedef struct s_lookahead_evaluator
-{
-	t_selector_config	config;
-}	t_lookahead_evaluator;
-
-t_selector_config	default_selector_config(void);
-
-t_cost_calculator	*new_cost_calculator(t_selector_config config);
-void				free_cost_calculator(t_cost_calculator *calc);
-t_position			calculate_position_cost(t_cost_calculator *calc,
-						int from_idx, int to_idx, int size_a, int size_b);
-int					calculate_penalty(t_cost_calculator *calc, int *stack,
-						int size, int to_idx, int val);
-int					calculate_merged_cost(t_cost_calculator *calc,
-						int cost_a, int cost_b);
-
-t_candidate_enumerator	*new_candidate_enumerator(t_selector_config config);
-void					free_candidate_enumerator(
-							t_candidate_enumerator *enumerator);
-t_candidate			*enumerate_a_to_b(t_candidate_enumerator *enumerator,
-						t_stack *a, t_stack *b, int *count);
-t_candidate			*enumerate_b_to_a(t_candidate_enumerator *enumerator,
-						int *a, int size_a, int *b, int size_b, int *count);
-
-int						calculate_heuristic(t_lookahead_evaluator *evaluator,
-							t_stack *stack);
-
-t_lookahead_evaluator	*new_lookahead_evaluator(t_selector_config config);
-void					free_lookahead_evaluator(t_lookahead_evaluator *evaluator);
-t_position				evaluate_with_lookahead(t_lookahead_evaluator *evaluator,
-							t_stack *stack_a, t_stack *stack_b,
-							t_candidate *candidates, int count,
-							t_move_direction direction);
-
+// Core utilities
 bool				better_position(t_position a, t_position b);
+int					find_insertion_index(int *sorted_array, int array_size, int target_value);
+int					find_target_position(int *sorted_array, int array_size, int target_value);
+int					normalize_index(int array_size, int raw_index);
+int					merged_cost(int a, int b);
+int					signed_cost(int idx, int size);
+int					get_max_stack_size(t_stack *a, t_stack *b);
 
-t_candidate		new_candidate(t_position pos, int score);
-t_candidate		*filter_candidates_by_threshold(t_candidate *candidates,
-					int count, int threshold_offset, int *filtered_count);
-t_candidate		*select_top_k_candidates(t_candidate *candidates,
-					int count, int max_k, int *result_count);
-t_position		select_best_candidate(t_candidate *candidates, int count);
+// Candidate enumeration
+t_candidate			*enumerate_candidates(t_sorting_state *state, t_move_direction direction,
+						t_selector_arena *arena);
 
-int				merged_cost(int a, int b);
-int				signed_cost(int idx, int size);
+// Lookahead evaluation
+t_position			evaluate_with_lookahead(t_sorting_state *state, t_candidate *candidates, t_selector_arena *arena);
 
-int				*snapshot_stack(t_stack *stack, int *size);
-int				calculate_breakpoints(int *arr, int size);
-
-int				find_insertion_index(int *sorted_array, int array_size, int target_value);
-int				find_target_position(int *sorted_array, int array_size, int target_value);
-int				normalize_index(int array_size, int raw_index);
-
-t_position		select_best_a_to_b_move(t_sorting_state *ps);
-
-t_position		select_best_b_to_a_move(t_sorting_state *ps, int max_candidates);
-
-t_position		select_best_candidate_with_lookahead(t_stack *stack_a,
-					t_stack *stack_b, t_candidate *candidates, int count,
-					int max_candidates, t_selector_config config,
-					t_move_direction direction);
-
+// Legacy interface (to be updated)
+t_position			select_best_a_to_b_move(t_sorting_state *ps, int max_candidates, t_simulation_config config);
+t_position			select_best_b_to_a_move(t_sorting_state *ps, int max_candidates, t_simulation_config config);
 
 #endif

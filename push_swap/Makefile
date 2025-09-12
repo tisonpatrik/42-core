@@ -31,17 +31,14 @@ SRCS        := src/validator/input_parser.c \
 			   src/separator/algo.c \
 			   src/separator/result_builder.c \
 			   src/separator/utils.c \
-			   src/selector/selector_utils.c \
-			   src/selector/selector_config.c \
-			   src/selector/candidate_manager.c \
-			   src/selector/cost_utils.c \
-			   src/selector/algo.c \
-			   src/selector/slice_utils.c \
-			   src/selector/nearbest.c \
-			   src/selector/lookahead_evaluator.c \
-			   src/selector/cost.c \
-			   src/selector/cost_calculator.c \
 			   src/selector/candidate_enumerator.c \
+			   src/selector/snapshot_arena.c \
+			   src/selector/lookahead_evaluator.c \
+			   src/selector/nearbest.c \
+			   src/selector/result_builder.c \
+			   src/selector/selector_arena.c \
+			   src/selector/utils.c \
+			   src/simulation_config/config.c \
 			   src/solver/sort.c \
 			   src/solver/sort_three.c \
 			   src/solver/apply_combined.c \

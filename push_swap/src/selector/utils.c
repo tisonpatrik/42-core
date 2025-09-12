@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   algo.c                                             :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/10 21:41:22 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/11 19:21:45 by patrik           ###   ########.fr       */
+/*   Created: 2025/01/15 00:00:00 by patrik            #+#    #+#             */
+/*   Updated: 2025/09/12 22:58:05 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../../include/selector.h"
+#include <stdbool.h>
 
 int	find_insertion_index(int *sorted_array, int array_size, int target_value)
 {
@@ -74,3 +74,47 @@ int	normalize_index(int array_size, int raw_index)
 	raw_index = ((raw_index % array_size) + array_size) % array_size;
 	return (raw_index);
 }
+
+bool	better_position(t_position a, t_position b)
+{
+	if (a.total != b.total)
+		return (ft_less_than(a.total, b.total));
+	if (ft_abs(a.cost_a) != ft_abs(b.cost_a))
+		return (ft_less_than(ft_abs(a.cost_a), ft_abs(b.cost_a)));
+	if (a.to_index != b.to_index)
+		return (ft_less_than(a.to_index, b.to_index));
+	return (ft_less_than(a.from_index, b.from_index));
+}
+
+int	merged_cost(int a, int b)
+{
+	int	cost_a;
+	int	cost_b;
+
+	cost_a = ft_abs(a);
+	cost_b = ft_abs(b);
+	if ((a > 0 && b > 0) || (a < 0 && b < 0))
+		return ((cost_a > cost_b) ? cost_a : cost_b);
+	return (cost_a + cost_b);
+}
+
+int	signed_cost(int idx, int size)
+{
+	if (idx <= size / 2)
+		return (idx);
+	return (idx - size);
+}
+
+int	get_max_stack_size(t_stack *a, t_stack *b)
+{
+	int	size_a;
+	int	size_b;
+
+	size_a = get_size(a);
+	size_b = get_size(b);
+	if (size_a > size_b)
+		return (size_a);
+	else
+		return (size_b);
+}
+

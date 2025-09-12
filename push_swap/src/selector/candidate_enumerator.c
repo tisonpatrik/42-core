@@ -5,195 +5,127 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/10 21:41:17 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/10 23:16:16 by patrik           ###   ########.fr       */
+/*   Created: 2025/01/15 00:00:00 by patrik            #+#    #+#             */
+/*   Updated: 2025/09/12 23:17:12 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../../include/selector.h"
+#include "../../include/snapshot_arena.h"
+#include <stdbool.h>
+#include <stdlib.h>
 
-t_candidate	create_candidate_for_node(t_candidate_enumerator *enumerator,
-	t_node *node, int node_index, int *bvals, int bvals_size, int size_a)
+t_candidate	get_candidate(int from_idx, int to_idx, int size_a, int size_b)
 {
-	int			val;
-	int			to_idx;
-	t_position	position;
-	int			base;
-	int			penalty;
-
-	val = get_content(node);
-	to_idx = find_insertion_index(bvals, bvals_size, val);
-	position = calculate_position_cost(enumerator->cost_calc, node_index, 
-		to_idx, size_a, bvals_size);
-	base = position.total;
-	penalty = calculate_penalty(enumerator->cost_calc, bvals, 
-		bvals_size, to_idx, val);
-	return (new_candidate(position, base + penalty));
-}
-
-
-
-t_candidate	*allocate_candidates_array(int size)
-{
-	t_candidate	*candidates;
-
-	candidates = malloc(sizeof(t_candidate) * size);
-	return (candidates);
-}
-void	cleanup_enumerate_resources(t_candidate *candidates, 
-	t_candidate *filtered, t_candidate *result)
-{
-	if (candidates)
-		free(candidates);
-	if (filtered)
-		free(filtered);
-	(void)result; // result is returned, not freed here
-}
-
-t_candidate_enumerator	*new_candidate_enumerator(t_selector_config config)
-{
-	t_candidate_enumerator	*enumerator;
-
-	enumerator = malloc(sizeof(t_candidate_enumerator));
-	if (!enumerator)
-		return (NULL);
-	enumerator->cost_calc = new_cost_calculator(config);
-	if (!enumerator->cost_calc)
-	{
-		free(enumerator);
-		return (NULL);
-	}
-	enumerator->config = config;
-	return (enumerator);
-}
-
-void	free_candidate_enumerator(t_candidate_enumerator *enumerator)
-{
-	if (enumerator)
-	{
-		if (enumerator->cost_calc)
-			free_cost_calculator(enumerator->cost_calc);
-		free(enumerator);
-	}
-}
-
-t_candidate	*filter_and_select_candidates(t_candidate *candidates, 
-	int candidate_count, t_selector_config config, int *result_count)
-{
-	t_candidate	*filtered;
-	t_candidate	*result;
-	int			filtered_count;
-
-	filtered = filter_candidates_by_threshold(candidates, candidate_count, 
-		config.cost_threshold_offset, &filtered_count);
-	if (!filtered)
-	{
-		*result_count = 0;
-		return (NULL);
-	}
-	result = select_top_k_candidates(filtered, filtered_count, 0, result_count);
-	free(filtered);
-	return (result);
-}
-
-t_candidate	*build_candidates_from_stack_a(t_candidate_enumerator *enumerator, 
-	t_stack *a, t_stack *b, int *count)
-{
-	int			size_a;
-	int			*bvals;
-	int			bvals_size;
-	t_candidate	*candidates;
-	t_node		*current;
-	int			i;
-
-	if (!enumerator || !a || !b || !count)
-		return (NULL);
-	size_a = get_size(a);
-	if (size_a == 0)
-		return (NULL);
-	bvals = snapshot_stack(b, &bvals_size);
-	if (!bvals)
-		return (NULL);
-	candidates = allocate_candidates_array(size_a);
-	if (!candidates)
-	{
-		free(bvals);
-		return (NULL);
-	}
-	current = get_head(a);
-	i = 0;
-	while (current != NULL)
-	{
-		candidates[i] = create_candidate_for_node(enumerator, current, i, 
-			bvals, bvals_size, size_a);
-		current = get_next(current);
-		i++;
-	}
-	free(bvals);
-	*count = size_a;
-	return (candidates);
-}
-
-
-t_candidate	*enumerate_a_to_b(t_candidate_enumerator *enumerator, 
-	t_stack *a, t_stack *b, int *count)
-{
-	t_candidate	*candidates;
-	t_candidate	*result;
-	int			candidate_count;
-
-	if (!enumerator || !a || !b || !count)
-		return (NULL);
-	candidates = build_candidates_from_stack_a(enumerator, a, b, &candidate_count);
-	if (!candidates)
-		return (NULL);
-	result = filter_and_select_candidates(candidates, candidate_count, 
-		enumerator->config, count);
-	cleanup_enumerate_resources(candidates, NULL, result);
-	return (result);
-}
-
-t_candidate	*enumerate_b_to_a(t_candidate_enumerator *enumerator, 
-	int *a, int size_a, int *b, int size_b, int *count)
-{
-	t_candidate	*candidates;
-	int			i;
-	int			val;
-	int			to_idx;
+	t_position	pos;
 	int			cost_a;
 	int			cost_b;
-	int			base;
-	t_position	position;
+	t_candidate	candidate;
 
-	if (!enumerator || !a || !b || !count)
-		return (NULL);
-	if (size_b == 0)
-	{
-		*count = 0;
-		return (NULL);
-	}
-	candidates = malloc(sizeof(t_candidate) * size_b);
-	if (!candidates)
-		return (NULL);
-	i = 0;
-	while (i < size_b)
-	{
-		val = b[i];
-		to_idx = find_target_position(a, size_a, val);
-		cost_a = signed_cost(to_idx, size_a);
-		cost_b = signed_cost(i, size_b);
-		base = merged_cost(cost_a, cost_b);
-		position.from_index = i;
-		position.to_index = to_idx;
-		position.cost_a = cost_a;
-		position.cost_b = cost_b;
-		position.total = base;
-		candidates[i] = new_candidate(position, base);
-		i++;
-	}
-	*count = size_b;
-	return (candidates);
+	cost_a = signed_cost(from_idx, size_a);
+	cost_b = signed_cost(to_idx, size_b);
+	pos.total = merged_cost(cost_a, cost_b);
+	pos.cost_a = cost_a;
+	pos.cost_b = cost_b;
+	pos.from_index = from_idx;
+	pos.to_index = to_idx;
+	candidate.position = pos;
+	candidate.score = pos.total;
+	return (candidate);
 }
 
 
+t_candidate	*enumerate_a_to_b_candidates(int size_a, int size_b, t_selector_arena *arena)
+{
+	t_candidate	*candidates;
+	int			i;
+	int			j;
+	int			candidate_idx;
+
+	if (size_a == 0)
+	{
+		arena->candidate_count = 0;
+		return (NULL);
+	}
+	candidates = arena->candidates;
+	candidate_idx = 0;
+	i = 0;
+	while (i < size_a && candidate_idx < arena->max_candidates)
+	{
+		j = 0;
+		while (j < size_b && candidate_idx < arena->max_candidates)
+		{
+			candidates[candidate_idx] = get_candidate(i, j, size_a, size_b);
+			candidate_idx++;
+			j++;
+		}
+		i++;
+	}
+	arena->candidate_count = candidate_idx;
+	return (candidates);
+}
+
+void	populate_b_to_a_candidates(t_snapshot_arena *snapshot, t_selector_arena *arena)
+{
+	t_candidate	*result;
+	int			candidate_idx;
+	int			i;
+	int			target_pos;
+
+	result = arena->candidates;
+	candidate_idx = 0;
+	i = 0;
+	while (i < snapshot->size_b)
+	{
+		target_pos = find_target_position(snapshot->a_values, snapshot->size_a, snapshot->b_values[i]);
+		result[candidate_idx] = get_candidate(i, target_pos, snapshot->size_b, snapshot->size_a);
+		candidate_idx++;
+		i++;
+	}
+	arena->candidate_count = candidate_idx;
+}
+
+t_candidate	*enumerate_b_to_a_candidates(t_sorting_state *state, t_selector_arena *arena)
+{
+	t_snapshot_arena	*snapshot;
+
+	snapshot = create_snapshot_arena();
+	if (!snapshot)
+		return (NULL);
+	
+	if (!take_snapshots(snapshot, state->a, state->b))
+	{
+		destroy_snapshot_arena(snapshot);
+		return (NULL);
+	}
+	
+	if (snapshot->size_b == 0)
+	{
+		arena->candidate_count = 0;
+		destroy_snapshot_arena(snapshot);
+		return (NULL);
+	}
+	
+	populate_b_to_a_candidates(snapshot, arena);
+	
+	destroy_snapshot_arena(snapshot);
+	return (arena->candidates);
+}
+
+t_candidate	*enumerate_candidates(t_sorting_state *state, t_move_direction direction,
+	t_selector_arena *arena)
+{
+	int	size_a;
+	int	size_b;
+
+	if (direction == MOVE_A_TO_B)
+	{
+		size_a = get_size(state->a);
+		size_b = get_size(state->b);
+		return (enumerate_a_to_b_candidates(size_a, size_b, arena));
+	}
+	else
+	{
+		return (enumerate_b_to_a_candidates(state, arena));
+	}
+}

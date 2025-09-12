@@ -28,17 +28,13 @@ PROJECT_SRCS = ../src/stack/stack.c \
                ../src/separator/result_builder.c \
                ../src/separator/utils.c \
                ../src/separator/separator.c \
-               ../src/selector/selector_utils.c \
-               ../src/selector/selector_config.c \
-               ../src/selector/candidate_manager.c \
-               ../src/selector/cost_utils.c \
-               ../src/selector/algo.c \
-               ../src/selector/slice_utils.c \
+               ../src/selector/utils.c \
                ../src/selector/nearbest.c \
                ../src/selector/lookahead_evaluator.c \
-               ../src/selector/cost.c \
-               ../src/selector/cost_calculator.c \
                ../src/selector/candidate_enumerator.c \
+               ../src/selector/result_builder.c \
+               ../src/selector/selector_arena.c \
+               ../src/selector/snapshot_arena.c \
                ../src/solver/apply_combined.c \
                ../src/solver/align_min_to_top.c
 
@@ -57,20 +53,16 @@ PROJECT_OBJS = $(BIN_DIR)/stack.o \
                $(BIN_DIR)/normalization.o \
                $(BIN_DIR)/list_arena.o \
                $(BIN_DIR)/separator_algo.o \
-               $(BIN_DIR)/result_builder.o \
+               $(BIN_DIR)/separator_result_builder.o \
                $(BIN_DIR)/separator_utils.o \
                $(BIN_DIR)/separator.o \
                $(BIN_DIR)/selector_utils.o \
-               $(BIN_DIR)/selector_config.o \
-               $(BIN_DIR)/candidate_manager.o \
-               $(BIN_DIR)/cost_utils.o \
-               $(BIN_DIR)/selector_algo.o \
-               $(BIN_DIR)/slice_utils.o \
                $(BIN_DIR)/nearbest.o \
                $(BIN_DIR)/lookahead_evaluator.o \
-               $(BIN_DIR)/cost.o \
-               $(BIN_DIR)/cost_calculator.o \
                $(BIN_DIR)/candidate_enumerator.o \
+               $(BIN_DIR)/selector_result_builder.o \
+               $(BIN_DIR)/selector_arena.o \
+               $(BIN_DIR)/snapshot_arena.o \
                $(BIN_DIR)/apply_combined.o \
                $(BIN_DIR)/align_min_to_top.o
 
@@ -142,7 +134,7 @@ $(BIN_DIR)/list_arena.o: ../src/separator/list_arena.c
 $(BIN_DIR)/separator_algo.o: ../src/separator/algo.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
-$(BIN_DIR)/result_builder.o: ../src/separator/result_builder.c
+$(BIN_DIR)/separator_result_builder.o: ../src/separator/result_builder.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(BIN_DIR)/separator_utils.o: ../src/separator/utils.c
@@ -151,42 +143,25 @@ $(BIN_DIR)/separator_utils.o: ../src/separator/utils.c
 $(BIN_DIR)/separator.o: ../src/separator/separator.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
-$(BIN_DIR)/selector_utils.o: ../src/selector/selector_utils.c
-	@$(CC) $(CFLAGS) -c $< -o $@
-
-$(BIN_DIR)/selector_config.o: ../src/selector/selector_config.c
-	@$(CC) $(CFLAGS) -c $< -o $@
-
-$(BIN_DIR)/candidate_manager.o: ../src/selector/candidate_manager.c
-	@$(CC) $(CFLAGS) -c $< -o $@
-
-$(BIN_DIR)/cost_utils.o: ../src/selector/cost_utils.c
-	@$(CC) $(CFLAGS) -c $< -o $@
-
-
-$(BIN_DIR)/selector_utils_core.o: ../src/selector/selector_utils_core.c
-	@$(CC) $(CFLAGS) -c $< -o $@
-
-$(BIN_DIR)/slice_utils.o: ../src/selector/slice_utils.c
+$(BIN_DIR)/selector_utils.o: ../src/selector/utils.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(BIN_DIR)/nearbest.o: ../src/selector/nearbest.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
-
 $(BIN_DIR)/lookahead_evaluator.o: ../src/selector/lookahead_evaluator.c
-	@$(CC) $(CFLAGS) -c $< -o $@
-
-$(BIN_DIR)/cost.o: ../src/selector/cost.c
-	@$(CC) $(CFLAGS) -c $< -o $@
-
-$(BIN_DIR)/cost_calculator.o: ../src/selector/cost_calculator.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(BIN_DIR)/candidate_enumerator.o: ../src/selector/candidate_enumerator.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
-$(BIN_DIR)/selector_algo.o: ../src/selector/algo.c
+$(BIN_DIR)/selector_result_builder.o: ../src/selector/result_builder.c
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+$(BIN_DIR)/selector_arena.o: ../src/selector/selector_arena.c
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+$(BIN_DIR)/snapshot_arena.o: ../src/selector/snapshot_arena.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(BIN_DIR)/apply_combined.o: ../src/solver/apply_combined.c

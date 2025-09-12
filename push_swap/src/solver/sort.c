@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:49:21 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/12 03:23:57 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/12 21:55:12 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "../../include/selector.h"
 #include "../../include/optimizer.h"
 #include "../../include/solver.h"
+#include "../../include/simulation_config.h"
 #include "../../libft/include/list.h"
 
 void	solve_push_swap(t_sorting_state *state)
@@ -25,20 +26,22 @@ void	solve_push_swap(t_sorting_state *state)
 	
 	push_non_lis_into_b(state);
 
+	t_simulation_config config = default_selector_config();
 
-	// while (get_size(state->a) > 3)
-	// {
-	// 	t_position position = select_best_a_to_b_move(state);
-	// 	apply_combined(state, position, true);
-	// }
+	int max_candidates = 30;
+	while (get_size(state->a) > 3)
+	{
+		t_position position =select_best_b_to_a_move (state, max_candidates, config);
+		apply_combined(state, position, true);
+	}
 
-	// sort_three(state);
+	sort_three(state);
 
-	// while (get_size(state->b) > 0)
-	// {
-	// 	t_position position = select_best_b_to_a_move(state, 30);
-	// 	apply_combined(state, position, false); // pa
-	// }
+	while (get_size(state->b) > 0)
+	{
+		t_position position = select_best_a_to_b_move(state, max_candidates, config);
+		apply_combined(state, position, false); // pa
+	}
  
 	// align_min_to_top(state);
 
