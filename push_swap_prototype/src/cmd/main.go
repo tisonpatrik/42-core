@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
 	"os"
 	"push_swap_prototype/internal/ops"
@@ -47,29 +46,53 @@ import (
 // 	fmt.Println("Completed 1000 runs. Results saved to refactored.txt")
 // }
 
-func main() {
-	var numbers []int
+// parseString parses a space-separated string of numbers
+func parseString(input string) ([]int, error) {
+	parts := strings.Fields(input)
+	numbers := make([]int, len(parts))
 	
-	if len(os.Args) > 1 {
-		// Read from command line arguments
-		numbers = make([]int, len(os.Args)-1)
-		for i, arg := range os.Args[1:] {
-			num, _ := strconv.Atoi(arg)
-			numbers[i] = num
+	for i, part := range parts {
+		num, err := strconv.Atoi(part)
+		if err != nil {
+			return nil, fmt.Errorf("invalid number '%s'", part)
 		}
-	} else {
-		// Read from stdin
-		scanner := bufio.NewScanner(os.Stdin)
-		scanner.Scan()
-		line := scanner.Text()
-		
-		parts := strings.Fields(line)
-		numbers = make([]int, len(parts))
-		for i, part := range parts {
-			num, _ := strconv.Atoi(part)
-			numbers[i] = num
-		}
+		numbers[i] = num
 	}
+	
+	return numbers, nil
+}
+
+// parseArguments handles command line argument parsing
+func parseArguments() []int {
+	if len(os.Args) <= 1 {
+		return nil
+	}
+	
+	if len(os.Args) == 2 {
+		// Single string input (like from launch.json)
+		numbers, err := parseString(os.Args[1])
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+			os.Exit(1)
+		}
+		return numbers
+	}
+	
+	// Multiple command line arguments
+	numbers := make([]int, len(os.Args)-1)
+	for i, arg := range os.Args[1:] {
+		num, err := strconv.Atoi(arg)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error: invalid number '%s'\n", arg)
+			os.Exit(1)
+		}
+		numbers[i] = num
+	}
+	return numbers
+}
+
+func main() {
+	numbers := parseArguments()
 	
 	ps := ops.InitData(numbers)
 	solver.SolvePushSwap(ps)

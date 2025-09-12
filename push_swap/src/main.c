@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 20:56:32 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/11 17:21:58 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/12 18:40:37 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include "../include/validator.h"
 #include <stdlib.h>
 #include <unistd.h>
+#include <stdio.h>
+
 
 int	main(int argc, char *argv[])
 {

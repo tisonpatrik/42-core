@@ -5,6 +5,7 @@ MAKEFLAGS   += --silent
 
 CC          := cc
 CFLAGS      := -Wall -Wextra -Werror -Iinclude -Ilibft/include -Isrc
+DEBUG_FLAGS := -g -O0 -DDEBUG
 
 AR          := ar
 ARFLAGS     := rcs
@@ -87,6 +88,9 @@ bin/%.o: src/%.c | $(BIN_DIR)
 bonus:
 	@$(MAKE) BONUS=1 all
 
+debug:
+	@$(MAKE) CFLAGS="$(CFLAGS) $(DEBUG_FLAGS)" all
+
 test:
 	@$(MAKE) -C test test
 
@@ -103,4 +107,4 @@ re: fclean all
 
 -include $(DEPS)
 
-.PHONY: all clean fclean re bonus test
+.PHONY: all clean fclean re bonus debug test

@@ -33,6 +33,7 @@ void test_align_min_to_top_iteration1(void);
 void test_align_min_to_top_iteration2(void);
 void test_align_min_to_top_simple_case(void);
 void test_push_non_lis_into_b(void);
+void test_push_non_lis_into_b_large_input(void);
 void test_lis_debug_function(void);
 void test_main_app_flow_function(void);
 

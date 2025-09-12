@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:58:57 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/11 17:21:58 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/12 03:25:03 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,4 +106,13 @@ void	print_operations(t_sorting_state *state)
 		}
 		current = current->next;
 	}
+}
+
+
+void print_state_values(t_sorting_state *state)
+{
+	print_stack_values(state->a);
+	write(1, "\n", 1);
+	print_stack_values(state->b);
+	write(1, "\n", 1);
 }

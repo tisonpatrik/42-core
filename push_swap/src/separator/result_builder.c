@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 19:35:00 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/12 03:05:14 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/12 19:11:22 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <stdlib.h>
 
 void	reconstruct_lis_sequence_from_tracking(t_node_bool_array *result,
-		t_lis_arrays *algorithm_data, t_lis_result *computation_result)
+		t_lis_computation *computation, t_lis_result *computation_result)
 {
 	size_t	result_index;
 	int		current_index;
@@ -25,10 +25,10 @@ void	reconstruct_lis_sequence_from_tracking(t_node_bool_array *result,
 	while (current_index != -1
 		&& result_index < (size_t)computation_result->best_len)
 	{
-		result->items[result_index].node = algorithm_data->nodes[current_index];
+		result->items[result_index].node = computation->nodes[current_index];
 		result->items[result_index].value = true;
 		result_index++;
-		current_index = algorithm_data->prev[current_index];
+		current_index = computation->previous_indices[current_index];
 	}
 	result->count = result_index;
 }
@@ -52,7 +52,7 @@ void	reverse_sequence_to_correct_order(t_node_bool_array *result)
 /**
  * Builds the LIS result array from computation data.
  */
-t_node_bool_array	*build_lis_result(t_lis_arrays *algorithm_data,
+t_node_bool_array	*build_lis_result(t_lis_computation *computation,
 		t_lis_result *computation_result)
 {
 	t_node_bool_array	*result;
@@ -67,7 +67,7 @@ t_node_bool_array	*build_lis_result(t_lis_arrays *algorithm_data,
 		free(result);
 		return (NULL);
 	}
-	reconstruct_lis_sequence_from_tracking(result, algorithm_data,
+	reconstruct_lis_sequence_from_tracking(result, computation,
 		computation_result);
 	reverse_sequence_to_correct_order(result);
 	return (result);

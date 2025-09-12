@@ -6,12 +6,13 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:49:32 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/12 03:05:45 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/12 18:41:18 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/ops.h"
 #include "../../include/separator.h"
+#include <stdio.h>
 #include <stdlib.h>
 
 void	update_b_range(int val, int *min_b, int *max_b, bool *has_b_range)
@@ -31,24 +32,22 @@ void	update_b_range(int val, int *min_b, int *max_b, bool *has_b_range)
 	}
 }
 
-void	process_stack_elements(t_sorting_state *state, int size_a)
+void	process_stack_elements(t_sorting_state *state, int size_a, t_node_bool_array *lis_nodes)
 {
-	int		min_b;
-	int		max_b;
-	bool	has_b_range;
 	int		i;
-	int		val;
 
-	min_b = 0;
-	max_b = 0;
-	has_b_range = false;
 	i = 0;
 	while (i < size_a)
 	{
-		val = get_content(get_head(state->a));
-		update_b_range(val, &min_b, &max_b, &has_b_range);
-		if (val < (min_b + max_b) / 2)
-			rotate_b(state);
+		// Check if this element is NOT in LIS
+		if (!lis_nodes->items[i].value)
+		{
+			push_b(state);
+		}
+		else
+		{
+			rotate_a(state);
+		}
 		i++;
 	}
 }
@@ -70,7 +69,11 @@ void	push_non_lis_into_b(t_sorting_state *state)
 		free(lis_nodes);
 		return ;
 	}
-	process_stack_elements(state, size_a);
+	printf("%d", size_a);
+	process_stack_elements(state, size_a, lis_nodes);
+
+	print_state_values(state);
+	
 	free(lis_nodes->items);
 	free(lis_nodes);
 }
