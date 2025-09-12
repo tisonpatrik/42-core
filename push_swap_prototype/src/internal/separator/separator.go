@@ -40,4 +40,5 @@ func PushNonLISIntoB(ps *ops.SortingState, enableBShaping bool) {
 			}
 		}
 	}
+	// ops.LogState(ps)
 }
