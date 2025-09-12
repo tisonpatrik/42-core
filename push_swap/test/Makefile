@@ -23,10 +23,10 @@ PROJECT_SRCS = ../src/stack/stack.c \
                ../src/validator/input_parser.c \
                ../src/validator/tokenizer.c \
                ../src/validator/normalization.c \
-               ../src/separator/lis_interface.c \
-               ../src/separator/lis_memory_management.c \
-               ../src/separator/lis_algorithm.c \
-               ../src/separator/lis_result_builder.c \
+               ../src/separator/list_arena.c \
+               ../src/separator/algo.c \
+               ../src/separator/result_builder.c \
+               ../src/separator/utils.c \
                ../src/separator/separator.c \
                ../src/selector/selector_utils.c \
                ../src/selector/selector_config.c \
@@ -106,16 +106,16 @@ $(BIN_DIR)/tokenizer.o: ../src/validator/tokenizer.c
 $(BIN_DIR)/normalization.o: ../src/validator/normalization.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
-$(BIN_DIR)/lis_interface.o: ../src/separator/lis_interface.c
+$(BIN_DIR)/list_arena.o: ../src/separator/list_arena.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
-$(BIN_DIR)/lis_memory_management.o: ../src/separator/lis_memory_management.c
+$(BIN_DIR)/separator_algo.o: ../src/separator/algo.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
-$(BIN_DIR)/lis_algorithm.o: ../src/separator/lis_algorithm.c
+$(BIN_DIR)/result_builder.o: ../src/separator/result_builder.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
-$(BIN_DIR)/lis_result_builder.o: ../src/separator/lis_result_builder.c
+$(BIN_DIR)/separator_utils.o: ../src/separator/utils.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(BIN_DIR)/separator.o: ../src/separator/separator.c

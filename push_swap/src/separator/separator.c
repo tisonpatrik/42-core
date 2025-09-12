@@ -6,74 +6,124 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:49:32 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/12 18:41:18 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/12 20:30:04 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/ops.h"
 #include "../../include/separator.h"
 #include <stdio.h>
-#include <stdlib.h>
 
-void	update_b_range(int val, int *min_b, int *max_b, bool *has_b_range)
+/**
+ * Calculates the length of a LIS nodes array (until first NULL).
+ */
+static size_t	calculate_lis_length(t_node **lis_nodes)
 {
-	if (!*has_b_range)
+	size_t	count;
+
+	if (!lis_nodes)
+		return (0);
+	count = 0;
+	while (lis_nodes[count] != NULL)
+		count++;
+	return (count);
+}
+
+
+
+/**
+ * Checks if a node is part of the LIS sequence.
+ */
+static bool	is_node_in_lis(t_node *node, t_node **lis_nodes, size_t lis_count)
+{
+	size_t	i;
+
+	if (!node || !lis_nodes)
+		return (false);
+	i = 0;
+	while (i < lis_count)
 	{
-		*min_b = val;
-		*max_b = val;
-		*has_b_range = true;
+		if (lis_nodes[i] == node)
+			return (true);
+		i++;
+	}
+	return (false);
+}
+
+void apply_shaping(t_sorting_state *state)
+{
+	static int min_b = 0;
+	static int max_b = 0;
+	static bool has_b_range = false;
+	int mid = 0;
+	int value = state->b->head->content;
+	
+	if (has_b_range == false)
+	{
+		min_b = value;
+		max_b = value;
+		has_b_range = true;
 	}
 	else
 	{
-		if (val < *min_b)
-			*min_b = val;
-		if (val > *max_b)
-			*max_b = val;
+		if (value < min_b)
+			min_b = value;
+		if (value > max_b)
+			max_b = value;
+	}
+	mid =(min_b + max_b) / 2;
+	if (value < mid)
+	{
+		rotate_b(state);
 	}
 }
 
-void	process_stack_elements(t_sorting_state *state, int size_a, t_node_bool_array *lis_nodes)
+
+void	process_stack_elements(t_sorting_state *state, int size_a, t_node **lis_nodes)
 {
 	int		i;
+	t_node	*current;
+	size_t	lis_count;
 
+	lis_count = calculate_lis_length(lis_nodes);
 	i = 0;
 	while (i < size_a)
 	{
-		// Check if this element is NOT in LIS
-		if (!lis_nodes->items[i].value)
-		{
-			push_b(state);
-		}
-		else
+		current = state->a->head;
+		if (is_node_in_lis(current, lis_nodes, lis_count))
 		{
 			rotate_a(state);
 		}
-		i++;
+		else
+		{
+			push_b(state);
+			apply_shaping(state);
+		}
+		i++; 
+
 	}
 }
 
 void	push_non_lis_into_b(t_sorting_state *state)
 {
-	t_node_bool_array	*lis_nodes;
+	t_separator_arena	*arena;
+	t_node				**lis_nodes;
 	int					size_a;
 
 	if (!state || !state->a)
 		return ;
-	lis_nodes = get_lis_nodes(state->a);
-	if (!lis_nodes)
-		return ;
 	size_a = get_size(state->a);
 	if (size_a <= 3)
+		return ;
+	arena = allocate_separator_arena(size_a);
+	if (!arena)
+		return ;
+	lis_nodes = get_lis_nodes(state->a, arena);
+	if (!lis_nodes)
 	{
-		free(lis_nodes->items);
-		free(lis_nodes);
+		free_separator_arena(arena);
 		return ;
 	}
-	printf("%d", size_a);
-	process_stack_elements(state, size_a, lis_nodes);
-
-	print_state_values(state);
-	
-	free(lis_nodes->items);
-	free(lis_nodes);
+	process_stack_elements(state, size_a, lis_nodes);	
+	free_separator_arena(arena);
 }

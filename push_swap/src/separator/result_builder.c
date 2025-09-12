@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lis_result_builder.c                               :+:      :+:    :+:   */
+/*   result_builder.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 19:35:00 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/12 19:11:22 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/12 20:01:46 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-void	reconstruct_lis_sequence_from_tracking(t_node_bool_array *result,
+void	reconstruct_lis_sequence_from_tracking(t_node **lis_nodes,
 		t_lis_computation *computation, t_lis_result *computation_result)
 {
 	size_t	result_index;
@@ -25,50 +25,42 @@ void	reconstruct_lis_sequence_from_tracking(t_node_bool_array *result,
 	while (current_index != -1
 		&& result_index < (size_t)computation_result->best_len)
 	{
-		result->items[result_index].node = computation->nodes[current_index];
-		result->items[result_index].value = true;
+		lis_nodes[result_index] = computation->nodes[current_index];
 		result_index++;
 		current_index = computation->previous_indices[current_index];
 	}
-	result->count = result_index;
+	// Don't add NULL here - we'll do it after reversing
 }
 
-void	reverse_sequence_to_correct_order(t_node_bool_array *result)
+void	reverse_sequence_to_correct_order(t_node **lis_nodes, size_t lis_count)
 {
-	size_t		swap_index;
-	t_node_bool	temporary_node;
+	size_t	swap_index;
+	t_node	*temporary_node;
 
 	swap_index = 0;
-	while (swap_index < result->count / 2)
+	while (swap_index < lis_count / 2)
 	{
-		temporary_node = result->items[swap_index];
-		result->items[swap_index] = result->items[result->count - 1
-			- swap_index];
-		result->items[result->count - 1 - swap_index] = temporary_node;
+		temporary_node = lis_nodes[swap_index];
+		lis_nodes[swap_index] = lis_nodes[lis_count - 1 - swap_index];
+		lis_nodes[lis_count - 1 - swap_index] = temporary_node;
 		swap_index++;
 	}
+	lis_nodes[lis_count] = NULL; // Terminate the array after reversing
 }
 
 /**
  * Builds the LIS result array from computation data.
  */
-t_node_bool_array	*build_lis_result(t_lis_computation *computation,
-		t_lis_result *computation_result)
+t_node	**build_lis_result(t_lis_computation *computation,
+		t_lis_result *computation_result, t_separator_arena *arena)
 {
-	t_node_bool_array	*result;
+	t_node	**lis_nodes;
 
-	result = malloc(sizeof(*result));
-	if (!result)
+	if (!computation || !computation_result || !arena || !arena->lis_nodes)
 		return (NULL);
-	result->items = ft_calloc((size_t)computation_result->best_len,
-			sizeof(t_node_bool));
-	if (!result->items)
-	{
-		free(result);
-		return (NULL);
-	}
-	reconstruct_lis_sequence_from_tracking(result, computation,
+	lis_nodes = arena->lis_nodes;
+	reconstruct_lis_sequence_from_tracking(lis_nodes, computation,
 		computation_result);
-	reverse_sequence_to_correct_order(result);
-	return (result);
+	reverse_sequence_to_correct_order(lis_nodes, computation_result->best_len);
+	return (lis_nodes);
 }

@@ -1,6 +1,7 @@
 package ops
 
 import (
+	"fmt"
 	"push_swap_prototype/internal/stack"
 )
 
@@ -26,9 +27,9 @@ func SaveOp(ps *SortingState, op Operation) {
 	ps.OpList = append(ps.OpList, op)
 }
 
-// func LogState(ps *SortingState) {
-// 	numbersA := stack.ToArray(ps.A)
-// 	numbersB := stack.ToArray(ps.B)
-// 	fmt.Printf("  A: %v\n", numbersA)
-// 	fmt.Printf("  B: %v\n", numbersB)
-// }
+func LogState(ps *SortingState) {
+	numbersA := stack.ToArray(ps.A)
+	numbersB := stack.ToArray(ps.B)
+	fmt.Printf("  A: %v\n", numbersA)
+	fmt.Printf("  B: %v\n", numbersB)
+}

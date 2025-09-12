@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 19:24:28 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/12 19:17:46 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/12 20:01:46 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,24 +18,7 @@
 # include <stddef.h>
 # include "ops.h"
 
-/**
- * Represents a node with an associated boolean flag.
- * Used in LIS results to mark which nodes are part of the sequence.
- */
-typedef struct s_tnode_bool
-{
-	t_node	*node;
-	bool	value;
-}	t_node_bool;
-
-/**
- * Array of node-boolean pairs representing LIS results.
- */
-typedef struct s_node_bool_array
-{
-	t_node_bool	*items;
-	size_t		count;
-}	t_node_bool_array;
+// No need for a separate struct - we'll return t_node** and size_t directly
 
 /**
  * Result of LIS computation containing the best sequence found.
@@ -58,14 +41,25 @@ typedef struct s_lis_computation
 	int				*previous_indices;	// Previous indices for reconstruction
 }	t_lis_computation;
 
-void	push_non_lis_into_b(t_sorting_state *state);
-t_lis_computation	*allocate_lis_arena(int element_count);
-void	free_lis_arena(t_lis_computation *computation);
-t_node_bool_array	*execute_lis_algorithm(t_stack *stack, int element_count);
-t_node_bool_array	*get_lis_nodes(t_stack *stack);
+/**
+ * Unified arena structure for separator operations containing all memory allocations.
+ */
+typedef struct s_separator_arena
+{
+	t_lis_computation	*computation;		// LIS computation data
+	t_node				**lis_nodes;		// Array of nodes in LIS
+	void				*arena_memory;		// Single memory block for all allocations
+	size_t				arena_size;			// Total size of allocated memory
+}	t_separator_arena;
 
-t_node_bool_array	*build_lis_result(t_lis_computation *computation,
-		t_lis_result *computation_result);
+void	push_non_lis_into_b(t_sorting_state *state);
+t_separator_arena	*allocate_separator_arena(int element_count);
+void	free_separator_arena(t_separator_arena *arena);
+t_node	**execute_lis_algorithm(t_stack *stack, t_separator_arena *arena);
+t_node	**get_lis_nodes(t_stack *stack, t_separator_arena *arena);
+
+t_node	**build_lis_result(t_lis_computation *computation,
+		t_lis_result *computation_result, t_separator_arena *arena);
 void	compute_longest_increasing_lengths(t_lis_computation *computation,
 		t_lis_result *best_result);
 int	extract_stack_values_to_computation(t_stack *stack, t_lis_computation *computation);

@@ -27,10 +27,10 @@ SRCS        := src/validator/input_parser.c \
 			   src/ops/swap.c \
 			   src/ops/sorting_state.c \
 			   src/separator/separator.c \
-			   src/separator/lis_interface.c \
-			   src/separator/lis_memory_management.c \
-			   src/separator/lis_algorithm.c \
-			   src/separator/lis_result_builder.c \
+			   src/separator/list_arena.c \
+			   src/separator/algo.c \
+			   src/separator/result_builder.c \
+			   src/separator/utils.c \
 			   src/selector/selector_utils.c \
 			   src/selector/selector_config.c \
 			   src/selector/candidate_manager.c \

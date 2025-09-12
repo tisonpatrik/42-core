@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 19:25:49 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/12 19:21:00 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/12 20:01:46 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,45 +20,39 @@
 /**
  * Executes the complete LIS computation algorithm.
  */
-t_node_bool_array	*execute_lis_algorithm(t_stack *stack, int element_count)
+t_node	**execute_lis_algorithm(t_stack *stack, t_separator_arena *arena)
 {
-	t_lis_computation	*computation;
 	t_lis_result			result;
-	t_node_bool_array	*final_result;
 
-	computation = allocate_lis_arena(element_count);
-	if (!computation)
+	if (!arena || !arena->computation)
 		return (NULL);
-	extract_stack_values_to_computation(stack, computation);
-	compute_longest_increasing_lengths(computation, &result);
-	final_result = build_lis_result(computation, &result);
-	free_lis_arena(computation);
-	return (final_result);
+	extract_stack_values_to_computation(stack, arena->computation);
+	compute_longest_increasing_lengths(arena->computation, &result);
+	return (build_lis_result(arena->computation, &result, arena));
 }
 
-void get_empty_result(t_node_bool_array *result)
+void get_empty_result(t_node **lis_nodes)
 {
-	result = malloc(sizeof(*result));
-	if (!result)
+	if (!lis_nodes)
 		return ;
-	result->items = NULL;
-	result->count = 0;
+	// Just leave the array empty - the caller will handle it
 }
 
 /**
  * Finds the Longest Increasing Subsequence (LIS) in a stack.
  */
-t_node_bool_array	*get_lis_nodes(t_stack *stack)
+t_node	**get_lis_nodes(t_stack *stack, t_separator_arena *arena)
 {
 	int					stack_size;
-	t_node_bool_array	*result;
 
+	if (!stack || !arena)
+		return (NULL);
 	stack_size = get_size(stack);
 	if (stack_size <= 0)
 	{
-		get_empty_result(result);
-		return (result);
+		get_empty_result(arena->lis_nodes);
+		return (arena->lis_nodes);
 	}
-	return (execute_lis_algorithm(stack, stack_size));
+	return (execute_lis_algorithm(stack, arena));
 }
 

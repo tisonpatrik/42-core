@@ -9,6 +9,7 @@ import (
 // When enableBShaping is true, it also applies simple shaping to maintain B's order.
 func PushNonLISIntoB(ps *ops.SortingState, enableBShaping bool) {
 	inLIS := ComputeLISNodes(ps.A)
+	
 	sizeA := stack.GetSize(ps.A)
 	if sizeA <= 3 { return }
 
@@ -36,9 +37,8 @@ func PushNonLISIntoB(ps *ops.SortingState, enableBShaping bool) {
 			}
 			mid := (minB + maxB) / 2
 			if val < mid {
-				ops.RotateB(ps) // rb
+				ops.RotateB(ps)
 			}
 		}
 	}
-	// ops.LogState(ps)
 }
