@@ -40,9 +40,6 @@ int main()
     test_rotate_operations();
     test_reverse_rotate_operations();
     test_is_sorted_function();
-    test_select_best_b_to_a_move_all_combinations_1_2_3_4();
-    test_enumerate_b_to_a_iteration0();
-    test_enumerate_a_to_b_iteration0();
     test_snapshot_stack_iteration0();
     test_snapshot_stack_empty_stack();
     test_snapshot_stack_single_element();
@@ -54,7 +51,7 @@ int main()
     test_align_min_to_top_iteration1();
     test_align_min_to_top_iteration2();
     test_align_min_to_top_simple_case();
-    test_lis_debug_function();
+    test_separator_large_input_function();
     
     printf("\n🧪 Running indexize_array Tests\n");
     printf("=====================================\n");
@@ -69,8 +66,6 @@ int main()
     test_indexize_array_negative_size();
     test_indexize_array_idempotent_property();
     test_indexize_array_user_specific_input();
-    
-    test_lis_debug_function();
     
     printf("\n✨ All tests completed!\n");
     return 0;

@@ -5,7 +5,7 @@ LIBFT = ../libft/bin/libft.a
 
 # Directories
 BIN_DIR = bin
-TEST_SRCS = test_main.c test_swap.c test_push.c test_rotate.c test_reverse_rotate.c test_is_sorted.c test_pick_near_best.c test_enumerate_b_to_a.c test_enumerate_a_to_b.c test_snapshot_stack.c test_apply_combined.c test_align_min_to_top.c test_lis_debug.c test_indexize_array.c
+TEST_SRCS = test_main.c test_swap.c test_push.c test_rotate.c test_reverse_rotate.c test_is_sorted.c test_snapshot_stack.c test_apply_combined.c test_align_min_to_top.c test_indexize_array.c test_separator.c
 TEST_OBJS = $(TEST_SRCS:%.c=$(BIN_DIR)/%.o)
 TEST_BIN = $(BIN_DIR)/test_main
 
@@ -42,7 +42,37 @@ PROJECT_SRCS = ../src/stack/stack.c \
                ../src/solver/apply_combined.c \
                ../src/solver/align_min_to_top.c
 
-PROJECT_OBJS = $(addprefix $(BIN_DIR)/,$(notdir $(PROJECT_SRCS:.c=.o)))
+PROJECT_OBJS = $(BIN_DIR)/stack.o \
+               $(BIN_DIR)/ops.o \
+               $(BIN_DIR)/node.o \
+               $(BIN_DIR)/tools.o \
+               $(BIN_DIR)/push.o \
+               $(BIN_DIR)/swap.o \
+               $(BIN_DIR)/rotate.o \
+               $(BIN_DIR)/reverse_rotate.o \
+               $(BIN_DIR)/sorting_state.o \
+               $(BIN_DIR)/utils.o \
+               $(BIN_DIR)/input_parser.o \
+               $(BIN_DIR)/tokenizer.o \
+               $(BIN_DIR)/normalization.o \
+               $(BIN_DIR)/list_arena.o \
+               $(BIN_DIR)/separator_algo.o \
+               $(BIN_DIR)/result_builder.o \
+               $(BIN_DIR)/separator_utils.o \
+               $(BIN_DIR)/separator.o \
+               $(BIN_DIR)/selector_utils.o \
+               $(BIN_DIR)/selector_config.o \
+               $(BIN_DIR)/candidate_manager.o \
+               $(BIN_DIR)/cost_utils.o \
+               $(BIN_DIR)/selector_algo.o \
+               $(BIN_DIR)/slice_utils.o \
+               $(BIN_DIR)/nearbest.o \
+               $(BIN_DIR)/lookahead_evaluator.o \
+               $(BIN_DIR)/cost.o \
+               $(BIN_DIR)/cost_calculator.o \
+               $(BIN_DIR)/candidate_enumerator.o \
+               $(BIN_DIR)/apply_combined.o \
+               $(BIN_DIR)/align_min_to_top.o
 
 .PHONY: all clean test
 
@@ -156,7 +186,7 @@ $(BIN_DIR)/cost_calculator.o: ../src/selector/cost_calculator.c
 $(BIN_DIR)/candidate_enumerator.o: ../src/selector/candidate_enumerator.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
-$(BIN_DIR)/algo.o: ../src/selector/algo.c
+$(BIN_DIR)/selector_algo.o: ../src/selector/algo.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(BIN_DIR)/apply_combined.o: ../src/solver/apply_combined.c

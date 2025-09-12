@@ -36,6 +36,7 @@ void test_push_non_lis_into_b(void);
 void test_push_non_lis_into_b_large_input(void);
 void test_lis_debug_function(void);
 void test_main_app_flow_function(void);
+void test_separator_large_input_function(void);
 
 // indexize_array tests
 void test_indexize_array_basic_unique_values(void);
