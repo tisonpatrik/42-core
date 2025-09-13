@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 21:41:42 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/12 22:55:14 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/13 12:22:41 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include "stack.h"
 # include "ops.h"
 # include "simulation_config.h"
+# include "snapshot_arena.h"
 
 typedef struct s_position
 {
@@ -53,8 +54,7 @@ typedef struct s_selector_arena
 	t_simulation_config	config;					// Configuration parameters
 	t_candidate			*candidates;			// Array of candidates
 	int					candidate_count;		// Number of candidates generated
-	int					*stack_a_snapshot;		// Snapshot of stack A values
-	int					*stack_b_snapshot;		// Snapshot of stack B values
+	t_snapshot_arena	*snapshot_arena;		// Snapshot arena
 	t_candidate			*filtered_candidates;	// Array of filtered candidates
 	int					filtered_count;			// Number of filtered candidates
 	t_candidate			*top_k_candidates;		// Array of top-k candidates
@@ -62,11 +62,10 @@ typedef struct s_selector_arena
 	void				*arena_memory;			// Single memory block for all allocations
 	size_t				arena_size;				// Total size of allocated memory
 	int					max_candidates;			// Maximum number of candidates
-	int					max_stack_size;			// Maximum stack size
 }	t_selector_arena;
 
 // Arena management
-t_selector_arena	*allocate_selector_arena(int max_candidates, int max_stack_size);
+t_selector_arena	*allocate_selector_arena(int max_candidates);
 void				free_selector_arena(t_selector_arena *arena);
 
 // Algorithm execution
@@ -93,7 +92,7 @@ t_candidate			*enumerate_candidates(t_sorting_state *state, t_move_direction dir
 						t_selector_arena *arena);
 
 // Lookahead evaluation
-t_position			evaluate_with_lookahead(t_sorting_state *state, t_candidate *candidates, t_selector_arena *arena);
+t_position			evaluate_with_lookahead(t_candidate *candidates, t_selector_arena *arena, t_move_direction direction);
 
 // Legacy interface (to be updated)
 t_position			select_best_a_to_b_move(t_sorting_state *ps, int max_candidates, t_simulation_config config);

@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 00:00:00 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/12 22:58:05 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/13 12:23:18 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ int	find_target_position(int *sorted_array, int array_size, int target_value)
 	array_length = array_size;
 	if (target_index < array_length)
 		return (target_index);
-	// If target_value >= all elements, return index of minimum
 	min_index = 0;
 	i = 1;
 	while (i < array_size)
@@ -93,9 +92,18 @@ int	merged_cost(int a, int b)
 
 	cost_a = ft_abs(a);
 	cost_b = ft_abs(b);
-	if ((a > 0 && b > 0) || (a < 0 && b < 0))
-		return ((cost_a > cost_b) ? cost_a : cost_b);
-	return (cost_a + cost_b);
+
+	bool same_sign = (a > 0 && b > 0) || (a < 0 && b < 0);
+
+	if (same_sign)
+	{
+		if (cost_a > cost_b)
+		{
+			return cost_a;
+		}
+		return cost_b;
+	}
+	return cost_a + cost_b;
 }
 
 int	signed_cost(int idx, int size)

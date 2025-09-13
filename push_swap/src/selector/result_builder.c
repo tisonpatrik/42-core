@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 00:00:00 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/12 23:46:34 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/13 14:10:29 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,16 +78,35 @@ static int	compare_candidates(const void *a, const void *b)
 }
 
 
-#include <stdio.h>
+void	sort_candidates_by_cost(t_candidate *candidates, int count)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < count - 1)
+	{
+		j = 0;
+		while (j < count - i - 1)
+		{
+			if (compare_candidates(&candidates[j], &candidates[j + 1]) > 0)
+			{
+				t_candidate temp = candidates[j];
+				candidates[j] = candidates[j + 1];
+				candidates[j + 1] = temp;
+			}
+			j++;
+		}
+		i++;
+	}
+}
+
 t_candidate	*build_top_k_candidates(t_candidate *candidates,
 	int max_k, t_selector_arena *arena)
 {
 	t_candidate	*sorted_candidates;
 	int			actual_k;
 	int			filtered_count;
-	int			i;
-	int			j;
-
 
 	filtered_count = arena->filtered_count;
 	if (filtered_count == 0)
@@ -98,34 +117,8 @@ t_candidate	*build_top_k_candidates(t_candidate *candidates,
 		actual_k = max_k;
 	sorted_candidates = arena->top_k_candidates;
 	ft_memcpy(sorted_candidates, candidates, sizeof(t_candidate) * filtered_count);
-	// Simple bubble sort for small arrays
-	i = 0;
-	j = 0;
-	while (i < filtered_count - 1)
-	{
-		while (j < filtered_count - i - 1)
-		{
-			if (compare_candidates(&sorted_candidates[j], &sorted_candidates[j + 1]) > 0)
-			{
-				t_candidate temp = sorted_candidates[j];
-				sorted_candidates[j] = sorted_candidates[j + 1];
-				sorted_candidates[j + 1] = temp;
-			}
-		}
-	}
+	sort_candidates_by_cost(sorted_candidates, filtered_count);
 	arena->top_k_count = actual_k;
-	
-	// Print all candidates
-	i = 0;
-	while (i < actual_k)
-	{
-		printf("Candidate %d: total=%d, cost_a=%d, cost_b=%d, from_index=%d, to_index=%d, score=%d\n",
-			i, sorted_candidates[i].position.total, sorted_candidates[i].position.cost_a,
-			sorted_candidates[i].position.cost_b, sorted_candidates[i].position.from_index,
-			sorted_candidates[i].position.to_index, sorted_candidates[i].score);
-		i++;
-	}
-	
 	return (sorted_candidates);
 }
 

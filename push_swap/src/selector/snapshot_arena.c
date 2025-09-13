@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 00:00:00 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/12 22:36:46 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/13 14:04:17 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ t_snapshot_arena	*create_snapshot_arena(void)
 	arena->b_values = NULL;
 	arena->size_a = 0;
 	arena->size_b = 0;
-	arena->initialized = false;
 	
 	return (arena);
 }
@@ -88,7 +87,6 @@ bool	take_snapshots(t_snapshot_arena *arena, t_stack *stack_a, t_stack *stack_b)
 		return (false);
 	}
 	
-	arena->initialized = true;
 	return (true);
 }
 
@@ -110,7 +108,6 @@ void	clear_snapshots(t_snapshot_arena *arena)
 	
 	arena->size_a = 0;
 	arena->size_b = 0;
-	arena->initialized = false;
 }
 
 

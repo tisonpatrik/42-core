@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 21:41:03 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/12 23:11:21 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/13 12:22:44 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_position	find_best_move(t_sorting_state *state, t_move_direction direction,
 	top_k_candidates = build_top_k_candidates(filtered_candidates,
 		arena->config.max_candidates, arena);
 
-	result = evaluate_with_lookahead(state, top_k_candidates, arena);
+	result = evaluate_with_lookahead(top_k_candidates, arena, direction);
 	return (result);
 }
 
@@ -37,10 +37,8 @@ t_position	select_best_a_to_b_move(t_sorting_state *ps, int max_candidates, t_si
 {
 	t_selector_arena	*arena;
 	t_position		result;
-	int			max_stack_size;
 
-	max_stack_size = get_max_stack_size(ps->a, ps->b);
-	arena = allocate_selector_arena(max_candidates, max_stack_size);
+	arena = allocate_selector_arena(max_candidates);
 	if (!arena)
 	{
 		result.total = INT_MAX;
@@ -56,10 +54,8 @@ t_position	select_best_b_to_a_move(t_sorting_state *ps, int max_candidates, t_si
 {
 	t_selector_arena	*arena;
 	t_position		result;
-	int			max_stack_size;
 
-	max_stack_size = (get_size(ps->a) > get_size(ps->b)) ? get_size(ps->a) : get_size(ps->b);
-	arena = allocate_selector_arena(max_candidates, max_stack_size);
+	arena = allocate_selector_arena(max_candidates);
 	if (!arena)
 	{
 		result.total = INT_MAX;

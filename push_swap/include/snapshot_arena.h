@@ -17,7 +17,6 @@ typedef struct s_snapshot_arena
 	int		*b_values;		// Snapshot of stack B values
 	int		size_a;			// Size of stack A snapshot
 	int		size_b;			// Size of stack B snapshot
-	bool	initialized;	// Whether snapshots are currently valid
 }	t_snapshot_arena;
 
 // Arena lifecycle management

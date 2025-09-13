@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 00:00:00 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/12 23:17:12 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/13 14:02:01 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ t_candidate	get_candidate(int from_idx, int to_idx, int size_a, int size_b)
 	int			cost_b;
 	t_candidate	candidate;
 
-	cost_a = signed_cost(from_idx, size_a);
-	cost_b = signed_cost(to_idx, size_b);
+	cost_a = signed_cost(to_idx, size_a);
+	cost_b = signed_cost(from_idx, size_b);
 	pos.total = merged_cost(cost_a, cost_b);
 	pos.cost_a = cost_a;
 	pos.cost_b = cost_b;
@@ -78,7 +78,7 @@ void	populate_b_to_a_candidates(t_snapshot_arena *snapshot, t_selector_arena *ar
 	while (i < snapshot->size_b)
 	{
 		target_pos = find_target_position(snapshot->a_values, snapshot->size_a, snapshot->b_values[i]);
-		result[candidate_idx] = get_candidate(i, target_pos, snapshot->size_b, snapshot->size_a);
+		result[candidate_idx] = get_candidate(i, target_pos, snapshot->size_a, snapshot->size_b);
 		candidate_idx++;
 		i++;
 	}
@@ -87,28 +87,18 @@ void	populate_b_to_a_candidates(t_snapshot_arena *snapshot, t_selector_arena *ar
 
 t_candidate	*enumerate_b_to_a_candidates(t_sorting_state *state, t_selector_arena *arena)
 {
-	t_snapshot_arena	*snapshot;
 
-	snapshot = create_snapshot_arena();
-	if (!snapshot)
+	if (!take_snapshots(arena->snapshot_arena, state->a, state->b))
 		return (NULL);
 	
-	if (!take_snapshots(snapshot, state->a, state->b))
-	{
-		destroy_snapshot_arena(snapshot);
-		return (NULL);
-	}
-	
-	if (snapshot->size_b == 0)
+	if (arena->snapshot_arena->size_b == 0)
 	{
 		arena->candidate_count = 0;
-		destroy_snapshot_arena(snapshot);
 		return (NULL);
 	}
 	
-	populate_b_to_a_candidates(snapshot, arena);
+	populate_b_to_a_candidates(arena->snapshot_arena, arena);
 	
-	destroy_snapshot_arena(snapshot);
 	return (arena->candidates);
 }
 
