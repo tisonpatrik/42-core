@@ -90,6 +90,10 @@ t_position	evaluate_with_lookahead(t_candidate *candidates, t_selector_arena *ar
 	t_position	best_position;
 	int			i;
 	int			count;
+	int			*temp_a_values;
+	int			*temp_b_values;
+	int			temp_size_a;
+	int			temp_size_b;
 
 	count = arena->top_k_count;
 	if (count == 0)
@@ -105,35 +109,57 @@ t_position	evaluate_with_lookahead(t_candidate *candidates, t_selector_arena *ar
 		t_position	position = candidates[i].position;
 		int			rot = merged_cost(position.cost_a, position.cost_b);
 		
+		// Create temporary copies of snapshot data for this iteration
+		temp_size_a = arena->snapshot_arena->size_a;
+		temp_size_b = arena->snapshot_arena->size_b;
+		temp_a_values = malloc(temp_size_a * sizeof(int));
+		temp_b_values = malloc(temp_size_b * sizeof(int));
+		if (!temp_a_values || !temp_b_values)
+		{
+			if (temp_a_values) free(temp_a_values);
+			if (temp_b_values) free(temp_b_values);
+			i++;
+			continue;
+		}
+		
+		// Copy snapshot data
+		for (int j = 0; j < temp_size_a; j++)
+			temp_a_values[j] = arena->snapshot_arena->a_values[j];
+		for (int j = 0; j < temp_size_b; j++)
+			temp_b_values[j] = arena->snapshot_arena->b_values[j];
 	
 		if (direction == MOVE_A_TO_B)
 		{
-			int	ia = normalize_index(arena->snapshot_arena->size_a, position.cost_a);
-			int	ib = normalize_index(arena->snapshot_arena->size_b, position.cost_b);
-			int	x = arena->snapshot_arena->a_values[ia];
+			int	ia = normalize_index(temp_size_a, position.cost_a);
+			int	ib = normalize_index(temp_size_b, position.cost_b);
+			int	x = temp_a_values[ia];
 			
-			remove_element_at_index(arena->snapshot_arena->a_values, &arena->snapshot_arena->size_a, ia);
-			insert_element_at_index(arena->snapshot_arena->b_values, &arena->snapshot_arena->size_b, ib, x);
+			remove_element_at_index(temp_a_values, &temp_size_a, ia);
+			insert_element_at_index(temp_b_values, &temp_size_b, ib, x);
 			rot = rot + 1;
 		}
 		else
 		{
-			int	ib = normalize_index(arena->snapshot_arena->size_b, position.cost_b);
-			int	ia = normalize_index(arena->snapshot_arena->size_a, position.cost_a);
-			int	x = arena->snapshot_arena->b_values[ib];
+			int	ib = normalize_index(temp_size_b, position.cost_b);
+			int	ia = normalize_index(temp_size_a, position.cost_a);
+			int	x = temp_b_values[ib];
 			
-			remove_element_at_index(arena->snapshot_arena->b_values, &arena->snapshot_arena->size_b, ib);
-			insert_element_at_index(arena->snapshot_arena->a_values, &arena->snapshot_arena->size_a, ia, x);
+			remove_element_at_index(temp_b_values, &temp_size_b, ib);
+			insert_element_at_index(temp_a_values, &temp_size_a, ia, x);
 			rot = rot + 1;
 		}
 
-		int heuristic_estimate = get_estimatation(arena->snapshot_arena->a_values, arena->snapshot_arena->size_a, arena->config.size_penalty_factor, arena->config.heuristic_offset, arena->config.heuristic_divisor);
+		int heuristic_estimate = get_estimatation(temp_a_values, temp_size_a, arena->config.size_penalty_factor, arena->config.heuristic_offset, arena->config.heuristic_divisor);
 		int total_score = heuristic_estimate + rot;
 		if (total_score < best_score || (total_score == best_score && get_better_position(position, best_position)))
 		{
 			best_position = position;
 			best_score = total_score;
 		}
+		
+		// Clean up temporary arrays
+		free(temp_a_values);
+		free(temp_b_values);
 		i++;
 	}
 

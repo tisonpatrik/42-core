@@ -35,13 +35,21 @@ t_candidate	get_candidate(int from_idx, int to_idx, int size_a, int size_b)
 }
 
 
-t_candidate	*enumerate_a_to_b_candidates(int size_a, int size_b, t_selector_arena *arena)
+t_candidate	*enumerate_a_to_b_candidates(t_sorting_state *state, t_selector_arena *arena)
 {
 	t_candidate	*candidates;
 	int			i;
 	int			j;
 	int			candidate_idx;
+	int			size_a;
+	int			size_b;
 
+	if (!take_snapshots(arena->snapshot_arena, state->a, state->b))
+		return (NULL);
+	
+	size_a = arena->snapshot_arena->size_a;
+	size_b = arena->snapshot_arena->size_b;
+	
 	if (size_a == 0)
 	{
 		arena->candidate_count = 0;
@@ -105,14 +113,9 @@ t_candidate	*enumerate_b_to_a_candidates(t_sorting_state *state, t_selector_aren
 t_candidate	*enumerate_candidates(t_sorting_state *state, t_move_direction direction,
 	t_selector_arena *arena)
 {
-	int	size_a;
-	int	size_b;
-
 	if (direction == MOVE_A_TO_B)
 	{
-		size_a = get_size(state->a);
-		size_b = get_size(state->b);
-		return (enumerate_a_to_b_candidates(size_a, size_b, arena));
+		return (enumerate_a_to_b_candidates(state, arena));
 	}
 	else
 	{
