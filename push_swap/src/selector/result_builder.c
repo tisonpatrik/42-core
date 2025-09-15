@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 00:00:00 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/13 14:10:29 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/15 20:54:45 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ t_candidate	*build_filtered_candidates(t_candidate *candidates,
 	i = 0;
 	while (i < count)
 	{
-		if (candidates[i].position.total <= threshold)
+		if (candidates[i].position.total <= threshold && arena->filtered_count < arena->max_candidates)
 		{
 			filtered[arena->filtered_count] = candidates[i];
 			arena->filtered_count++;
@@ -116,8 +116,10 @@ t_candidate	*build_top_k_candidates(t_candidate *candidates,
 	else
 		actual_k = max_k;
 	sorted_candidates = arena->top_k_candidates;
-	ft_memcpy(sorted_candidates, candidates, sizeof(t_candidate) * filtered_count);
-	sort_candidates_by_cost(sorted_candidates, filtered_count);
+	// Copy only up to max_k elements to prevent buffer overflow
+	int copy_count = (filtered_count < max_k) ? filtered_count : max_k;
+	ft_memcpy(sorted_candidates, candidates, sizeof(t_candidate) * copy_count);
+	sort_candidates_by_cost(sorted_candidates, copy_count);
 	arena->top_k_count = actual_k;
 	return (sorted_candidates);
 }

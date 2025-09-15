@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 00:00:00 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/13 14:02:01 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/15 20:54:45 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,8 @@ t_candidate	*enumerate_b_to_a_candidates(t_sorting_state *state, t_selector_aren
 		return (NULL);
 	}
 	
-	populate_b_to_a_candidates(arena->snapshot_arena, arena);
 	
+	populate_b_to_a_candidates(arena->snapshot_arena, arena);	
 	return (arena->candidates);
 }
 

@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:49:21 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/12 21:55:12 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/15 00:01:46 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include "../../include/solver.h"
 #include "../../include/simulation_config.h"
 #include "../../libft/include/list.h"
+#include <stdio.h>
 
 void	solve_push_swap(t_sorting_state *state)
 {
@@ -35,6 +36,9 @@ void	solve_push_swap(t_sorting_state *state)
 		apply_combined(state, position, true);
 	}
 
+	printf("Before sort_three - Stack A and B values:\n");
+	print_state_values(state);
+	
 	sort_three(state);
 
 	while (get_size(state->b) > 0)

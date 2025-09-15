@@ -6,12 +6,13 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 00:00:00 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/13 14:13:29 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/15 20:54:45 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/selector.h"
 #include <stdbool.h>
+#include <string.h>
 
 
 
@@ -37,6 +38,9 @@ static void	insert_element_at_index(int *array, int *size, int index, int value)
 	int	i;
 
 	if (index < 0 || index > *size)
+		return;
+	// Safety check: don't increase size beyond reasonable bounds
+	if (*size >= 1000) // Arbitrary safety limit
 		return;
 	i = *size;
 	while (i > index)
@@ -95,38 +99,58 @@ t_position	evaluate_with_lookahead(t_candidate *candidates, t_selector_arena *ar
 	int			temp_size_a;
 	int			temp_size_b;
 
+	if (!arena || !arena->snapshot_arena || !candidates)
+	{
+		best_position.total = INT_MAX;
+		return (best_position);
+	}
+
 	count = arena->top_k_count;
 	if (count == 0)
 	{
 		best_position.total = INT_MAX;
 		return (best_position);
 	}
+	
+	printf("=== LOOKAHEAD EVALUATOR DEBUG ===\n");
+	printf("Evaluating %d candidates:\n", count);
+	for (int debug_i = 0; debug_i < count && debug_i < 5; debug_i++)
+	{
+		printf("  Candidate %d: total=%d, cost_a=%d, cost_b=%d, from=%d, to=%d\n", 
+			debug_i, candidates[debug_i].position.total, candidates[debug_i].position.cost_a, 
+			candidates[debug_i].position.cost_b, candidates[debug_i].position.from_index, 
+			candidates[debug_i].position.to_index);
+	}
+	
 	best_position = candidates[0].position;
 	int best_score = INT_MAX;
 	i = 0;
 	while (i < count)
 	{
-		t_position	position = candidates[i].position;
-		int			rot = merged_cost(position.cost_a, position.cost_b);
-		
-		// Create temporary copies of snapshot data for this iteration
+		// Create temporary working copies for this evaluation
 		temp_size_a = arena->snapshot_arena->size_a;
 		temp_size_b = arena->snapshot_arena->size_b;
-		temp_a_values = malloc(temp_size_a * sizeof(int));
-		temp_b_values = malloc(temp_size_b * sizeof(int));
+		
+		// Allocate temporary arrays with extra space for modifications
+		// We need extra space because insert_element_at_index can increase size
+		temp_a_values = malloc((temp_size_a + 1) * sizeof(int));
+		temp_b_values = malloc((temp_size_b + 1) * sizeof(int));
+		
 		if (!temp_a_values || !temp_b_values)
 		{
 			if (temp_a_values) free(temp_a_values);
 			if (temp_b_values) free(temp_b_values);
-			i++;
-			continue;
+			best_position.total = INT_MAX;
+			return (best_position);
 		}
 		
-		// Copy snapshot data
-		for (int j = 0; j < temp_size_a; j++)
-			temp_a_values[j] = arena->snapshot_arena->a_values[j];
-		for (int j = 0; j < temp_size_b; j++)
-			temp_b_values[j] = arena->snapshot_arena->b_values[j];
+		// Copy original values
+		memcpy(temp_a_values, arena->snapshot_arena->a_values, temp_size_a * sizeof(int));
+		memcpy(temp_b_values, arena->snapshot_arena->b_values, temp_size_b * sizeof(int));
+		
+		t_position	position = candidates[i].position;
+		int			rot = merged_cost(position.cost_a, position.cost_b);
+		
 	
 		if (direction == MOVE_A_TO_B)
 		{
@@ -151,15 +175,25 @@ t_position	evaluate_with_lookahead(t_candidate *candidates, t_selector_arena *ar
 
 		int heuristic_estimate = get_estimatation(temp_a_values, temp_size_a, arena->config.size_penalty_factor, arena->config.heuristic_offset, arena->config.heuristic_divisor);
 		int total_score = heuristic_estimate + rot;
+		
+		printf("  Candidate %d: rot=%d, heuristic=%d, total_score=%d\n", i, rot, heuristic_estimate, total_score);
+		
 		if (total_score < best_score || (total_score == best_score && get_better_position(position, best_position)))
 		{
 			best_position = position;
 			best_score = total_score;
+			printf("    -> New best! Score: %d\n", total_score);
+		}
+		else if (total_score == best_score)
+		{
+			printf("    -> Tie with score %d, checking better_position: %s\n", total_score, 
+				get_better_position(position, best_position) ? "true" : "false");
 		}
 		
 		// Clean up temporary arrays
 		free(temp_a_values);
 		free(temp_b_values);
+		
 		i++;
 	}
 
