@@ -23,7 +23,7 @@ func Validate(numbers []int, opsList []ops.Operation) Result {
 			return Result{
 				OK:         false,
 				ErrorIndex: i,
-				Error:      fmt.Errorf("op[%d]=%s: %w", i, OpToString(op), err),
+				Error:      fmt.Errorf("op[%d]=%s: %w", i, ops.OpToString(op), err),
 				OpCount:    len(opsList),
 			}
 		}
@@ -116,31 +116,4 @@ func applyChecked(ps *ops.SortingState, op ops.Operation) error {
 	return nil
 }
 
-func OpToString(op ops.Operation) string {
-	switch op {
-	case ops.SA:
-		return "sa"
-	case ops.SB:
-		return "sb"
-	case ops.SS:
-		return "ss"
-	case ops.PA:
-		return "pa"
-	case ops.PB:
-		return "pb"
-	case ops.RA:
-		return "ra"
-	case ops.RB:
-		return "rb"
-	case ops.RR:
-		return "rr"
-	case ops.RRA:
-		return "rra"
-	case ops.RRB:
-		return "rrb"
-	case ops.RRR:
-		return "rrr"
-	default:
-		return "?"
-	}
-}
+

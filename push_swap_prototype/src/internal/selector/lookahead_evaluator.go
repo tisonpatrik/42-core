@@ -31,7 +31,7 @@ func (le *LookaheadEvaluator) EvaluateWithLookahead(a, b []int, candidates []Can
 		position := candidate.Position
 
 		// Simulate the move and get the actual cost (g)
-		newA, _, actualCost := le.simulateMove(a, b, position, direction)
+		newA, _, actualCost := le.simulator.SimulateMove(a, b, position, direction)
 
 		// Calculate heuristic estimate of remaining work (h)
 		heuristicEstimate := le.calculateHeuristic(newA)
@@ -45,13 +45,7 @@ func (le *LookaheadEvaluator) EvaluateWithLookahead(a, b []int, candidates []Can
 			bestScore = totalScore
 		}
 	}
-
 	return bestPosition
-}
-
-// simulateMove simulates a single move and returns the resulting stacks and cost
-func (le *LookaheadEvaluator) simulateMove(a, b []int, pos Position, direction MoveDirection) ([]int, []int, int) {
-	return le.simulator.SimulateMove(a, b, pos, direction)
 }
 
 // calculateHeuristic calculates a heuristic estimate of remaining work

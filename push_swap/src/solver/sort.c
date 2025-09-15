@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:49:21 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/15 00:01:46 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/16 00:47:40 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,22 +32,27 @@ void	solve_push_swap(t_sorting_state *state)
 	int max_candidates = 30;
 	while (get_size(state->a) > 3)
 	{
-		t_position position =select_best_b_to_a_move (state, max_candidates, config);
+		t_position position = select_best_b_to_a_move (state, max_candidates, config);
 		apply_combined(state, position, true);
 	}
-
-	printf("Before sort_three - Stack A and B values:\n");
-	print_state_values(state);
 	
 	sort_three(state);
 
+
 	while (get_size(state->b) > 0)
 	{
-		t_position position = select_best_a_to_b_move(state, max_candidates, config);
+		if (get_size(state->b) == 80)
+		{
+			print_state_values(state);
+			printf("--------------------------------\n");
+		}
+		t_position position = select_best_b_to_a_move(state, max_candidates, config);
+		
 		apply_combined(state, position, false); // pa
+
 	}
- 
-	// align_min_to_top(state);
+
+	align_min_to_top(state);
 
 	// state->operations = optimize_ops(state->operations);
 }

@@ -9,7 +9,6 @@
  * @param p Position containing cost_a and cost_b values
  * @param push_to_b Boolean indicating whether to push to stack B (true) or A (false)
  */
-#include <stdio.h>
 void	apply_combined(t_sorting_state *ps, t_position p, bool push_to_b)
 {
 	int	a;
@@ -56,7 +55,4 @@ void	apply_combined(t_sorting_state *ps, t_position p, bool push_to_b)
 		push_b(ps);
 	else
 		push_a(ps);
-
-	print_state_values(ps);
-	printf("Applied combined rotation and push operation:\n");
 }

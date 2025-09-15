@@ -98,6 +98,6 @@ func main() {
 	solver.SolvePushSwap(ps)
 	
 	for _, op := range ps.OpList {
-		fmt.Println(OpToString(op))
+		fmt.Println(ops.OpToString(op))
 	}
 }

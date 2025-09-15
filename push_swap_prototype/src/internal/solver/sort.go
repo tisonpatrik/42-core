@@ -28,10 +28,14 @@ func SolvePushSwap(ps *ops.SortingState) {
 	SortThree(ps)
 
 	for !stack.IsEmpty(ps.B) {
+		if stack.GetSize(ps.B) == 80 {
+			ops.LogState(ps)
+			fmt.Printf("--------------------------------\n")
+		}
 		pos := selector.SelectBestBtoAMove(ps, candK)
 		ApplyCombined(ps, pos, false) // pa
-	}
 
+	}
 	AlignMinToTop(ps)
 
 	optimizer.OptimizeOps(ps.OpList)

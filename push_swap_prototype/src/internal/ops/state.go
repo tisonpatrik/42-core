@@ -32,4 +32,5 @@ func LogState(ps *SortingState) {
 	numbersB := stack.ToArray(ps.B)
 	fmt.Printf("  A: %v\n", numbersA)
 	fmt.Printf("  B: %v\n", numbersB)
+	fmt.Printf("  OpList: %v\n", ps.OpList)
 }

@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 00:00:00 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/15 21:37:10 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/16 00:29:32 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ bool	get_better_position(t_position a, t_position b)
 	return (better_position(a, b));
 }
 
-t_position	evaluate_with_lookahead(t_candidate *candidates, t_selector_arena *arena, t_move_direction direction)
+t_position	evaluate_with_lookahead(t_candidate *candidates, t_selector_arena *arena)
 {
 	t_position	best_position;
 	int			i;
@@ -142,26 +142,13 @@ t_position	evaluate_with_lookahead(t_candidate *candidates, t_selector_arena *ar
 		int			rot = merged_cost(position.cost_a, position.cost_b);
 		
 	
-		if (direction == MOVE_A_TO_B)
-		{
-			int	ia = normalize_index(temp_size_a, position.cost_a);
-			int	ib = normalize_index(temp_size_b, position.cost_b);
-			int	x = temp_a_values[ia];
-			
-			remove_element_at_index(temp_a_values, &temp_size_a, ia);
-			insert_element_at_index(temp_b_values, &temp_size_b, ib, x);
-			rot = rot + 1;
-		}
-		else
-		{
-			int	ib = normalize_index(temp_size_b, position.cost_b);
-			int	ia = normalize_index(temp_size_a, position.cost_a);
-			int	x = temp_b_values[ib];
-			
-			remove_element_at_index(temp_b_values, &temp_size_b, ib);
-			insert_element_at_index(temp_a_values, &temp_size_a, ia, x);
-			rot = rot + 1;
-		}
+		int	ib = normalize_index(temp_size_b, position.cost_b);
+		int	ia = normalize_index(temp_size_a, position.cost_a);
+		int	x = temp_b_values[ib];
+		
+		remove_element_at_index(temp_b_values, &temp_size_b, ib);
+		insert_element_at_index(temp_a_values, &temp_size_a, ia, x);
+		rot = rot + 1;
 
 		int heuristic_estimate = get_estimatation(temp_a_values, temp_size_a, arena->config.size_penalty_factor, arena->config.heuristic_offset, arena->config.heuristic_divisor);
 		int total_score = heuristic_estimate + rot;

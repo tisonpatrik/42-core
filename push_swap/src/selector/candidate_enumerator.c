@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 00:00:00 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/15 20:54:45 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/16 00:28:49 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,44 +34,6 @@ t_candidate	get_candidate(int from_idx, int to_idx, int size_a, int size_b)
 	return (candidate);
 }
 
-
-t_candidate	*enumerate_a_to_b_candidates(t_sorting_state *state, t_selector_arena *arena)
-{
-	t_candidate	*candidates;
-	int			i;
-	int			j;
-	int			candidate_idx;
-	int			size_a;
-	int			size_b;
-
-	if (!take_snapshots(arena->snapshot_arena, state->a, state->b))
-		return (NULL);
-	
-	size_a = arena->snapshot_arena->size_a;
-	size_b = arena->snapshot_arena->size_b;
-	
-	if (size_a == 0)
-	{
-		arena->candidate_count = 0;
-		return (NULL);
-	}
-	candidates = arena->candidates;
-	candidate_idx = 0;
-	i = 0;
-	while (i < size_a && candidate_idx < arena->max_candidates)
-	{
-		j = 0;
-		while (j < size_b && candidate_idx < arena->max_candidates)
-		{
-			candidates[candidate_idx] = get_candidate(i, j, size_a, size_b);
-			candidate_idx++;
-			j++;
-		}
-		i++;
-	}
-	arena->candidate_count = candidate_idx;
-	return (candidates);
-}
 
 void	populate_b_to_a_candidates(t_snapshot_arena *snapshot, t_selector_arena *arena)
 {
@@ -105,20 +67,6 @@ t_candidate	*enumerate_b_to_a_candidates(t_sorting_state *state, t_selector_aren
 		return (NULL);
 	}
 	
-	
 	populate_b_to_a_candidates(arena->snapshot_arena, arena);	
 	return (arena->candidates);
-}
-
-t_candidate	*enumerate_candidates(t_sorting_state *state, t_move_direction direction,
-	t_selector_arena *arena)
-{
-	if (direction == MOVE_A_TO_B)
-	{
-		return (enumerate_a_to_b_candidates(state, arena));
-	}
-	else
-	{
-		return (enumerate_b_to_a_candidates(state, arena));
-	}
 }

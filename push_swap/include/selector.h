@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 21:41:42 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/13 12:22:41 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/16 00:32:27 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,14 +88,12 @@ int					signed_cost(int idx, int size);
 int					get_max_stack_size(t_stack *a, t_stack *b);
 
 // Candidate enumeration
-t_candidate			*enumerate_candidates(t_sorting_state *state, t_move_direction direction,
-						t_selector_arena *arena);
+t_candidate			*enumerate_candidates(t_sorting_state *state, t_selector_arena *arena);
 
 // Lookahead evaluation
-t_position			evaluate_with_lookahead(t_candidate *candidates, t_selector_arena *arena, t_move_direction direction);
+t_position			evaluate_with_lookahead(t_candidate *candidates, t_selector_arena *arena);
 
 // Legacy interface (to be updated)
-t_position			select_best_a_to_b_move(t_sorting_state *ps, int max_candidates, t_simulation_config config);
 t_position			select_best_b_to_a_move(t_sorting_state *ps, int max_candidates, t_simulation_config config);
-
+t_candidate	*enumerate_b_to_a_candidates(t_sorting_state *state, t_selector_arena *arena);
 #endif

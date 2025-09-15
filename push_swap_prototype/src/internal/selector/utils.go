@@ -26,19 +26,7 @@ func DefaultSelectorConfig() SelectorConfig {
 	}
 }
 
-// BetterPosition compares two positions and returns true if the first position is better than the second
-func BetterPosition(a, b Position) bool {
-	if a.Total != b.Total {
-		return a.Total < b.Total
-	}
-	if utils.Abs(a.CostA) != utils.Abs(b.CostA) {
-		return utils.Abs(a.CostA) < utils.Abs(b.CostA)
-	}
-	if a.ToIndex != b.ToIndex {
-		return a.ToIndex < b.ToIndex
-	}
-	return a.FromIndex < b.FromIndex
-}
+
 
 // Candidate represents a position with its calculated score for evaluation
 type Candidate struct {
@@ -99,8 +87,20 @@ func SelectTopKCandidates(candidates []Candidate, maxK int) []Candidate {
 	if maxK > 0 && maxK < len(candidates) {
 		return candidates[:maxK]
 	}
-
 	return candidates
+}
+// BetterPosition compares two positions and returns true if the first position is better than the second
+func BetterPosition(a, b Position) bool {
+	if a.Total != b.Total {
+		return a.Total < b.Total
+	}
+	if utils.Abs(a.CostA) != utils.Abs(b.CostA) {
+		return utils.Abs(a.CostA) < utils.Abs(b.CostA)
+	}
+	if a.ToIndex != b.ToIndex {
+		return a.ToIndex < b.ToIndex
+	}
+	return a.FromIndex < b.FromIndex
 }
 
 // SelectBestCandidate selects the best candidate from a list of candidates
