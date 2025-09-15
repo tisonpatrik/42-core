@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 00:00:00 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/15 20:54:45 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/15 21:37:10 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ bool	get_better_position(t_position a, t_position b)
 	return (better_position(a, b));
 }
 
-#include <stdio.h>
 t_position	evaluate_with_lookahead(t_candidate *candidates, t_selector_arena *arena, t_move_direction direction)
 {
 	t_position	best_position;
@@ -112,15 +111,6 @@ t_position	evaluate_with_lookahead(t_candidate *candidates, t_selector_arena *ar
 		return (best_position);
 	}
 	
-	printf("=== LOOKAHEAD EVALUATOR DEBUG ===\n");
-	printf("Evaluating %d candidates:\n", count);
-	for (int debug_i = 0; debug_i < count && debug_i < 5; debug_i++)
-	{
-		printf("  Candidate %d: total=%d, cost_a=%d, cost_b=%d, from=%d, to=%d\n", 
-			debug_i, candidates[debug_i].position.total, candidates[debug_i].position.cost_a, 
-			candidates[debug_i].position.cost_b, candidates[debug_i].position.from_index, 
-			candidates[debug_i].position.to_index);
-	}
 	
 	best_position = candidates[0].position;
 	int best_score = INT_MAX;
@@ -176,20 +166,13 @@ t_position	evaluate_with_lookahead(t_candidate *candidates, t_selector_arena *ar
 		int heuristic_estimate = get_estimatation(temp_a_values, temp_size_a, arena->config.size_penalty_factor, arena->config.heuristic_offset, arena->config.heuristic_divisor);
 		int total_score = heuristic_estimate + rot;
 		
-		printf("  Candidate %d: rot=%d, heuristic=%d, total_score=%d\n", i, rot, heuristic_estimate, total_score);
 		
 		if (total_score < best_score || (total_score == best_score && get_better_position(position, best_position)))
 		{
 			best_position = position;
 			best_score = total_score;
-			printf("    -> New best! Score: %d\n", total_score);
 		}
-		else if (total_score == best_score)
-		{
-			printf("    -> Tie with score %d, checking better_position: %s\n", total_score, 
-				get_better_position(position, best_position) ? "true" : "false");
-		}
-		
+
 		// Clean up temporary arrays
 		free(temp_a_values);
 		free(temp_b_values);
@@ -197,14 +180,5 @@ t_position	evaluate_with_lookahead(t_candidate *candidates, t_selector_arena *ar
 		i++;
 	}
 
-	
-	// Debug: Print best_position values before returning
-	printf("DEBUG lookahead_evaluator: best_position values:\n");
-	printf("  total: %d\n", best_position.total);
-	printf("  cost_a: %d\n", best_position.cost_a);
-	printf("  cost_b: %d\n", best_position.cost_b);
-	printf("  from_index: %d\n", best_position.from_index);
-	printf("  to_index: %d\n", best_position.to_index);
-	printf("best_score: %d\n", best_score);
-	return (best_position);
+		return (best_position);
 }

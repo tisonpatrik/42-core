@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:58:57 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/12 03:25:03 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/15 21:52:22 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,8 +111,39 @@ void	print_operations(t_sorting_state *state)
 
 void print_state_values(t_sorting_state *state)
 {
+	// Print stack A with "A: " prefix and square brackets
+	write(1, "A: [", 4);
 	print_stack_values(state->a);
-	write(1, "\n", 1);
+	write(1, "]\n", 2);
+	
+	// Print stack B with "B: " prefix and square brackets
+	write(1, "B: [", 4);
 	print_stack_values(state->b);
-	write(1, "\n", 1);
+	write(1, "]\n", 2);
+	
+	// Print operations as numbers with "OpList: " prefix and square brackets
+	write(1, "OpList: [", 9);
+	print_operations_as_numbers(state);
+	write(1, "]\n", 2);
+}
+
+void print_operations_as_numbers(t_sorting_state *state)
+{
+	t_list	*current;
+
+	if (!state || !state->operations)
+		return ;
+	
+	current = state->operations;
+	while (current != NULL)
+	{
+		t_operation op = *(t_operation*)current->content;
+		if (op >= SA && op <= RRR)
+		{
+			ft_putnbr_fd(op, 1);
+			if (current->next)
+				write(1, " ", 1);
+		}
+		current = current->next;
+	}
 }
