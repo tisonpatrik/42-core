@@ -6,12 +6,11 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 22:25:12 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/10 22:26:32 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/16 21:18:16 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/math.h"
-
 
 bool	ft_less_than(int arr_val, int target_val)
 {

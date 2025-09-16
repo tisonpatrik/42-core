@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 19:25:49 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/12 20:01:46 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/16 21:00:57 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,9 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-
-
-/**
- * Executes the complete LIS computation algorithm.
- */
 t_node	**execute_lis_algorithm(t_stack *stack, t_separator_arena *arena)
 {
-	t_lis_result			result;
+	t_lis_result	result;
 
 	if (!arena || !arena->computation)
 		return (NULL);
@@ -31,19 +26,15 @@ t_node	**execute_lis_algorithm(t_stack *stack, t_separator_arena *arena)
 	return (build_lis_result(arena->computation, &result, arena));
 }
 
-void get_empty_result(t_node **lis_nodes)
+void	get_empty_result(t_node **lis_nodes)
 {
 	if (!lis_nodes)
 		return ;
-	// Just leave the array empty - the caller will handle it
 }
 
-/**
- * Finds the Longest Increasing Subsequence (LIS) in a stack.
- */
 t_node	**get_lis_nodes(t_stack *stack, t_separator_arena *arena)
 {
-	int					stack_size;
+	int	stack_size;
 
 	if (!stack || !arena)
 		return (NULL);
@@ -55,4 +46,3 @@ t_node	**get_lis_nodes(t_stack *stack, t_separator_arena *arena)
 	}
 	return (execute_lis_algorithm(stack, arena));
 }
-

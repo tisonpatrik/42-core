@@ -10,11 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #ifndef SORT_H
 # define SORT_H
 
-/* Sorting functions */
 void	ft_heap_sort(int *arr, int n);
 
 #endif

@@ -6,27 +6,30 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 00:00:00 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/11 17:28:20 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/16 21:09:46 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/ops.h"
 #include "../../include/stack.h"
 
-
 void	sort_three(t_sorting_state *ps)
 {
+	t_node	*a;
+	t_node	*b;
+	t_node	*c;
+	int		x;
+	int		y;
+	int		z;
+
 	if (get_size(ps->a) != 3)
 		return ;
-
-	t_node	*a = get_head(ps->a);
-	t_node	*b = get_next(a);
-	t_node	*c = get_next(b);
-
-	int		x = get_content(a);
-	int		y = get_content(b);
-	int		z = get_content(c);
-
+	a = get_head(ps->a);
+	b = get_next(a);
+	c = get_next(b);
+	x = get_content(a);
+	y = get_content(b);
+	z = get_content(c);
 	if (x < y && y < z)
 		return ;
 	if (x > y && y < z && x < z)
@@ -38,18 +41,18 @@ void	sort_three(t_sorting_state *ps)
 	{
 		swap_a(ps);
 		reverse_rotate_a(ps);
-		return ; 
+		return ;
 	}
 	if (x > y && y < z && x > z)
 	{
 		rotate_a(ps);
-		return ; 
+		return ;
 	}
 	if (x < y && y > z && x < z)
 	{
 		swap_a(ps);
 		rotate_a(ps);
-		return ; 
+		return ;
 	}
-	reverse_rotate_a(ps); 
+	reverse_rotate_a(ps);
 }

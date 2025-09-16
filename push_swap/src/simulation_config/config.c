@@ -1,5 +1,16 @@
-#include "../../include/simulation_config.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   config.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/16 20:38:34 by ptison            #+#    #+#             */
+/*   Updated: 2025/09/16 20:38:39 by ptison           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "../../include/simulation_config.h"
 
 t_simulation_config	default_selector_config(void)
 {

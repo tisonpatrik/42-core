@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/15 00:00:00 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/16 19:15:21 by patrik           ###   ########.fr       */
+/*   Created: 2025/09/16 20:39:18 by ptison            #+#    #+#             */
+/*   Updated: 2025/09/16 20:39:52 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,16 @@ int	find_insertion_index(int *sorted_array, int array_size, int target_value)
 	insertion_index = ft_lower_bound(sorted_array, array_size, target_value);
 	array_length = array_size;
 	insertion_index = insertion_index % array_length;
-	previous_element = sorted_array[(insertion_index - 1 + array_length) % array_length];
+	previous_element = sorted_array[(insertion_index - 1 + array_length)
+		% array_length];
 	next_element = sorted_array[insertion_index % array_length];
 	if (previous_element > target_value && target_value > next_element)
 		return (insertion_index);
 	current_index = 0;
 	while (current_index < array_length)
 	{
-		previous_element = sorted_array[(current_index - 1 + array_length) % array_length];
+		previous_element = sorted_array[(current_index - 1 + array_length)
+			% array_length];
 		next_element = sorted_array[current_index];
 		if (previous_element > target_value && target_value > next_element)
 			return (current_index);
@@ -52,8 +54,6 @@ int	find_target_position(int *sorted_array, int array_size, int target_value)
 
 	if (array_size == 0)
 		return (0);
-	
-	// Find the first element > val
 	best_idx = -1;
 	best_val = 0;
 	i = 0;
@@ -71,8 +71,6 @@ int	find_target_position(int *sorted_array, int array_size, int target_value)
 	}
 	if (best_idx != -1)
 		return (best_idx);
-	
-	// If val >= all elements, return index of minimum
 	min_idx = 0;
 	min_val = sorted_array[0];
 	i = 1;
@@ -109,23 +107,22 @@ bool	better_position(t_position a, t_position b)
 
 int	merged_cost(int a, int b)
 {
-	int	cost_a;
-	int	cost_b;
+	int		cost_a;
+	int		cost_b;
+	bool	same_sign;
 
 	cost_a = ft_abs(a);
 	cost_b = ft_abs(b);
-
-	bool same_sign = (a > 0 && b > 0) || (a < 0 && b < 0);
-
+	same_sign = (a > 0 && b > 0) || (a < 0 && b < 0);
 	if (same_sign)
 	{
 		if (cost_a > cost_b)
 		{
-			return cost_a;
+			return (cost_a);
 		}
-		return cost_b;
+		return (cost_b);
 	}
-	return cost_a + cost_b;
+	return (cost_a + cost_b);
 }
 
 int	signed_cost(int idx, int size)
@@ -147,4 +144,3 @@ int	get_max_stack_size(t_stack *a, t_stack *b)
 	else
 		return (size_b);
 }
-

@@ -3,25 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_free_array.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/10 22:04:05 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/10 22:07:04 by patrik           ###   ########.fr       */
+/*   Created: 2025/09/16 21:17:39 by ptison            #+#    #+#             */
+/*   Updated: 2025/09/16 21:17:40 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include <stdlib.h>
 
-/**
- * @brief Frees a dynamically allocated array of strings
- *
- * This function safely frees a dynamically allocated array of strings (char**).
- * It first frees each individual string in the array, then frees the array itself.
- * The function handles NULL pointers gracefully.
- *
- * @param array Pointer to the array of strings to free
- */
 void	ft_free_array(char **array)
 {
 	int	i;

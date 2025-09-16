@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 19:35:00 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/12 20:01:46 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/16 20:47:53 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void	reconstruct_lis_sequence_from_tracking(t_node **lis_nodes,
 		result_index++;
 		current_index = computation->previous_indices[current_index];
 	}
-	// Don't add NULL here - we'll do it after reversing
 }
 
 void	reverse_sequence_to_correct_order(t_node **lis_nodes, size_t lis_count)
@@ -45,12 +44,9 @@ void	reverse_sequence_to_correct_order(t_node **lis_nodes, size_t lis_count)
 		lis_nodes[lis_count - 1 - swap_index] = temporary_node;
 		swap_index++;
 	}
-	lis_nodes[lis_count] = NULL; // Terminate the array after reversing
+	lis_nodes[lis_count] = NULL;
 }
 
-/**
- * Builds the LIS result array from computation data.
- */
 t_node	**build_lis_result(t_lis_computation *computation,
 		t_lis_result *computation_result, t_separator_arena *arena)
 {

@@ -1,14 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   apply_combined.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/16 21:10:24 by ptison            #+#    #+#             */
+/*   Updated: 2025/09/16 21:10:35 by ptison           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../../include/solver.h"
 
-/**
- * ApplyCombined applies a combined rotation and push operation based on the given position.
- * It performs common rotations (rr/rrr) first, then remaining rotations, and finally the push operation.
- * 
- * @param ps Pointer to the sorting state
- * @param p Position containing cost_a and cost_b values
- * @param push_to_b Boolean indicating whether to push to stack B (true) or A (false)
- */
 void	apply_combined(t_sorting_state *ps, t_position p, bool push_to_b)
 {
 	int	a;
@@ -16,7 +19,6 @@ void	apply_combined(t_sorting_state *ps, t_position p, bool push_to_b)
 
 	a = p.cost_a;
 	b = p.cost_b;
-	// Common rotation - perform rr/rrr operations
 	while (a > 0 && b > 0)
 	{
 		rotate_ab(ps);
@@ -29,7 +31,6 @@ void	apply_combined(t_sorting_state *ps, t_position p, bool push_to_b)
 		a++;
 		b++;
 	}
-	// Remaining rotations - perform individual rotations
 	while (a > 0)
 	{
 		rotate_a(ps);
@@ -50,7 +51,6 @@ void	apply_combined(t_sorting_state *ps, t_position p, bool push_to_b)
 		reverse_rotate_b(ps);
 		b++;
 	}
-	// Push operation
 	if (push_to_b)
 		push_b(ps);
 	else

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   selector_arena.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/16 20:43:24 by ptison            #+#    #+#             */
+/*   Updated: 2025/09/16 20:44:33 by ptison           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/selector.h"
 #include <stdbool.h>
 #include <stdlib.h>
@@ -17,35 +29,32 @@ static size_t	calculate_arena_size(int max_candidates)
 {
 	size_t	size;
 
-	size = sizeof(t_candidate) * (size_t)max_candidates; // For candidates array
-	size += sizeof(t_candidate) * (size_t)max_candidates; // For filtered candidates
-	size += sizeof(t_candidate) * (size_t)max_candidates; // For top-k candidates
+	size = sizeof(t_candidate) * (size_t)max_candidates;
+	size += sizeof(t_candidate) * (size_t)max_candidates;
+	size += sizeof(t_candidate) * (size_t)max_candidates;
 	return (size);
 }
 
-static void	*setup_arena_memory_layout(t_selector_arena *arena, int max_candidates)
+static void	*setup_arena_memory_layout(t_selector_arena *arena,
+		int max_candidates)
 {
 	char	*memory;
 	size_t	offset;
 
 	memory = (char *)arena->arena_memory;
 	offset = 0;
-	
 	arena->candidates = (t_candidate *)(memory + offset);
 	offset += sizeof(t_candidate) * (size_t)max_candidates;
-	
 	arena->filtered_candidates = (t_candidate *)(memory + offset);
 	offset += sizeof(t_candidate) * (size_t)max_candidates;
-	
 	arena->top_k_candidates = (t_candidate *)(memory + offset);
-	
 	return (arena);
 }
 
 t_selector_arena	*allocate_selector_arena(int max_candidates)
 {
 	t_selector_arena	*arena;
-	size_t			arena_size;
+	size_t				arena_size;
 
 	if (max_candidates <= 0)
 		return (NULL);

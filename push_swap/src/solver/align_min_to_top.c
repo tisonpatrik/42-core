@@ -1,12 +1,18 @@
-#include "../../include/solver.h"
-#include "../../include/selector.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   align_min_to_top.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/16 21:01:47 by ptison            #+#    #+#             */
+/*   Updated: 2025/09/16 21:08:34 by ptison           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-/**
- * AlignMinToTop rotates stack A to bring the minimum element to the top via the shortest path.
- * This is the final step in the push_swap algorithm to ensure proper ordering.
- * 
- * @param ps Pointer to the sorting state
- */
+#include "../../include/selector.h"
+#include "../../include/solver.h"
+
 void	align_min_to_top(t_sorting_state *ps)
 {
 	int		size_a;
@@ -45,3 +51,4 @@ void	align_min_to_top(t_sorting_state *ps)
 		cost++;
 	}
 }
+

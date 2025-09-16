@@ -6,12 +6,11 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 21:41:03 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/16 17:55:06 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/16 20:40:58 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/selector.h"
-
 
 t_position	find_best_move(t_sorting_state *state, t_selector_arena *arena)
 {
@@ -21,23 +20,21 @@ t_position	find_best_move(t_sorting_state *state, t_selector_arena *arena)
 	t_position	result;
 
 	candidates = enumerate_b_to_a_candidates(state, arena);
-
 	filtered_candidates = build_filtered_candidates(candidates,
-		arena->config.cost_threshold_offset, arena);
-
+			arena->config.cost_threshold_offset, arena);
 	top_k_candidates = build_top_k_candidates(filtered_candidates,
-		arena->config.max_candidates, arena);
-
+			arena->config.max_candidates, arena);
 	result = evaluate_with_lookahead(top_k_candidates, arena);
 	return (result);
 }
 
-t_position	select_best_b_to_a_move(t_sorting_state *ps, int max_candidates, t_simulation_config config)
+t_position	select_best_b_to_a_move(t_sorting_state *ps, int max_candidates,
+		t_simulation_config config)
 {
 	t_selector_arena	*arena;
-	t_position		result;
+	t_position			result;
 
-	arena = allocate_selector_arena( ps->b->size);
+	arena = allocate_selector_arena(ps->b->size);
 	if (!arena)
 	{
 		result.total = INT_MAX;

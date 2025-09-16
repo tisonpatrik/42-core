@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:58:57 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/15 21:52:22 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/16 21:11:46 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,19 +87,17 @@ void	save_operation(t_sorting_state *state, t_operation operation)
 
 void	print_operations(t_sorting_state *state)
 {
-	t_list	*current;
-	char	*operation_strings[] = {
-		"sa\n", "sb\n", "ss\n", "pa\n", "pb\n", 
-		"ra\n", "rb\n", "rr\n", "rra\n", "rrb\n", "rrr\n"
-	};
+	t_list		*current;
+	char		*operation_strings[] = {"sa\n", "sb\n", "ss\n", "pa\n", "pb\n",
+				"ra\n", "rb\n", "rr\n", "rra\n", "rrb\n", "rrr\n"};
+	t_operation	op;
 
 	if (!state || !state->operations)
 		return ;
-	
 	current = state->operations;
 	while (current != NULL)
 	{
-		t_operation op = *(t_operation*)current->content;
+		op = *(t_operation *)current->content;
 		if (op >= SA && op <= RRR)
 		{
 			write(1, operation_strings[op], ft_strlen(operation_strings[op]));
@@ -108,36 +106,30 @@ void	print_operations(t_sorting_state *state)
 	}
 }
 
-
-void print_state_values(t_sorting_state *state)
+void	print_state_values(t_sorting_state *state)
 {
-	// Print stack A with "A: " prefix and square brackets
 	write(1, "A: [", 4);
 	print_stack_values(state->a);
 	write(1, "]\n", 2);
-	
-	// Print stack B with "B: " prefix and square brackets
 	write(1, "B: [", 4);
 	print_stack_values(state->b);
 	write(1, "]\n", 2);
-	
-	// Print operations as numbers with "OpList: " prefix and square brackets
 	write(1, "OpList: [", 9);
 	print_operations_as_numbers(state);
 	write(1, "]\n", 2);
 }
 
-void print_operations_as_numbers(t_sorting_state *state)
+void	print_operations_as_numbers(t_sorting_state *state)
 {
-	t_list	*current;
+	t_list		*current;
+	t_operation	op;
 
 	if (!state || !state->operations)
 		return ;
-	
 	current = state->operations;
 	while (current != NULL)
 	{
-		t_operation op = *(t_operation*)current->content;
+		op = *(t_operation *)current->content;
 		if (op >= SA && op <= RRR)
 		{
 			ft_putnbr_fd(op, 1);
