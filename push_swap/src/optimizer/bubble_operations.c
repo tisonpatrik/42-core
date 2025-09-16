@@ -1,8 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   bubble_operations.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/16 21:37:14 by patrik            #+#    #+#             */
+/*   Updated: 2025/09/16 21:40:58 by patrik           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/optimizer.h"
 
-/**
- * Simple copy function for ft_lstmap - just duplicates the operation
- */
+
 static void	*copy_operation(void *content)
 {
 	t_operation *op = malloc(sizeof(t_operation));
@@ -12,12 +22,6 @@ static void	*copy_operation(void *content)
 }
 
 
-/**
- * Get operation at specific index in list
- * @param list List to search
- * @param index Index to get
- * @return Operation at index, or NULL if not found
- */
 t_operation	get_operation_at_index(t_list *list, int index)
 {
 	t_list	*current = list;
@@ -30,16 +34,11 @@ t_operation	get_operation_at_index(t_list *list, int index)
 	}
 	
 	if (current == NULL)
-		return (SA); // Default fallback
+		return (SA);
 	return (*(t_operation*)current->content);
 }
 
-/**
- * Set operation at specific index in list
- * @param list List to modify
- * @param index Index to set
- * @param op Operation to set
- */
+
 void	set_operation_at_index(t_list *list, int index, t_operation op)
 {
 	t_list	*current = list;
@@ -55,30 +54,19 @@ void	set_operation_at_index(t_list *list, int index, t_operation op)
 		*(t_operation*)current->content = op;
 }
 
-/**
- * Helper function: attempt to bubble op at index j through [i+1..j-1]
- * @param out List to modify
- * @param i Start index
- * @param j End index
- * @param is_a Whether we're bubbling an A operation
- * @return true if bubbling was successful
- */
+
 bool	bubble_operation(t_list *out, int i, int j, bool is_a)
 {
-	// Allow only "other stack only" in gap and no barriers
 	for (int k = i + 1; k < j; k++)
 	{
 		t_operation op_k = get_operation_at_index(out, k);
 		if (is_barrier(op_k))
 			return (false);
-		// When bubbling A-op, gap must be B-only
 		if (is_a && (touches_a(op_k) || (!touches_b(op_k) && !is_pure_b(op_k))))
 			return (false);
-		// When bubbling B-op, gap must be A-only
 		if (!is_a && (touches_b(op_k) || (!touches_a(op_k) && !is_pure_a(op_k))))
 			return (false);
 	}
-	// Perform series of adjacent swaps (commutation)
 	for (int k = j; k > i + 1; k--)
 	{
 		t_operation temp = get_operation_at_index(out, k);
@@ -88,13 +76,7 @@ bool	bubble_operation(t_list *out, int i, int j, bool is_a)
 	return (true);
 }
 
-/**
- * Bubble operation across other stack operations
- * @param src Source operation list
- * @param max_gap Maximum gap for bubbling
- * @param changed Pointer to boolean indicating if changes were made
- * @return Original list if no changes, new list if changes were made
- */
+
 t_list	*bubble_across_other_stack(t_list *src, int max_gap, bool *changed)
 {
 	int		n = ft_lstsize(src);
@@ -109,12 +91,10 @@ t_list	*bubble_across_other_stack(t_list *src, int max_gap, bool *changed)
 		return (NULL);
 	*changed = false;
 	
-	// Go through sequence and look for pairs to merge within maxGap range
 	for (int i = 0; i < n - 1; i++)
 	{
 		t_operation a = get_operation_at_index(out, i);
 		
-		// A-op + look for suitable B-op in window to create rr/rrr
 		if (a == RA || a == RRA)
 		{
 			t_operation want = RB;
@@ -125,20 +105,18 @@ t_list	*bubble_across_other_stack(t_list *src, int max_gap, bool *changed)
 				t_operation op_j = get_operation_at_index(out, j);
 				if (op_j == want)
 				{
-					if (bubble_operation(out, i, j, true)) // bubble B-op through B-only block
+					if (bubble_operation(out, i, j, true))
 					{
 						*changed = true;
-						// Move one step further, merge will handle next pass
 					}
 					break;
 				}
 				if (is_barrier(op_j) || touches_a(op_j))
-					break; // Hit barrier or A-op → not this way
+					break;
 			}
 			continue;
 		}
 		
-		// B-op + look for suitable A-op in window
 		if (a == RB || a == RRB)
 		{
 			t_operation want = RA;
@@ -149,7 +127,7 @@ t_list	*bubble_across_other_stack(t_list *src, int max_gap, bool *changed)
 				t_operation op_j = get_operation_at_index(out, j);
 				if (op_j == want)
 				{
-					if (bubble_operation(out, i, j, false)) // bubble A-op through A-only block
+					if (bubble_operation(out, i, j, false))
 					{
 						*changed = true;
 					}

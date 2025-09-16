@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   optimizer.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/16 21:37:30 by patrik            #+#    #+#             */
+/*   Updated: 2025/09/16 21:40:58 by patrik           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/optimizer.h"
 
 void optimize_ops(t_list **seq)
@@ -17,7 +29,6 @@ void optimize_ops(t_list **seq)
 		changed = false;
 		bool c;
 		
-		// Apply optimizations similar to Go version
 		t_list *new_seq = bubble_across_other_stack(*seq, max_bubble, &c);
 		if (c)
 		{
@@ -27,7 +38,7 @@ void optimize_ops(t_list **seq)
 		}
 		else
 		{
-			ft_lstclear(&new_seq, free); // Free the copy since no changes were made
+			ft_lstclear(&new_seq, free);
 		}
 		
 		new_seq = merge_neighbors(*seq, &c);
@@ -39,7 +50,7 @@ void optimize_ops(t_list **seq)
 		}
 		else
 		{
-			ft_lstclear(&new_seq, free); // Free the copy since no changes were made
+			ft_lstclear(&new_seq, free);
 		}
 		
 		new_seq = cancel_inverse_pairs(*seq, &c);
@@ -51,7 +62,7 @@ void optimize_ops(t_list **seq)
 		}
 		else
 		{
-			ft_lstclear(&new_seq, free); // Free the copy since no changes were made
+			ft_lstclear(&new_seq, free);
 		}
 		
 		new_seq = cancel_across_other_stack_a(*seq, &c);
@@ -63,7 +74,7 @@ void optimize_ops(t_list **seq)
 		}
 		else
 		{
-			ft_lstclear(&new_seq, free); // Free the copy since no changes were made
+			ft_lstclear(&new_seq, free);
 		}
 		
 		new_seq = cancel_across_other_stack_b(*seq, &c);
@@ -75,7 +86,7 @@ void optimize_ops(t_list **seq)
 		}
 		else
 		{
-			ft_lstclear(&new_seq, free); // Free the copy since no changes were made
+			ft_lstclear(&new_seq, free);
 		}
 	}
 }

@@ -6,14 +6,13 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:49:32 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/16 21:24:28 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/16 21:40:58 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/ops.h"
 #include "../../include/separator.h"
 #include <stdbool.h>
-#include <stdio.h>
 
 static size_t	calculate_lis_length(t_node **lis_nodes)
 {

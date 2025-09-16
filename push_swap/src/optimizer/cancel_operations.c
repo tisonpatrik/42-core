@@ -1,8 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cancel_operations.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/16 21:37:44 by patrik            #+#    #+#             */
+/*   Updated: 2025/09/16 21:40:58 by patrik           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/optimizer.h"
 
-/**
- * Simple copy function for ft_lstmap - just duplicates the operation
- */
+
 static void	*copy_operation(void *content)
 {
 	t_operation *op = malloc(sizeof(t_operation));
@@ -11,12 +21,7 @@ static void	*copy_operation(void *content)
 	return (op);
 }
 
-/**
- * Check if two operations are inverse of each other
- * @param a First operation
- * @param b Second operation
- * @return true if operations cancel each other out
- */
+
 bool	is_inverse(t_operation a, t_operation b)
 {
 	switch (a)
@@ -34,11 +39,11 @@ bool	is_inverse(t_operation a, t_operation b)
 		case RRR:
 			return (b == RR);
 		case SA:
-			return (b == SA); // sa;sa -> ∅
+			return (b == SA);
 		case SB:
-			return (b == SB); // sb;sb -> ∅
+			return (b == SB);
 		case SS:
-			return (b == SS); // ss;ss -> ∅
+			return (b == SS);
 		case PA:
 			return (b == PB);
 		case PB:
@@ -48,12 +53,7 @@ bool	is_inverse(t_operation a, t_operation b)
 	}
 }
 
-/**
- * Cancel adjacent inverse pairs in the operation sequence
- * @param src Source operation list
- * @param changed Pointer to boolean indicating if any changes were made
- * @return New list with inverse pairs removed (always returns a copy)
- */
+
 t_list	*cancel_inverse_pairs(t_list *src, bool *changed)
 {
 	if (!src || ft_lstsize(src) < 2)
@@ -73,13 +73,11 @@ t_list	*cancel_inverse_pairs(t_list *src, bool *changed)
 			is_inverse(*(t_operation*)current->content, 
 					  *(t_operation*)current->next->content))
 		{
-			// Skip both operations (they cancel out)
 			has_changed = true;
 			current = current->next->next;
 		}
 		else
 		{
-			// Add operation to result
 			t_operation *op = malloc(sizeof(t_operation));
 			if (op == NULL)
 			{
@@ -97,12 +95,7 @@ t_list	*cancel_inverse_pairs(t_list *src, bool *changed)
 	return (dst);
 }
 
-/**
- * Cancel inverses across other stack for A operations
- * @param src Source operation list
- * @param changed Pointer to boolean indicating if any changes were made
- * @return New list with cross-stack cancellations applied (always returns a copy)
- */
+
 t_list	*cancel_across_other_stack_a(t_list *src, bool *changed)
 {
 	if (!src || ft_lstsize(src) < 3)
@@ -131,7 +124,6 @@ t_list	*cancel_across_other_stack_a(t_list *src, bool *changed)
 					break;
 				if (*(t_operation*)search->content == inv)
 				{
-					// Add B-only operations between them
 					has_changed = true;
 					t_list	*temp = current->next;
 					while (temp != search)
@@ -152,7 +144,6 @@ t_list	*cancel_across_other_stack_a(t_list *src, bool *changed)
 				search = search->next;
 			}
 		}
-		// Add current operation
 		t_operation *op_copy = malloc(sizeof(t_operation));
 		if (op_copy == NULL)
 		{
@@ -170,12 +161,7 @@ t_list	*cancel_across_other_stack_a(t_list *src, bool *changed)
 	return (dst);
 }
 
-/**
- * Cancel inverses across other stack for B operations
- * @param src Source operation list
- * @param changed Pointer to boolean indicating if any changes were made
- * @return New list with cross-stack cancellations applied (always returns a copy)
- */
+
 t_list	*cancel_across_other_stack_b(t_list *src, bool *changed)
 {
 	if (!src || ft_lstsize(src) < 3)

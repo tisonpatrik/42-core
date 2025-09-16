@@ -6,13 +6,12 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 21:00:04 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/10 22:07:04 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/16 21:40:58 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/validator.h"
 #include <stdlib.h>
-#include <unistd.h>
 
 int	get_count_of_arguments(int argc, char *argv[])
 {

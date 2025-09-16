@@ -1,10 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   operation_properties.c                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/16 21:37:33 by patrik            #+#    #+#             */
+/*   Updated: 2025/09/16 21:40:58 by patrik           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/optimizer.h"
 
-/**
- * Check if operation touches stack A
- * @param op Operation to check
- * @return true if operation affects stack A
- */
+
 bool	touches_a(t_operation op)
 {
 	switch (op)
@@ -18,11 +26,7 @@ bool	touches_a(t_operation op)
 	}
 }
 
-/**
- * Check if operation touches stack B
- * @param op Operation to check
- * @return true if operation affects stack B
- */
+
 bool	touches_b(t_operation op)
 {
 	switch (op)
@@ -36,11 +40,6 @@ bool	touches_b(t_operation op)
 	}
 }
 
-/**
- * Check if operation is a barrier (cannot be crossed during bubbling)
- * @param op Operation to check
- * @return true if operation is a barrier
- */
 bool	is_barrier(t_operation op)
 {
 	switch (op)
@@ -56,21 +55,12 @@ bool	is_barrier(t_operation op)
 	}
 }
 
-/**
- * Check if operation is purely A-only
- * @param op Operation to check
- * @return true if operation only affects stack A
- */
+
 bool	is_pure_a(t_operation op)
 {
 	return (op == SA || op == RA || op == RRA);
 }
 
-/**
- * Check if operation is purely B-only
- * @param op Operation to check
- * @return true if operation only affects stack B
- */
 bool	is_pure_b(t_operation op)
 {
 	return (op == SB || op == RB || op == RRB);

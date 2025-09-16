@@ -1,8 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   merge_neighbors.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/16 21:37:36 by patrik            #+#    #+#             */
+/*   Updated: 2025/09/16 21:40:58 by patrik           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/optimizer.h"
 
-/**
- * Simple copy function for ft_lstmap - just duplicates the operation
- */
+
 static void	*copy_operation(void *content)
 {
 	t_operation *op = malloc(sizeof(t_operation));
@@ -32,7 +42,6 @@ t_list	*merge_neighbors(t_list *src, bool *changed)
 			t_operation a = *(t_operation*)current->content;
 			t_operation b = *(t_operation*)current->next->content;
 			
-			// (ra rb) -> rr  and vice versa
 			if ((a == RA && b == RB) || (a == RB && b == RA))
 			{
 				t_operation *rr = malloc(sizeof(t_operation));
@@ -41,7 +50,7 @@ t_list	*merge_neighbors(t_list *src, bool *changed)
 					*rr = RR;
 					ft_lstadd_back(&dst, ft_lstnew(rr));
 				}
-				current = current->next->next; // Skip both operations
+				current = current->next->next;
 				has_changed = true;
 				continue;
 			}
@@ -54,7 +63,7 @@ t_list	*merge_neighbors(t_list *src, bool *changed)
 					*rrr = RRR;
 					ft_lstadd_back(&dst, ft_lstnew(rrr));
 				}
-				current = current->next->next; // Skip both operations
+				current = current->next->next;
 				has_changed = true;
 				continue;
 			}
@@ -67,7 +76,7 @@ t_list	*merge_neighbors(t_list *src, bool *changed)
 					*ss = SS;
 					ft_lstadd_back(&dst, ft_lstnew(ss));
 				}
-				current = current->next->next; // Skip both operations
+				current = current->next->next;
 				has_changed = true;
 				continue;
 			}
@@ -81,7 +90,7 @@ t_list	*merge_neighbors(t_list *src, bool *changed)
 					*rb = RB;
 					ft_lstadd_back(&dst, ft_lstnew(rb));
 				}
-				current = current->next->next; // Skip both operations
+				current = current->next->next;
 				has_changed = true;
 				continue;
 			}
@@ -93,7 +102,7 @@ t_list	*merge_neighbors(t_list *src, bool *changed)
 					*ra = RA;
 					ft_lstadd_back(&dst, ft_lstnew(ra));
 				}
-				current = current->next->next; // Skip both operations
+				current = current->next->next;
 				has_changed = true;
 				continue;
 			}
@@ -106,7 +115,7 @@ t_list	*merge_neighbors(t_list *src, bool *changed)
 					*rrb = RRB;
 					ft_lstadd_back(&dst, ft_lstnew(rrb));
 				}
-				current = current->next->next; // Skip both operations
+				current = current->next->next;
 				has_changed = true;
 				continue;
 			}
@@ -118,7 +127,7 @@ t_list	*merge_neighbors(t_list *src, bool *changed)
 					*rra = RRA;
 					ft_lstadd_back(&dst, ft_lstnew(rra));
 				}
-				current = current->next->next; // Skip both operations
+				current = current->next->next;
 				has_changed = true;
 				continue;
 			}
@@ -132,7 +141,7 @@ t_list	*merge_neighbors(t_list *src, bool *changed)
 					*rrb = RRB;
 					ft_lstadd_back(&dst, ft_lstnew(rrb));
 				}
-				current = current->next->next; // Skip both operations
+				current = current->next->next;
 				has_changed = true;
 				continue;
 			}
@@ -144,7 +153,7 @@ t_list	*merge_neighbors(t_list *src, bool *changed)
 					*rra = RRA;
 					ft_lstadd_back(&dst, ft_lstnew(rra));
 				}
-				current = current->next->next; // Skip both operations
+				current = current->next->next;
 				has_changed = true;
 				continue;
 			}
@@ -157,7 +166,7 @@ t_list	*merge_neighbors(t_list *src, bool *changed)
 					*rb = RB;
 					ft_lstadd_back(&dst, ft_lstnew(rb));
 				}
-				current = current->next->next; // Skip both operations
+				current = current->next->next;
 				has_changed = true;
 				continue;
 			}
@@ -169,12 +178,11 @@ t_list	*merge_neighbors(t_list *src, bool *changed)
 					*ra = RA;
 					ft_lstadd_back(&dst, ft_lstnew(ra));
 				}
-				current = current->next->next; // Skip both operations
+				current = current->next->next;
 				has_changed = true;
 				continue;
 			}
 		}
-		// Add current operation (no merge possible)
 		t_operation *op = malloc(sizeof(t_operation));
 		if (op)
 		{
