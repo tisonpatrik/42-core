@@ -32,6 +32,7 @@ SRCS        := src/validator/input_parser.c \
 			   src/separator/result_builder.c \
 			   src/separator/utils.c \
 			   src/selector/candidate_enumerator.c \
+			   src/selector/candidates_builder.c \
 			   src/selector/snapshot_arena.c \
 			   src/selector/lookahead_evaluator.c \
 			   src/selector/nearbest.c \
@@ -52,7 +53,6 @@ SRCS        := src/validator/input_parser.c \
 			   src/stack/ops.c \
 			   src/stack/node.c \
 			   src/stack/tools.c \
-			   src/utils/utils.c \
 			   src/main.c
 
 # Bonus source files (if any)

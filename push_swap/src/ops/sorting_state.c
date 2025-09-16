@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:58:57 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/16 21:54:47 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/16 21:58:15 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	save_operation(t_sorting_state *state, t_operation operation)
 	ft_lstadd_back(&state->operations, new_node);
 }
 
-void print_operation(t_list * current, t_operation op	)
+void print_operation(t_operation op)
 {
 		if (op == SA)
 			ft_printf("sa\n");
@@ -120,7 +120,7 @@ void	print_operations(t_sorting_state *state)
 	while (current != NULL)
 	{
 		op = *(t_operation *)current->content;
-		print_operation(current, op);
+		print_operation(op);
 		current = current->next;
 	}
 }

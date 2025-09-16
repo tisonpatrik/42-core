@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 13:28:28 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/16 21:40:58 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/16 22:06:55 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,6 @@ void	*ft_memmove(void *dst, const void *src, size_t len);
 void	*ft_memset(void *b, int c, size_t len);
 void	*ft_calloc(size_t nelem, size_t elsize);
 void	ft_free_array(char **array);
+void	ft_swap_int(int *a, int *b);
 
 #endif

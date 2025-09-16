@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lookahead_evaluator.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 20:49:22 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/16 20:50:03 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/16 22:04:35 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,10 +88,6 @@ int	get_estimatation(int *temp_a, int size, int size_penalty_factor,
 	return (estimation);
 }
 
-bool	get_better_position(t_position a, t_position b)
-{
-	return (better_position(a, b));
-}
 
 t_position	evaluate_with_lookahead(t_candidate *candidates,
 		t_selector_arena *arena)
@@ -159,7 +155,7 @@ t_position	evaluate_with_lookahead(t_candidate *candidates,
 				arena->config.heuristic_divisor);
 		total_score = heuristic_estimate + rot;
 		if (total_score < best_score || (total_score == best_score
-				&& get_better_position(position, best_position)))
+				&& is_better_position(position, best_position)))
 		{
 			best_position = position;
 			best_score = total_score;

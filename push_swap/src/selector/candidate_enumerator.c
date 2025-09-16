@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 20:41:17 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/16 21:41:00 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/16 21:58:48 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_candidate	get_candidate(int from_idx, int to_idx, int size_a, int size_b)
 	return (candidate);
 }
 
-void	populate_b_to_a_candidates(t_snapshot_arena *snapshot,
+void	populate_candidates(t_snapshot_arena *snapshot,
 		t_selector_arena *arena)
 {
 	t_candidate	*result;
@@ -57,7 +57,7 @@ void	populate_b_to_a_candidates(t_snapshot_arena *snapshot,
 	arena->candidate_count = candidate_idx;
 }
 
-t_candidate	*enumerate_b_to_a_candidates(t_sorting_state *state,
+t_candidate	*enumerate_candidates(t_sorting_state *state,
 		t_selector_arena *arena)
 {
 	if (!take_snapshots(arena->snapshot_arena, state->a, state->b))
@@ -67,6 +67,6 @@ t_candidate	*enumerate_b_to_a_candidates(t_sorting_state *state,
 		arena->candidate_count = 0;
 		return (NULL);
 	}
-	populate_b_to_a_candidates(arena->snapshot_arena, arena);
+	populate_candidates(arena->snapshot_arena, arena);
 	return (arena->candidates);
 }

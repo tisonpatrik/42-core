@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 17:59:38 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/16 21:40:58 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/16 22:16:21 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,14 @@ int	*indexize_array(const int *values, int n)
 	}
 	free(sorted);
 	return (res);
+}
+
+void	fatal_cleanup_and_exit(int *buf, char **tmp)
+{
+	if (buf)
+		free(buf);
+	if (tmp)
+		ft_free_array(tmp);
+	ft_putstr_fd("Error\n", 2);
+	exit(1);
 }
