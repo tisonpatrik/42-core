@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 00:00:00 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/13 12:23:18 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/16 19:15:21 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,26 +44,48 @@ int	find_insertion_index(int *sorted_array, int array_size, int target_value)
 
 int	find_target_position(int *sorted_array, int array_size, int target_value)
 {
-	int	target_index;
-	int	array_length;
-	int	min_index;
+	int	best_idx;
+	int	best_val;
+	int	min_idx;
+	int	min_val;
 	int	i;
 
 	if (array_size == 0)
 		return (0);
-	target_index = ft_lower_bound(sorted_array, array_size, target_value);
-	array_length = array_size;
-	if (target_index < array_length)
-		return (target_index);
-	min_index = 0;
+	
+	// Find the first element > val
+	best_idx = -1;
+	best_val = 0;
+	i = 0;
+	while (i < array_size)
+	{
+		if (sorted_array[i] > target_value)
+		{
+			if (best_idx == -1 || sorted_array[i] < best_val)
+			{
+				best_val = sorted_array[i];
+				best_idx = i;
+			}
+		}
+		i++;
+	}
+	if (best_idx != -1)
+		return (best_idx);
+	
+	// If val >= all elements, return index of minimum
+	min_idx = 0;
+	min_val = sorted_array[0];
 	i = 1;
 	while (i < array_size)
 	{
-		if (sorted_array[i] < sorted_array[min_index])
-			min_index = i;
+		if (sorted_array[i] < min_val)
+		{
+			min_val = sorted_array[i];
+			min_idx = i;
+		}
 		i++;
 	}
-	return (min_index);
+	return (min_idx);
 }
 
 int	normalize_index(int array_size, int raw_index)

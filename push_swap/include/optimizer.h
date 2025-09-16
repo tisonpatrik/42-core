@@ -6,21 +6,21 @@
 # include <stdlib.h>
 
 // Main optimization function
-t_list	*optimize_ops(t_list *seq);
+void	optimize_ops(t_list **seq);
 
 // Bubble operations
-t_list	*bubble_across_other_stack(t_list *src, int max_gap);
+t_list	*bubble_across_other_stack(t_list *src, int max_gap, bool *changed);
 bool	is_pure_a(t_operation op);
 bool	is_pure_b(t_operation op);
 
 // Merge neighbors
-t_list	*merge_neighbors(t_list *src);
+t_list	*merge_neighbors(t_list *src, bool *changed);
 
 // Cancel operations
-t_list	*cancel_inverse_pairs(t_list *src);
+t_list	*cancel_inverse_pairs(t_list *src, bool *changed);
 bool	is_inverse(t_operation a, t_operation b);
-t_list	*cancel_across_other_stack_a(t_list *src);
-t_list	*cancel_across_other_stack_b(t_list *src);
+t_list	*cancel_across_other_stack_a(t_list *src, bool *changed);
+t_list	*cancel_across_other_stack_b(t_list *src, bool *changed);
 
 // Operation properties
 bool	touches_a(t_operation op);
@@ -28,7 +28,6 @@ bool	touches_b(t_operation op);
 bool	is_barrier(t_operation op);
 
 // Helper functions for list operations
-t_list	*list_copy(t_list *src);
 void	list_swap_nodes(t_list *list, int i, int j);
 t_list	*list_remove_at(t_list *list, int index);
 t_list	*list_insert_at(t_list *list, t_operation op, int index);

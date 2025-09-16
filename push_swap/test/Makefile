@@ -5,7 +5,7 @@ LIBFT = ../libft/bin/libft.a
 
 # Directories
 BIN_DIR = bin
-TEST_SRCS = test_main.c test_swap.c test_push.c test_rotate.c test_reverse_rotate.c test_is_sorted.c test_snapshot_stack.c test_apply_combined.c test_align_min_to_top.c test_indexize_array.c test_separator.c
+TEST_SRCS = test_main.c test_swap.c test_push.c test_rotate.c test_reverse_rotate.c test_is_sorted.c test_snapshot_stack.c test_apply_combined.c test_align_min_to_top.c test_indexize_array.c test_separator.c test_find_target_position.c
 TEST_OBJS = $(TEST_SRCS:%.c=$(BIN_DIR)/%.o)
 TEST_BIN = $(BIN_DIR)/test_main
 

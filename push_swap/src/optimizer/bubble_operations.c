@@ -1,29 +1,16 @@
 #include "../../include/optimizer.h"
 
 /**
- * Copy a list of operations
- * @param src Source list
- * @return New list with copied operations
+ * Simple copy function for ft_lstmap - just duplicates the operation
  */
-t_list	*list_copy(t_list *src)
+static void	*copy_operation(void *content)
 {
-	t_list	*dst = NULL;
-	t_list	*current = src;
-	
-	while (current != NULL)
-	{
-		t_operation *op = malloc(sizeof(t_operation));
-		if (op == NULL)
-		{
-			ft_lstclear(&dst, free);
-			return (NULL);
-		}
-		*op = *(t_operation*)current->content;
-		ft_lstadd_back(&dst, ft_lstnew(op));
-		current = current->next;
-	}
-	return (dst);
+	t_operation *op = malloc(sizeof(t_operation));
+	if (op)
+		*op = *(t_operation*)content;
+	return (op);
 }
+
 
 /**
  * Get operation at specific index in list
@@ -105,19 +92,22 @@ bool	bubble_operation(t_list *out, int i, int j, bool is_a)
  * Bubble operation across other stack operations
  * @param src Source operation list
  * @param max_gap Maximum gap for bubbling
- * @return New list with bubbled operations (always returns a copy)
+ * @param changed Pointer to boolean indicating if changes were made
+ * @return Original list if no changes, new list if changes were made
  */
-t_list	*bubble_across_other_stack(t_list *src, int max_gap)
+t_list	*bubble_across_other_stack(t_list *src, int max_gap, bool *changed)
 {
-	if (!src)
-		return (src);
 	int		n = ft_lstsize(src);
 	if (n < 3)
-		return (list_copy(src));
+	{
+		*changed = false;
+		return (src);
+	}
 	
-	t_list	*out = list_copy(src);
+	t_list	*out = ft_lstmap(src, copy_operation, free);
 	if (out == NULL)
 		return (NULL);
+	*changed = false;
 	
 	// Go through sequence and look for pairs to merge within maxGap range
 	for (int i = 0; i < n - 1; i++)
@@ -127,7 +117,9 @@ t_list	*bubble_across_other_stack(t_list *src, int max_gap)
 		// A-op + look for suitable B-op in window to create rr/rrr
 		if (a == RA || a == RRA)
 		{
-			t_operation want = (a == RA) ? RB : RRB;
+			t_operation want = RB;
+			if (a == RRA)
+				want = RRB;
 			for (int j = i + 1; j < n && j - i - 1 <= max_gap; j++)
 			{
 				t_operation op_j = get_operation_at_index(out, j);
@@ -135,6 +127,7 @@ t_list	*bubble_across_other_stack(t_list *src, int max_gap)
 				{
 					if (bubble_operation(out, i, j, true)) // bubble B-op through B-only block
 					{
+						*changed = true;
 						// Move one step further, merge will handle next pass
 					}
 					break;
@@ -148,7 +141,9 @@ t_list	*bubble_across_other_stack(t_list *src, int max_gap)
 		// B-op + look for suitable A-op in window
 		if (a == RB || a == RRB)
 		{
-			t_operation want = (a == RB) ? RA : RRA;
+			t_operation want = RA;
+			if (a == RRB)
+				want = RRA;
 			for (int j = i + 1; j < n && j - i - 1 <= max_gap; j++)
 			{
 				t_operation op_j = get_operation_at_index(out, j);
@@ -156,7 +151,7 @@ t_list	*bubble_across_other_stack(t_list *src, int max_gap)
 				{
 					if (bubble_operation(out, i, j, false)) // bubble A-op through A-only block
 					{
-						// Bubbling successful
+						*changed = true;
 					}
 					break;
 				}

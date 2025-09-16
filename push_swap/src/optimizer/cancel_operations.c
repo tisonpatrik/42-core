@@ -1,6 +1,17 @@
 #include "../../include/optimizer.h"
 
 /**
+ * Simple copy function for ft_lstmap - just duplicates the operation
+ */
+static void	*copy_operation(void *content)
+{
+	t_operation *op = malloc(sizeof(t_operation));
+	if (op)
+		*op = *(t_operation*)content;
+	return (op);
+}
+
+/**
  * Check if two operations are inverse of each other
  * @param a First operation
  * @param b Second operation
@@ -40,15 +51,21 @@ bool	is_inverse(t_operation a, t_operation b)
 /**
  * Cancel adjacent inverse pairs in the operation sequence
  * @param src Source operation list
+ * @param changed Pointer to boolean indicating if any changes were made
  * @return New list with inverse pairs removed (always returns a copy)
  */
-t_list	*cancel_inverse_pairs(t_list *src)
+t_list	*cancel_inverse_pairs(t_list *src, bool *changed)
 {
 	if (!src || ft_lstsize(src) < 2)
-		return (list_copy(src));
+	{
+		if (changed)
+			*changed = false;
+		return (ft_lstmap(src, copy_operation, free));
+	}
 	
 	t_list	*dst = NULL;
 	t_list	*current = src;
+	bool	has_changed = false;
 	
 	while (current != NULL)
 	{
@@ -57,6 +74,7 @@ t_list	*cancel_inverse_pairs(t_list *src)
 					  *(t_operation*)current->next->content))
 		{
 			// Skip both operations (they cancel out)
+			has_changed = true;
 			current = current->next->next;
 		}
 		else
@@ -74,21 +92,29 @@ t_list	*cancel_inverse_pairs(t_list *src)
 		}
 	}
 	
+	if (changed)
+		*changed = has_changed;
 	return (dst);
 }
 
 /**
  * Cancel inverses across other stack for A operations
  * @param src Source operation list
+ * @param changed Pointer to boolean indicating if any changes were made
  * @return New list with cross-stack cancellations applied (always returns a copy)
  */
-t_list	*cancel_across_other_stack_a(t_list *src)
+t_list	*cancel_across_other_stack_a(t_list *src, bool *changed)
 {
 	if (!src || ft_lstsize(src) < 3)
-		return (list_copy(src));
+	{
+		if (changed)
+			*changed = false;
+		return (ft_lstmap(src, copy_operation, free));
+	}
 	
 	t_list	*dst = NULL;
 	t_list	*current = src;
+	bool	has_changed = false;
 	
 	while (current != NULL)
 	{
@@ -106,6 +132,7 @@ t_list	*cancel_across_other_stack_a(t_list *src)
 				if (*(t_operation*)search->content == inv)
 				{
 					// Add B-only operations between them
+					has_changed = true;
 					t_list	*temp = current->next;
 					while (temp != search)
 					{
@@ -138,21 +165,29 @@ t_list	*cancel_across_other_stack_a(t_list *src)
 		current = current->next;
 	}
 	
+	if (changed)
+		*changed = has_changed;
 	return (dst);
 }
 
 /**
  * Cancel inverses across other stack for B operations
  * @param src Source operation list
+ * @param changed Pointer to boolean indicating if any changes were made
  * @return New list with cross-stack cancellations applied (always returns a copy)
  */
-t_list	*cancel_across_other_stack_b(t_list *src)
+t_list	*cancel_across_other_stack_b(t_list *src, bool *changed)
 {
 	if (!src || ft_lstsize(src) < 3)
-		return (list_copy(src));
+	{
+		if (changed)
+			*changed = false;
+		return (ft_lstmap(src, copy_operation, free));
+	}
 	
 	t_list	*dst = NULL;
 	t_list	*current = src;
+	bool	has_changed = false;
 	
 	while (current != NULL)
 	{
@@ -170,6 +205,7 @@ t_list	*cancel_across_other_stack_b(t_list *src)
 				if (*(t_operation*)search->content == inv)
 				{
 					// Add A-only operations between them
+					has_changed = true;
 					t_list	*temp = current->next;
 					while (temp != search)
 					{
@@ -202,5 +238,7 @@ t_list	*cancel_across_other_stack_b(t_list *src)
 		current = current->next;
 	}
 	
+	if (changed)
+		*changed = has_changed;
 	return (dst);
 }

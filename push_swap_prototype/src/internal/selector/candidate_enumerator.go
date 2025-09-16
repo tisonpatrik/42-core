@@ -61,7 +61,6 @@ func (ce *CandidateEnumerator) EnumerateBtoA(a, b []int) []Candidate {
 			CostB:     costB,
 			Total:     base,
 		}
-
 		candidates = append(candidates, NewCandidate(position, base))
 	}
 	return candidates

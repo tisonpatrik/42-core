@@ -51,4 +51,7 @@ void test_indexize_array_idempotent_property(void);
 void test_indexize_array_user_specific_input(void);
 void test_lis_debug_function(void);
 
+void test_find_target_position_basic_case(void);
+
+
 #endif

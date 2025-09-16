@@ -1,4 +1,5 @@
 #include "../include/stack.h"
+#include "../include/selector.h"
 #include <assert.h>
 #include <stdio.h>
 #include <stdbool.h>
@@ -64,6 +65,10 @@ int main()
     test_indexize_array_negative_size();
     test_indexize_array_idempotent_property();
     test_indexize_array_user_specific_input();
+
+    printf("\n🧪 Running find_target_position Tests\n");
+    printf("=====================================\n");
+    test_find_target_position_basic_case();
     
     printf("\n✨ All tests completed!\n");
     return 0;

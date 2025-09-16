@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 00:00:00 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/16 00:28:49 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/16 19:17:49 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "../../include/snapshot_arena.h"
 #include <stdbool.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 t_candidate	get_candidate(int from_idx, int to_idx, int size_a, int size_b)
 {
@@ -31,6 +32,7 @@ t_candidate	get_candidate(int from_idx, int to_idx, int size_a, int size_b)
 	pos.to_index = to_idx;
 	candidate.position = pos;
 	candidate.score = pos.total;
+
 	return (candidate);
 }
 
