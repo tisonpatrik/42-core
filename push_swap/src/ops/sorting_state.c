@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:58:57 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/16 21:40:58 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/16 21:54:47 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,57 +85,42 @@ void	save_operation(t_sorting_state *state, t_operation operation)
 	ft_lstadd_back(&state->operations, new_node);
 }
 
+void print_operation(t_list * current, t_operation op	)
+{
+		if (op == SA)
+			ft_printf("sa\n");
+		else if (op == SB)
+			ft_printf("sb\n");
+		else if (op == SS)
+			ft_printf("ss\n");
+		else if (op == PA)
+			ft_printf("pa\n");
+		else if (op == PB)
+			ft_printf("pb\n");
+		else if (op == RA)
+			ft_printf("ra\n");
+		else if (op == RB)
+			ft_printf("rb\n");
+		else if (op == RR)
+			ft_printf("rr\n");
+		else if (op == RRA)
+			ft_printf("rra\n");
+		else if (op == RRB)
+			ft_printf("rrb\n");
+		else if (op == RRR)
+			ft_printf("rrr\n");
+}
+
 void	print_operations(t_sorting_state *state)
 {
 	t_list		*current;
-	char		*operation_strings[] = {"sa\n", "sb\n", "ss\n", "pa\n", "pb\n",
-				"ra\n", "rb\n", "rr\n", "rra\n", "rrb\n", "rrr\n"};
 	t_operation	op;
 
-	if (!state || !state->operations)
-		return ;
 	current = state->operations;
 	while (current != NULL)
 	{
 		op = *(t_operation *)current->content;
-		if (op >= SA && op <= RRR)
-		{
-			write(1, operation_strings[op], ft_strlen(operation_strings[op]));
-		}
-		current = current->next;
-	}
-}
-
-void	print_state_values(t_sorting_state *state)
-{
-	write(1, "A: [", 4);
-	print_stack_values(state->a);
-	write(1, "]\n", 2);
-	write(1, "B: [", 4);
-	print_stack_values(state->b);
-	write(1, "]\n", 2);
-	write(1, "OpList: [", 9);
-	print_operations_as_numbers(state);
-	write(1, "]\n", 2);
-}
-
-void	print_operations_as_numbers(t_sorting_state *state)
-{
-	t_list		*current;
-	t_operation	op;
-
-	if (!state || !state->operations)
-		return ;
-	current = state->operations;
-	while (current != NULL)
-	{
-		op = *(t_operation *)current->content;
-		if (op >= SA && op <= RRR)
-		{
-			ft_putnbr_fd(op, 1);
-			if (current->next)
-				write(1, " ", 1);
-		}
+		print_operation(current, op);
 		current = current->next;
 	}
 }
