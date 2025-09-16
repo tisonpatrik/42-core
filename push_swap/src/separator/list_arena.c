@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:49:46 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/16 21:11:47 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/16 21:24:32 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	free_separator_arena(t_separator_arena *arena)
 	free(arena);
 }
 
-size_t	calculate_arena_size(int element_count)
+static size_t	calculate_arena_size(int element_count)
 {
 	size_t	size;
 
