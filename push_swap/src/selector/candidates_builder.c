@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 22:15:11 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/16 22:15:18 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/16 22:20:27 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,34 +106,4 @@ t_candidate	*build_top_k_candidates(t_candidate *candidates, int max_k,
 	ft_memcpy(arena->top_k_candidates, candidates, sizeof(t_candidate) * k);
 	arena->top_k_count = k;
 	return (arena->top_k_candidates);
-}
-
-t_position	build_best_position(t_candidate *candidates)
-{
-	t_position	result;
-	int			i;
-	int			count;
-
-	if (!candidates)
-	{
-		result.total = INT_MAX;
-		return (result);
-	}
-	count = 0;
-	while (candidates[count].position.total != INT_MAX && count < 1000)
-		count++;
-	if (count == 0)
-	{
-		result.total = INT_MAX;
-		return (result);
-	}
-	result = candidates[0].position;
-	i = 1;
-	while (i < count)
-	{
-		if (is_better_position(candidates[i].position, result))
-			result = candidates[i].position;
-		i++;
-	}
-	return (result);
 }

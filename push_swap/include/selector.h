@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 21:41:42 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/16 22:04:22 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/16 22:20:44 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ t_candidate				*build_filtered_candidates(t_candidate *candidates,
 							int threshold_offset, t_selector_arena *arena);
 t_candidate				*build_top_k_candidates(t_candidate *candidates,
 							int max_k, t_selector_arena *arena);
-t_position				build_best_position(t_candidate *candidates);
 bool					is_better_position(t_position a, t_position b);
 int						find_insertion_index(int *sorted_array, int array_size,
 							int target_value);
