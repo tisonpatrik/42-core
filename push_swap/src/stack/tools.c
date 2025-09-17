@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:48:36 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/17 18:15:43 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/17 20:45:41 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,49 +134,6 @@ void	remove_node_from_stack(t_stack *stack, t_node *node)
 	stack->size--;
 	node->next = NULL;
 	node->prev = NULL;
-}
-
-void	insert_node_at_index(t_stack *stack, t_node *node, int index)
-{
-	t_node	*target_node;
-
-	if (!stack || !node || index < 0 || index > get_size(stack))
-		return ;
-	if (index == 0)
-	{
-		push_to_stack(stack, node);
-		return ;
-	}
-	if (index == get_size(stack))
-	{
-		if (stack->tail)
-		{
-			stack->tail->next = node;
-			node->prev = stack->tail;
-			node->next = NULL;
-			stack->tail = node;
-		}
-		else
-		{
-			stack->head = node;
-			stack->tail = node;
-			node->next = NULL;
-			node->prev = NULL;
-		}
-		stack->size++;
-		return ;
-	}
-	target_node = get_node_at_index(stack, index);
-	if (!target_node)
-		return ;
-	node->next = target_node;
-	node->prev = target_node->prev;
-	if (target_node->prev)
-		target_node->prev->next = node;
-	else
-		stack->head = node;
-	target_node->prev = node;
-	stack->size++;
 }
 
 void	print_stack_values(t_stack *stack)
