@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:58:57 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/17 20:50:48 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/17 22:21:59 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-t_sorting_state	*create_sorting_state(int *numbers, int n)
+t_sorting_state	*create_sorting_state(int *numbers, int len)
 {
 	t_sorting_state	*state;
 	t_stack			*a;
 	t_stack			*b;
 
-	if (!numbers || n <= 0)
+	if (!numbers || len <= 0)
 		return (NULL);
 	state = malloc(sizeof(t_sorting_state));
 	if (!state)
@@ -36,10 +36,11 @@ t_sorting_state	*create_sorting_state(int *numbers, int n)
 		free(state);
 		return (NULL);
 	}
-	fill_stack(a, numbers, n);
+	fill_stack(a, numbers, len);
 	state->a = a;
 	state->b = b;
 	state->operations = NULL;
+	state->len_of_inputs = len;
 	return (state);
 }
 

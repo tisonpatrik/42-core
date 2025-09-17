@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:50:33 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/16 21:51:26 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/17 22:21:59 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef struct s_sorting_state
 	t_stack		*a;
 	t_stack		*b;
 	t_list		*operations;
+	int			len_of_inputs;
 }				t_sorting_state;
 
 t_sorting_state	*create_sorting_state(int *numbers, int n);

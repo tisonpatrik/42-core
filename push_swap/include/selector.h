@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 21:41:42 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/17 22:07:00 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/17 22:21:59 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ typedef struct s_selector_arena
 	int					*temp_b_values;
 }						t_selector_arena;
 
-t_selector_arena		*allocate_selector_arena(int max_candidates);
+t_selector_arena		*allocate_selector_arena(int max_candidates, int len_of_inputs);
 void					free_selector_arena(t_selector_arena *arena);
 
 t_position				execute_selection_algorithm(t_sorting_state *state,
