@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 20:49:22 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/17 17:58:46 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/17 18:50:35 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,74 @@ int	get_estimatation(int *temp_a, int size, int size_penalty_factor,
 	return (estimation);
 }
 
+static t_position	validate_lookahead_input(t_candidate *candidates,
+		t_selector_arena *arena)
+{
+	t_position	invalid_position;
+
+	invalid_position.total = INT_MAX;
+	if (!arena || !arena->snapshot_arena || !candidates)
+		return (invalid_position);
+	if (arena->top_k_count == 0)
+		return (invalid_position);
+	return (candidates[0].position);
+}
+
+static void	copy_snapshot_to_temp(t_selector_arena *arena,
+		int **temp_a_values, int **temp_b_values,
+		int *temp_size_a, int *temp_size_b)
+{
+	*temp_size_a = arena->snapshot_arena->size_a;
+	*temp_size_b = arena->snapshot_arena->size_b;
+	*temp_a_values = arena->temp_a_values;
+	*temp_b_values = arena->temp_b_values;
+	memcpy(*temp_a_values, arena->snapshot_arena->a_values,
+		*temp_size_a * sizeof(int));
+	memcpy(*temp_b_values, arena->snapshot_arena->b_values,
+		*temp_size_b * sizeof(int));
+}
+
+static int	simulate_move_operation(t_position position, int *temp_a_values,
+		int *temp_b_values, int *temp_size_a, int *temp_size_b)
+{
+	int	rot;
+	int	ib;
+	int	ia;
+	int	x;
+
+	rot = merged_cost(position.cost_a, position.cost_b);
+	ib = normalize_index(*temp_size_b, position.cost_b);
+	ia = normalize_index(*temp_size_a, position.cost_a);
+	x = temp_b_values[ib];
+	remove_element_at_index(temp_b_values, temp_size_b, ib);
+	insert_element_at_index(temp_a_values, temp_size_a, ia, x);
+	return (rot + 1);
+}
+
+static int	calculate_candidate_score(t_position position __attribute__((unused)), int *temp_a_values,
+		int temp_size_a, t_selector_arena *arena, int rotation_cost)
+{
+	int	heuristic_estimate;
+
+	heuristic_estimate = get_estimatation(temp_a_values, temp_size_a,
+			arena->config.size_penalty_factor,
+			arena->config.heuristic_offset,
+			arena->config.heuristic_divisor);
+	return (heuristic_estimate + rotation_cost);
+}
+
+static bool	update_best_if_better(t_position *best_position, int *best_score,
+		t_position current_position, int current_score)
+{
+	if (current_score < *best_score || (current_score == *best_score
+			&& is_better_position(current_position, *best_position)))
+	{
+		*best_position = current_position;
+		*best_score = current_score;
+		return (true);
+	}
+	return (false);
+}
 
 t_position	evaluate_with_lookahead(t_candidate *candidates,
 		t_selector_arena *arena)
@@ -101,56 +169,26 @@ t_position	evaluate_with_lookahead(t_candidate *candidates,
 	int			temp_size_b;
 	int			best_score;
 	t_position	position;
-	int			rot;
-	int			ib;
-	int			ia;
-	int			x;
-	int			heuristic_estimate;
+	int			rotation_cost;
 	int			total_score;
 
-	if (!arena || !arena->snapshot_arena || !candidates)
-	{
-		best_position.total = INT_MAX;
+	best_position = validate_lookahead_input(candidates, arena);
+	if (best_position.total == INT_MAX)
 		return (best_position);
-	}
 	count = arena->top_k_count;
-	if (count == 0)
-	{
-		best_position.total = INT_MAX;
-		return (best_position);
-	}
-	best_position = candidates[0].position;
 	best_score = INT_MAX;
 	i = 0;
 	while (i < count)
 	{
-		temp_size_a = arena->snapshot_arena->size_a;
-		temp_size_b = arena->snapshot_arena->size_b;
-		temp_a_values = arena->temp_a_values;
-		temp_b_values = arena->temp_b_values;
-		memcpy(temp_a_values, arena->snapshot_arena->a_values, temp_size_a
-			* sizeof(int));
-		memcpy(temp_b_values, arena->snapshot_arena->b_values, temp_size_b
-			* sizeof(int));
+		copy_snapshot_to_temp(arena, &temp_a_values, &temp_b_values,
+			&temp_size_a, &temp_size_b);
 		position = candidates[i].position;
-		rot = merged_cost(position.cost_a, position.cost_b);
-		ib = normalize_index(temp_size_b, position.cost_b);
-		ia = normalize_index(temp_size_a, position.cost_a);
-		x = temp_b_values[ib];
-		remove_element_at_index(temp_b_values, &temp_size_b, ib);
-		insert_element_at_index(temp_a_values, &temp_size_a, ia, x);
-		rot = rot + 1;
-		heuristic_estimate = get_estimatation(temp_a_values, temp_size_a,
-				arena->config.size_penalty_factor,
-				arena->config.heuristic_offset,
-				arena->config.heuristic_divisor);
-		total_score = heuristic_estimate + rot;
-		if (total_score < best_score || (total_score == best_score
-				&& is_better_position(position, best_position)))
-		{
-			best_position = position;
-			best_score = total_score;
-		}
+		rotation_cost = simulate_move_operation(position, temp_a_values,
+				temp_b_values, &temp_size_a, &temp_size_b);
+		total_score = calculate_candidate_score(position, temp_a_values,
+				temp_size_a, arena, rotation_cost);
+		update_best_if_better(&best_position, &best_score, position,
+			total_score);
 		i++;
 	}
 	return (best_position);
