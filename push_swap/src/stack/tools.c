@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:48:36 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/17 20:45:41 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/17 20:53:38 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,32 +67,6 @@ bool	is_sorted(t_stack *stack)
 	return (true);
 }
 
-t_stack	*clone_stack(t_stack *original)
-{
-	t_stack	*clone;
-	t_node	*current;
-	t_node	*new_node;
-
-	if (!original)
-		return (NULL);
-	clone = create_stack();
-	if (!clone)
-		return (NULL);
-	current = get_head(original);
-	while (current)
-	{
-		new_node = create_node(get_content(current));
-		if (!new_node)
-		{
-			clear_stack(clone);
-			free(clone);
-			return (NULL);
-		}
-		push_to_stack(clone, new_node);
-		current = get_next(current);
-	}
-	return (clone);
-}
 
 void	free_stack(t_stack *stack)
 {
@@ -100,57 +74,4 @@ void	free_stack(t_stack *stack)
 		return ;
 	clear_stack(stack);
 	free(stack);
-}
-
-t_node	*get_node_at_index(t_stack *stack, int index)
-{
-	t_node	*current;
-	int		i;
-
-	if (!stack || index < 0 || index >= get_size(stack))
-		return (NULL);
-	current = get_head(stack);
-	i = 0;
-	while (i < index)
-	{
-		current = get_next(current);
-		i++;
-	}
-	return (current);
-}
-
-void	remove_node_from_stack(t_stack *stack, t_node *node)
-{
-	if (!stack || !node)
-		return ;
-	if (node->prev)
-		node->prev->next = node->next;
-	else
-		stack->head = node->next;
-	if (node->next)
-		node->next->prev = node->prev;
-	else
-		stack->tail = node->prev;
-	stack->size--;
-	node->next = NULL;
-	node->prev = NULL;
-}
-
-void	print_stack_values(t_stack *stack)
-{
-	t_node	*current;
-
-	if (!stack)
-	{
-		ft_putstr_fd("(empty)", 1);
-		return ;
-	}
-	current = get_head(stack);
-	while (current)
-	{
-		ft_putnbr_fd(get_content(current), 1);
-		current = get_next(current);
-		if (current)
-			ft_putstr_fd(" ", 1);
-	}
 }

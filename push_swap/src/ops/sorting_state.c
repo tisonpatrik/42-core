@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:58:57 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/16 21:58:15 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/17 20:50:48 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ t_sorting_state	*create_sorting_state(int *numbers, int n)
 	if (!a || !b)
 	{
 		if (a)
-			clear_stack(a);
+			free_stack(a);
 		if (b)
-			clear_stack(b);
+			free_stack(b);
 		free(state);
 		return (NULL);
 	}
@@ -48,15 +48,9 @@ void	free_sorting_state(t_sorting_state *state)
 	if (!state)
 		return ;
 	if (state->a)
-	{
-		clear_stack(state->a);
-		free(state->a);
-	}
+		free_stack(state->a);
 	if (state->b)
-	{
-		clear_stack(state->b);
-		free(state->b);
-	}
+		free_stack(state->b);
 	if (state->operations)
 	{
 		print_operations(state);
