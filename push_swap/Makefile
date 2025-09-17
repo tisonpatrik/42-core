@@ -1,7 +1,7 @@
 
 NAME        := bin/push_swap
 BIN_DIR     := bin
-MAKEFLAGS   += --silent              
+MAKEFLAGS   += --silent
 
 CC          := cc
 CFLAGS      := -Wall -Wextra -Werror -Iinclude -Ilibft/include -Isrc
@@ -10,7 +10,7 @@ DEBUG_FLAGS := -g -O0 -DDEBUG
 AR          := ar
 ARFLAGS     := rcs
 RM          := rm -f
-MKDIR_P     := mkdir -p          
+MKDIR_P     := mkdir -p
 RM_RF		:= rm -rf
 
 SRC_DIR     := src
@@ -73,7 +73,7 @@ all: $(NAME)
 $(NAME): $(LIBFT) $(OBJS) | $(BIN_DIR)
 	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
 
-$(BIN_DIR):    
+$(BIN_DIR):
 	@$(MKDIR_P) $(BIN_DIR)
 
 $(LIBFT):
