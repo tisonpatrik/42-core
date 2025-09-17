@@ -6,30 +6,12 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 21:37:36 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/17 22:56:36 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/17 23:04:02 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/optimizer.h"
 
-static void	*copy_operation(void *content)
-{
-	t_operation *op = malloc(sizeof(t_operation));
-	if (op)
-		*op = *(t_operation*)content;
-	return (op);
-}
-
-
-static void	add_operation_to_list(t_list **dst, t_operation op)
-{
-	t_operation *op_ptr = malloc(sizeof(t_operation));
-	if (op_ptr)
-	{
-		*op_ptr = op;
-		ft_lstadd_back(dst, ft_lstnew(op_ptr));
-	}
-}
 
 static bool	try_merge_operations(t_operation a, t_operation b, t_list **dst, t_list **current)
 {

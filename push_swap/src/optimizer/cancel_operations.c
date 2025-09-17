@@ -6,19 +6,27 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 21:37:44 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/16 21:40:58 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/17 23:04:02 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/optimizer.h"
 
 
-static void	*copy_operation(void *content)
+static void	copy_operations_to_list(t_list **dst, t_list *src_start, t_list *src_end, 
+									t_optimizer_arena *arena)
 {
-	t_operation *op = malloc(sizeof(t_operation));
-	if (op)
-		*op = *(t_operation*)content;
-	return (op);
+	t_list *current = src_start;
+	while (current != src_end)
+	{
+		t_operation *op_ptr = arena_alloc_operation(arena);
+		if (op_ptr)
+		{
+			*op_ptr = *(t_operation*)current->content;
+			add_operation_to_list(dst, *op_ptr);
+		}
+		current = current->next;
+	}
 }
 
 
@@ -63,6 +71,14 @@ t_list	*cancel_inverse_pairs(t_list *src, bool *changed)
 		return (ft_lstmap(src, copy_operation, free));
 	}
 	
+	t_optimizer_arena *arena = create_optimizer_arena(ft_lstsize(src));
+	if (!arena)
+	{
+		if (changed)
+			*changed = false;
+		return (NULL);
+	}
+	
 	t_list	*dst = NULL;
 	t_list	*current = src;
 	bool	has_changed = false;
@@ -78,20 +94,15 @@ t_list	*cancel_inverse_pairs(t_list *src, bool *changed)
 		}
 		else
 		{
-			t_operation *op = malloc(sizeof(t_operation));
-			if (op == NULL)
-			{
-				ft_lstclear(&dst, free);
-				return (NULL);
-			}
-			*op = *(t_operation*)current->content;
-			ft_lstadd_back(&dst, ft_lstnew(op));
+			add_operation_to_list(&dst, *(t_operation*)current->content);
 			current = current->next;
 		}
 	}
 	
 	if (changed)
 		*changed = has_changed;
+	
+	destroy_optimizer_arena(arena);
 	return (dst);
 }
 
@@ -103,6 +114,14 @@ t_list	*cancel_across_other_stack_a(t_list *src, bool *changed)
 		if (changed)
 			*changed = false;
 		return (ft_lstmap(src, copy_operation, free));
+	}
+	
+	t_optimizer_arena *arena = create_optimizer_arena(ft_lstsize(src));
+	if (!arena)
+	{
+		if (changed)
+			*changed = false;
+		return (NULL);
 	}
 	
 	t_list	*dst = NULL;
@@ -125,39 +144,22 @@ t_list	*cancel_across_other_stack_a(t_list *src, bool *changed)
 				if (*(t_operation*)search->content == inv)
 				{
 					has_changed = true;
-					t_list	*temp = current->next;
-					while (temp != search)
-					{
-						t_operation *op_copy = malloc(sizeof(t_operation));
-						if (op_copy == NULL)
-						{
-							ft_lstclear(&dst, free);
-							return (NULL);
-						}
-						*op_copy = *(t_operation*)temp->content;
-						ft_lstadd_back(&dst, ft_lstnew(op_copy));
-						temp = temp->next;
-					}
+					copy_operations_to_list(&dst, current->next, search, arena);
 					current = search;
 					goto next;
 				}
 				search = search->next;
 			}
 		}
-		t_operation *op_copy = malloc(sizeof(t_operation));
-		if (op_copy == NULL)
-		{
-			ft_lstclear(&dst, free);
-			return (NULL);
-		}
-		*op_copy = op;
-		ft_lstadd_back(&dst, ft_lstnew(op_copy));
+		add_operation_to_list(&dst, op);
 	next:
 		current = current->next;
 	}
 	
 	if (changed)
 		*changed = has_changed;
+	
+	destroy_optimizer_arena(arena);
 	return (dst);
 }
 
@@ -169,6 +171,14 @@ t_list	*cancel_across_other_stack_b(t_list *src, bool *changed)
 		if (changed)
 			*changed = false;
 		return (ft_lstmap(src, copy_operation, free));
+	}
+	
+	t_optimizer_arena *arena = create_optimizer_arena(ft_lstsize(src));
+	if (!arena)
+	{
+		if (changed)
+			*changed = false;
+		return (NULL);
 	}
 	
 	t_list	*dst = NULL;
@@ -190,41 +200,22 @@ t_list	*cancel_across_other_stack_b(t_list *src, bool *changed)
 					break;
 				if (*(t_operation*)search->content == inv)
 				{
-					// Add A-only operations between them
 					has_changed = true;
-					t_list	*temp = current->next;
-					while (temp != search)
-					{
-						t_operation *op_copy = malloc(sizeof(t_operation));
-						if (op_copy == NULL)
-						{
-							ft_lstclear(&dst, free);
-							return (NULL);
-						}
-						*op_copy = *(t_operation*)temp->content;
-						ft_lstadd_back(&dst, ft_lstnew(op_copy));
-						temp = temp->next;
-					}
+					copy_operations_to_list(&dst, current->next, search, arena);
 					current = search;
 					goto next;
 				}
 				search = search->next;
 			}
 		}
-		// Add current operation
-		t_operation *op_copy = malloc(sizeof(t_operation));
-		if (op_copy == NULL)
-		{
-			ft_lstclear(&dst, free);
-			return (NULL);
-		}
-		*op_copy = op;
-		ft_lstadd_back(&dst, ft_lstnew(op_copy));
+		add_operation_to_list(&dst, op);
 	next:
 		current = current->next;
 	}
 	
 	if (changed)
 		*changed = has_changed;
+	
+	destroy_optimizer_arena(arena);
 	return (dst);
 }

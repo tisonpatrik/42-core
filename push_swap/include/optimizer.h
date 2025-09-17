@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 21:11:57 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/17 22:54:21 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/17 23:04:02 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,23 @@
 # include "../libft/include/libft.h"
 # include "ops.h"
 # include <stdlib.h>
+# include <stdbool.h>
+
+typedef enum e_optimizer_error
+{
+	OPTIMIZER_SUCCESS = 0,
+	OPTIMIZER_INVALID_INPUT,
+	OPTIMIZER_MEMORY_ERROR,
+	OPTIMIZER_ARENA_FULL,
+	OPTIMIZER_INVALID_CONFIG
+}				t_optimizer_error;
 
 typedef struct s_optimizer_arena
 {
 	t_operation	*operations;
+	t_list		**temp_lists;
+	int			*indices;
+	bool		*flags;
 	size_t		capacity;
 	size_t		used;
 	void		*arena_memory;
@@ -30,6 +43,29 @@ t_optimizer_arena	*create_optimizer_arena(size_t capacity);
 void				destroy_optimizer_arena(t_optimizer_arena *arena);
 t_operation			*arena_alloc_operation(t_optimizer_arena *arena);
 void				reset_optimizer_arena(t_optimizer_arena *arena);
+
+typedef struct s_operation_builder
+{
+	t_optimizer_arena	*arena;
+	t_list				*result;
+	bool				changed;
+	t_optimizer_error	error;
+}						t_operation_builder;
+
+t_operation_builder	*create_operation_builder(t_optimizer_arena *arena);
+void				destroy_operation_builder(t_operation_builder *builder);
+t_optimizer_error	add_operation_to_builder(t_operation_builder *builder, t_operation op);
+t_optimizer_error	copy_operations_to_builder(t_operation_builder *builder, t_list *src_start, t_list *src_end);
+t_list				*builder_get_result(t_operation_builder *builder);
+bool				builder_has_changed(t_operation_builder *builder);
+void				builder_mark_changed(t_operation_builder *builder);
+t_optimizer_error	builder_get_error(t_operation_builder *builder);
+
+void				*copy_operation(void *content);
+void				add_operation_to_list(t_list **dst, t_operation op);
+t_list				*copy_operation_list(t_list *src);
+bool				validate_operation_sequence(t_list *seq);
+void				replace_sequence_if_changed(t_list **seq, t_list *new_seq, bool changed, bool *overall_changed);
 
 void		optimize_ops(t_list **seq);
 

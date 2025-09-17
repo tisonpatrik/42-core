@@ -6,20 +6,11 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 21:37:14 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/16 21:40:58 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/17 23:04:02 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/optimizer.h"
-
-
-static void	*copy_operation(void *content)
-{
-	t_operation *op = malloc(sizeof(t_operation));
-	if (op)
-		*op = *(t_operation*)content;
-	return (op);
-}
 
 
 t_operation	get_operation_at_index(t_list *list, int index)

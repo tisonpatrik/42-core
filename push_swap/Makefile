@@ -51,6 +51,8 @@ SRCS        := src/validator/input_parser.c \
 			   src/solver/align_min_to_top.c \
 			   src/optimizer/optimizer.c \
 			   src/optimizer/optimizer_arena.c \
+			   src/optimizer/operation_builder.c \
+			   src/optimizer/optimizer_utils.c \
 			   src/optimizer/bubble_operations.c \
 			   src/optimizer/merge_neighbors.c \
 			   src/optimizer/cancel_operations.c \
