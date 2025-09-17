@@ -1,3 +1,4 @@
+
 #include "../../include/optimizer.h"
 
 #define MAX_STRATEGIES 10
