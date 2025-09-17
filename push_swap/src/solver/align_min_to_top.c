@@ -53,9 +53,9 @@ static void	perform_rotations(t_sorting_state *ps, int cost)
 
 void	align_min_to_top(t_sorting_state *ps)
 {
-	int		size_a;
-	int		min_idx;
-	int		cost;
+	int	size_a;
+	int	min_idx;
+	int	cost;
 
 	size_a = get_size(ps->a);
 	if (size_a == 0)
@@ -64,4 +64,3 @@ void	align_min_to_top(t_sorting_state *ps)
 	cost = signed_cost(min_idx, size_a);
 	perform_rotations(ps, cost);
 }
-

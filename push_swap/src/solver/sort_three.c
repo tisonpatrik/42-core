@@ -3,17 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   sort_three.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/15 00:00:00 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/17 20:59:35 by patrik           ###   ########.fr       */
+/*   Created: 2025/09/17 21:24:20 by ptison            #+#    #+#             */
+/*   Updated: 2025/09/17 21:24:22 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/ops.h"
 #include "../../include/stack.h"
 
-static void	get_three_values(t_stack *stack, int *first, int *second, int *third)
+static void	get_three_values(t_stack *stack, int *first, int *second,
+		int *third)
 {
 	t_node	*first_node;
 	t_node	*second_node;
@@ -27,7 +28,8 @@ static void	get_three_values(t_stack *stack, int *first, int *second, int *third
 	*third = get_content(third_node);
 }
 
-static void	handle_sorting_cases(t_sorting_state *ps, int first, int second, int third)
+static void	handle_sorting_cases(t_sorting_state *ps, int first, int second,
+		int third)
 {
 	if (first > second && second < third && first < third)
 	{
@@ -56,9 +58,9 @@ static void	handle_sorting_cases(t_sorting_state *ps, int first, int second, int
 
 void	sort_three(t_sorting_state *ps)
 {
-	int		first_value;
-	int		second_value;
-	int		third_value;
+	int	first_value;
+	int	second_value;
+	int	third_value;
 
 	if (get_size(ps->a) != 3)
 		return ;

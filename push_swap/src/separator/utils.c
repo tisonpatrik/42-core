@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 19:35:00 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/17 21:11:17 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/17 21:25:43 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,3 @@ bool	is_node_in_lis(t_node *node, t_node **lis_nodes, size_t lis_count)
 	}
 	return (false);
 }
-

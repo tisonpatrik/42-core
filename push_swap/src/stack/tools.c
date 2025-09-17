@@ -67,7 +67,6 @@ bool	is_sorted(t_stack *stack)
 	return (true);
 }
 
-
 void	free_stack(t_stack *stack)
 {
 	if (!stack)
