@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 20:43:24 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/17 22:29:31 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/17 22:42:50 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,16 @@ static size_t	calculate_arena_size(int max_candidates, int len_of_inputs)
 	size += sizeof(int) * (size_t)len_of_inputs;
 	size += sizeof(int) * (size_t)len_of_inputs;
 	return (size);
+}
+
+static void	initialize_arena_fields(t_selector_arena *arena, size_t arena_size,
+		int max_candidates)
+{
+	arena->arena_size = arena_size;
+	arena->max_candidates = max_candidates;
+	arena->candidate_count = 0;
+	arena->filtered_count = 0;
+	arena->top_k_count = 0;
 }
 
 static void	*setup_arena_memory_layout(t_selector_arena *arena,
@@ -82,11 +92,7 @@ t_selector_arena	*allocate_selector_arena(int max_candidates,
 		free(arena);
 		return (NULL);
 	}
-	arena->arena_size = arena_size;
-	arena->max_candidates = max_candidates;
-	arena->candidate_count = 0;
-	arena->filtered_count = 0;
-	arena->top_k_count = 0;
+	initialize_arena_fields(arena, arena_size, max_candidates);
 	setup_arena_memory_layout(arena, max_candidates, len_of_inputs);
 	return (arena);
 }

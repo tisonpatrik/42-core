@@ -19,6 +19,7 @@ PROJECT_SRCS = ../src/stack/stack.c \
                ../src/ops/rotate.c \
                ../src/ops/reverse_rotate.c \
                ../src/ops/sorting_state.c \
+               ../src/ops/utils.c \
                ../src/validator/input_parser.c \
                ../src/validator/tokenizer.c \
                ../src/validator/normalization.c \
@@ -32,6 +33,7 @@ PROJECT_SRCS = ../src/stack/stack.c \
                ../src/selector/target_position.c \
                ../src/selector/nearbest.c \
                ../src/selector/lookahead_evaluator.c \
+               ../src/selector/sorting_heuristic.c \
                ../src/selector/candidate_enumerator.c \
                ../src/selector/candidate_comparator.c \
                ../src/selector/candidates_builder.c \
@@ -50,6 +52,7 @@ PROJECT_OBJS = $(BIN_DIR)/stack.o \
                $(BIN_DIR)/rotate.o \
                $(BIN_DIR)/reverse_rotate.o \
                $(BIN_DIR)/sorting_state.o \
+               $(BIN_DIR)/ops_utils.o \
                $(BIN_DIR)/input_parser.o \
                $(BIN_DIR)/tokenizer.o \
                $(BIN_DIR)/normalization.o \
@@ -63,6 +66,7 @@ PROJECT_OBJS = $(BIN_DIR)/stack.o \
                $(BIN_DIR)/target_position.o \
                $(BIN_DIR)/nearbest.o \
                $(BIN_DIR)/lookahead_evaluator.o \
+               $(BIN_DIR)/sorting_heuristic.o \
                $(BIN_DIR)/candidate_enumerator.o \
                $(BIN_DIR)/candidate_comparator.o \
                $(BIN_DIR)/candidates_builder.o \
@@ -122,6 +126,9 @@ $(BIN_DIR)/reverse_rotate.o: ../src/ops/reverse_rotate.c
 $(BIN_DIR)/sorting_state.o: ../src/ops/sorting_state.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
+$(BIN_DIR)/ops_utils.o: ../src/ops/utils.c
+	@$(CC) $(CFLAGS) -c $< -o $@
+
 $(BIN_DIR)/input_parser.o: ../src/validator/input_parser.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
@@ -159,6 +166,9 @@ $(BIN_DIR)/nearbest.o: ../src/selector/nearbest.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(BIN_DIR)/lookahead_evaluator.o: ../src/selector/lookahead_evaluator.c
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+$(BIN_DIR)/sorting_heuristic.o: ../src/selector/sorting_heuristic.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(BIN_DIR)/candidate_enumerator.o: ../src/selector/candidate_enumerator.c

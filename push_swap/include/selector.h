@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 21:41:42 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/17 22:21:59 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/17 22:32:48 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ int						find_target_position(int *sorted_array, int array_size,
 							int target_value);
 int						merged_cost(int a, int b);
 int						signed_cost(int idx, int size);
+int						calculate_sorting_heuristic(t_selector_arena *arena);
 
 t_candidate				*enumerate_candidates(t_sorting_state *state,
 							t_selector_arena *arena);

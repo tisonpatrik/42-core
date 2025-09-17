@@ -26,6 +26,7 @@ SRCS        := src/validator/input_parser.c \
 			   src/ops/rotate.c \
 			   src/ops/swap.c \
 			   src/ops/sorting_state.c \
+			   src/ops/utils.c \
 			   src/separator/separator.c \
 			   src/separator/list_arena.c \
 			   src/separator/algo.c \
@@ -37,6 +38,7 @@ SRCS        := src/validator/input_parser.c \
 			   src/selector/candidates_builder.c \
 			   src/selector/snapshot_arena.c \
 			   src/selector/lookahead_evaluator.c \
+			   src/selector/sorting_heuristic.c \
 			   src/selector/nearbest.c \
 			   src/selector/result_builder.c \
 			   src/selector/selector_arena.c \

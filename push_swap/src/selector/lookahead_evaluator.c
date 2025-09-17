@@ -6,37 +6,13 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 20:49:22 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/17 22:26:15 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/17 22:32:48 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/selector.h"
 #include <stdbool.h>
-
-int	calculate_heuristic_without_copy(t_selector_arena *arena)
-{
-	int	breakpoints;
-	int	i;
-
-	if (arena->snapshot_arena->size_a <= 1)
-		return (0);
-	breakpoints = 0;
-	i = 0;
-	while (i < arena->snapshot_arena->size_a - 1)
-	{
-		if (arena->snapshot_arena->a_values[i] > arena->snapshot_arena->a_values[i
-			+ 1])
-			breakpoints++;
-		i++;
-	}
-	if (arena->snapshot_arena->a_values[arena->snapshot_arena->size_a
-		- 1] > arena->snapshot_arena->a_values[0])
-		breakpoints++;
-	return ((breakpoints + arena->snapshot_arena->size_a
-			/ arena->config.size_penalty_factor
-			+ arena->config.heuristic_offset)
-		/ arena->config.heuristic_divisor);
-}
+#include <limits.h>
 
 int	calculate_score(t_position position, t_selector_arena *arena)
 {
@@ -44,7 +20,7 @@ int	calculate_score(t_position position, t_selector_arena *arena)
 	int	heuristic_estimate;
 
 	rotation_cost = merged_cost(position.cost_a, position.cost_b) + 1;
-	heuristic_estimate = calculate_heuristic_without_copy(arena);
+	heuristic_estimate = calculate_sorting_heuristic(arena);
 	return (heuristic_estimate + rotation_cost);
 }
 
