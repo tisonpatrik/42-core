@@ -50,19 +50,22 @@ SRCS        := src/validator/input_parser.c \
 			   src/solver/apply_combined.c \
 			   src/solver/align_min_to_top.c \
 			   src/optimizer/optimizer_core.c \
-			   src/optimizer/optimization_strategies.c \
+			   src/optimizer/strategies.c \
 			   src/optimizer/strategy_implementations.c \
-			   src/optimizer/optimizer_arena.c \
-			   src/optimizer/operation_builder.c \
-			   src/optimizer/optimizer_utils.c \
-			   src/optimizer/optimizer_config.c \
+			   src/optimizer/arena.c \
+			   src/optimizer/builder_core.c \
+			   src/optimizer/builder_utils.c \
+			   src/optimizer/utils.c \
+			   src/optimizer/config.c \
 			   src/optimizer/bubble_operations.c \
 			   src/optimizer/bubble_strategy.c \
 			   src/optimizer/merge_neighbors.c \
-			   src/optimizer/merge_strategy.c \
-			   src/optimizer/cancel_operations.c \
+			   src/optimizer/merge_core.c \
+			   src/optimizer/merge_logic.c \
+			   src/optimizer/cancel_core.c \
+			   src/optimizer/cancel_logic.c \
 			   src/optimizer/cancel_strategy.c \
-			   src/optimizer/operation_properties.c \
+			   src/optimizer/properties.c \
 			   src/stack/stack.c \
 			   src/stack/ops.c \
 			   src/stack/node.c \

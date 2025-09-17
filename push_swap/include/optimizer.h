@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   optimizer.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/16 21:11:57 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/17 23:23:20 by patrik           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #ifndef OPTIMIZER_H
 # define OPTIMIZER_H
@@ -39,11 +28,6 @@ typedef struct s_optimizer_arena
 	size_t		arena_size;
 }				t_optimizer_arena;
 
-t_optimizer_arena	*create_optimizer_arena(size_t capacity);
-void				destroy_optimizer_arena(t_optimizer_arena *arena);
-t_operation			*arena_alloc_operation(t_optimizer_arena *arena);
-void				reset_optimizer_arena(t_optimizer_arena *arena);
-
 typedef struct s_operation_builder
 {
 	t_optimizer_arena	*arena;
@@ -51,21 +35,6 @@ typedef struct s_operation_builder
 	bool				changed;
 	t_optimizer_error	error;
 }						t_operation_builder;
-
-t_operation_builder	*create_operation_builder(t_optimizer_arena *arena);
-void				destroy_operation_builder(t_operation_builder *builder);
-t_optimizer_error	add_operation_to_builder(t_operation_builder *builder, t_operation op);
-t_optimizer_error	copy_operations_to_builder(t_operation_builder *builder, t_list *src_start, t_list *src_end);
-t_list				*builder_get_result(t_operation_builder *builder);
-bool				builder_has_changed(t_operation_builder *builder);
-void				builder_mark_changed(t_operation_builder *builder);
-t_optimizer_error	builder_get_error(t_operation_builder *builder);
-
-void				*copy_operation(void *content);
-void				add_operation_to_list(t_list **dst, t_operation op);
-t_list				*copy_operation_list(t_list *src);
-bool				validate_operation_sequence(t_list *seq);
-void				replace_sequence_if_changed(t_list **seq, t_list *new_seq, bool changed, bool *overall_changed);
 
 typedef struct s_optimizer_config
 {
@@ -84,6 +53,20 @@ typedef struct s_optimization_strategy
 	int				priority;
 }					t_optimization_strategy;
 
+t_optimizer_arena	*create_optimizer_arena(size_t capacity);
+void				destroy_optimizer_arena(t_optimizer_arena *arena);
+t_operation			*arena_alloc_operation(t_optimizer_arena *arena);
+void				reset_optimizer_arena(t_optimizer_arena *arena);
+
+t_operation_builder	*create_operation_builder(t_optimizer_arena *arena);
+void				destroy_operation_builder(t_operation_builder *builder);
+t_optimizer_error	add_operation_to_builder(t_operation_builder *builder, t_operation op);
+t_optimizer_error	copy_operations_to_builder(t_operation_builder *builder, t_list *src_start, t_list *src_end);
+t_list				*builder_get_result(t_operation_builder *builder);
+bool				builder_has_changed(t_operation_builder *builder);
+void				builder_mark_changed(t_operation_builder *builder);
+t_optimizer_error	builder_get_error(t_operation_builder *builder);
+
 t_optimizer_config	*create_default_optimizer_config(void);
 t_optimizer_config	*create_custom_optimizer_config(int max_gap, bool enable_merge, bool enable_cancel_pairs, bool enable_cancel_across, int max_iterations);
 void				free_optimizer_config(t_optimizer_config *config);
@@ -94,7 +77,15 @@ t_optimization_strategy	*create_cancel_strategy(void);
 t_optimization_strategy	**get_optimization_strategies(int *count);
 void				free_strategy_registry(void);
 
+void				*copy_operation(void *content);
+void				add_operation_to_list(t_list **dst, t_operation op);
+t_list				*copy_operation_list(t_list *src);
+bool				validate_operation_sequence(t_list *seq);
+void				replace_sequence_if_changed(t_list **seq, t_list *new_seq, bool changed, bool *overall_changed);
+
 void		optimize_ops(t_list **seq);
+void		apply_optimization_pass(t_list **seq, bool *changed);
+void		run_optimization_loop(t_list **seq);
 
 t_list		*bubble_across_other_stack(t_list *src, int max_gap, bool *changed);
 bool		is_pure_a(t_operation op);
@@ -106,6 +97,9 @@ t_operation	get_absorption_result_rr_rrb(t_operation a);
 t_operation	get_absorption_result_rrr_ra(t_operation a);
 t_operation	get_absorption_result_rrr_rb(t_operation a);
 bool		try_merge_operations(t_operation a, t_operation b, t_list **dst, t_list **current);
+bool		try_merge_rotate_pairs(t_operation a, t_operation b, t_list **dst, t_list **current);
+bool		try_merge_swap_pairs(t_operation a, t_operation b, t_list **dst, t_list **current);
+bool		try_merge_absorption_cases(t_operation a, t_operation b, t_list **dst, t_list **current);
 
 t_list		*cancel_inverse_pairs(t_list *src, bool *changed);
 bool		is_inverse(t_operation a, t_operation b);
@@ -118,6 +112,9 @@ bool		search_for_inverse_a(t_operation op, t_list *current, t_list **dst, t_opti
 bool		search_for_inverse_b(t_operation op, t_list *current, t_list **dst, t_optimizer_arena *arena, bool *has_changed);
 void		process_operation_a(t_operation op, t_list *current, t_list **dst, t_optimizer_arena *arena, bool *has_changed, t_list **current_ptr);
 void		process_operation_b(t_operation op, t_list *current, t_list **dst, t_optimizer_arena *arena, bool *has_changed, t_list **current_ptr);
+void		process_inverse_cancellation(t_list *src, t_list **dst, bool *has_changed);
+void		setup_cancel_arena_a(t_list *src, t_optimizer_arena **arena, t_list **dst, bool *has_changed);
+void		setup_cancel_arena_b(t_list *src, t_optimizer_arena **arena, t_list **dst, bool *has_changed);
 
 bool		touches_a(t_operation op);
 bool		touches_b(t_operation op);

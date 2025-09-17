@@ -1,34 +1,6 @@
 #include "../../include/optimizer.h"
 
-t_operation	get_absorption_result_rr_rra(t_operation a)
-{
-	if (a == RR)
-		return (RB);
-	return (RRB);
-}
-
-t_operation	get_absorption_result_rr_rrb(t_operation a)
-{
-	if (a == RR)
-		return (RA);
-	return (RRA);
-}
-
-t_operation	get_absorption_result_rrr_ra(t_operation a)
-{
-	if (a == RRR)
-		return (RRB);
-	return (RB);
-}
-
-t_operation	get_absorption_result_rrr_rb(t_operation a)
-{
-	if (a == RRR)
-		return (RRA);
-	return (RA);
-}
-
-bool	try_merge_operations(t_operation a, t_operation b, t_list **dst, t_list **current)
+bool	try_merge_rotate_pairs(t_operation a, t_operation b, t_list **dst, t_list **current)
 {
 	if ((a == RA && b == RB) || (a == RB && b == RA))
 	{
@@ -42,12 +14,22 @@ bool	try_merge_operations(t_operation a, t_operation b, t_list **dst, t_list **c
 		*current = (*current)->next->next;
 		return (true);
 	}
+	return (false);
+}
+
+bool	try_merge_swap_pairs(t_operation a, t_operation b, t_list **dst, t_list **current)
+{
 	if ((a == SA && b == SB) || (a == SB && b == SA))
 	{
 		add_operation_to_list(dst, SS);
 		*current = (*current)->next->next;
 		return (true);
 	}
+	return (false);
+}
+
+bool	try_merge_absorption_cases(t_operation a, t_operation b, t_list **dst, t_list **current)
+{
 	if ((a == RR && b == RRA) || (a == RRA && b == RR))
 	{
 		add_operation_to_list(dst, get_absorption_result_rr_rra(a));

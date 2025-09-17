@@ -1,7 +1,6 @@
 
 #include "../../include/optimizer.h"
 
-// Bubble Strategy Implementation
 static bool	bubble_strategy_can_apply(t_list *seq)
 {
 	if (!seq || ft_lstsize(seq) < 3)
@@ -43,7 +42,6 @@ t_optimization_strategy	*create_bubble_strategy(void)
 	return (&strategy);
 }
 
-// Merge Strategy Implementation
 static bool	merge_strategy_can_apply(t_list *seq)
 {
 	if (!seq || ft_lstsize(seq) < 2)
@@ -73,7 +71,6 @@ t_optimization_strategy	*create_merge_strategy(void)
 	return (&strategy);
 }
 
-// Cancel Strategy Implementation
 static bool	cancel_strategy_can_apply(t_list *seq)
 {
 	if (!seq || ft_lstsize(seq) < 2)

@@ -1,4 +1,3 @@
-
 #include "../../include/optimizer.h"
 
 t_operation_builder	*create_operation_builder(t_optimizer_arena *arena)
@@ -65,24 +64,4 @@ t_list	*builder_get_result(t_operation_builder *builder)
 	if (!builder)
 		return (NULL);
 	return (builder->result);
-}
-
-bool	builder_has_changed(t_operation_builder *builder)
-{
-	if (!builder)
-		return (false);
-	return (builder->changed);
-}
-
-void	builder_mark_changed(t_operation_builder *builder)
-{
-	if (builder)
-		builder->changed = true;
-}
-
-t_optimizer_error	builder_get_error(t_operation_builder *builder)
-{
-	if (!builder)
-		return (OPTIMIZER_INVALID_INPUT);
-	return (builder->error);
 }
