@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 20:43:24 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/17 17:58:46 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/17 22:15:21 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ static size_t	calculate_arena_size(int max_candidates)
 	size = sizeof(t_candidate) * (size_t)max_candidates;
 	size += sizeof(t_candidate) * (size_t)max_candidates;
 	size += sizeof(t_candidate) * (size_t)max_candidates;
-	size += sizeof(int) * 1000; // temp_a_values
-	size += sizeof(int) * 1000; // temp_b_values
+	size += sizeof(int) * 1000;
+	size += sizeof(int) * 1000;
 	return (size);
 }
 

@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 21:41:42 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/17 17:58:46 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/17 22:07:00 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,14 +72,11 @@ t_candidate				*build_filtered_candidates(t_candidate *candidates,
 t_candidate				*build_top_k_candidates(t_candidate *candidates,
 							int max_k, t_selector_arena *arena);
 bool					is_better_position(t_position a, t_position b);
-int						find_insertion_index(int *sorted_array, int array_size,
-							int target_value);
+
 int						find_target_position(int *sorted_array, int array_size,
 							int target_value);
-int						normalize_index(int array_size, int raw_index);
 int						merged_cost(int a, int b);
 int						signed_cost(int idx, int size);
-int						get_max_stack_size(t_stack *a, t_stack *b);
 
 t_candidate				*enumerate_candidates(t_sorting_state *state,
 							t_selector_arena *arena);
@@ -91,4 +88,6 @@ t_position				select_best_move(t_sorting_state *ps,
 							int max_candidates, t_simulation_config config);
 t_candidate				*enumerate_b_to_a_candidates(t_sorting_state *state,
 							t_selector_arena *arena);
+
+int						compare_candidates(const void *a, const void *b);
 #endif

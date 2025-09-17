@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 20:49:22 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/17 19:57:01 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/17 22:07:35 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,42 +14,38 @@
 #include <stdbool.h>
 
 
-static int	calculate_heuristic_without_copy(int *a_values, int size_a,
-		int size_penalty_factor, int heuristic_offset, int heuristic_divisor)
+static int	calculate_heuristic_without_copy(t_selector_arena *arena)
 {
 	int	breakpoints;
 	int	i;
 
-	if (size_a <= 1)
+	if (arena->snapshot_arena->size_a <= 1)
 		return (0);
 	breakpoints = 0;
-	for (i = 0; i < size_a - 1; i++)
+	i = 0;
+	while(i < arena->snapshot_arena->size_a - 1)
 	{
-		if (a_values[i] > a_values[i + 1])
+		if (arena->snapshot_arena->a_values[i] > arena->snapshot_arena->a_values[i + 1])
 			breakpoints++;
+		i++;
 	}
-	if (a_values[size_a - 1] > a_values[0])
+	if (arena->snapshot_arena->a_values[arena->snapshot_arena->size_a - 1] > arena->snapshot_arena->a_values[0])
 		breakpoints++;
-	return ((breakpoints + size_a / size_penalty_factor + heuristic_offset)
-		/ heuristic_divisor);
+	return ((breakpoints + arena->snapshot_arena->size_a / arena->config.size_penalty_factor + arena->config.heuristic_offset)
+		/ arena->config.heuristic_divisor);
 }
 
-static int	calculate_score_without_simulation(t_position position,
-		int *a_values, int size_a, t_selector_arena *arena)
+static int	calculate_score(t_position position, t_selector_arena *arena)
 {
 	int	rotation_cost;
 	int	heuristic_estimate;
 
 	rotation_cost = merged_cost(position.cost_a, position.cost_b) + 1;
-	heuristic_estimate = calculate_heuristic_without_copy(a_values, size_a,
-			arena->config.size_penalty_factor,
-			arena->config.heuristic_offset,
-			arena->config.heuristic_divisor);
+	heuristic_estimate = calculate_heuristic_without_copy(arena);
 	return (heuristic_estimate + rotation_cost);
 }
 
-static t_position	find_best_candidate(t_candidate *candidates, int count,
-		int *a_values, int size_a, t_selector_arena *arena)
+static t_position	find_best_candidate(t_candidate *candidates, t_selector_arena *arena)
 {
 	t_position	best_position;
 	int			i;
@@ -57,13 +53,11 @@ static t_position	find_best_candidate(t_candidate *candidates, int count,
 	int			current_score;
 
 	best_position = candidates[0].position;
-	best_score = calculate_score_without_simulation(best_position,
-			a_values, size_a, arena);
+	best_score = calculate_score(best_position, arena);
 	i = 1;
-	while (i < count)
+	while (i < arena->top_k_count)
 	{
-		current_score = calculate_score_without_simulation(candidates[i].position,
-				a_values, size_a, arena);
+		current_score = calculate_score(candidates[i].position, arena);
 		if (current_score < best_score || (current_score == best_score
 				&& is_better_position(candidates[i].position, best_position)))
 		{
@@ -85,6 +79,5 @@ t_position	evaluate_with_lookahead(t_candidate *candidates,
 		invalid_position.total = INT_MAX;
 		return (invalid_position);
 	}
-	return (find_best_candidate(candidates, arena->top_k_count,
-			arena->snapshot_arena->a_values, arena->snapshot_arena->size_a, arena));
+	return (find_best_candidate(candidates, arena));
 }

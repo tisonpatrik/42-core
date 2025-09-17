@@ -33,6 +33,7 @@ SRCS        := src/validator/input_parser.c \
 			   src/separator/utils.c \
 			   src/separator/lis_computation.c \
 			   src/selector/candidate_enumerator.c \
+			   src/selector/candidate_comparator.c \
 			   src/selector/candidates_builder.c \
 			   src/selector/snapshot_arena.c \
 			   src/selector/lookahead_evaluator.c \
@@ -40,6 +41,7 @@ SRCS        := src/validator/input_parser.c \
 			   src/selector/result_builder.c \
 			   src/selector/selector_arena.c \
 			   src/selector/utils.c \
+			   src/selector/target_position.c \
 			   src/simulation_config/config.c \
 			   src/solver/sort.c \
 			   src/solver/sort_three.c \

@@ -29,9 +29,11 @@ PROJECT_SRCS = ../src/stack/stack.c \
                ../src/separator/separator.c \
                ../src/separator/lis_computation.c \
                ../src/selector/utils.c \
+               ../src/selector/target_position.c \
                ../src/selector/nearbest.c \
                ../src/selector/lookahead_evaluator.c \
                ../src/selector/candidate_enumerator.c \
+               ../src/selector/candidate_comparator.c \
                ../src/selector/candidates_builder.c \
                ../src/selector/result_builder.c \
                ../src/selector/selector_arena.c \
@@ -58,9 +60,11 @@ PROJECT_OBJS = $(BIN_DIR)/stack.o \
                $(BIN_DIR)/separator.o \
                $(BIN_DIR)/separator_lis_computation.o \
                $(BIN_DIR)/selector_utils.o \
+               $(BIN_DIR)/target_position.o \
                $(BIN_DIR)/nearbest.o \
                $(BIN_DIR)/lookahead_evaluator.o \
                $(BIN_DIR)/candidate_enumerator.o \
+               $(BIN_DIR)/candidate_comparator.o \
                $(BIN_DIR)/candidates_builder.o \
                $(BIN_DIR)/selector_result_builder.o \
                $(BIN_DIR)/selector_arena.o \
@@ -148,6 +152,9 @@ $(BIN_DIR)/separator_lis_computation.o: ../src/separator/lis_computation.c
 $(BIN_DIR)/selector_utils.o: ../src/selector/utils.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
+$(BIN_DIR)/target_position.o: ../src/selector/target_position.c
+	@$(CC) $(CFLAGS) -c $< -o $@
+
 $(BIN_DIR)/nearbest.o: ../src/selector/nearbest.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
@@ -155,6 +162,9 @@ $(BIN_DIR)/lookahead_evaluator.o: ../src/selector/lookahead_evaluator.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(BIN_DIR)/candidate_enumerator.o: ../src/selector/candidate_enumerator.c
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+$(BIN_DIR)/candidate_comparator.o: ../src/selector/candidate_comparator.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(BIN_DIR)/candidates_builder.o: ../src/selector/candidates_builder.c

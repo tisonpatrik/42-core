@@ -6,93 +6,15 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 20:39:18 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/16 22:03:53 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/17 22:14:54 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/selector.h"
 #include <stdbool.h>
 
-int	find_insertion_index(int *sorted_array, int array_size, int target_value)
-{
-	int	insertion_index;
-	int	array_length;
-	int	previous_element;
-	int	next_element;
-	int	current_index;
 
-	if (array_size == 0)
-		return (0);
-	insertion_index = ft_lower_bound(sorted_array, array_size, target_value);
-	array_length = array_size;
-	insertion_index = insertion_index % array_length;
-	previous_element = sorted_array[(insertion_index - 1 + array_length)
-		% array_length];
-	next_element = sorted_array[insertion_index % array_length];
-	if (previous_element > target_value && target_value > next_element)
-		return (insertion_index);
-	current_index = 0;
-	while (current_index < array_length)
-	{
-		previous_element = sorted_array[(current_index - 1 + array_length)
-			% array_length];
-		next_element = sorted_array[current_index];
-		if (previous_element > target_value && target_value > next_element)
-			return (current_index);
-		current_index++;
-	}
-	return (0);
-}
 
-int	find_target_position(int *sorted_array, int array_size, int target_value)
-{
-	int	best_idx;
-	int	best_val;
-	int	min_idx;
-	int	min_val;
-	int	i;
-
-	if (array_size == 0)
-		return (0);
-	best_idx = -1;
-	best_val = 0;
-	i = 0;
-	while (i < array_size)
-	{
-		if (sorted_array[i] > target_value)
-		{
-			if (best_idx == -1 || sorted_array[i] < best_val)
-			{
-				best_val = sorted_array[i];
-				best_idx = i;
-			}
-		}
-		i++;
-	}
-	if (best_idx != -1)
-		return (best_idx);
-	min_idx = 0;
-	min_val = sorted_array[0];
-	i = 1;
-	while (i < array_size)
-	{
-		if (sorted_array[i] < min_val)
-		{
-			min_val = sorted_array[i];
-			min_idx = i;
-		}
-		i++;
-	}
-	return (min_idx);
-}
-
-int	normalize_index(int array_size, int raw_index)
-{
-	if (array_size == 0)
-		return (0);
-	raw_index = ((raw_index % array_size) + array_size) % array_size;
-	return (raw_index);
-}
 
 
 int	merged_cost(int a, int b)
@@ -122,18 +44,7 @@ int	signed_cost(int idx, int size)
 	return (idx - size);
 }
 
-int	get_max_stack_size(t_stack *a, t_stack *b)
-{
-	int	size_a;
-	int	size_b;
 
-	size_a = get_size(a);
-	size_b = get_size(b);
-	if (size_a > size_b)
-		return (size_a);
-	else
-		return (size_b);
-}
 
 bool	is_better_position(t_position a, t_position b)
 {
