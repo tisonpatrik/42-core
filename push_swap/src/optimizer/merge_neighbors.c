@@ -6,12 +6,11 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 21:37:36 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/16 21:40:58 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/17 22:56:36 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/optimizer.h"
-
 
 static void	*copy_operation(void *content)
 {
@@ -21,6 +20,68 @@ static void	*copy_operation(void *content)
 	return (op);
 }
 
+
+static void	add_operation_to_list(t_list **dst, t_operation op)
+{
+	t_operation *op_ptr = malloc(sizeof(t_operation));
+	if (op_ptr)
+	{
+		*op_ptr = op;
+		ft_lstadd_back(dst, ft_lstnew(op_ptr));
+	}
+}
+
+static bool	try_merge_operations(t_operation a, t_operation b, t_list **dst, t_list **current)
+{
+	// (ra rb) -> rr and vice versa
+	if ((a == RA && b == RB) || (a == RB && b == RA))
+	{
+		add_operation_to_list(dst, RR);
+		*current = (*current)->next->next;
+		return (true);
+	}
+	// (rra rrb) -> rrr and vice versa
+	if ((a == RRA && b == RRB) || (a == RRB && b == RRA))
+	{
+		add_operation_to_list(dst, RRR);
+		*current = (*current)->next->next;
+		return (true);
+	}
+	// (sa sb) -> ss and vice versa
+	if ((a == SA && b == SB) || (a == SB && b == SA))
+	{
+		add_operation_to_list(dst, SS);
+		*current = (*current)->next->next;
+		return (true);
+	}
+	// Absorption: rr + rra -> rb ; rr + rrb -> ra
+	if ((a == RR && b == RRA) || (a == RRA && b == RR))
+	{
+		add_operation_to_list(dst, (a == RR) ? RB : RRB);
+		*current = (*current)->next->next;
+		return (true);
+	}
+	if ((a == RR && b == RRB) || (a == RRB && b == RR))
+	{
+		add_operation_to_list(dst, (a == RR) ? RA : RRA);
+		*current = (*current)->next->next;
+		return (true);
+	}
+	// Absorption: rrr + ra -> rrb ; rrr + rb -> rra
+	if ((a == RRR && b == RA) || (a == RA && b == RRR))
+	{
+		add_operation_to_list(dst, (a == RRR) ? RRB : RB);
+		*current = (*current)->next->next;
+		return (true);
+	}
+	if ((a == RRR && b == RB) || (a == RB && b == RRR))
+	{
+		add_operation_to_list(dst, (a == RRR) ? RRA : RA);
+		*current = (*current)->next->next;
+		return (true);
+	}
+	return (false);
+}
 
 t_list	*merge_neighbors(t_list *src, bool *changed)
 {
@@ -42,157 +103,18 @@ t_list	*merge_neighbors(t_list *src, bool *changed)
 			t_operation a = *(t_operation*)current->content;
 			t_operation b = *(t_operation*)current->next->content;
 			
-			if ((a == RA && b == RB) || (a == RB && b == RA))
+			if (try_merge_operations(a, b, &dst, &current))
 			{
-				t_operation *rr = malloc(sizeof(t_operation));
-				if (rr)
-				{
-					*rr = RR;
-					ft_lstadd_back(&dst, ft_lstnew(rr));
-				}
-				current = current->next->next;
-				has_changed = true;
-				continue;
-			}
-			// (rra rrb) -> rrr  and vice versa
-			if ((a == RRA && b == RRB) || (a == RRB && b == RRA))
-			{
-				t_operation *rrr = malloc(sizeof(t_operation));
-				if (rrr)
-				{
-					*rrr = RRR;
-					ft_lstadd_back(&dst, ft_lstnew(rrr));
-				}
-				current = current->next->next;
-				has_changed = true;
-				continue;
-			}
-			// (sa sb) -> ss  and vice versa
-			if ((a == SA && b == SB) || (a == SB && b == SA))
-			{
-				t_operation *ss = malloc(sizeof(t_operation));
-				if (ss)
-				{
-					*ss = SS;
-					ft_lstadd_back(&dst, ft_lstnew(ss));
-				}
-				current = current->next->next;
-				has_changed = true;
-				continue;
-			}
-			
-			// Absorption: rr + rra -> rb ; rr + rrb -> ra
-			if (a == RR && b == RRA)
-			{
-				t_operation *rb = malloc(sizeof(t_operation));
-				if (rb)
-				{
-					*rb = RB;
-					ft_lstadd_back(&dst, ft_lstnew(rb));
-				}
-				current = current->next->next;
-				has_changed = true;
-				continue;
-			}
-			if (a == RR && b == RRB)
-			{
-				t_operation *ra = malloc(sizeof(t_operation));
-				if (ra)
-				{
-					*ra = RA;
-					ft_lstadd_back(&dst, ft_lstnew(ra));
-				}
-				current = current->next->next;
-				has_changed = true;
-				continue;
-			}
-			// vice versa
-			if (a == RRA && b == RR)
-			{
-				t_operation *rrb = malloc(sizeof(t_operation));
-				if (rrb)
-				{
-					*rrb = RRB;
-					ft_lstadd_back(&dst, ft_lstnew(rrb));
-				}
-				current = current->next->next;
-				has_changed = true;
-				continue;
-			}
-			if (a == RRB && b == RR)
-			{
-				t_operation *rra = malloc(sizeof(t_operation));
-				if (rra)
-				{
-					*rra = RRA;
-					ft_lstadd_back(&dst, ft_lstnew(rra));
-				}
-				current = current->next->next;
-				has_changed = true;
-				continue;
-			}
-			
-			// Absorption: rrr + ra -> rrb ; rrr + rb -> rra
-			if (a == RRR && b == RA)
-			{
-				t_operation *rrb = malloc(sizeof(t_operation));
-				if (rrb)
-				{
-					*rrb = RRB;
-					ft_lstadd_back(&dst, ft_lstnew(rrb));
-				}
-				current = current->next->next;
-				has_changed = true;
-				continue;
-			}
-			if (a == RRR && b == RB)
-			{
-				t_operation *rra = malloc(sizeof(t_operation));
-				if (rra)
-				{
-					*rra = RRA;
-					ft_lstadd_back(&dst, ft_lstnew(rra));
-				}
-				current = current->next->next;
-				has_changed = true;
-				continue;
-			}
-			// vice versa
-			if (a == RA && b == RRR)
-			{
-				t_operation *rb = malloc(sizeof(t_operation));
-				if (rb)
-				{
-					*rb = RB;
-					ft_lstadd_back(&dst, ft_lstnew(rb));
-				}
-				current = current->next->next;
-				has_changed = true;
-				continue;
-			}
-			if (a == RB && b == RRR)
-			{
-				t_operation *ra = malloc(sizeof(t_operation));
-				if (ra)
-				{
-					*ra = RA;
-					ft_lstadd_back(&dst, ft_lstnew(ra));
-				}
-				current = current->next->next;
 				has_changed = true;
 				continue;
 			}
 		}
-		t_operation *op = malloc(sizeof(t_operation));
-		if (op)
-		{
-			*op = *(t_operation*)current->content;
-			ft_lstadd_back(&dst, ft_lstnew(op));
-		}
+		add_operation_to_list(&dst, *(t_operation*)current->content);
 		current = current->next;
 	}
 	
 	if (changed)
 		*changed = has_changed;
+	
 	return (dst);
 }

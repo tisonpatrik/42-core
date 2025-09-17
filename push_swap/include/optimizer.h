@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   optimizer.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 21:11:57 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/16 21:12:11 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/17 22:54:21 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,20 @@
 # include "../libft/include/libft.h"
 # include "ops.h"
 # include <stdlib.h>
+
+typedef struct s_optimizer_arena
+{
+	t_operation	*operations;
+	size_t		capacity;
+	size_t		used;
+	void		*arena_memory;
+	size_t		arena_size;
+}				t_optimizer_arena;
+
+t_optimizer_arena	*create_optimizer_arena(size_t capacity);
+void				destroy_optimizer_arena(t_optimizer_arena *arena);
+t_operation			*arena_alloc_operation(t_optimizer_arena *arena);
+void				reset_optimizer_arena(t_optimizer_arena *arena);
 
 void		optimize_ops(t_list **seq);
 
