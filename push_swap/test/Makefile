@@ -27,6 +27,7 @@ PROJECT_SRCS = ../src/stack/stack.c \
                ../src/separator/result_builder.c \
                ../src/separator/utils.c \
                ../src/separator/separator.c \
+               ../src/separator/lis_computation.c \
                ../src/selector/utils.c \
                ../src/selector/nearbest.c \
                ../src/selector/lookahead_evaluator.c \
@@ -55,6 +56,7 @@ PROJECT_OBJS = $(BIN_DIR)/stack.o \
                $(BIN_DIR)/separator_result_builder.o \
                $(BIN_DIR)/separator_utils.o \
                $(BIN_DIR)/separator.o \
+               $(BIN_DIR)/separator_lis_computation.o \
                $(BIN_DIR)/selector_utils.o \
                $(BIN_DIR)/nearbest.o \
                $(BIN_DIR)/lookahead_evaluator.o \
@@ -138,6 +140,9 @@ $(BIN_DIR)/separator_utils.o: ../src/separator/utils.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(BIN_DIR)/separator.o: ../src/separator/separator.c
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+$(BIN_DIR)/separator_lis_computation.o: ../src/separator/lis_computation.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(BIN_DIR)/selector_utils.o: ../src/selector/utils.c

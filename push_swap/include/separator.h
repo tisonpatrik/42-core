@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 19:24:28 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/16 21:40:58 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/17 21:11:17 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,6 @@ void					compute_longest_increasing_lengths(t_lis_computation *computation,
 							t_lis_result *best_result);
 int						extract_stack_values_to_computation(t_stack *stack,
 							t_lis_computation *computation);
+size_t					calculate_lis_length(t_node **lis_nodes);
+bool					is_node_in_lis(t_node *node, t_node **lis_nodes, size_t lis_count);
 #endif

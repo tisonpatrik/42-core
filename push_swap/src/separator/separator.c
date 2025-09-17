@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:49:32 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/16 21:40:58 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/17 21:11:17 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,21 @@
 #include "../../include/separator.h"
 #include <stdbool.h>
 
-static size_t	calculate_lis_length(t_node **lis_nodes)
+static void	update_b_range(int value, int *min_b, int *max_b, bool *has_b_range)
 {
-	size_t	count;
-
-	if (!lis_nodes)
-		return (0);
-	count = 0;
-	while (lis_nodes[count] != NULL)
-		count++;
-	return (count);
-}
-
-static bool	is_node_in_lis(t_node *node, t_node **lis_nodes, size_t lis_count)
-{
-	size_t	i;
-
-	if (!node || !lis_nodes)
-		return (false);
-	i = 0;
-	while (i < lis_count)
+	if (*has_b_range == false)
 	{
-		if (lis_nodes[i] == node)
-			return (true);
-		i++;
+		*min_b = value;
+		*max_b = value;
+		*has_b_range = true;
 	}
-	return (false);
+	else
+	{
+		if (value < *min_b)
+			*min_b = value;
+		if (value > *max_b)
+			*max_b = value;
+	}
 }
 
 void	apply_shaping(t_sorting_state *state)
@@ -50,21 +39,8 @@ void	apply_shaping(t_sorting_state *state)
 	int			mid;
 	int			value;
 
-	mid = 0;
 	value = state->b->head->content;
-	if (has_b_range == false)
-	{
-		min_b = value;
-		max_b = value;
-		has_b_range = true;
-	}
-	else
-	{
-		if (value < min_b)
-			min_b = value;
-		if (value > max_b)
-			max_b = value;
-	}
+	update_b_range(value, &min_b, &max_b, &has_b_range);
 	mid = (min_b + max_b) / 2;
 	if (value < mid)
 	{

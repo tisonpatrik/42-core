@@ -31,6 +31,7 @@ SRCS        := src/validator/input_parser.c \
 			   src/separator/algo.c \
 			   src/separator/result_builder.c \
 			   src/separator/utils.c \
+			   src/separator/lis_computation.c \
 			   src/selector/candidate_enumerator.c \
 			   src/selector/candidates_builder.c \
 			   src/selector/snapshot_arena.c \
