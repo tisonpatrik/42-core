@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 21:11:57 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/17 23:07:08 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/17 23:23:20 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,11 +101,23 @@ bool		is_pure_a(t_operation op);
 bool		is_pure_b(t_operation op);
 
 t_list		*merge_neighbors(t_list *src, bool *changed);
+t_operation	get_absorption_result_rr_rra(t_operation a);
+t_operation	get_absorption_result_rr_rrb(t_operation a);
+t_operation	get_absorption_result_rrr_ra(t_operation a);
+t_operation	get_absorption_result_rrr_rb(t_operation a);
+bool		try_merge_operations(t_operation a, t_operation b, t_list **dst, t_list **current);
 
 t_list		*cancel_inverse_pairs(t_list *src, bool *changed);
 bool		is_inverse(t_operation a, t_operation b);
 t_list		*cancel_across_other_stack_a(t_list *src, bool *changed);
 t_list		*cancel_across_other_stack_b(t_list *src, bool *changed);
+t_operation	get_inverse_a_operation(t_operation op);
+t_operation	get_inverse_b_operation(t_operation op);
+void		copy_operations_to_list(t_list **dst, t_list *src_start, t_list *src_end, t_optimizer_arena *arena);
+bool		search_for_inverse_a(t_operation op, t_list *current, t_list **dst, t_optimizer_arena *arena, bool *has_changed);
+bool		search_for_inverse_b(t_operation op, t_list *current, t_list **dst, t_optimizer_arena *arena, bool *has_changed);
+void		process_operation_a(t_operation op, t_list *current, t_list **dst, t_optimizer_arena *arena, bool *has_changed, t_list **current_ptr);
+void		process_operation_b(t_operation op, t_list *current, t_list **dst, t_optimizer_arena *arena, bool *has_changed, t_list **current_ptr);
 
 bool		touches_a(t_operation op);
 bool		touches_b(t_operation op);
@@ -117,5 +129,10 @@ t_list		*list_insert_at(t_list *list, t_operation op, int index);
 t_operation	get_operation_at_index(t_list *list, int index);
 void		set_operation_at_index(t_list *list, int index, t_operation op);
 bool		bubble_operation(t_list *out, int i, int j, bool is_a);
+void		process_operation_at_index(t_list *out, int i, int n, int max_gap, bool *changed);
+bool		search_and_bubble_a(t_list *out, int i, int n, int max_gap, bool *changed);
+bool		search_and_bubble_b(t_list *out, int i, int n, int max_gap, bool *changed);
+t_operation	get_target_operation_for_a(t_operation a);
+t_operation	get_target_operation_for_b(t_operation a);
 
 #endif

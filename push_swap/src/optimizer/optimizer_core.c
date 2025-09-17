@@ -6,23 +6,18 @@ void	apply_optimization_pass(t_list **seq, bool *changed)
 	bool change;
 	t_list *new_seq;
 	
-	// Bubble operations
 	new_seq = bubble_across_other_stack(*seq, 4, &change);
 	replace_sequence_if_changed(seq, new_seq, change, changed);
 	
-	// Merge neighbors
 	new_seq = merge_neighbors(*seq, &change);
 	replace_sequence_if_changed(seq, new_seq, change, changed);
 	
-	// Cancel inverse pairs
 	new_seq = cancel_inverse_pairs(*seq, &change);
 	replace_sequence_if_changed(seq, new_seq, change, changed);
 	
-	// Cancel across other stack A
 	new_seq = cancel_across_other_stack_a(*seq, &change);
 	replace_sequence_if_changed(seq, new_seq, change, changed);
 	
-	// Cancel across other stack B
 	new_seq = cancel_across_other_stack_b(*seq, &change);
 	replace_sequence_if_changed(seq, new_seq, change, changed);
 }

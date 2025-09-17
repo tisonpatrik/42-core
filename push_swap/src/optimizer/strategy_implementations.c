@@ -92,7 +92,6 @@ static t_list	*cancel_strategy_apply(t_list *src, t_optimizer_arena *arena, bool
 			*changed = false;
 		return (NULL);
 	}
-	// Run all three cancellation functions in sequence, just like the original
 	result = cancel_inverse_pairs(src, &has_changed);
 	if (result)
 	{
