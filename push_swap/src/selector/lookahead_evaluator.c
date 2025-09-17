@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 20:49:22 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/17 18:50:35 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/17 18:59:01 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,14 +163,8 @@ t_position	evaluate_with_lookahead(t_candidate *candidates,
 	t_position	best_position;
 	int			i;
 	int			count;
-	int			*temp_a_values;
-	int			*temp_b_values;
-	int			temp_size_a;
-	int			temp_size_b;
 	int			best_score;
-	t_position	position;
-	int			rotation_cost;
-	int			total_score;
+	int			temp_size_a;
 
 	best_position = validate_lookahead_input(candidates, arena);
 	if (best_position.total == INT_MAX)
@@ -180,15 +174,13 @@ t_position	evaluate_with_lookahead(t_candidate *candidates,
 	i = 0;
 	while (i < count)
 	{
-		copy_snapshot_to_temp(arena, &temp_a_values, &temp_b_values,
-			&temp_size_a, &temp_size_b);
-		position = candidates[i].position;
-		rotation_cost = simulate_move_operation(position, temp_a_values,
-				temp_b_values, &temp_size_a, &temp_size_b);
-		total_score = calculate_candidate_score(position, temp_a_values,
-				temp_size_a, arena, rotation_cost);
-		update_best_if_better(&best_position, &best_score, position,
-			total_score);
+		copy_snapshot_to_temp(arena, &arena->temp_a_values, &arena->temp_b_values,
+			&temp_size_a, &arena->snapshot_arena->size_b);
+		update_best_if_better(&best_position, &best_score, candidates[i].position,
+			calculate_candidate_score(candidates[i].position, arena->temp_a_values,
+				temp_size_a, arena, simulate_move_operation(candidates[i].position,
+					arena->temp_a_values, arena->temp_b_values, &temp_size_a,
+					&arena->snapshot_arena->size_b)));
 		i++;
 	}
 	return (best_position);
