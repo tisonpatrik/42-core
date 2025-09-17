@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 21:11:57 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/17 23:04:02 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/17 23:07:08 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,33 @@ void				add_operation_to_list(t_list **dst, t_operation op);
 t_list				*copy_operation_list(t_list *src);
 bool				validate_operation_sequence(t_list *seq);
 void				replace_sequence_if_changed(t_list **seq, t_list *new_seq, bool changed, bool *overall_changed);
+
+typedef struct s_optimizer_config
+{
+	int		max_bubble_gap;
+	bool	enable_merge_neighbors;
+	bool	enable_cancel_pairs;
+	bool	enable_cancel_across;
+	int		max_iterations;
+}					t_optimizer_config;
+
+typedef struct s_optimization_strategy
+{
+	char			*name;
+	bool			(*can_apply)(t_list *seq);
+	t_list*			(*apply)(t_list *seq, t_optimizer_arena *arena, bool *changed);
+	int				priority;
+}					t_optimization_strategy;
+
+t_optimizer_config	*create_default_optimizer_config(void);
+t_optimizer_config	*create_custom_optimizer_config(int max_gap, bool enable_merge, bool enable_cancel_pairs, bool enable_cancel_across, int max_iterations);
+void				free_optimizer_config(t_optimizer_config *config);
+
+t_optimization_strategy	*create_bubble_strategy(void);
+t_optimization_strategy	*create_merge_strategy(void);
+t_optimization_strategy	*create_cancel_strategy(void);
+t_optimization_strategy	**get_optimization_strategies(int *count);
+void				free_strategy_registry(void);
 
 void		optimize_ops(t_list **seq);
 
