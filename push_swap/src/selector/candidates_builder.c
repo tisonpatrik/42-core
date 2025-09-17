@@ -6,20 +6,18 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 22:15:11 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/17 22:07:06 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/17 22:24:00 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/selector.h"
-
 #include <stdbool.h>
-
 
 void	sort_candidates_by_cost(t_candidate *candidates, int count)
 {
 	t_candidate	tmp;
-	int i;
-	int j;
+	int			i;
+	int			j;
 
 	i = 0;
 	while (i < count - 1)

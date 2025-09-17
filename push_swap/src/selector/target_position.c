@@ -1,6 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   target_position.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/17 22:25:26 by ptison            #+#    #+#             */
+/*   Updated: 2025/09/17 22:25:29 by ptison           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/selector.h"
 
-static int	find_smallest_greater_than(int *array, int array_size, int target_value)
+static int	find_smallest_greater_than(int *array, int array_size,
+		int target_value)
 {
 	int	best_idx;
 	int	best_val;

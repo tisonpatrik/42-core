@@ -6,16 +6,12 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 20:39:18 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/17 22:14:54 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/17 22:25:40 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/selector.h"
 #include <stdbool.h>
-
-
-
-
 
 int	merged_cost(int a, int b)
 {
@@ -43,8 +39,6 @@ int	signed_cost(int idx, int size)
 		return (idx);
 	return (idx - size);
 }
-
-
 
 bool	is_better_position(t_position a, t_position b)
 {
