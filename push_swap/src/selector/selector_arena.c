@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 20:43:24 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/16 21:40:58 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/17 17:58:46 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ static size_t	calculate_arena_size(int max_candidates)
 	size = sizeof(t_candidate) * (size_t)max_candidates;
 	size += sizeof(t_candidate) * (size_t)max_candidates;
 	size += sizeof(t_candidate) * (size_t)max_candidates;
+	size += sizeof(int) * 1000; // temp_a_values
+	size += sizeof(int) * 1000; // temp_b_values
 	return (size);
 }
 
@@ -48,6 +50,10 @@ static void	*setup_arena_memory_layout(t_selector_arena *arena,
 	arena->filtered_candidates = (t_candidate *)(memory + offset);
 	offset += sizeof(t_candidate) * (size_t)max_candidates;
 	arena->top_k_candidates = (t_candidate *)(memory + offset);
+	offset += sizeof(t_candidate) * (size_t)max_candidates;
+	arena->temp_a_values = (int *)(memory + offset);
+	offset += sizeof(int) * 1000;
+	arena->temp_b_values = (int *)(memory + offset);
 	return (arena);
 }
 

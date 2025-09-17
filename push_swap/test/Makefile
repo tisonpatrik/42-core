@@ -19,7 +19,6 @@ PROJECT_SRCS = ../src/stack/stack.c \
                ../src/ops/rotate.c \
                ../src/ops/reverse_rotate.c \
                ../src/ops/sorting_state.c \
-               ../src/utils/utils.c \
                ../src/validator/input_parser.c \
                ../src/validator/tokenizer.c \
                ../src/validator/normalization.c \
@@ -32,6 +31,7 @@ PROJECT_SRCS = ../src/stack/stack.c \
                ../src/selector/nearbest.c \
                ../src/selector/lookahead_evaluator.c \
                ../src/selector/candidate_enumerator.c \
+               ../src/selector/candidates_builder.c \
                ../src/selector/result_builder.c \
                ../src/selector/selector_arena.c \
                ../src/selector/snapshot_arena.c \
@@ -47,7 +47,6 @@ PROJECT_OBJS = $(BIN_DIR)/stack.o \
                $(BIN_DIR)/rotate.o \
                $(BIN_DIR)/reverse_rotate.o \
                $(BIN_DIR)/sorting_state.o \
-               $(BIN_DIR)/utils.o \
                $(BIN_DIR)/input_parser.o \
                $(BIN_DIR)/tokenizer.o \
                $(BIN_DIR)/normalization.o \
@@ -60,6 +59,7 @@ PROJECT_OBJS = $(BIN_DIR)/stack.o \
                $(BIN_DIR)/nearbest.o \
                $(BIN_DIR)/lookahead_evaluator.o \
                $(BIN_DIR)/candidate_enumerator.o \
+               $(BIN_DIR)/candidates_builder.o \
                $(BIN_DIR)/selector_result_builder.o \
                $(BIN_DIR)/selector_arena.o \
                $(BIN_DIR)/snapshot_arena.o \
@@ -116,9 +116,6 @@ $(BIN_DIR)/reverse_rotate.o: ../src/ops/reverse_rotate.c
 $(BIN_DIR)/sorting_state.o: ../src/ops/sorting_state.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
-$(BIN_DIR)/utils.o: ../src/utils/utils.c
-	@$(CC) $(CFLAGS) -c $< -o $@
-
 $(BIN_DIR)/input_parser.o: ../src/validator/input_parser.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
@@ -153,6 +150,9 @@ $(BIN_DIR)/lookahead_evaluator.o: ../src/selector/lookahead_evaluator.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(BIN_DIR)/candidate_enumerator.o: ../src/selector/candidate_enumerator.c
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+$(BIN_DIR)/candidates_builder.o: ../src/selector/candidates_builder.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(BIN_DIR)/selector_result_builder.o: ../src/selector/result_builder.c

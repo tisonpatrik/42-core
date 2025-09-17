@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 20:49:22 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/16 22:04:35 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/17 17:58:46 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,17 +126,8 @@ t_position	evaluate_with_lookahead(t_candidate *candidates,
 	{
 		temp_size_a = arena->snapshot_arena->size_a;
 		temp_size_b = arena->snapshot_arena->size_b;
-		temp_a_values = malloc((temp_size_a + 1) * sizeof(int));
-		temp_b_values = malloc((temp_size_b + 1) * sizeof(int));
-		if (!temp_a_values || !temp_b_values)
-		{
-			if (temp_a_values)
-				free(temp_a_values);
-			if (temp_b_values)
-				free(temp_b_values);
-			best_position.total = INT_MAX;
-			return (best_position);
-		}
+		temp_a_values = arena->temp_a_values;
+		temp_b_values = arena->temp_b_values;
 		memcpy(temp_a_values, arena->snapshot_arena->a_values, temp_size_a
 			* sizeof(int));
 		memcpy(temp_b_values, arena->snapshot_arena->b_values, temp_size_b
@@ -160,8 +151,6 @@ t_position	evaluate_with_lookahead(t_candidate *candidates,
 			best_position = position;
 			best_score = total_score;
 		}
-		free(temp_a_values);
-		free(temp_b_values);
 		i++;
 	}
 	return (best_position);
