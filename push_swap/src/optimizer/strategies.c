@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   strategies.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/19 20:48:46 by ptison            #+#    #+#             */
+/*   Updated: 2025/09/19 20:48:50 by ptison           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../../include/optimizer.h"
 
@@ -7,24 +18,25 @@ typedef struct s_strategy_registry
 {
 	t_optimization_strategy	*strategies[MAX_STRATEGIES];
 	int						count;
-}						t_strategy_registry;
+}							t_strategy_registry;
 
 static t_strategy_registry	*g_registry = NULL;
 
 static void	initialize_strategy_registry(void)
 {
 	if (g_registry)
-		return;
+		return ;
 	g_registry = malloc(sizeof(t_strategy_registry));
 	if (!g_registry)
-		return;
+		return ;
 	g_registry->count = 0;
 	g_registry->strategies[g_registry->count++] = create_bubble_strategy();
 	g_registry->strategies[g_registry->count++] = create_merge_strategy();
 	g_registry->strategies[g_registry->count++] = create_cancel_strategy();
 }
 
-static void	sort_strategies_by_priority(t_optimization_strategy **strategies, int count)
+static void	sort_strategies_by_priority(t_optimization_strategy **strategies,
+		int count)
 {
 	int						i;
 	int						j;

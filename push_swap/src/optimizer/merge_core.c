@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   merge_core.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/19 20:49:37 by ptison            #+#    #+#             */
+/*   Updated: 2025/09/19 20:49:39 by ptison           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/optimizer.h"
 
 t_operation	get_absorption_result_rr_rra(t_operation a)
@@ -28,7 +40,8 @@ t_operation	get_absorption_result_rrr_rb(t_operation a)
 	return (RA);
 }
 
-bool	try_merge_operations(t_operation a, t_operation b, t_list **dst, t_list **current)
+bool	try_merge_operations(t_operation a, t_operation b, t_list **dst,
+		t_list **current)
 {
 	if (try_merge_rotate_pairs(a, b, dst, current))
 		return (true);

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   config.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/19 20:49:45 by ptison            #+#    #+#             */
+/*   Updated: 2025/09/19 20:49:47 by ptison           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/optimizer.h"
 
 t_optimizer_config	*create_default_optimizer_config(void)
@@ -15,10 +27,9 @@ t_optimizer_config	*create_default_optimizer_config(void)
 	return (config);
 }
 
-t_optimizer_config	*create_custom_optimizer_config(int max_gap, bool enable_merge, 
-													bool enable_cancel_pairs, 
-													bool enable_cancel_across, 
-													int max_iterations)
+t_optimizer_config	*create_custom_optimizer_config(int max_gap,
+		bool enable_merge, bool enable_cancel_pairs, bool enable_cancel_across,
+		int max_iterations)
 {
 	t_optimizer_config	*config;
 

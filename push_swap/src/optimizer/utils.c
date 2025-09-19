@@ -1,17 +1,32 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/19 20:48:29 by ptison            #+#    #+#             */
+/*   Updated: 2025/09/19 20:48:32 by ptison           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../../include/optimizer.h"
 
 void	*copy_operation(void *content)
 {
-	t_operation *op = malloc(sizeof(t_operation));
+	t_operation	*op;
+
+	op = malloc(sizeof(t_operation));
 	if (op)
-		*op = *(t_operation*)content;
+		*op = *(t_operation *)content;
 	return (op);
 }
 
 void	add_operation_to_list(t_list **dst, t_operation op)
 {
-	t_operation *op_ptr = malloc(sizeof(t_operation));
+	t_operation	*op_ptr;
+
+	op_ptr = malloc(sizeof(t_operation));
 	if (op_ptr)
 	{
 		*op_ptr = op;
@@ -35,7 +50,8 @@ bool	validate_operation_sequence(t_list *seq)
 	return (true);
 }
 
-void	replace_sequence_if_changed(t_list **seq, t_list *new_seq, bool changed, bool *overall_changed)
+void	replace_sequence_if_changed(t_list **seq, t_list *new_seq, bool changed,
+		bool *overall_changed)
 {
 	if (changed)
 	{

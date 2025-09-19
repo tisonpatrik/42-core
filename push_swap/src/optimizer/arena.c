@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   arena.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/19 20:50:59 by ptison            #+#    #+#             */
+/*   Updated: 2025/09/19 20:51:07 by ptison           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/optimizer.h"
 
 static size_t	calculate_arena_size(size_t capacity)
@@ -34,32 +46,27 @@ t_optimizer_arena	*create_optimizer_arena(size_t capacity)
 
 	if (capacity == 0)
 		return (NULL);
-	
 	arena_size = calculate_arena_size(capacity);
 	arena = malloc(sizeof(t_optimizer_arena));
 	if (!arena)
 		return (NULL);
-	
 	arena->arena_memory = malloc(arena_size);
 	if (!arena->arena_memory)
 	{
 		free(arena);
 		return (NULL);
 	}
-	
 	arena->capacity = capacity;
 	arena->used = 0;
 	arena->arena_size = arena_size;
 	setup_arena_memory_layout(arena, capacity);
-	
 	return (arena);
 }
 
 void	destroy_optimizer_arena(t_optimizer_arena *arena)
 {
 	if (!arena)
-		return;
-	
+		return ;
 	if (arena->arena_memory)
 		free(arena->arena_memory);
 	free(arena);
@@ -69,14 +76,12 @@ t_operation	*arena_alloc_operation(t_optimizer_arena *arena)
 {
 	if (!arena || arena->used >= arena->capacity)
 		return (NULL);
-	
 	return (&arena->operations[arena->used++]);
 }
 
 void	reset_optimizer_arena(t_optimizer_arena *arena)
 {
 	if (!arena)
-		return;
-	
+		return ;
 	arena->used = 0;
 }

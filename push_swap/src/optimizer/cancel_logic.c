@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cancel_logic.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/19 20:49:58 by ptison            #+#    #+#             */
+/*   Updated: 2025/09/19 20:50:00 by ptison           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/optimizer.h"
 
 t_list	*cancel_across_other_stack_a(t_list *src, bool *changed)
@@ -6,6 +18,7 @@ t_list	*cancel_across_other_stack_a(t_list *src, bool *changed)
 	t_list				*dst;
 	t_list				*current;
 	bool				has_changed;
+	t_operation			op;
 
 	if (!src || ft_lstsize(src) < 3)
 	{
@@ -23,7 +36,7 @@ t_list	*cancel_across_other_stack_a(t_list *src, bool *changed)
 	current = src;
 	while (current != NULL)
 	{
-		t_operation	op = *(t_operation*)current->content;
+		op = *(t_operation *)current->content;
 		process_operation_a(op, current, &dst, arena, &has_changed, &current);
 		current = current->next;
 	}
@@ -34,26 +47,27 @@ t_list	*cancel_across_other_stack_a(t_list *src, bool *changed)
 }
 
 void	process_operation_b(t_operation op, t_list *current, t_list **dst,
-							t_optimizer_arena *arena, bool *has_changed, t_list **current_ptr)
+		t_optimizer_arena *arena, bool *has_changed, t_list **current_ptr)
 {
 	if (op == RB || op == RRB)
 	{
 		if (search_for_inverse_b(op, current, dst, arena, has_changed))
 		{
 			*current_ptr = current;
-			return;
+			return ;
 		}
 	}
 	add_operation_to_list(dst, op);
 }
 
-void	setup_cancel_arena_b(t_list *src, t_optimizer_arena **arena, t_list **dst, bool *has_changed)
+void	setup_cancel_arena_b(t_list *src, t_optimizer_arena **arena,
+		t_list **dst, bool *has_changed)
 {
 	*arena = create_optimizer_arena(ft_lstsize(src));
 	if (!*arena)
 	{
 		*has_changed = false;
-		return;
+		return ;
 	}
 	*dst = NULL;
 	*has_changed = false;
@@ -65,6 +79,7 @@ t_list	*cancel_across_other_stack_b(t_list *src, bool *changed)
 	t_list				*dst;
 	t_list				*current;
 	bool				has_changed;
+	t_operation			op;
 
 	if (!src || ft_lstsize(src) < 3)
 	{
@@ -82,7 +97,7 @@ t_list	*cancel_across_other_stack_b(t_list *src, bool *changed)
 	current = src;
 	while (current != NULL)
 	{
-		t_operation	op = *(t_operation*)current->content;
+		op = *(t_operation *)current->content;
 		process_operation_b(op, current, &dst, arena, &has_changed, &current);
 		current = current->next;
 	}

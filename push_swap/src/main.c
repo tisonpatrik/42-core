@@ -11,13 +11,11 @@
 /* ************************************************************************** */
 
 #include "../include/ops.h"
+#include "../include/optimizer.h"
 #include "../include/solver.h"
 #include "../include/validator.h"
-#include "../include/optimizer.h"
 #include <stdlib.h>
 #include <unistd.h>
-#include <stdio.h>
-
 
 int	main(int argc, char *argv[])
 {

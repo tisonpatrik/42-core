@@ -16,8 +16,8 @@ static int	count_breakpoints(t_selector_arena *arena)
 {
 	int	breakpoints;
 	int	i;
-    int *a_values;
-    int size_a;
+	int	*a_values;
+	int	size_a;
 
 	breakpoints = 0;
 	i = 0;
@@ -25,11 +25,11 @@ static int	count_breakpoints(t_selector_arena *arena)
 	size_a = arena->snapshot_arena->size_a;
 	while (i < size_a - 1)
 	{
-		if (a_values[i] > a_values[i+ 1])
+		if (a_values[i] > a_values[i + 1])
 			breakpoints++;
 		i++;
 	}
-	if (a_values[size_a- 1] > a_values[0])
+	if (a_values[size_a - 1] > a_values[0])
 		breakpoints++;
 	return (breakpoints);
 }
@@ -44,6 +44,7 @@ int	calculate_sorting_heuristic(t_selector_arena *arena)
 		return (0);
 	breakpoints = count_breakpoints(arena);
 	raw_score = breakpoints + arena->snapshot_arena->size_a;
-	size_penalty = arena->config.size_penalty_factor + arena->config.heuristic_offset;
+	size_penalty = arena->config.size_penalty_factor
+		+ arena->config.heuristic_offset;
 	return ((raw_score / size_penalty) / arena->config.heuristic_divisor);
 }

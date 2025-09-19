@@ -1,6 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   merge_logic.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/19 20:49:30 by ptison            #+#    #+#             */
+/*   Updated: 2025/09/19 20:49:32 by ptison           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/optimizer.h"
 
-bool	try_merge_rotate_pairs(t_operation a, t_operation b, t_list **dst, t_list **current)
+bool	try_merge_rotate_pairs(t_operation a, t_operation b, t_list **dst,
+		t_list **current)
 {
 	if ((a == RA && b == RB) || (a == RB && b == RA))
 	{
@@ -17,7 +30,8 @@ bool	try_merge_rotate_pairs(t_operation a, t_operation b, t_list **dst, t_list *
 	return (false);
 }
 
-bool	try_merge_swap_pairs(t_operation a, t_operation b, t_list **dst, t_list **current)
+bool	try_merge_swap_pairs(t_operation a, t_operation b, t_list **dst,
+		t_list **current)
 {
 	if ((a == SA && b == SB) || (a == SB && b == SA))
 	{
@@ -28,7 +42,8 @@ bool	try_merge_swap_pairs(t_operation a, t_operation b, t_list **dst, t_list **c
 	return (false);
 }
 
-bool	try_merge_absorption_cases(t_operation a, t_operation b, t_list **dst, t_list **current)
+bool	try_merge_absorption_cases(t_operation a, t_operation b, t_list **dst,
+		t_list **current)
 {
 	if ((a == RR && b == RRA) || (a == RRA && b == RR))
 	{

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builder_core.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/19 20:50:23 by ptison            #+#    #+#             */
+/*   Updated: 2025/09/19 20:50:25 by ptison           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/optimizer.h"
 
 t_operation_builder	*create_operation_builder(t_optimizer_arena *arena)
@@ -19,13 +31,14 @@ t_operation_builder	*create_operation_builder(t_optimizer_arena *arena)
 void	destroy_operation_builder(t_operation_builder *builder)
 {
 	if (!builder)
-		return;
+		return ;
 	if (builder->result)
 		ft_lstclear(&builder->result, free);
 	free(builder);
 }
 
-t_optimizer_error	add_operation_to_builder(t_operation_builder *builder, t_operation op)
+t_optimizer_error	add_operation_to_builder(t_operation_builder *builder,
+		t_operation op)
 {
 	t_operation	*op_ptr;
 
@@ -42,8 +55,8 @@ t_optimizer_error	add_operation_to_builder(t_operation_builder *builder, t_opera
 	return (OPTIMIZER_SUCCESS);
 }
 
-t_optimizer_error	copy_operations_to_builder(t_operation_builder *builder, 
-												t_list *src_start, t_list *src_end)
+t_optimizer_error	copy_operations_to_builder(t_operation_builder *builder,
+		t_list *src_start, t_list *src_end)
 {
 	t_list	*current;
 
@@ -52,7 +65,8 @@ t_optimizer_error	copy_operations_to_builder(t_operation_builder *builder,
 	current = src_start;
 	while (current != src_end)
 	{
-		if (add_operation_to_builder(builder, *(t_operation*)current->content) != OPTIMIZER_SUCCESS)
+		if (add_operation_to_builder(builder,
+				*(t_operation *)current->content) != OPTIMIZER_SUCCESS)
 			return (builder->error);
 		current = current->next;
 	}

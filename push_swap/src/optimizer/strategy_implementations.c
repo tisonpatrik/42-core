@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   strategy_implementations.c                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/19 20:48:37 by ptison            #+#    #+#             */
+/*   Updated: 2025/09/19 20:48:40 by ptison           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../../include/optimizer.h"
 
@@ -8,7 +19,8 @@ static bool	bubble_strategy_can_apply(t_list *seq)
 	return (true);
 }
 
-static t_list	*bubble_strategy_apply(t_list *src, t_optimizer_arena *arena, bool *changed)
+static t_list	*bubble_strategy_apply(t_list *src, t_optimizer_arena *arena,
+		bool *changed)
 {
 	t_optimizer_config	*config;
 	t_list				*result;
@@ -33,12 +45,10 @@ static t_list	*bubble_strategy_apply(t_list *src, t_optimizer_arena *arena, bool
 
 t_optimization_strategy	*create_bubble_strategy(void)
 {
-	static t_optimization_strategy	strategy = {
-		.name = "bubble",
-		.can_apply = bubble_strategy_can_apply,
-		.apply = bubble_strategy_apply,
-		.priority = 1
-	};
+	static t_optimization_strategy	strategy = {.name = "bubble",
+			.can_apply = bubble_strategy_can_apply,
+			.apply = bubble_strategy_apply, .priority = 1};
+
 	return (&strategy);
 }
 
@@ -49,7 +59,8 @@ static bool	merge_strategy_can_apply(t_list *seq)
 	return (true);
 }
 
-static t_list	*merge_strategy_apply(t_list *src, t_optimizer_arena *arena, bool *changed)
+static t_list	*merge_strategy_apply(t_list *src, t_optimizer_arena *arena,
+		bool *changed)
 {
 	if (!src || !arena)
 	{
@@ -62,12 +73,10 @@ static t_list	*merge_strategy_apply(t_list *src, t_optimizer_arena *arena, bool 
 
 t_optimization_strategy	*create_merge_strategy(void)
 {
-	static t_optimization_strategy	strategy = {
-		.name = "merge",
-		.can_apply = merge_strategy_can_apply,
-		.apply = merge_strategy_apply,
-		.priority = 2
-	};
+	static t_optimization_strategy	strategy = {.name = "merge",
+			.can_apply = merge_strategy_can_apply,
+			.apply = merge_strategy_apply, .priority = 2};
+
 	return (&strategy);
 }
 
@@ -78,11 +87,13 @@ static bool	cancel_strategy_can_apply(t_list *seq)
 	return (true);
 }
 
-static t_list	*cancel_strategy_apply(t_list *src, t_optimizer_arena *arena, bool *changed)
+static t_list	*cancel_strategy_apply(t_list *src, t_optimizer_arena *arena,
+		bool *changed)
 {
 	t_list	*result;
-	bool	has_changed = false;
+	bool	has_changed;
 
+	has_changed = false;
 	if (!src || !arena)
 	{
 		if (changed)
@@ -94,13 +105,11 @@ static t_list	*cancel_strategy_apply(t_list *src, t_optimizer_arena *arena, bool
 	{
 		replace_sequence_if_changed(&src, result, has_changed, &has_changed);
 	}
-	
 	result = cancel_across_other_stack_a(src, &has_changed);
 	if (result)
 	{
 		replace_sequence_if_changed(&src, result, has_changed, &has_changed);
 	}
-	
 	result = cancel_across_other_stack_b(src, &has_changed);
 	if (changed)
 		*changed = has_changed;
@@ -109,11 +118,9 @@ static t_list	*cancel_strategy_apply(t_list *src, t_optimizer_arena *arena, bool
 
 t_optimization_strategy	*create_cancel_strategy(void)
 {
-	static t_optimization_strategy	strategy = {
-		.name = "cancel",
-		.can_apply = cancel_strategy_can_apply,
-		.apply = cancel_strategy_apply,
-		.priority = 3
-	};
+	static t_optimization_strategy	strategy = {.name = "cancel",
+			.can_apply = cancel_strategy_can_apply,
+			.apply = cancel_strategy_apply, .priority = 3};
+
 	return (&strategy);
 }
