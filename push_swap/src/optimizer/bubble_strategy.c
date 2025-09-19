@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bubble_strategy.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 20:50:28 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/19 20:50:38 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/19 21:28:04 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,24 +26,23 @@ t_operation	get_target_operation_for_b(t_operation a)
 	return (RRA);
 }
 
-bool	search_and_bubble_a(t_list *out, int i, int n, int max_gap,
-		bool *changed)
+bool	search_and_bubble_a(t_bubble_context *ctx)
 {
 	t_operation	a;
 	t_operation	want;
 	int			j;
 	t_operation	op_j;
 
-	a = get_operation_at_index(out, i);
+	a = get_operation_at_index(ctx->out, ctx->i);
 	want = get_target_operation_for_a(a);
-	j = i + 1;
-	while (j < n && j - i - 1 <= max_gap)
+	j = ctx->i + 1;
+	while (j < ctx->n && j - ctx->i - 1 <= ctx->max_gap)
 	{
-		op_j = get_operation_at_index(out, j);
+		op_j = get_operation_at_index(ctx->out, j);
 		if (op_j == want)
 		{
-			if (bubble_operation(out, i, j, true))
-				*changed = true;
+			if (bubble_operation(ctx->out, ctx->i, j, true))
+				*ctx->changed = true;
 			return (true);
 		}
 		if (is_barrier(op_j) || touches_a(op_j))
@@ -53,24 +52,23 @@ bool	search_and_bubble_a(t_list *out, int i, int n, int max_gap,
 	return (false);
 }
 
-bool	search_and_bubble_b(t_list *out, int i, int n, int max_gap,
-		bool *changed)
+bool	search_and_bubble_b(t_bubble_context *ctx)
 {
 	t_operation	a;
 	t_operation	want;
 	int			j;
 	t_operation	op_j;
 
-	a = get_operation_at_index(out, i);
+	a = get_operation_at_index(ctx->out, ctx->i);
 	want = get_target_operation_for_b(a);
-	j = i + 1;
-	while (j < n && j - i - 1 <= max_gap)
+	j = ctx->i + 1;
+	while (j < ctx->n && j - ctx->i - 1 <= ctx->max_gap)
 	{
-		op_j = get_operation_at_index(out, j);
+		op_j = get_operation_at_index(ctx->out, j);
 		if (op_j == want)
 		{
-			if (bubble_operation(out, i, j, false))
-				*changed = true;
+			if (bubble_operation(ctx->out, ctx->i, j, false))
+				*ctx->changed = true;
 			return (true);
 		}
 		if (is_barrier(op_j) || touches_b(op_j))
@@ -80,14 +78,19 @@ bool	search_and_bubble_b(t_list *out, int i, int n, int max_gap,
 	return (false);
 }
 
-void	process_operation_at_index(t_list *out, int i, int n, int max_gap,
-		bool *changed)
+void	process_operation_at_index(t_bubble_context *ctx)
 {
 	t_operation	a;
 
-	a = get_operation_at_index(out, i);
+	a = get_operation_at_index(ctx->out, ctx->i);
 	if (a == RA || a == RRA)
-		search_and_bubble_a(out, i, n, max_gap, changed);
+	{
+		ctx->is_a = true;
+		search_and_bubble_a(ctx);
+	}
 	else if (a == RB || a == RRB)
-		search_and_bubble_b(out, i, n, max_gap, changed);
+	{
+		ctx->is_a = false;
+		search_and_bubble_b(ctx);
+	}
 }

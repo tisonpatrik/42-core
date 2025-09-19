@@ -36,6 +36,24 @@ typedef struct s_operation_builder
 	t_optimizer_error	error;
 }						t_operation_builder;
 
+typedef struct s_merge_context
+{
+	t_operation	a;
+	t_operation	b;
+	t_list		**dst;
+	t_list		**current;
+}				t_merge_context;
+
+typedef struct s_bubble_context
+{
+	t_list		*out;
+	int			i;
+	int			n;
+	int			max_gap;
+	bool		*changed;
+	bool		is_a;
+}				t_bubble_context;
+
 typedef struct s_cancel_context
 {
 	t_operation		op;
@@ -105,10 +123,10 @@ t_operation	get_absorption_result_rr_rra(t_operation a);
 t_operation	get_absorption_result_rr_rrb(t_operation a);
 t_operation	get_absorption_result_rrr_ra(t_operation a);
 t_operation	get_absorption_result_rrr_rb(t_operation a);
-bool		try_merge_operations(t_operation a, t_operation b, t_list **dst, t_list **current);
-bool		try_merge_rotate_pairs(t_operation a, t_operation b, t_list **dst, t_list **current);
-bool		try_merge_swap_pairs(t_operation a, t_operation b, t_list **dst, t_list **current);
-bool		try_merge_absorption_cases(t_operation a, t_operation b, t_list **dst, t_list **current);
+bool		try_merge_operations(t_merge_context *ctx);
+bool		try_merge_rotate_pairs(t_merge_context *ctx);
+bool		try_merge_swap_pairs(t_merge_context *ctx);
+bool		try_merge_absorption_cases(t_merge_context *ctx);
 
 t_list		*cancel_inverse_pairs(t_list *src, bool *changed);
 bool		is_inverse(t_operation a, t_operation b);
@@ -133,9 +151,9 @@ t_list		*list_insert_at(t_list *list, t_operation op, int index);
 t_operation	get_operation_at_index(t_list *list, int index);
 void		set_operation_at_index(t_list *list, int index, t_operation op);
 bool		bubble_operation(t_list *out, int i, int j, bool is_a);
-void		process_operation_at_index(t_list *out, int i, int n, int max_gap, bool *changed);
-bool		search_and_bubble_a(t_list *out, int i, int n, int max_gap, bool *changed);
-bool		search_and_bubble_b(t_list *out, int i, int n, int max_gap, bool *changed);
+void		process_operation_at_index(t_bubble_context *ctx);
+bool		search_and_bubble_a(t_bubble_context *ctx);
+bool		search_and_bubble_b(t_bubble_context *ctx);
 t_operation	get_target_operation_for_a(t_operation a);
 t_operation	get_target_operation_for_b(t_operation a);
 

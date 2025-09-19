@@ -3,70 +3,67 @@
 /*                                                        :::      ::::::::   */
 /*   merge_logic.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 20:49:30 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/19 20:49:32 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/19 21:28:04 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/optimizer.h"
 
-bool	try_merge_rotate_pairs(t_operation a, t_operation b, t_list **dst,
-		t_list **current)
+bool	try_merge_rotate_pairs(t_merge_context *ctx)
 {
-	if ((a == RA && b == RB) || (a == RB && b == RA))
+	if ((ctx->a == RA && ctx->b == RB) || (ctx->a == RB && ctx->b == RA))
 	{
-		add_operation_to_list(dst, RR);
-		*current = (*current)->next->next;
+		add_operation_to_list(ctx->dst, RR);
+		*ctx->current = (*ctx->current)->next->next;
 		return (true);
 	}
-	if ((a == RRA && b == RRB) || (a == RRB && b == RRA))
+	if ((ctx->a == RRA && ctx->b == RRB) || (ctx->a == RRB && ctx->b == RRA))
 	{
-		add_operation_to_list(dst, RRR);
-		*current = (*current)->next->next;
+		add_operation_to_list(ctx->dst, RRR);
+		*ctx->current = (*ctx->current)->next->next;
 		return (true);
 	}
 	return (false);
 }
 
-bool	try_merge_swap_pairs(t_operation a, t_operation b, t_list **dst,
-		t_list **current)
+bool	try_merge_swap_pairs(t_merge_context *ctx)
 {
-	if ((a == SA && b == SB) || (a == SB && b == SA))
+	if ((ctx->a == SA && ctx->b == SB) || (ctx->a == SB && ctx->b == SA))
 	{
-		add_operation_to_list(dst, SS);
-		*current = (*current)->next->next;
+		add_operation_to_list(ctx->dst, SS);
+		*ctx->current = (*ctx->current)->next->next;
 		return (true);
 	}
 	return (false);
 }
 
-bool	try_merge_absorption_cases(t_operation a, t_operation b, t_list **dst,
-		t_list **current)
+bool	try_merge_absorption_cases(t_merge_context *ctx)
 {
-	if ((a == RR && b == RRA) || (a == RRA && b == RR))
+	if ((ctx->a == RR && ctx->b == RRA) || (ctx->a == RRA && ctx->b == RR))
 	{
-		add_operation_to_list(dst, get_absorption_result_rr_rra(a));
-		*current = (*current)->next->next;
+		add_operation_to_list(ctx->dst, get_absorption_result_rr_rra(ctx->a));
+		*ctx->current = (*ctx->current)->next->next;
 		return (true);
 	}
-	if ((a == RR && b == RRB) || (a == RRB && b == RR))
+	if ((ctx->a == RR && ctx->b == RRB) || (ctx->a == RRB && ctx->b == RR))
 	{
-		add_operation_to_list(dst, get_absorption_result_rr_rrb(a));
-		*current = (*current)->next->next;
+		add_operation_to_list(ctx->dst, get_absorption_result_rr_rrb(ctx->a));
+		*ctx->current = (*ctx->current)->next->next;
 		return (true);
 	}
-	if ((a == RRR && b == RA) || (a == RA && b == RRR))
+	if ((ctx->a == RRR && ctx->b == RA) || (ctx->a == RA && ctx->b == RRR))
 	{
-		add_operation_to_list(dst, get_absorption_result_rrr_ra(a));
-		*current = (*current)->next->next;
+		add_operation_to_list(ctx->dst, get_absorption_result_rrr_ra(ctx->a));
+		*ctx->current = (*ctx->current)->next->next;
 		return (true);
 	}
-	if ((a == RRR && b == RB) || (a == RB && b == RRR))
+	if ((ctx->a == RRR && ctx->b == RB) || (ctx->a == RB && ctx->b == RRR))
 	{
-		add_operation_to_list(dst, get_absorption_result_rrr_rb(a));
-		*current = (*current)->next->next;
+		add_operation_to_list(ctx->dst, get_absorption_result_rrr_rb(ctx->a));
+		*ctx->current = (*ctx->current)->next->next;
 		return (true);
 	}
 	return (false);

@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 20:50:41 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/19 20:58:54 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/19 21:28:04 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,10 @@ bool	bubble_operation(t_list *out, int i, int j, bool is_a)
 
 t_list	*bubble_across_other_stack(t_list *src, int max_gap, bool *changed)
 {
-	int		n;
-	t_list	*out;
-	int		i;
+	int					n;
+	t_list				*out;
+	int					i;
+	t_bubble_context	ctx;
 
 	n = ft_lstsize(src);
 	if (n < 3)
@@ -103,7 +104,13 @@ t_list	*bubble_across_other_stack(t_list *src, int max_gap, bool *changed)
 	i = 0;
 	while (i < n - 1)
 	{
-		process_operation_at_index(out, i, n, max_gap, changed);
+		ctx.out = out;
+		ctx.i = i;
+		ctx.n = n;
+		ctx.max_gap = max_gap;
+		ctx.changed = changed;
+		ctx.is_a = false; // Will be set by process_operation_at_index
+		process_operation_at_index(&ctx);
 		i++;
 	}
 	return (out);

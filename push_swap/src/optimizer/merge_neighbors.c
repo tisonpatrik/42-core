@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   merge_neighbors.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 20:49:24 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/19 20:49:26 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/19 21:28:04 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,12 @@
 
 t_list	*merge_neighbors(t_list *src, bool *changed)
 {
-	t_list		*dst;
-	bool		has_changed;
-	t_list		*current;
-	t_operation	a;
-	t_operation	b;
+	t_list				*dst;
+	bool				has_changed;
+	t_list				*current;
+	t_operation			a;
+	t_operation			b;
+	t_merge_context		ctx;
 
 	if (!src || ft_lstsize(src) < 2)
 	{
@@ -35,7 +36,11 @@ t_list	*merge_neighbors(t_list *src, bool *changed)
 		{
 			a = *(t_operation *)current->content;
 			b = *(t_operation *)current->next->content;
-			if (try_merge_operations(a, b, &dst, &current))
+			ctx.a = a;
+			ctx.b = b;
+			ctx.dst = &dst;
+			ctx.current = &current;
+			if (try_merge_operations(&ctx))
 			{
 				has_changed = true;
 				continue ;
