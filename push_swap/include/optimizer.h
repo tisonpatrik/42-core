@@ -8,18 +8,6 @@
 # include <stdbool.h>
 
 
-typedef struct s_optimizer_arena
-{
-	t_operation	*operations;
-	t_list		**temp_lists;
-	int			*indices;
-	bool		*flags;
-	size_t		capacity;
-	size_t		used;
-	void		*arena_memory;
-	size_t		arena_size;
-}				t_optimizer_arena;
-
 typedef struct s_merge_context
 {
 	t_operation	a;
@@ -50,32 +38,14 @@ typedef struct s_cancel_context
 typedef struct s_optimizer_config
 {
 	int		max_bubble_gap;
-	bool	enable_merge_neighbors;
-	bool	enable_cancel_pairs;
-	bool	enable_cancel_across;
 	int		max_iterations;
 }					t_optimizer_config;
 
-typedef struct s_optimization_strategy
-{
-	char			*name;
-	bool			(*can_apply)(t_list *seq);
-	t_list*			(*apply)(t_list *seq, t_optimizer_arena *arena, bool *changed);
-	int				priority;
-}					t_optimization_strategy;
 
-t_optimizer_arena	*create_optimizer_arena(size_t capacity);
-void				destroy_optimizer_arena(t_optimizer_arena *arena);
-t_optimizer_arena	*initialize_cancel_arena(t_list *src, bool *changed);
 
 t_optimizer_config	*create_optimizer_config(void);
 void				free_optimizer_config(t_optimizer_config *config);
 
-t_optimization_strategy	*create_bubble_strategy(void);
-t_optimization_strategy	*create_merge_strategy(void);
-t_optimization_strategy	*create_cancel_strategy(void);
-
-void				free_strategy_registry(void);
 
 void				*copy_operation(void *content);
 void				add_operation_to_list(t_list **dst, t_operation op);
@@ -94,7 +64,7 @@ t_operation	get_absorption_result_rr_rra(t_operation a);
 t_operation	get_absorption_result_rr_rrb(t_operation a);
 t_operation	get_absorption_result_rrr_ra(t_operation a);
 t_operation	get_absorption_result_rrr_rb(t_operation a);
-bool		try_merge_operations(t_merge_context *ctx);
+
 bool		try_merge_rotate_pairs(t_merge_context *ctx);
 bool		try_merge_swap_pairs(t_merge_context *ctx);
 bool		try_merge_absorption_cases(t_merge_context *ctx);
@@ -115,7 +85,6 @@ bool		is_barrier(t_operation op);
 t_operation	get_operation_at_index(t_list *list, int index);
 bool		bubble_operation(t_list *out, int i, int j, bool is_a);
 void		process_operation_at_index(t_bubble_context *ctx);
-
 
 void		optimize_ops(t_list **seq);
 

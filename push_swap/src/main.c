@@ -6,12 +6,11 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 20:56:32 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/17 23:34:44 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/19 22:25:43 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/ops.h"
-#include "../include/optimizer.h"
 #include "../include/solver.h"
 #include "../include/validator.h"
 #include <stdlib.h>
@@ -35,6 +34,5 @@ int	main(int argc, char *argv[])
 	}
 	solve_push_swap(state);
 	free_sorting_state(state);
-	free_strategy_registry();
 	return (0);
 }

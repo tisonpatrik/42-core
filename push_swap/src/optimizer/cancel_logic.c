@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 20:49:58 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/19 22:13:33 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/19 22:30:16 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,18 +39,13 @@ t_list	*process_operations_loop(t_list *src, bool *has_changed,
 t_list	*process_cancel_operations(t_list *src, bool *changed,
 		void (*process_func)(t_cancel_context *))
 {
-	t_optimizer_arena	*arena;
 	t_list				*dst;
 	bool				has_changed;
 
-	arena = initialize_cancel_arena(src, changed);
-	if (!arena)
-		return (NULL);
 	has_changed = false;
 	dst = process_operations_loop(src, &has_changed, process_func);
 	if (changed)
 		*changed = has_changed;
-	destroy_optimizer_arena(arena);
 	return (dst);
 }
 

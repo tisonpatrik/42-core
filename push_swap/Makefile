@@ -50,9 +50,6 @@ SRCS        := src/validator/input_parser.c \
 			   src/solver/apply_combined.c \
 			   src/solver/align_min_to_top.c \
 			   src/optimizer/optimizer_core.c \
-			   src/optimizer/strategies.c \
-			   src/optimizer/strategy_implementations.c \
-			   src/optimizer/arena.c \
 			   src/optimizer/utils.c \
 			   src/optimizer/config.c \
 			   src/optimizer/bubble_operations.c \

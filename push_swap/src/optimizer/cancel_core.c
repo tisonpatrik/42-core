@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 20:50:05 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/19 22:13:22 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/19 22:30:07 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ void	process_inverse_cancellation(t_list *src, t_list **dst,
 
 t_list	*cancel_inverse_pairs(t_list *src, bool *changed)
 {
-	t_optimizer_arena	*arena;
 	t_list				*dst;
 	bool				has_changed;
 
@@ -74,18 +73,10 @@ t_list	*cancel_inverse_pairs(t_list *src, bool *changed)
 			*changed = false;
 		return (ft_lstmap(src, copy_operation, free));
 	}
-	arena = create_optimizer_arena(ft_lstsize(src));
-	if (!arena)
-	{
-		if (changed)
-			*changed = false;
-		return (NULL);
-	}
 	dst = NULL;
 	has_changed = false;
 	process_inverse_cancellation(src, &dst, &has_changed);
 	if (changed)
 		*changed = has_changed;
-	destroy_optimizer_arena(arena);
 	return (dst);
 }
