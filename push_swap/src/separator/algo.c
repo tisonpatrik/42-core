@@ -14,7 +14,8 @@
 #include "../../include/stack.h"
 #include <stdbool.h>
 
-static t_node	**execute_lis_algorithm(t_stack *stack, t_separator_arena *arena)
+static t_node	**execute_lis_algorithm(t_stack *stack,
+		t_separator_arena *arena)
 {
 	t_lis_result	result;
 

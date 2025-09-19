@@ -15,7 +15,8 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-static t_candidate	get_candidate(int from_idx, int to_idx, int size_a, int size_b)
+static t_candidate	get_candidate(int from_idx, int to_idx, int size_a,
+		int size_b)
 {
 	t_position	pos;
 	int			cost_a;

@@ -31,7 +31,8 @@ static void	reconstruct_lis_sequence_from_tracking(t_node **lis_nodes,
 	}
 }
 
-static void	reverse_sequence_to_correct_order(t_node **lis_nodes, size_t lis_count)
+static void	reverse_sequence_to_correct_order(t_node **lis_nodes,
+		size_t lis_count)
 {
 	size_t	swap_index;
 	t_node	*temporary_node;

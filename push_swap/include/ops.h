@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:50:33 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/19 22:49:58 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/19 23:22:23 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ void			free_sorting_state(t_sorting_state *state);
 void			save_operation(t_sorting_state *state, t_operation operation);
 void			print_operation(t_operation op);
 void			print_operations(t_sorting_state *state);
-void			print_operations_as_numbers(t_sorting_state *state);
 
 void			swap_a(t_sorting_state *state);
 void			swap_b(t_sorting_state *state);

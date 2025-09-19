@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 19:24:56 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/16 21:40:58 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/19 23:23:48 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,8 @@ int				count_parts(char **parts);
 void			store_token(const char *tok, int *out, int *out_index,
 					char **parts_for_cleanup);
 
-void			swap_int(int *a, int *b);
-void			sift_down(int *a, int n, int i);
-void			heap_sort(int *a, int n);
-int				lower_bound(const int *a, int n, int x);
 int				*indexize_array(const int *values, int n);
 
 void			fatal_cleanup_and_exit(int *buf, char **tmp);
-void			free_array(char **splitted);
 
 #endif

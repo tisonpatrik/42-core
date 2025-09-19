@@ -12,7 +12,8 @@
 
 #include "../../include/selector.h"
 
-static t_position	find_best_move(t_sorting_state *state, t_selector_arena *arena)
+static t_position	find_best_move(t_sorting_state *state,
+		t_selector_arena *arena)
 {
 	t_candidate	*candidates;
 	t_candidate	*filtered_candidates;
