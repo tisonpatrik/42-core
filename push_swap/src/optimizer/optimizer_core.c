@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   optimizer_core.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 20:49:14 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/19 20:49:19 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/19 22:01:15 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	apply_optimization_pass(t_list **seq, bool *changed)
 	bool	change;
 	t_list	*new_seq;
 
-	new_seq = bubble_across_other_stack(*seq, 4, &change);
+	new_seq = bubble_across_other_stack(*seq, &change);
 	replace_sequence_if_changed(seq, new_seq, change, changed);
 	new_seq = merge_neighbors(*seq, &change);
 	replace_sequence_if_changed(seq, new_seq, change, changed);
@@ -39,6 +39,15 @@ void	run_optimization_loop(t_list **seq)
 		changed = false;
 		apply_optimization_pass(seq, &changed);
 	}
+}
+
+bool	validate_operation_sequence(t_list *seq)
+{
+	if (!seq)
+		return (false);
+	if (ft_lstsize(seq) < 2)
+		return (false);
+	return (true);
 }
 
 void	optimize_ops(t_list **seq)

@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 20:50:41 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/19 21:31:54 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/19 22:07:19 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,42 +65,4 @@ bool	bubble_operation(t_list *out, int i, int j, bool is_a)
 		k--;
 	}
 	return (true);
-}
-
-void	process_all_operations(t_bubble_context *ctx)
-{
-	int	i;
-
-	i = 0;
-	while (i < ctx->n - 1)
-	{
-		ctx->i = i;
-		process_operation_at_index(ctx);
-		i++;
-	}
-}
-
-t_list	*bubble_across_other_stack(t_list *src, int max_gap, bool *changed)
-{
-	int					n;
-	t_list				*out;
-	t_bubble_context	ctx;
-
-	n = ft_lstsize(src);
-	if (n < 3)
-	{
-		*changed = false;
-		return (src);
-	}
-	out = ft_lstmap(src, copy_operation, free);
-	if (out == NULL)
-		return (NULL);
-	*changed = false;
-	ctx.out = out;
-	ctx.n = n;
-	ctx.max_gap = max_gap;
-	ctx.changed = changed;
-	ctx.is_a = false;
-	process_all_operations(&ctx);
-	return (out);
 }

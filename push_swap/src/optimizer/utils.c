@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 20:48:29 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/19 21:31:46 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/19 21:58:46 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,7 @@ t_operation	get_operation_at_index(t_list *list, int index)
 	return (*(t_operation *)current->content);
 }
 
-bool	validate_operation_sequence(t_list *seq)
-{
-	if (!seq)
-		return (false);
-	if (ft_lstsize(seq) < 2)
-		return (false);
-	return (true);
-}
+
 
 void	replace_sequence_if_changed(t_list **seq, t_list *new_seq, bool changed,
 		bool *overall_changed)

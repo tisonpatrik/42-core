@@ -56,6 +56,7 @@ SRCS        := src/validator/input_parser.c \
 			   src/optimizer/utils.c \
 			   src/optimizer/config.c \
 			   src/optimizer/bubble_operations.c \
+			   src/optimizer/bubble_search.c \
 			   src/optimizer/bubble_strategy.c \
 			   src/optimizer/merge_neighbors.c \
 			   src/optimizer/merge_core.c \

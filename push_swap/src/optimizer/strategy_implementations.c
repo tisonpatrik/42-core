@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   strategy_implementations.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 20:48:37 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/19 20:48:40 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/19 22:12:32 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,14 @@ static t_list	*bubble_strategy_apply(t_list *src, t_optimizer_arena *arena,
 			*changed = false;
 		return (NULL);
 	}
-	config = create_default_optimizer_config();
+	config = create_optimizer_config();
 	if (!config)
 	{
 		if (changed)
 			*changed = false;
 		return (NULL);
 	}
-	result = bubble_across_other_stack(src, config->max_bubble_gap, changed);
+	result = bubble_across_other_stack(src, changed);
 	free_optimizer_config(config);
 	return (result);
 }
