@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 19:24:28 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/19 22:51:31 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/19 23:04:31 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,7 @@ typedef struct s_separator_arena
 void					push_non_lis_into_b(t_sorting_state *state);
 t_separator_arena		*allocate_separator_arena(int element_count);
 void					free_separator_arena(t_separator_arena *arena);
-t_node					**execute_lis_algorithm(t_stack *stack,
-							t_separator_arena *arena);
+
 t_node					**get_lis_nodes(t_stack *stack,
 							t_separator_arena *arena);
 

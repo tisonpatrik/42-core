@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   solver.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 21:15:15 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/16 21:15:18 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/19 23:01:15 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "ops.h"
 # include "selector.h"
+
 
 void	solve_push_swap(t_sorting_state *state);
 void	apply_combined(t_sorting_state *ps, t_position p, bool push_to_b);

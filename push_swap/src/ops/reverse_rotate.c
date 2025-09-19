@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   reverse_rotate.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:51:56 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/09 18:56:51 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/19 23:09:47 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stdbool.h>
 #include <unistd.h>
 
-bool	reverse_rotate(t_stack **stack)
+static bool	reverse_rotate(t_stack **stack)
 {
 	t_node	*bottom_node;
 	t_node	*head_node;

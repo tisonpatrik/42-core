@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:49:32 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/17 21:11:17 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/19 23:02:41 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void	update_b_range(int value, int *min_b, int *max_b, bool *has_b_range)
 	}
 }
 
-void	apply_shaping(t_sorting_state *state)
+static void	apply_shaping(t_sorting_state *state)
 {
 	static int	min_b = 0;
 	static int	max_b = 0;

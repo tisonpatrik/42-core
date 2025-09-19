@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 21:41:42 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/19 22:49:42 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/19 23:01:22 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include "../libft/include/libft.h"
 # include "ops.h"
-# include "simulation_config.h"
 # include "snapshot_arena.h"
 # include "stack.h"
 # include <limits.h>
@@ -43,6 +42,17 @@ typedef enum e_move_direction
 	MOVE_A_TO_B = 0,
 	MOVE_B_TO_A
 }						t_move_direction;
+
+typedef struct s_simulation_config
+{
+	int				max_candidates;
+	int				cost_threshold_offset;
+	int				size_penalty_factor;
+	int				heuristic_offset;
+	int				heuristic_divisor;
+}					t_simulation_config;
+
+t_simulation_config	default_selector_config(void);
 
 typedef struct s_selector_arena
 {

@@ -6,20 +6,20 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 20:49:53 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/19 21:04:34 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/19 23:13:10 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/optimizer.h"
 
-t_operation	get_inverse_a_operation(t_operation op)
+static t_operation	get_inverse_a_operation(t_operation op)
 {
 	if (op == RA)
 		return (RRA);
 	return (RA);
 }
 
-t_operation	get_inverse_b_operation(t_operation op)
+static t_operation	get_inverse_b_operation(t_operation op)
 {
 	if (op == RB)
 		return (RRB);

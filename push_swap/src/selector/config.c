@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   config.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 20:38:34 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/16 20:38:39 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/19 23:01:01 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/simulation_config.h"
+#include "../../include/selector.h"
 
 t_simulation_config	default_selector_config(void)
 {

@@ -6,13 +6,13 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 20:50:05 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/19 22:30:07 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/19 23:11:53 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/optimizer.h"
 
-bool	is_inverse(t_operation a, t_operation b)
+static bool	is_inverse(t_operation a, t_operation b)
 {
 	if (a == RA)
 		return (b == RRA);
@@ -39,7 +39,7 @@ bool	is_inverse(t_operation a, t_operation b)
 	return (false);
 }
 
-void	process_inverse_cancellation(t_list *src, t_list **dst,
+static void	process_inverse_cancellation(t_list *src, t_list **dst,
 		bool *has_changed)
 {
 	t_list	*current;

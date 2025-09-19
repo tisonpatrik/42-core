@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 19:35:00 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/16 21:40:58 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/19 23:05:29 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-void	reconstruct_lis_sequence_from_tracking(t_node **lis_nodes,
+static void	reconstruct_lis_sequence_from_tracking(t_node **lis_nodes,
 		t_lis_computation *computation, t_lis_result *computation_result)
 {
 	size_t	result_index;
@@ -31,7 +31,7 @@ void	reconstruct_lis_sequence_from_tracking(t_node **lis_nodes,
 	}
 }
 
-void	reverse_sequence_to_correct_order(t_node **lis_nodes, size_t lis_count)
+static void	reverse_sequence_to_correct_order(t_node **lis_nodes, size_t lis_count)
 {
 	size_t	swap_index;
 	t_node	*temporary_node;
@@ -52,8 +52,6 @@ t_node	**build_lis_result(t_lis_computation *computation,
 {
 	t_node	**lis_nodes;
 
-	if (!computation || !computation_result || !arena || !arena->lis_nodes)
-		return (NULL);
 	lis_nodes = arena->lis_nodes;
 	reconstruct_lis_sequence_from_tracking(lis_nodes, computation,
 		computation_result);

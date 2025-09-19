@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 20:46:02 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/16 22:14:55 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/19 23:08:14 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-int	calculate_threshold(t_candidate *candidates, int count,
+static int	calculate_threshold(t_candidate *candidates, int count,
 		int threshold_offset)
 {
 	int	min_base_cost;

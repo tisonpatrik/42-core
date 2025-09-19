@@ -6,13 +6,13 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 21:41:03 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/19 22:49:45 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/19 23:06:40 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/selector.h"
 
-t_position	find_best_move(t_sorting_state *state, t_selector_arena *arena)
+static t_position	find_best_move(t_sorting_state *state, t_selector_arena *arena)
 {
 	t_candidate	*candidates;
 	t_candidate	*filtered_candidates;

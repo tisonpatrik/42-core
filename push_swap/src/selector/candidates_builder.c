@@ -6,14 +6,14 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 22:15:11 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/17 22:24:00 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/19 23:07:56 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/selector.h"
 #include <stdbool.h>
 
-void	sort_candidates_by_cost(t_candidate *candidates, int count)
+static void	sort_candidates_by_cost(t_candidate *candidates, int count)
 {
 	t_candidate	tmp;
 	int			i;

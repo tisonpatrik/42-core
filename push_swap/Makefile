@@ -44,14 +44,13 @@ SRCS        := src/validator/input_parser.c \
 			   src/selector/selector_arena.c \
 			   src/selector/utils.c \
 			   src/selector/target_position.c \
-			   src/simulation_config/config.c \
+			   src/selector/config.c \
 			   src/solver/sort.c \
 			   src/solver/sort_three.c \
 			   src/solver/apply_combined.c \
 			   src/solver/align_min_to_top.c \
 			   src/optimizer/optimizer_core.c \
 			   src/optimizer/utils.c \
-			   src/optimizer/config.c \
 			   src/optimizer/bubble_operations.c \
 			   src/optimizer/bubble_search.c \
 			   src/optimizer/bubble_strategy.c \

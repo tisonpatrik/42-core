@@ -6,13 +6,13 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 20:49:24 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/19 22:40:12 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/19 23:15:04 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/optimizer.h"
 
-bool	try_merge_operations(t_merge_context *ctx)
+static bool	try_merge_operations(t_merge_context *ctx)
 {
 	if (try_merge_rotate_pairs(ctx))
 		return (true);
@@ -23,7 +23,7 @@ bool	try_merge_operations(t_merge_context *ctx)
 	return (false);
 }
 
-void	process_operation_pair(t_list **dst, t_list **current,
+static void	process_operation_pair(t_list **dst, t_list **current,
 		bool *has_changed)
 {
 	t_operation		a;
@@ -45,7 +45,7 @@ void	process_operation_pair(t_list **dst, t_list **current,
 	*current = (*current)->next;
 }
 
-t_list	*process_operation_list(t_list *src, bool *has_changed)
+static t_list	*process_operation_list(t_list *src, bool *has_changed)
 {
 	t_list	*dst;
 	t_list	*current;

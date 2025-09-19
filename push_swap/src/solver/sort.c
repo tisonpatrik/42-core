@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:49:21 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/17 23:31:50 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/19 23:01:36 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include "../../include/optimizer.h"
 #include "../../include/selector.h"
 #include "../../include/separator.h"
-#include "../../include/simulation_config.h"
 #include "../../include/solver.h"
 #include "../../include/stack.h"
 

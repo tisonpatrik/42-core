@@ -6,13 +6,13 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 20:49:14 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/19 22:48:53 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/19 23:11:00 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/optimizer.h"
 
-void	apply_optimization_pass(t_list **seq, bool *changed)
+static void	apply_optimization_pass(t_list **seq, bool *changed)
 {
 	bool	change;
 	t_list	*new_seq;
@@ -29,7 +29,7 @@ void	apply_optimization_pass(t_list **seq, bool *changed)
 	replace_sequence_if_changed(seq, new_seq, change, changed);
 }
 
-void	run_optimization_loop(t_list **seq)
+static void	run_optimization_loop(t_list **seq)
 {
 	bool	changed;
 
@@ -41,7 +41,7 @@ void	run_optimization_loop(t_list **seq)
 	}
 }
 
-bool	validate_operation_sequence(t_list *seq)
+static bool	validate_operation_sequence(t_list *seq)
 {
 	if (!seq)
 		return (false);

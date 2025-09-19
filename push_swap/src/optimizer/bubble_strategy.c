@@ -6,13 +6,13 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 20:50:28 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/19 22:48:50 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/19 23:11:22 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/optimizer.h"
 
-void	process_all_operations(t_bubble_context *ctx)
+static void	process_all_operations(t_bubble_context *ctx)
 {
 	int	i;
 

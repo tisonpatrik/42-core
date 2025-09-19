@@ -6,13 +6,13 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 20:49:58 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/19 22:34:34 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/19 23:12:35 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/optimizer.h"
 
-t_list	*process_operations_loop(t_list *src, bool *has_changed,
+static t_list	*process_operations_loop(t_list *src, bool *has_changed,
 		void (*process_func)(t_cancel_context *))
 {
 	t_list				*dst;
@@ -36,7 +36,7 @@ t_list	*process_operations_loop(t_list *src, bool *has_changed,
 	return (dst);
 }
 
-t_list	*process_cancel_operations(t_list *src, bool *changed,
+static t_list	*process_cancel_operations(t_list *src, bool *changed,
 		void (*process_func)(t_cancel_context *))
 {
 	t_list				*dst;
@@ -49,7 +49,7 @@ t_list	*process_cancel_operations(t_list *src, bool *changed,
 	return (dst);
 }
 
-void	process_operation_b(t_cancel_context *ctx)
+static void	process_operation_b(t_cancel_context *ctx)
 {
 	if (ctx->op == RB || ctx->op == RRB)
 	{

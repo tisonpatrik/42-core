@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 20:41:17 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/16 21:58:48 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/19 23:07:30 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-t_candidate	get_candidate(int from_idx, int to_idx, int size_a, int size_b)
+static t_candidate	get_candidate(int from_idx, int to_idx, int size_a, int size_b)
 {
 	t_position	pos;
 	int			cost_a;
@@ -34,7 +34,7 @@ t_candidate	get_candidate(int from_idx, int to_idx, int size_a, int size_b)
 	return (candidate);
 }
 
-void	populate_candidates(t_snapshot_arena *snapshot,
+static void	populate_candidates(t_snapshot_arena *snapshot,
 		t_selector_arena *arena)
 {
 	t_candidate	*result;

@@ -6,14 +6,14 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 21:25:30 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/19 22:51:19 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/19 23:04:03 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/separator.h"
 #include <stdbool.h>
 
-void	update_best_lis_if_improved(t_lis_computation *computation,
+static void	update_best_lis_if_improved(t_lis_computation *computation,
 		t_lis_result *best_result, int current_position)
 {
 	if (computation->lis_lengths[current_position] >= best_result->best_len)
@@ -23,7 +23,7 @@ void	update_best_lis_if_improved(t_lis_computation *computation,
 	}
 }
 
-void	try_extend_lis_from_previous_element(t_lis_computation *computation,
+static void	try_extend_lis_from_previous_element(t_lis_computation *computation,
 		int current, int previous)
 {
 	if (computation->values[previous] < computation->values[current]

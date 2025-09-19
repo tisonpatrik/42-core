@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rotate.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:58:29 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/09 18:58:41 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/19 23:09:55 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stdbool.h>
 #include <unistd.h>
 
-bool	rotate(t_stack **stack)
+static bool	rotate(t_stack **stack)
 {
 	t_node	*top_node;
 	t_node	*tail_node;

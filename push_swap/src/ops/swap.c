@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   swap.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:57:23 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/09 18:59:33 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/19 23:10:27 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stdbool.h>
 #include <unistd.h>
 
-bool	swap(t_stack **stack)
+static bool	swap(t_stack **stack)
 {
 	int		temp_content;
 	t_node	*first_node;

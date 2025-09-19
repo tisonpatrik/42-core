@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 22:42:52 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/19 22:48:47 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/19 23:13:59 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,6 @@ typedef struct s_optimizer_config
 	int				max_bubble_gap;
 	int				max_iterations;
 }					t_optimizer_config;
-
-t_optimizer_config	*create_optimizer_config(void);
-void				free_optimizer_config(t_optimizer_config *config);
 
 void				*copy_operation(void *content);
 void				add_operation_to_list(t_list **dst, t_operation op);
