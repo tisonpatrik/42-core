@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 20:49:58 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/19 22:30:16 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/19 22:34:34 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,20 +54,6 @@ void	process_operation_b(t_cancel_context *ctx)
 	if (ctx->op == RB || ctx->op == RRB)
 	{
 		if (search_for_inverse_b(ctx->op, ctx->current, ctx->dst,
-				ctx->has_changed))
-		{
-			*ctx->current_ptr = ctx->current;
-			return ;
-		}
-	}
-	add_operation_to_list(ctx->dst, ctx->op);
-}
-
-void	process_operation_a(t_cancel_context *ctx)
-{
-	if (ctx->op == RA || ctx->op == RRA)
-	{
-		if (search_for_inverse_a(ctx->op, ctx->current, ctx->dst,
 				ctx->has_changed))
 		{
 			*ctx->current_ptr = ctx->current;

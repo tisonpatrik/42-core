@@ -6,12 +6,11 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 20:49:24 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/19 22:25:03 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/19 22:40:12 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/optimizer.h"
-
 
 bool	try_merge_operations(t_merge_context *ctx)
 {
@@ -24,7 +23,8 @@ bool	try_merge_operations(t_merge_context *ctx)
 	return (false);
 }
 
-void	process_operation_pair(t_list **dst, t_list **current, bool *has_changed)
+void	process_operation_pair(t_list **dst, t_list **current,
+		bool *has_changed)
 {
 	t_operation		a;
 	t_operation		b;
@@ -45,32 +45,34 @@ void	process_operation_pair(t_list **dst, t_list **current, bool *has_changed)
 	*current = (*current)->next;
 }
 
-t_list	*merge_neighbors(t_list *src, bool *changed)
+t_list	*process_operation_list(t_list *src, bool *has_changed)
 {
 	t_list	*dst;
-	bool	has_changed;
 	t_list	*current;
 
-	if (!src || ft_lstsize(src) < 2)
-	{
-		if (changed)
-			*changed = false;
-		return (ft_lstmap(src, copy_operation, free));
-	}
 	dst = NULL;
-	has_changed = false;
+	*has_changed = false;
 	current = src;
 	while (current != NULL)
 	{
 		if (current->next != NULL)
-			process_operation_pair(&dst, &current, &has_changed);
+			process_operation_pair(&dst, &current, has_changed);
 		else
 		{
 			add_operation_to_list(&dst, *(t_operation *)current->content);
 			current = current->next;
 		}
 	}
-	if (changed)
-		*changed = has_changed;
 	return (dst);
+}
+
+t_list	*merge_neighbors(t_list *src, bool *changed)
+{
+	if (!src || ft_lstsize(src) < 2)
+	{
+		if (changed)
+			*changed = false;
+		return (ft_lstmap(src, copy_operation, free));
+	}
+	return (process_operation_list(src, changed));
 }

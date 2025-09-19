@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 20:48:29 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/19 21:58:46 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/19 22:35:40 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,6 @@ t_operation	get_operation_at_index(t_list *list, int index)
 	return (*(t_operation *)current->content);
 }
 
-
-
 void	replace_sequence_if_changed(t_list **seq, t_list *new_seq, bool changed,
 		bool *overall_changed)
 {
@@ -66,4 +64,18 @@ void	replace_sequence_if_changed(t_list **seq, t_list *new_seq, bool changed,
 	{
 		ft_lstclear(&new_seq, free);
 	}
+}
+
+void	process_operation_a(t_cancel_context *ctx)
+{
+	if (ctx->op == RA || ctx->op == RRA)
+	{
+		if (search_for_inverse_a(ctx->op, ctx->current, ctx->dst,
+				ctx->has_changed))
+		{
+			*ctx->current_ptr = ctx->current;
+			return ;
+		}
+	}
+	add_operation_to_list(ctx->dst, ctx->op);
 }

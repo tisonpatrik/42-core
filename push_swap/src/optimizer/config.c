@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 20:49:45 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/19 22:21:22 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/19 22:35:05 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ t_optimizer_config	*create_optimizer_config(void)
 	config->max_iterations = 100;
 	return (config);
 }
-
 
 void	free_optimizer_config(t_optimizer_config *config)
 {

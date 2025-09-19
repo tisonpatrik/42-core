@@ -39,4 +39,3 @@ t_operation	get_absorption_result_rrr_rb(t_operation a)
 		return (RRA);
 	return (RA);
 }
-

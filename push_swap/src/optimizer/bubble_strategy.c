@@ -6,12 +6,11 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 20:50:28 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/19 22:09:50 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/19 22:34:52 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/optimizer.h"
-
 
 void	process_all_operations(t_bubble_context *ctx)
 {
@@ -50,4 +49,3 @@ t_list	*bubble_across_other_stack(t_list *src, bool *changed)
 	process_all_operations(&ctx);
 	return (out);
 }
-
