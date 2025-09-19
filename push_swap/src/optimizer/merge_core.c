@@ -6,14 +6,13 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 20:49:37 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/19 23:14:23 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/19 23:17:51 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/optimizer.h"
 
-t_operation	
-rra(t_operation a)
+t_operation	get_absorption_rr_rra(t_operation a)
 {
 	if (a == RR)
 		return (RB);
