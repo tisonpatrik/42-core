@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   arena.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 20:50:59 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/19 20:51:07 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/19 21:43:20 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,16 +72,17 @@ void	destroy_optimizer_arena(t_optimizer_arena *arena)
 	free(arena);
 }
 
-t_operation	*arena_alloc_operation(t_optimizer_arena *arena)
-{
-	if (!arena || arena->used >= arena->capacity)
-		return (NULL);
-	return (&arena->operations[arena->used++]);
-}
 
-void	reset_optimizer_arena(t_optimizer_arena *arena)
+t_optimizer_arena	*initialize_cancel_arena(t_list *src, bool *changed)
 {
+	t_optimizer_arena	*arena;
+
+	arena = create_optimizer_arena(ft_lstsize(src));
 	if (!arena)
-		return ;
-	arena->used = 0;
+	{
+		if (changed)
+			*changed = false;
+		return (NULL);
+	}
+	return (arena);
 }

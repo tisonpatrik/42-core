@@ -53,8 +53,6 @@ SRCS        := src/validator/input_parser.c \
 			   src/optimizer/strategies.c \
 			   src/optimizer/strategy_implementations.c \
 			   src/optimizer/arena.c \
-			   src/optimizer/builder_core.c \
-			   src/optimizer/builder_utils.c \
 			   src/optimizer/utils.c \
 			   src/optimizer/config.c \
 			   src/optimizer/bubble_operations.c \

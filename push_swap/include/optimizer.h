@@ -82,17 +82,7 @@ typedef struct s_optimization_strategy
 
 t_optimizer_arena	*create_optimizer_arena(size_t capacity);
 void				destroy_optimizer_arena(t_optimizer_arena *arena);
-t_operation			*arena_alloc_operation(t_optimizer_arena *arena);
-void				reset_optimizer_arena(t_optimizer_arena *arena);
-
-t_operation_builder	*create_operation_builder(t_optimizer_arena *arena);
-void				destroy_operation_builder(t_operation_builder *builder);
-t_optimizer_error	add_operation_to_builder(t_operation_builder *builder, t_operation op);
-t_optimizer_error	copy_operations_to_builder(t_operation_builder *builder, t_list *src_start, t_list *src_end);
-t_list				*builder_get_result(t_operation_builder *builder);
-bool				builder_has_changed(t_operation_builder *builder);
-void				builder_mark_changed(t_operation_builder *builder);
-t_optimizer_error	builder_get_error(t_operation_builder *builder);
+t_optimizer_arena	*initialize_cancel_arena(t_list *src, bool *changed);
 
 t_optimizer_config	*create_default_optimizer_config(void);
 t_optimizer_config	*create_custom_optimizer_config(int max_gap, bool enable_merge, bool enable_cancel_pairs, bool enable_cancel_across, int max_iterations);
