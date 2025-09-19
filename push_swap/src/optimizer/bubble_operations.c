@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 20:50:41 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/19 20:57:09 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/19 20:58:54 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,9 @@ void	set_operation_at_index(t_list *list, int index, t_operation op)
 		*(t_operation *)current->content = op;
 }
 
-bool	bubble_operation(t_list *out, int i, int j, bool is_a)
+static bool	can_bubble_operation(t_list *out, int i, int j, bool is_a)
 {
 	t_operation	op_k;
-	t_operation	temp;
 	int			k;
 
 	k = i + 1;
@@ -64,6 +63,16 @@ bool	bubble_operation(t_list *out, int i, int j, bool is_a)
 			return (false);
 		k++;
 	}
+	return (true);
+}
+
+bool	bubble_operation(t_list *out, int i, int j, bool is_a)
+{
+	t_operation	temp;
+	int			k;
+
+	if (!can_bubble_operation(out, i, j, is_a))
+		return (false);
 	k = j;
 	while (k > i + 1)
 	{

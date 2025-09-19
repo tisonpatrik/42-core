@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cancel_core.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 20:50:05 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/19 20:50:06 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/19 21:05:03 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,28 +91,15 @@ t_list	*cancel_inverse_pairs(t_list *src, bool *changed)
 }
 
 void	process_operation_a(t_operation op, t_list *current, t_list **dst,
-		t_optimizer_arena *arena, bool *has_changed, t_list **current_ptr)
+		bool *has_changed, t_list **current_ptr)
 {
 	if (op == RA || op == RRA)
 	{
-		if (search_for_inverse_a(op, current, dst, arena, has_changed))
+		if (search_for_inverse_a(op, current, dst, has_changed))
 		{
 			*current_ptr = current;
 			return ;
 		}
 	}
 	add_operation_to_list(dst, op);
-}
-
-void	setup_cancel_arena_a(t_list *src, t_optimizer_arena **arena,
-		t_list **dst, bool *has_changed)
-{
-	*arena = create_optimizer_arena(ft_lstsize(src));
-	if (!*arena)
-	{
-		*has_changed = false;
-		return ;
-	}
-	*dst = NULL;
-	*has_changed = false;
 }
