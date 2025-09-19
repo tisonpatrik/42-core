@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 20:50:05 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/19 21:05:03 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/19 21:06:34 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,16 +90,16 @@ t_list	*cancel_inverse_pairs(t_list *src, bool *changed)
 	return (dst);
 }
 
-void	process_operation_a(t_operation op, t_list *current, t_list **dst,
-		bool *has_changed, t_list **current_ptr)
+void	process_operation_a(t_cancel_context *ctx)
 {
-	if (op == RA || op == RRA)
+	if (ctx->op == RA || ctx->op == RRA)
 	{
-		if (search_for_inverse_a(op, current, dst, has_changed))
+		if (search_for_inverse_a(ctx->op, ctx->current, ctx->dst,
+				ctx->has_changed))
 		{
-			*current_ptr = current;
+			*ctx->current_ptr = ctx->current;
 			return ;
 		}
 	}
-	add_operation_to_list(dst, op);
+	add_operation_to_list(ctx->dst, ctx->op);
 }

@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 20:49:58 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/19 21:04:50 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/19 21:06:34 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ t_list	*cancel_across_other_stack_a(t_list *src, bool *changed)
 	t_list				*current;
 	bool				has_changed;
 	t_operation			op;
+	t_cancel_context	ctx;
 
 	if (!src || ft_lstsize(src) < 3)
 	{
@@ -39,7 +40,12 @@ t_list	*cancel_across_other_stack_a(t_list *src, bool *changed)
 	while (current != NULL)
 	{
 		op = *(t_operation *)current->content;
-		process_operation_a(op, current, &dst, &has_changed, &current);
+		ctx.op = op;
+		ctx.current = current;
+		ctx.dst = &dst;
+		ctx.has_changed = &has_changed;
+		ctx.current_ptr = &current;
+		process_operation_a(&ctx);
 		current = current->next;
 	}
 	if (changed)
@@ -48,18 +54,17 @@ t_list	*cancel_across_other_stack_a(t_list *src, bool *changed)
 	return (dst);
 }
 
-void	process_operation_b(t_operation op, t_list *current, t_list **dst,
-		bool *has_changed, t_list **current_ptr)
+void	process_operation_b(t_cancel_context *ctx)
 {
-	if (op == RB || op == RRB)
+	if (ctx->op == RB || ctx->op == RRB)
 	{
-		if (search_for_inverse_b(op, current, dst, has_changed))
+		if (search_for_inverse_b(ctx->op, ctx->current, ctx->dst, ctx->has_changed))
 		{
-			*current_ptr = current;
+			*ctx->current_ptr = ctx->current;
 			return ;
 		}
 	}
-	add_operation_to_list(dst, op);
+	add_operation_to_list(ctx->dst, ctx->op);
 }
 
 t_list	*cancel_across_other_stack_b(t_list *src, bool *changed)
@@ -69,6 +74,7 @@ t_list	*cancel_across_other_stack_b(t_list *src, bool *changed)
 	t_list				*current;
 	bool				has_changed;
 	t_operation			op;
+	t_cancel_context	ctx;
 
 	if (!src || ft_lstsize(src) < 3)
 	{
@@ -89,7 +95,12 @@ t_list	*cancel_across_other_stack_b(t_list *src, bool *changed)
 	while (current != NULL)
 	{
 		op = *(t_operation *)current->content;
-		process_operation_b(op, current, &dst, &has_changed, &current);
+		ctx.op = op;
+		ctx.current = current;
+		ctx.dst = &dst;
+		ctx.has_changed = &has_changed;
+		ctx.current_ptr = &current;
+		process_operation_b(&ctx);
 		current = current->next;
 	}
 	if (changed)

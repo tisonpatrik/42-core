@@ -36,6 +36,15 @@ typedef struct s_operation_builder
 	t_optimizer_error	error;
 }						t_operation_builder;
 
+typedef struct s_cancel_context
+{
+	t_operation		op;
+	t_list			*current;
+	t_list			**dst;
+	bool			*has_changed;
+	t_list			**current_ptr;
+}					t_cancel_context;
+
 typedef struct s_optimizer_config
 {
 	int		max_bubble_gap;
@@ -107,14 +116,12 @@ t_list		*cancel_across_other_stack_a(t_list *src, bool *changed);
 t_list		*cancel_across_other_stack_b(t_list *src, bool *changed);
 t_operation	get_inverse_a_operation(t_operation op);
 t_operation	get_inverse_b_operation(t_operation op);
-void		copy_operations_to_list(t_list **dst, t_list *src_start, t_list *src_end, t_optimizer_arena *arena);
-bool		search_for_inverse_a(t_operation op, t_list *current, t_list **dst, t_optimizer_arena *arena, bool *has_changed);
-bool		search_for_inverse_b(t_operation op, t_list *current, t_list **dst, t_optimizer_arena *arena, bool *has_changed);
-void		process_operation_a(t_operation op, t_list *current, t_list **dst, t_optimizer_arena *arena, bool *has_changed, t_list **current_ptr);
-void		process_operation_b(t_operation op, t_list *current, t_list **dst, t_optimizer_arena *arena, bool *has_changed, t_list **current_ptr);
+void		copy_operations_to_list(t_list **dst, t_list *src_start, t_list *src_end);
+bool		search_for_inverse_a(t_operation op, t_list *current, t_list **dst, bool *has_changed);
+bool		search_for_inverse_b(t_operation op, t_list *current, t_list **dst, bool *has_changed);
+void		process_operation_a(t_cancel_context *ctx);
+void		process_operation_b(t_cancel_context *ctx);
 void		process_inverse_cancellation(t_list *src, t_list **dst, bool *has_changed);
-void		setup_cancel_arena_a(t_list *src, t_optimizer_arena **arena, t_list **dst, bool *has_changed);
-void		setup_cancel_arena_b(t_list *src, t_optimizer_arena **arena, t_list **dst, bool *has_changed);
 
 bool		touches_a(t_operation op);
 bool		touches_b(t_operation op);
