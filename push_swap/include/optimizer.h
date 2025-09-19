@@ -106,10 +106,9 @@ void				free_strategy_registry(void);
 
 void				*copy_operation(void *content);
 void				add_operation_to_list(t_list **dst, t_operation op);
-t_list				*copy_operation_list(t_list *src);
 bool				validate_operation_sequence(t_list *seq);
 void				replace_sequence_if_changed(t_list **seq, t_list *new_seq, bool changed, bool *overall_changed);
-
+t_operation	get_operation_at_index(t_list *list, int index);
 void		optimize_ops(t_list **seq);
 void		apply_optimization_pass(t_list **seq, bool *changed);
 void		run_optimization_loop(t_list **seq);

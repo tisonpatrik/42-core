@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 20:48:29 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/19 20:48:32 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/19 21:31:46 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,21 @@ void	add_operation_to_list(t_list **dst, t_operation op)
 	}
 }
 
-t_list	*copy_operation_list(t_list *src)
+t_operation	get_operation_at_index(t_list *list, int index)
 {
-	if (!src)
-		return (NULL);
-	return (ft_lstmap(src, copy_operation, free));
+	t_list	*current;
+	int		i;
+
+	current = list;
+	i = 0;
+	while (current != NULL && i < index)
+	{
+		current = current->next;
+		i++;
+	}
+	if (current == NULL)
+		return (SA);
+	return (*(t_operation *)current->content);
 }
 
 bool	validate_operation_sequence(t_list *seq)
