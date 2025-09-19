@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 20:43:24 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/17 22:42:50 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/19 22:49:47 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static void	*setup_arena_memory_layout(t_selector_arena *arena,
 	return (arena);
 }
 
-t_selector_arena	*allocate_selector_arena(int max_candidates,
+t_selector_arena	*allocate_arena(int max_candidates,
 		int len_of_inputs)
 {
 	t_selector_arena	*arena;

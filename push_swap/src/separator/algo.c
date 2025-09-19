@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 19:25:49 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/16 21:40:58 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/19 22:51:03 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_node	**execute_lis_algorithm(t_stack *stack, t_separator_arena *arena)
 	if (!arena || !arena->computation)
 		return (NULL);
 	extract_stack_values_to_computation(stack, arena->computation);
-	compute_longest_increasing_lengths(arena->computation, &result);
+	compute_longest_increasing_lens(arena->computation, &result);
 	return (build_lis_result(arena->computation, &result, arena));
 }
 

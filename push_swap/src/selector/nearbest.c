@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 21:41:03 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/17 22:21:59 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/19 22:49:45 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_position	select_best_move(t_sorting_state *ps, int max_candidates,
 	t_selector_arena	*arena;
 	t_position			result;
 
-	arena = allocate_selector_arena(ps->b->size, ps->len_of_inputs);
+	arena = allocate_arena(ps->b->size, ps->len_of_inputs);
 	if (!arena)
 	{
 		result.total = INT_MAX;

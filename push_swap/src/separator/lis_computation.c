@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lis_computation.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 21:25:30 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/17 21:25:32 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/19 22:51:19 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	initialize_lis_tracking_for_position(t_lis_computation *computation,
 	computation->previous_indices[current_position] = -1;
 }
 
-void	compute_longest_increasing_lengths(t_lis_computation *computation,
+void	compute_longest_increasing_lens(t_lis_computation *computation,
 		t_lis_result *best_result)
 {
 	int	current_position;

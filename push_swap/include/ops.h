@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:50:33 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/17 22:47:03 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/19 22:49:58 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ typedef enum e_operation
 	RRB,
 	RRR
 }				t_operation;
-
-
 
 typedef struct s_sorting_state
 {

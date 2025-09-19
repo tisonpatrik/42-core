@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 20:50:28 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/19 22:34:52 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/19 22:48:50 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	process_all_operations(t_bubble_context *ctx)
 	}
 }
 
-t_list	*bubble_across_other_stack(t_list *src, bool *changed)
+t_list	*bubble_next_stack(t_list *src, bool *changed)
 {
 	int					n;
 	t_list				*out;
