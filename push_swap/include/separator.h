@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 19:24:28 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/20 11:15:21 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/20 17:29:27 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,6 @@ t_node					**get_lis_nodes(t_stack *stack,
 t_node					**build_lis_result(t_lis_computation *computation,
 							t_lis_result *computation_result,
 							t_separator_arena *arena);
-void					compute_longest_increasing_lens(t_lis_computation *lis,
-							t_lis_result *best_result);
 int						extract_stack_values_to_computation(t_stack *stack,
 							t_lis_computation *computation);
 size_t					calculate_lis_length(t_node **lis_nodes);

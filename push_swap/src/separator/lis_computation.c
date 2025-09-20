@@ -6,24 +6,13 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 21:25:30 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/20 17:05:13 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/20 17:29:45 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/separator.h"
 #include <stdbool.h>
 
-/*
- * Updates the best LIS result if the current position provides a longer
- * subsequence.
- *
- * This function is called during the dynamic programming computation to track
- * the longest increasing subsequence found so far.
- *
- * @param computation: The LIS computation state
- * @param best_result: Pointer to the current best result
- * @param current_position: The position being evaluated
- */
 static void	update_best_lis_if_improved(t_lis_computation *computation,
 		t_lis_result *best_result, int current_position)
 {
@@ -36,8 +25,6 @@ static void	update_best_lis_if_improved(t_lis_computation *computation,
 
 /*
  * Attempts to extend the LIS from a previous element to the current element.
- *
- * This implements the core logic of the dynamic programming LIS algorithm:
  * - Condition 1: values[previous] < values[current] (increasing sequence)
  * - Condition 2: lis_lengths[previous] + 1 > lis_lengths[current] (better
  * length)
@@ -62,16 +49,7 @@ static void	try_extend_lis_from_previous_element(t_lis_computation *computation,
 	}
 }
 
-/*
- * Initializes LIS tracking for a specific position.
- *
- * Each position starts with LIS length 1 (itself) and no previous element.
- * This is the base case for the dynamic programming algorithm.
- *
- * @param computation: The LIS computation state
- * @param current_position: The position to initialize
- */
-void	initialize_lis_tracking_for_position(t_lis_computation *computation,
+static void	initialize_lis_tracking_for_position(t_lis_computation *computation,
 		int current_position)
 {
 	computation->lis_lengths[current_position] = 1;
@@ -79,9 +57,8 @@ void	initialize_lis_tracking_for_position(t_lis_computation *computation,
 }
 
 /*
- * Computes the longest increasing subsequence using dynamic programming.
+ * Computes the longest increasing subsequence
  *
- * This is the core LIS algorithm with O(n²) time complexity:
  * 1. For each position i from 0 to n-1:
  *    - Initialize LIS[i] = 1, prev[i] = -1
  *    - For each position j from 0 to i-1:
@@ -96,7 +73,7 @@ void	initialize_lis_tracking_for_position(t_lis_computation *computation,
  * arrays
  * @param best_result: Pointer to store the best LIS result
  */
-void	compute_longest_increasing_lens(t_lis_computation *computation,
+static void	compute_longest_increasing_lens(t_lis_computation *computation,
 		t_lis_result *best_result)
 {
 	int	current_position;

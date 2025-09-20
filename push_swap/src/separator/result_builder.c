@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 19:35:00 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/20 12:01:23 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/20 17:31:11 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,7 @@
 #include <stdlib.h>
 
 /*
- * Reconstructs the LIS sequence from the dynamic programming tracking arrays.
- *
- * After computing the DP tables,
-	this function reconstructs the actual LIS sequence:
+ * Reconstructs the LIS sequence from tracking arrays.
  * 1. Start from the best ending position
  * 2. Follow the previous_indices chain backwards
  * 3. Collect all nodes in the LIS
