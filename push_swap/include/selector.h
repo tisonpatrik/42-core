@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 21:41:42 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/19 23:22:40 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/20 11:15:21 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,7 @@ typedef struct s_selector_arena
 	int					filtered_count;
 	t_candidate			*top_k_candidates;
 	int					top_k_count;
-	void				*arena_memory;
-	size_t				arena_size;
+	t_arena				*arena;
 	int					max_candidates;
 	int					*temp_a_values;
 	int					*temp_b_values;

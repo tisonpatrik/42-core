@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:49:46 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/17 18:13:00 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/20 11:15:21 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ void	free_separator_arena(t_separator_arena *arena)
 {
 	if (!arena)
 		return ;
-	if (arena->arena_memory)
-		free(arena->arena_memory);
+	if (arena->arena)
+		ft_arena_destroy(arena->arena);
 	free(arena);
 }
 
@@ -40,22 +40,17 @@ static size_t	calculate_arena_size(int element_count)
 static void	*setup_arena_memory_layout(t_separator_arena *arena,
 		int element_count)
 {
-	char	*memory;
-	size_t	offset;
-
-	memory = (char *)arena->arena_memory;
-	offset = sizeof(t_separator_arena);
-	arena->computation = (t_lis_computation *)(memory + offset);
-	offset += sizeof(t_lis_computation);
-	arena->lis_nodes = (t_node **)(memory + offset);
-	offset += sizeof(t_node *) * (size_t)element_count;
-	arena->computation->nodes = (t_node **)(memory + offset);
-	offset += sizeof(t_node *) * (size_t)element_count;
-	arena->computation->values = (int *)(memory + offset);
-	offset += sizeof(int) * (size_t)element_count;
-	arena->computation->lis_lengths = (int *)(memory + offset);
-	offset += sizeof(int) * (size_t)element_count;
-	arena->computation->previous_indices = (int *)(memory + offset);
+	arena->computation = ft_arena_alloc(arena->arena, sizeof(t_lis_computation));
+	arena->lis_nodes = ft_arena_alloc(arena->arena,
+		sizeof(t_node *) * (size_t)element_count);
+	arena->computation->nodes = ft_arena_alloc(arena->arena,
+		sizeof(t_node *) * (size_t)element_count);
+	arena->computation->values = ft_arena_alloc(arena->arena,
+		sizeof(int) * (size_t)element_count);
+	arena->computation->lis_lengths = ft_arena_alloc(arena->arena,
+		sizeof(int) * (size_t)element_count);
+	arena->computation->previous_indices = ft_arena_alloc(arena->arena,
+		sizeof(int) * (size_t)element_count);
 	return (arena);
 }
 
@@ -70,13 +65,12 @@ t_separator_arena	*allocate_separator_arena(int element_count)
 	arena = malloc(sizeof(*arena));
 	if (!arena)
 		return (NULL);
-	arena->arena_memory = malloc(arena_size);
-	if (!arena->arena_memory)
+	arena->arena = ft_arena_create(arena_size);
+	if (!arena->arena)
 	{
 		free(arena);
 		return (NULL);
 	}
-	arena->arena_size = arena_size;
 	setup_arena_memory_layout(arena, element_count);
 	arena->computation->n = element_count;
 	return (arena);

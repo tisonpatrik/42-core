@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 13:28:28 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/16 22:06:55 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/20 11:15:21 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,18 @@ void	*ft_memset(void *b, int c, size_t len);
 void	*ft_calloc(size_t nelem, size_t elsize);
 void	ft_free_array(char **array);
 void	ft_swap_int(int *a, int *b);
+
+/* Arena Allocator */
+typedef struct s_arena
+{
+	void	*memory;
+	size_t	size;
+	size_t	offset;
+}			t_arena;
+
+t_arena	*ft_arena_create(size_t size);
+void	ft_arena_destroy(t_arena *arena);
+void	*ft_arena_alloc(t_arena *arena, size_t size);
+void	ft_arena_reset(t_arena *arena);
 
 #endif

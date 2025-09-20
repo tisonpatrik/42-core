@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 19:24:28 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/19 23:04:31 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/20 11:15:21 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,7 @@ typedef struct s_separator_arena
 {
 	t_lis_computation	*computation;
 	t_node				**lis_nodes;
-	void				*arena_memory;
-	size_t				arena_size;
+	t_arena				*arena;
 }						t_separator_arena;
 
 void					push_non_lis_into_b(t_sorting_state *state);

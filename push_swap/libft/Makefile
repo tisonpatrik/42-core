@@ -6,7 +6,7 @@
 #    By: patrik <patrik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/17 11:24:23 by ptison            #+#    #+#              #
-#    Updated: 2025/09/16 22:07:26 by patrik           ###   ########.fr        #
+#    Updated: 2025/09/20 11:15:21 by patrik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,8 @@ CORE_SRCS   := 	src/core/ft_isalnum.c \
                 src/core/ft_tolower.c \
                 src/core/ft_toupper.c
 
-MEM_SRCS    :=  src/mem/ft_bzero.c \
+MEM_SRCS    :=  src/mem/ft_arena.c \
+                src/mem/ft_bzero.c \
                 src/mem/ft_calloc.c \
                 src/mem/ft_free_array.c \
                 src/mem/ft_memchr.c \
