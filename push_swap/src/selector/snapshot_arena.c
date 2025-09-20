@@ -6,13 +6,31 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 20:41:58 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/20 11:15:21 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/20 17:33:32 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/snapshot_arena.h"
 #include <stdbool.h>
 #include <stdlib.h>
+
+static void	clear_snapshots(t_snapshot_arena *arena)
+{
+	if (!arena)
+		return ;
+	if (arena->a_values)
+	{
+		free(arena->a_values);
+		arena->a_values = NULL;
+	}
+	if (arena->b_values)
+	{
+		free(arena->b_values);
+		arena->b_values = NULL;
+	}
+	arena->size_a = 0;
+	arena->size_b = 0;
+}
 
 static int	*snapshot_stack_values(t_stack *stack, int *size)
 {
@@ -78,22 +96,4 @@ bool	take_snapshots(t_snapshot_arena *arena, t_stack *stack_a,
 		return (false);
 	}
 	return (true);
-}
-
-void	clear_snapshots(t_snapshot_arena *arena)
-{
-	if (!arena)
-		return ;
-	if (arena->a_values)
-	{
-		free(arena->a_values);
-		arena->a_values = NULL;
-	}
-	if (arena->b_values)
-	{
-		free(arena->b_values);
-		arena->b_values = NULL;
-	}
-	arena->size_a = 0;
-	arena->size_b = 0;
 }

@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 22:42:52 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/19 23:13:59 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/20 17:38:15 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,18 +45,10 @@ typedef struct s_cancel_context
 	t_list			**current_ptr;
 }					t_cancel_context;
 
-typedef struct s_optimizer_config
-{
-	int				max_bubble_gap;
-	int				max_iterations;
-}					t_optimizer_config;
-
 void				*copy_operation(void *content);
 void				add_operation_to_list(t_list **dst, t_operation op);
 void				replace_sequence_if_changed(t_list **seq, t_list *new_seq,
 						bool changed, bool *overall_changed);
-
-t_operation			get_operation_at_index(t_list *list, int index);
 
 t_list				*bubble_next_stack(t_list *src, bool *changed);
 bool				is_pure_a(t_operation op);

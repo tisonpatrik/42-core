@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 20:49:53 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/19 23:13:10 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/20 17:36:39 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static t_operation	get_inverse_b_operation(t_operation op)
 	return (RB);
 }
 
-void	copy_operations_to_list(t_list **dst, t_list *src_start,
+static void	copy_operations_to_list(t_list **dst, t_list *src_start,
 		t_list *src_end)
 {
 	t_list	*current;

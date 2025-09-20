@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 21:41:42 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/20 17:15:26 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/20 17:35:01 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,6 @@ t_position				evaluate_with_lookahead(t_candidate *candidates,
 
 t_position				select_best_move(t_sorting_state *ps,
 							int max_candidates, t_simulation_config config);
-t_candidate				*enumerate_b_to_a_candidates(t_sorting_state *state,
-							t_selector_arena *arena);
 
 int						compare_candidates(const void *a, const void *b);
 #endif

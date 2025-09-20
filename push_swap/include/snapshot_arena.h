@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 21:13:05 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/20 11:15:21 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/20 17:33:23 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,4 @@ void				destroy_snapshot_arena(t_snapshot_arena *arena);
 
 bool				take_snapshots(t_snapshot_arena *arena, t_stack *stack_a,
 						t_stack *stack_b);
-void				clear_snapshots(t_snapshot_arena *arena);
-
 #endif
