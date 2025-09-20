@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_arena.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/20 11:45:52 by ptison            #+#    #+#             */
+/*   Updated: 2025/09/20 11:46:01 by ptison           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../../include/mem.h"
 #include <stdlib.h>
@@ -38,18 +49,10 @@ void	*ft_arena_alloc(t_arena *arena, size_t size)
 
 	if (!arena || size == 0)
 		return (NULL);
-	/* Align to 8-byte boundary for better performance */
 	aligned_size = (size + 7) & ~7;
 	if (arena->offset + aligned_size > arena->size)
 		return (NULL);
 	ptr = (char *)arena->memory + arena->offset;
 	arena->offset += aligned_size;
 	return (ptr);
-}
-
-void	ft_arena_reset(t_arena *arena)
-{
-	if (!arena)
-		return ;
-	arena->offset = 0;
 }

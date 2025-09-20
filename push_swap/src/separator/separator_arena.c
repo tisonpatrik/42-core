@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   list_arena.c                                       :+:      :+:    :+:   */
+/*   separator_arena.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:49:46 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/20 11:15:21 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/20 11:46:43 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,17 +40,18 @@ static size_t	calculate_arena_size(int element_count)
 static void	*setup_arena_memory_layout(t_separator_arena *arena,
 		int element_count)
 {
-	arena->computation = ft_arena_alloc(arena->arena, sizeof(t_lis_computation));
-	arena->lis_nodes = ft_arena_alloc(arena->arena,
-		sizeof(t_node *) * (size_t)element_count);
-	arena->computation->nodes = ft_arena_alloc(arena->arena,
-		sizeof(t_node *) * (size_t)element_count);
-	arena->computation->values = ft_arena_alloc(arena->arena,
-		sizeof(int) * (size_t)element_count);
-	arena->computation->lis_lengths = ft_arena_alloc(arena->arena,
-		sizeof(int) * (size_t)element_count);
+	arena->computation = ft_arena_alloc(arena->arena,
+			sizeof(t_lis_computation));
+	arena->lis_nodes = ft_arena_alloc(arena->arena, sizeof(t_node *)
+			* (size_t)element_count);
+	arena->computation->nodes = ft_arena_alloc(arena->arena, sizeof(t_node *)
+			* (size_t)element_count);
+	arena->computation->values = ft_arena_alloc(arena->arena, sizeof(int)
+			* (size_t)element_count);
+	arena->computation->lis_lengths = ft_arena_alloc(arena->arena, sizeof(int)
+			* (size_t)element_count);
 	arena->computation->previous_indices = ft_arena_alloc(arena->arena,
-		sizeof(int) * (size_t)element_count);
+			sizeof(int) * (size_t)element_count);
 	return (arena);
 }
 
