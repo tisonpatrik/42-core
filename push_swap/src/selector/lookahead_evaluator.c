@@ -6,25 +6,61 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 20:49:22 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/17 22:32:48 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/20 17:25:00 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/selector.h"
 #include <stdbool.h>
-#include <limits.h>
 
-int	calculate_score(t_position position, t_selector_arena *arena)
+static int	count_breakpoints(t_selector_arena *arena)
+{
+	int	breakpoints;
+	int	i;
+	int	*a_values;
+	int	size_a;
+
+	breakpoints = 0;
+	i = 0;
+	a_values = arena->snapshot_arena->a_values;
+	size_a = arena->snapshot_arena->size_a;
+	while (i < size_a - 1)
+	{
+		if (a_values[i] > a_values[i + 1])
+			breakpoints++;
+		i++;
+	}
+	if (a_values[size_a - 1] > a_values[0])
+		breakpoints++;
+	return (breakpoints);
+}
+
+static int	calculate_heuristic(t_selector_arena *arena)
+{
+	int	breakpoints;
+	int	raw_score;
+	int	size_penalty;
+
+	if (arena->snapshot_arena->size_a <= 1)
+		return (0);
+	breakpoints = count_breakpoints(arena);
+	raw_score = breakpoints + arena->snapshot_arena->size_a;
+	size_penalty = arena->config.size_penalty_factor
+		+ arena->config.heuristic_offset;
+	return ((raw_score / size_penalty) / arena->config.heuristic_divisor);
+}
+
+static int	calculate_score(t_position position, t_selector_arena *arena)
 {
 	int	rotation_cost;
 	int	heuristic_estimate;
 
 	rotation_cost = merged_cost(position.cost_a, position.cost_b) + 1;
-	heuristic_estimate = calculate_sorting_heuristic(arena);
+	heuristic_estimate = calculate_heuristic(arena);
 	return (heuristic_estimate + rotation_cost);
 }
 
-t_position	find_best_candidate(t_candidate *candidates,
+static t_position	find_best_candidate(t_candidate *candidates, int count,
 		t_selector_arena *arena)
 {
 	t_position	best_position;
@@ -35,7 +71,7 @@ t_position	find_best_candidate(t_candidate *candidates,
 	best_position = candidates[0].position;
 	best_score = calculate_score(best_position, arena);
 	i = 1;
-	while (i < arena->top_k_count)
+	while (i < count)
 	{
 		current_score = calculate_score(candidates[i].position, arena);
 		if (current_score < best_score || (current_score == best_score
@@ -60,5 +96,5 @@ t_position	evaluate_with_lookahead(t_candidate *candidates,
 		invalid_position.total = INT_MAX;
 		return (invalid_position);
 	}
-	return (find_best_candidate(candidates, arena));
+	return (find_best_candidate(candidates, arena->top_k_count, arena));
 }

@@ -29,7 +29,6 @@ SRCS        := src/validator/input_parser.c \
 			   src/ops/utils.c \
 			   src/separator/separator.c \
 			   src/separator/separator_arena.c \
-			   src/separator/algo.c \
 			   src/separator/result_builder.c \
 			   src/separator/utils.c \
 			   src/separator/lis_computation.c \

@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 19:35:00 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/19 23:05:29 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/20 12:01:23 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,20 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
+/*
+ * Reconstructs the LIS sequence from the dynamic programming tracking arrays.
+ *
+ * After computing the DP tables,
+	this function reconstructs the actual LIS sequence:
+ * 1. Start from the best ending position
+ * 2. Follow the previous_indices chain backwards
+ * 3. Collect all nodes in the LIS
+ * 4. The sequence is built backwards, so it needs to be reversed
+ *
+ * @param lis_nodes: Array to store the reconstructed LIS nodes
+ * @param computation: The LIS computation state with tracking arrays
+ * @param computation_result: The result containing best length and end position
+ */
 static void	reconstruct_lis_sequence_from_tracking(t_node **lis_nodes,
 		t_lis_computation *computation, t_lis_result *computation_result)
 {
@@ -31,6 +45,15 @@ static void	reconstruct_lis_sequence_from_tracking(t_node **lis_nodes,
 	}
 }
 
+/*
+ * Reverses the LIS sequence to get the correct increasing order.
+ *
+ * The reconstruction builds the sequence backwards (from end to start),
+ * so we reverse it to get the natural increasing order.
+ *
+ * @param lis_nodes: Array of LIS nodes to reverse
+ * @param lis_count: Number of nodes in the LIS
+ */
 static void	reverse_sequence_to_correct_order(t_node **lis_nodes,
 		size_t lis_count)
 {
@@ -48,6 +71,19 @@ static void	reverse_sequence_to_correct_order(t_node **lis_nodes,
 	lis_nodes[lis_count] = NULL;
 }
 
+/*
+ * Builds the final LIS result by reconstructing and ordering the sequence.
+ *
+ * This function orchestrates the reconstruction process:
+ * 1. Reconstructs the LIS sequence from tracking arrays
+ * 2. Reverses the sequence to get correct increasing order
+ * 3. Returns the properly ordered array of LIS nodes
+ *
+ * @param computation: The LIS computation state
+ * @param computation_result: The computed LIS result
+ * @param arena: Memory arena containing the lis_nodes array
+ * @return: Array of nodes forming the longest increasing subsequence
+ */
 t_node	**build_lis_result(t_lis_computation *computation,
 		t_lis_result *computation_result, t_separator_arena *arena)
 {
