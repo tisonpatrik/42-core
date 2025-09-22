@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 20:49:14 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/22 11:35:35 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/22 15:15:38 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static bool	validate_operation_sequence(t_list *seq)
 {
 	if (!seq)
 		return (false);
-	if (ft_lstsize(seq) < 2)
+	if (ft_lstsize(seq) < 3)
 		return (false);
 	return (true);
 }
