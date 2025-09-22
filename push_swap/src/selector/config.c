@@ -1,0 +1,25 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   config.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/16 20:38:34 by ptison            #+#    #+#             */
+/*   Updated: 2025/09/22 11:24:57 by patrik           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/selector.h"
+
+t_simulation_config	default_selector_config(void)
+{
+	t_simulation_config	config;
+
+	config.max_candidates = 30;
+	config.cost_threshold_offset = 1;
+	config.size_penalty_factor = 10;
+	config.heuristic_offset = 1;
+	config.heuristic_divisor = 2;
+	return (config);
+}
