@@ -6,7 +6,7 @@
 #    By: ptison <ptison@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/17 11:24:23 by ptison            #+#    #+#              #
-#    Updated: 2025/09/22 18:28:20 by ptison           ###   ########.fr        #
+#    Updated: 2025/09/22 21:39:35 by ptison           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -65,9 +65,6 @@ CONV_SRCS   :=  src/conv/ft_atoi.c \
 				src/conv/ft_strtoi/utils.c \
 				src/conv/ft_strtoi/ft_strtoi.c
 
-UTILS_SRCS  :=  src/utils/ft_parse_sign.c \
-                src/utils/ft_skip_whitespace.c
-
 PRINTF_SRCS :=  src/ft_printf/dispatcher.c \
                 src/ft_printf/ft_printf.c \
                 src/ft_printf/parser.c \
@@ -101,7 +98,7 @@ SEARCH_SRCS :=  src/search/ft_lower_bound.c
 GET_NEXT_LINE_SRCS := src/get_next_line/get_next_line.c \
                       src/get_next_line/get_next_line_utils.c
 
-SRCS        := $(CORE_SRCS) $(MEM_SRCS) $(STR_SRCS) $(IO_SRCS) $(CONV_SRCS) $(UTILS_SRCS) $(PRINTF_SRCS) $(MATH_SRCS) $(SORT_SRCS) $(SEARCH_SRCS) $(GET_NEXT_LINE_SRCS)
+SRCS        := $(CORE_SRCS) $(MEM_SRCS) $(STR_SRCS) $(IO_SRCS) $(CONV_SRCS) $(PRINTF_SRCS) $(MATH_SRCS) $(SORT_SRCS) $(SEARCH_SRCS) $(GET_NEXT_LINE_SRCS)
 
 ifdef BONUS
   SRCS      += $(LIST_SRCS)

@@ -14,16 +14,16 @@
 # define LIBFT_H
 
 /* Include all libft modules */
-# include "core.h"
-# include "mem.h"
-# include "str.h"
-# include "io.h"
 # include "conv.h"
-# include "list.h"
-# include "printf.h"
-# include "math.h"
-# include "sort.h"
-# include "search.h"
+# include "core.h"
 # include "get_next_line.h"
+# include "io.h"
+# include "list.h"
+# include "math.h"
+# include "mem.h"
+# include "printf.h"
+# include "search.h"
+# include "sort.h"
+# include "str.h"
 
 #endif

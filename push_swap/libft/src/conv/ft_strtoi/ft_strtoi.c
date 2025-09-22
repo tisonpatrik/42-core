@@ -6,28 +6,49 @@
 /*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 18:54:44 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/22 18:29:15 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/22 21:39:43 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/conv.h"
 #include "../../../include/core.h"
 #include "../../../include/ft_strtoi.h"
-#include "../../../include/utils.h"
 #include <limits.h>
 
-unsigned int			calculate_cutoff(int is_negative);
-unsigned int			calculate_cutlim(unsigned int *cutoff_value);
-int						would_overflow(unsigned int current_accumulated,
-							unsigned int overflow_threshold,
-							unsigned int last_digit_limit,
-							unsigned int current_digit);
+unsigned int					calculate_cutoff(int is_negative);
+unsigned int					calculate_cutlim(unsigned int *cutoff_value);
+int								would_overflow(unsigned int current_accumulated,
+									unsigned int overflow_threshold,
+									unsigned int last_digit_limit,
+									unsigned int current_digit);
 
-int						handle_overflow(int is_negative);
+int								handle_overflow(int is_negative);
 
-void					set_endptr(char **end_pointer,
-							const char *original_string_start,
-							const char *current_position, int digits_found);
+void							set_endptr(char **end_pointer,
+									const char *original_string_start,
+									const char *current_position,
+									int digits_found);
+
+static int	parse_sign(const char **p)
+{
+	if (**p == '+')
+	{
+		(*p)++;
+		return (0);
+	}
+	else if (**p == '-')
+	{
+		(*p)++;
+		return (1);
+	}
+	return (0);
+}
+
+static void	skip_whitespace(const char **current_position)
+{
+	while (ft_isspace((unsigned char)**current_position))
+		(*current_position)++;
+}
 
 /**
  * @brief Parse digits and build number
@@ -37,7 +58,7 @@ void					set_endptr(char **end_pointer,
  * @param last_digit_limit Last digit threshold
  * @return Tuple of (accumulated_value, overflow_flag, any_digits_flag)
  */
-struct s_parse_result	parse_digits(const char **current_position,
+static struct s_parse_result	parse_digits(const char **current_position,
 		unsigned int overflow_threshold, unsigned int last_digit_limit)
 {
 	struct s_parse_result	result;
@@ -76,8 +97,8 @@ int	ft_strtoi10(const char *nptr, char **endptr)
 
 	current_position = nptr;
 	is_negative = 0;
-	ft_skip_whitespace(&current_position);
-	is_negative = ft_parse_sign(&current_position);
+	skip_whitespace(&current_position);
+	is_negative = parse_sign(&current_position);
 	overflow_threshold = calculate_cutoff(is_negative);
 	last_digit_limit = calculate_cutlim(&overflow_threshold);
 	result = parse_digits(&current_position, overflow_threshold,

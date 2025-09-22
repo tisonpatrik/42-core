@@ -6,11 +6,9 @@
 /*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:12:25 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/22 18:30:08 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/22 21:43:57 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "../../include/str.h"
 
 /**
  * @brief Applies a function to each character of a string with index
@@ -50,10 +48,11 @@ void	to_upper_iter(unsigned int i, char *c)
 
 int	main(void)
 {
-	char	*str = strdup("Hello");
+	char	*str;
+
+	str = strdup("Hello");
 	if (!str)
 		return (1);
-
 	printf("Original: %s\n", str);
 	ft_striteri(str, to_upper_iter);
 	printf("Mapped:   %s\n", str);

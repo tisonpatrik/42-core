@@ -6,12 +6,11 @@
 /*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:12:25 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/22 18:30:08 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/22 21:51:44 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/str.h"
-
 /**
  * @brief Calculates the length of a string
  *
@@ -22,8 +21,6 @@
  * @param str The string whose length is to be calculated
  * @return The number of characters in the string (excluding null terminator)
  */
-
-#include <stddef.h>
 
 size_t	ft_strlen(const char *str)
 {

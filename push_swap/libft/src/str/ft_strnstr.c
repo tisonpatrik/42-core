@@ -6,28 +6,29 @@
 /*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:12:25 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/22 18:30:08 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/22 21:49:43 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/str.h"
+#include <stdlib.h>
 
-int	within_len(size_t i, size_t j, size_t len)
+static int	within_len(size_t i, size_t j, size_t len)
 {
 	return ((i + j) < len);
 }
 
-int	not_null_terminated(const char *s, size_t index)
+static int	not_null_terminated(const char *s, size_t index)
 {
 	return (s[index] != '\0');
 }
 
-int	chars_match(const char *big, const char *little, size_t i, size_t j)
+static int	chars_match(const char *big, const char *little, size_t i, size_t j)
 {
 	return (big[i + j] == little[j]);
 }
 
-int	is_little_ended(const char *little, size_t j)
+static int	is_little_ended(const char *little, size_t j)
 {
 	return (little[j + 1] == '\0');
 }

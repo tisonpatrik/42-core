@@ -14,8 +14,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-
-
 static int	expand_line_buffer(t_line *line, size_t needed_size)
 {
 	size_t	new_size;

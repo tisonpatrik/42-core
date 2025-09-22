@@ -6,16 +6,15 @@
 /*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:12:25 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/22 18:30:08 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/22 21:49:24 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/str.h"
 #include "../../include/mem.h"
-#include <stddef.h>
 #include <stdlib.h>
 
-char	is_in_set(char c, const char *set)
+static char	is_in_set(char c, const char *set)
 {
 	while (*set)
 	{
@@ -26,7 +25,7 @@ char	is_in_set(char c, const char *set)
 	return (0);
 }
 
-size_t	find_start(const char *s1, const char *set)
+static size_t	find_start(const char *s1, const char *set)
 {
 	size_t	i;
 
@@ -36,7 +35,7 @@ size_t	find_start(const char *s1, const char *set)
 	return (i);
 }
 
-size_t	find_end(const char *s1, const char *set, size_t start)
+static size_t	find_end(const char *s1, const char *set, size_t start)
 {
 	size_t	pos;
 

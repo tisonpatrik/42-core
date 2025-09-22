@@ -6,28 +6,14 @@
 /*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 21:49:31 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/22 18:29:10 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/22 21:55:20 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/conv.h"
 #include "../../include/core.h"
-#include "../../include/utils.h"
 
-int	convert_number(const char *str, int idx)
-{
-	int	res;
-
-	res = 0;
-	while (ft_isdigit(str[idx]))
-	{
-		res = res * 10 + (str[idx] - '0');
-		idx++;
-	}
-	return (res);
-}
-
-int	get_sign(const char **current_position)
+static int	get_sign(const char **current_position)
 {
 	int	sign;
 
@@ -45,6 +31,25 @@ int	get_sign(const char **current_position)
 	else
 		sign = 1;
 	return (sign);
+}
+
+static void	skip_whitespace(const char **current_position)
+{
+	while (ft_isspace((unsigned char)**current_position))
+		(*current_position)++;
+}
+
+static int	convert_number(const char *str, int idx)
+{
+	int	res;
+
+	res = 0;
+	while (ft_isdigit(str[idx]))
+	{
+		res = res * 10 + (str[idx] - '0');
+		idx++;
+	}
+	return (res);
 }
 
 /**
@@ -70,7 +75,7 @@ int	ft_atoi(const char *str)
 
 	current_position = str;
 	res = 0;
-	ft_skip_whitespace(&current_position);
+	skip_whitespace(&current_position);
 	sign = get_sign(&current_position);
 	res = convert_number(current_position, 0);
 	return (res * sign);
