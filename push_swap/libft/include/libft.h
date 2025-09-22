@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 13:28:28 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/16 21:40:58 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/22 18:28:30 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@
 # include "conv.h"
 # include "list.h"
 # include "printf.h"
-# include "ft_strtoi.h"
 # include "math.h"
 # include "sort.h"
 # include "search.h"
+# include "get_next_line.h"
 
 #endif

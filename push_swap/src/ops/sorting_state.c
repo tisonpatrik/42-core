@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sorting_state.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:58:57 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/17 22:47:39 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/22 18:30:08 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,4 +84,12 @@ void	save_operation(t_sorting_state *state, t_operation operation)
 		return ;
 	}
 	ft_lstadd_back(&state->operations, new_node);
+}
+
+t_sorting_state	*create_state_for_checker(int *numbers, int n, t_list *operations)
+{
+	t_sorting_state	*state;
+	state = create_sorting_state(numbers, n);
+	state->operations = operations;
+	return (state);
 }

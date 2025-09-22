@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   selector.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/10 21:41:42 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/20 17:35:01 by patrik           ###   ########.fr       */
+/*   Created: 2025/09/22 18:27:56 by ptison            #+#    #+#             */
+/*   Updated: 2025/09/22 18:27:57 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef SELECTOR_H
 # define SELECTOR_H

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: patrik <patrik@student.42.fr>              +#+  +:+       +#+         #
+#    By: ptison <ptison@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/17 11:24:23 by ptison            #+#    #+#              #
-#    Updated: 2025/09/20 11:15:21 by patrik           ###   ########.fr        #
+#    Updated: 2025/09/22 18:28:20 by ptison           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -98,7 +98,10 @@ SORT_SRCS   :=  src/sort/ft_heap_sort.c
 
 SEARCH_SRCS :=  src/search/ft_lower_bound.c
 
-SRCS        := $(CORE_SRCS) $(MEM_SRCS) $(STR_SRCS) $(IO_SRCS) $(CONV_SRCS) $(UTILS_SRCS) $(PRINTF_SRCS) $(MATH_SRCS) $(SORT_SRCS) $(SEARCH_SRCS)
+GET_NEXT_LINE_SRCS := src/get_next_line/get_next_line.c \
+                      src/get_next_line/get_next_line_utils.c
+
+SRCS        := $(CORE_SRCS) $(MEM_SRCS) $(STR_SRCS) $(IO_SRCS) $(CONV_SRCS) $(UTILS_SRCS) $(PRINTF_SRCS) $(MATH_SRCS) $(SORT_SRCS) $(SEARCH_SRCS) $(GET_NEXT_LINE_SRCS)
 
 ifdef BONUS
   SRCS      += $(LIST_SRCS)

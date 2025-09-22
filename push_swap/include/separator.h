@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   separator.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/09 19:24:28 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/20 17:29:27 by patrik           ###   ########.fr       */
+/*   Created: 2025/09/22 18:28:01 by ptison            #+#    #+#             */
+/*   Updated: 2025/09/22 18:28:03 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef SEPARATOR_H
 # define SEPARATOR_H

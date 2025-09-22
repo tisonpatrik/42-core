@@ -1,5 +1,18 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: ptison <ptison@student.42.fr>              +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2025/09/22 18:22:03 by ptison            #+#    #+#              #
+#    Updated: 2025/09/22 18:26:56 by ptison           ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 
 NAME        := bin/push_swap
+CHECKER     := bin/checker
 BIN_DIR     := bin
 MAKEFLAGS   += --silent
 
@@ -66,11 +79,12 @@ SRCS        := src/validator/input_parser.c \
 			   src/stack/tools.c \
 			   src/main.c
 
-# Bonus source files (if any)
-SRCS_BONUS  :=
+# Bonus source files (checker)
+SRCS_BONUS  := checker/main_bonus.c \
+			   checker/reader_bonus.c
 
 OBJS        := $(SRCS:src/%.c=bin/%.o)
-OBJS_BONUS  := $(SRCS_BONUS:src/%.c=bin/%.o)
+OBJS_BONUS  := $(SRCS_BONUS:checker/%.c=bin/checker_%.o)
 
 ifdef BONUS
   OBJS      += $(OBJS_BONUS)
@@ -83,18 +97,24 @@ all: $(NAME)
 $(NAME): $(LIBFT) $(OBJS) | $(BIN_DIR)
 	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
 
+$(CHECKER): $(LIBFT) $(OBJS_BONUS) bin/validator/input_parser.o bin/validator/normalization.o bin/validator/tokenizer.o bin/ops/sorting_state.o bin/solver/resutls_checker.o bin/stack/stack.o bin/stack/tools.o bin/ops/utils.o bin/stack/node.o bin/stack/ops.o | $(BIN_DIR)
+	@$(CC) $(CFLAGS) $(OBJS_BONUS) bin/validator/input_parser.o bin/validator/normalization.o bin/validator/tokenizer.o bin/ops/sorting_state.o bin/solver/resutls_checker.o bin/stack/stack.o bin/stack/tools.o bin/ops/utils.o bin/stack/node.o bin/stack/ops.o $(LIBFT) -o $(CHECKER)
+
 $(BIN_DIR):
 	@$(MKDIR_P) $(BIN_DIR)
 
 $(LIBFT):
-	@$(MAKE) -C $(LIBFT_DIR) bonus
+	@$(MAKE) -C $(LIBFT_DIR) bonus CHECKER_BUILD=1
 
 bin/%.o: src/%.c | $(BIN_DIR)
 	@$(MKDIR_P) $(dir $@)
 	@$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
-bonus:
-	@$(MAKE) BONUS=1 all
+bin/checker_%.o: checker/%.c | $(BIN_DIR)1
+	@$(MKDIR_P) $(dir $@)
+	@$(CC) $(CFLAGS) -Wno-sign-compare $(CPPFLAGS) -c $< -o $@
+
+bonus: $(CHECKER)
 
 debug:
 	@$(MAKE) CFLAGS="$(CFLAGS) $(DEBUG_FLAGS)" all
@@ -111,7 +131,7 @@ clean:
 	@$(MAKE) -C $(LIBFT_DIR) clean
 
 fclean: clean
-	@$(RM) $(NAME)
+	@$(RM) $(NAME) $(CHECKER)
 	@$(MAKE) -C $(LIBFT_DIR) fclean
 	@$(RM_RF) $(BIN_DIR)
 

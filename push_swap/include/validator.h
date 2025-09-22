@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   validator.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/09 19:24:56 by patrik            #+#    #+#             */
-/*   Updated: 2025/09/19 23:23:48 by patrik           ###   ########.fr       */
+/*   Created: 2025/09/22 18:28:18 by ptison            #+#    #+#             */
+/*   Updated: 2025/09/22 18:28:18 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef VALIDATOR_H
 # define VALIDATOR_H

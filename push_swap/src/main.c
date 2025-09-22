@@ -3,14 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 20:56:32 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/19 22:25:43 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/22 18:30:08 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/ops.h"
 #include "../include/solver.h"
 #include "../include/validator.h"
 #include <stdlib.h>
