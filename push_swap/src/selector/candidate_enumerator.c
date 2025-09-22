@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 20:41:17 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/19 23:07:30 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/22 11:11:24 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,20 @@
 #include <stdbool.h>
 #include <stdio.h>
 
+/*
+ * Creates a candidate move from stack B to stack A with calculated costs.
+ *
+ * This function calculates the optimal rotation costs for both stacks to
+ * position an element from stack B at the correct position in stack A.
+ * The costs are calculated using signed_cost() which determines whether
+ * to rotate forward or backward based on the shortest path.
+ *
+ * @param from_idx: Index of element in stack B (0-based)
+ * @param to_idx: Target index in stack A where element should be placed
+ * @param size_a: Current size of stack A
+ * @param size_b: Current size of stack B
+ * @return: Candidate structure with position and cost information
+ */
 static t_candidate	get_candidate(int from_idx, int to_idx, int size_a,
 		int size_b)
 {
@@ -35,6 +49,13 @@ static t_candidate	get_candidate(int from_idx, int to_idx, int size_a,
 	return (candidate);
 }
 
+/*
+ * The target position is determined by finding where the element from B
+ * should be inserted in A to maintain sorted order.
+ *
+ * @param snapshot: Snapshot containing current state of both stacks
+ * @param arena: Selector arena containing candidates array and metadata
+ */
 static void	populate_candidates(t_snapshot_arena *snapshot,
 		t_selector_arena *arena)
 {

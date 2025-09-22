@@ -12,6 +12,20 @@
 
 #include "../../include/selector.h"
 
+/*
+ * Counts breakpoints in stack A to assess sorting progress.
+ *
+ * A breakpoint occurs when an element is greater than the next element
+ * in the circular stack. This function counts both internal breakpoints
+ * (between consecutive elements) and the circular breakpoint (between
+ * last and first elements).
+ *
+ * Fewer breakpoints indicate better sorting progress, making this
+ * a useful heuristic for evaluating candidate moves.
+ *
+ * @param arena: Selector arena containing stack A snapshot
+ * @return: Number of breakpoints found in stack A
+ */
 static int	count_breakpoints(t_selector_arena *arena)
 {
 	int	breakpoints;
@@ -34,6 +48,21 @@ static int	count_breakpoints(t_selector_arena *arena)
 	return (breakpoints);
 }
 
+/*
+ * Calculates a sorting heuristic score for the current stack state.
+ *
+ * The heuristic combines breakpoint count with stack size to estimate
+ * the remaining work needed to sort the stack. The formula:
+ * - Raw score = breakpoints + stack_size
+ * - Final score = (raw_score / size_penalty) / heuristic_divisor
+ *
+ * This provides a normalized estimate that considers both the
+ * current disorder (breakpoints) and the scale of the problem (size).
+ * Lower scores indicate better sorting progress.
+ *
+ * @param arena: Selector arena containing configuration and stack state
+ * @return: Calculated sorting heuristic score
+ */
 int	calculate_sorting_heuristic(t_selector_arena *arena)
 {
 	int	breakpoints;

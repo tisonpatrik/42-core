@@ -6,13 +6,24 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 21:01:47 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/17 20:56:33 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/22 11:17:27 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/selector.h"
 #include "../../include/solver.h"
 
+/*
+ * Finds the index of the minimum element in the stack.
+ *
+ * This function traverses the entire stack to locate the element
+ * with the smallest value and returns its index (0-based).
+ * The search starts from the head of the stack and compares
+ * each element to find the minimum.
+ *
+ * @param stack: Stack to search for the minimum element
+ * @return: Index of the minimum element (0-based)
+ */
 static int	find_min_index(t_stack *stack)
 {
 	int		min_index;
@@ -37,6 +48,20 @@ static int	find_min_index(t_stack *stack)
 	return (min_index);
 }
 
+/*
+ * Performs the necessary rotations to align the minimum element to the top.
+ *
+ * This function executes the rotations based on the calculated cost:
+ * - Positive cost: performs forward rotations (RA)
+ * - Negative cost: performs reverse rotations (RRA)
+ *
+ * The cost represents the number of positions the minimum element
+ * needs to be moved to reach the top of the stack.
+ *
+ * @param ps: Sorting state containing the stacks
+ * @param cost: Number of rotations needed (positive for forward,
+	negative for reverse)
+ */
 static void	perform_rotations(t_sorting_state *ps, int cost)
 {
 	while (cost > 0)
@@ -51,6 +76,19 @@ static void	perform_rotations(t_sorting_state *ps, int cost)
 	}
 }
 
+/*
+ * Aligns the minimum element to the top of stack A.
+ *
+ * This function implements the final alignment step of the push_swap algorithm:
+ * 1. Finds the index of the minimum element in stack A
+ * 2. Calculates the optimal rotation cost using signed_cost()
+ * 3. Performs the necessary rotations to bring the minimum to the top
+ *
+ * The alignment ensures that the stack is in its final sorted state
+ * with the minimum element at the top, completing the sorting process.
+ *
+ * @param ps: Sorting state containing the stacks
+ */
 void	align_min_to_top(t_sorting_state *ps)
 {
 	int	size_a;

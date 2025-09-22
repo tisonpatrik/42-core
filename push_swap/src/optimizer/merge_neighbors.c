@@ -6,7 +6,7 @@
 /*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 20:49:24 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/19 23:15:04 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/22 11:37:50 by patrik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,21 @@ static t_list	*process_operation_list(t_list *src, bool *has_changed)
 	return (dst);
 }
 
+/*
+ * Merges adjacent operations that can be combined for better efficiency.
+ *
+ * This function implements the neighbor merging strategy:
+ * 1. Processes all adjacent operation pairs
+ * 2. Attempts to merge compatible operations
+ * 3. Returns optimized sequence with fewer operations
+ *
+ * The merging process reduces the total number of operations
+ * by combining operations that can be executed together.
+ *
+ * @param src: Source operation sequence to optimize
+ * @param changed: Pointer to flag indicating if changes were made
+ * @return: Optimized operation sequence with merged operations
+ */
 t_list	*merge_neighbors(t_list *src, bool *changed)
 {
 	if (!src || ft_lstsize(src) < 2)
