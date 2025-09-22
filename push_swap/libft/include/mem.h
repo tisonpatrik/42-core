@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 13:28:28 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/22 18:28:43 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/22 22:16:22 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,7 @@ void		ft_swap_int(int *a, int *b);
 t_arena		*ft_arena_create(size_t size);
 void		ft_arena_destroy(t_arena *arena);
 void		*ft_arena_alloc(t_arena *arena, size_t size);
+
+void		*ft_realloc(void *ptr, size_t old_size, size_t new_size);
 
 #endif

@@ -6,57 +6,17 @@
 /*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 18:18:20 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/22 18:30:08 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/22 22:22:02 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/get_next_line.h"
-#include "unistd.h"
-#include <stddef.h>
+#include "internal.h"
 #include <stdlib.h>
-
-void	*ft_memcpy(void *dest, const void *src, size_t n)
-{
-	size_t				i;
-	unsigned char		*d;
-	const unsigned char	*s = (const unsigned char *)src;
-
-	i = 0;
-	d = (unsigned char *)dest;
-	while (i < n)
-	{
-		d[i] = s[i];
-		i++;
-	}
-	return (dest);
-}
-
-void	*ft_realloc(void *ptr, size_t old_size, size_t new_size)
-{
-	void	*new_ptr;
-	size_t	copy_size;
-
-	if (new_size == 0)
-	{
-		free(ptr);
-		return (NULL);
-	}
-	if (ptr == NULL)
-		return (malloc(new_size));
-	new_ptr = malloc(new_size);
-	if (new_ptr == NULL)
-		return (NULL);
-	copy_size = old_size;
-	if (new_size < old_size)
-		copy_size = new_size;
-	ft_memcpy(new_ptr, ptr, copy_size);
-	free(ptr);
-	return (new_ptr);
-}
+#include <unistd.h>
 
 int	read_to_buffer(int fd, t_buffer *buffer)
 {
-	ssize_t	bytes_read;
+	size_t	bytes_read;
 
 	bytes_read = read(fd, buffer->data, BUFFER_SIZE);
 	if (bytes_read <= 0)
@@ -86,4 +46,48 @@ void	copy_chunk_to_line(t_line *line, t_buffer *buffer, size_t chunk_size)
 		line->data[line->pos + j] = buffer->data[buffer->pos + j];
 		j++;
 	}
+}
+
+int	expand_line_buffer(t_line *line, size_t needed_size)
+{
+	size_t	new_size;
+	char	*new_line;
+
+	if (line->size == 0)
+		new_size = needed_size;
+	else
+		new_size = line->size * 2;
+	if (new_size < needed_size)
+		new_size = needed_size;
+	new_line = ft_realloc(line->data, line->size, new_size);
+	if (!new_line)
+	{
+		free(line->data);
+		return (0);
+	}
+	line->data = new_line;
+	line->size = new_size;
+	return (1);
+}
+
+int	process_buffer_chunk(t_line *line, t_buffer *buffer)
+{
+	size_t	newline_pos;
+	size_t	chunk_size;
+
+	newline_pos = find_newline_in_buffer(buffer->data, buffer->pos,
+			buffer->size);
+	chunk_size = newline_pos - buffer->pos;
+	if (newline_pos < buffer->size && buffer->data[newline_pos] == '\n')
+		chunk_size++;
+	if (line->pos + chunk_size + 1 > line->size)
+	{
+		if (!expand_line_buffer(line, line->pos + chunk_size + 1))
+			return (0);
+	}
+	copy_chunk_to_line(line, buffer, chunk_size);
+	line->pos += chunk_size;
+	line->data[line->pos] = '\0';
+	buffer->pos += chunk_size;
+	return (1);
 }

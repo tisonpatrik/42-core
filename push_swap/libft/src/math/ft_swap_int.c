@@ -6,11 +6,9 @@
 /*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 22:05:00 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/22 18:30:08 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/22 22:02:09 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "../../include/math.h"
 
 /**
  * @brief Swaps two integer values
