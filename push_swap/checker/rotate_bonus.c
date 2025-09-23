@@ -1,20 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   rotate.c                                           :+:      :+:    :+:   */
+/*   rotate_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:58:29 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/23 18:35:43 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/23 19:50:52 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../include/stack.h"
+#include "checker_bonus.h"
 #include <stdbool.h>
 #include <unistd.h>
-#include "../include/stack.h"
 
-bool	rotate(t_stack **stack)
+static bool	rotate(t_stack **stack)
 {
 	t_node	*top_node;
 	t_node	*tail_node;
@@ -34,3 +35,27 @@ bool	rotate(t_stack **stack)
 	return (true);
 }
 
+bool	apply_rotate_operation(t_checker_state *state, t_operation op)
+{
+	if (op == RA)
+	{
+		if (get_size(state->a) < 2)
+			return (false);
+		return (rotate(&state->a));
+	}
+	else if (op == RB)
+	{
+		if (get_size(state->b) < 2)
+			return (false);
+		return (rotate(&state->b));
+	}
+	else if (op == RR)
+	{
+		if (get_size(state->a) < 2 || get_size(state->b) < 2)
+			return (false);
+		if (!rotate(&state->a) || !rotate(&state->b))
+			return (false);
+		return (true);
+	}
+	return (false);
+}

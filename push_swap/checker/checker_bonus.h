@@ -6,18 +6,16 @@
 /*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 18:27:26 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/23 18:37:39 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/23 19:50:22 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
-#ifndef CHECKER_H
-# define CHECKER_H
+#ifndef CHECKER_BONUS_H
+# define CHECKER_BONUS_H
 
 # include "../../libft/include/libft.h"
 # include "../include/ops.h"
 # include "../include/validator.h"
-
 
 typedef struct s_checker_state
 {
@@ -27,15 +25,16 @@ typedef struct s_checker_state
 	int			len_of_inputs;
 }				t_checker_state;
 
-
 t_list			*get_operations(void);
 t_operation		parse_operation_string(const char *str);
-t_checker_state	*create_state_for_checker(int *input, int count, t_list *operations);
+t_checker_state	*create_state_for_checker(int *input, int count,
+					t_list *operations);
 void			check_result(t_checker_state *state);
 void			free_checker_state(t_checker_state *state);
-bool			push(t_stack **source, t_stack **target);
-bool			swap(t_stack **stack);
-bool			rotate(t_stack **stack);
-bool			reverse_rotate(t_stack **stack);
+bool			apply_swap_operation(t_checker_state *state, t_operation op);
+bool			apply_push_operation(t_checker_state *state, t_operation op);
+bool			apply_rotate_operation(t_checker_state *state, t_operation op);
+bool			apply_reverse_rotate_operation(t_checker_state *state,
+					t_operation op);
 
 #endif

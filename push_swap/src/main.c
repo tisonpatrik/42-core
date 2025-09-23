@@ -26,7 +26,6 @@ int	main(int argc, char *argv[])
 		return (1);
 	}
 	state = create_sorting_state(result.input, result.count);
-	
 	free(result.input);
 	if (!state)
 	{

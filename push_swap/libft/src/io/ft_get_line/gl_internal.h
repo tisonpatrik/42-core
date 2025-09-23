@@ -1,28 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fgl_internal.h                                     :+:      :+:    :+:   */
+/*   gl_internal.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 22:10:44 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/23 10:59:50 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/23 19:17:35 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GNL_INTERNAL_H
-# define GNL_INTERNAL_H
+#ifndef GL_INTERNAL_H
+# define GL_INTERNAL_H
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 4096
 # endif
 
-#include "../../../include/io.h"
-#include "../../../include/mem.h" 
-
+# include "../../../include/io.h"
+# include "../../../include/mem.h"
 # include <stddef.h>
-#include <unistd.h>
-#include <stdlib.h> 
+# include <stdlib.h>
+# include <unistd.h>
 
 typedef struct s_buffer
 {

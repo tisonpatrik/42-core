@@ -10,12 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #ifndef STACK_H
 # define STACK_H
 
-# include <stdbool.h>
 # include "../libft/include/libft.h"
+# include <stdbool.h>
 
 typedef struct s_node
 {

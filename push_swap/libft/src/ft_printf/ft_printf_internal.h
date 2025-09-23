@@ -6,19 +6,17 @@
 /*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 11:03:49 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/23 11:27:42 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/23 19:25:01 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_PRINTF_INTERNAL_H
 # define FT_PRINTF_INTERNAL_H
 
-#include "../../include/io.h"
-#include "../../include/str.h"
-
+# include "../../include/io.h"
+# include "../../include/str.h"
 # include <stdarg.h>
-#include <unistd.h>
-
+# include <unistd.h>
 
 int	handle_char(va_list args);
 int	handle_string(va_list args);

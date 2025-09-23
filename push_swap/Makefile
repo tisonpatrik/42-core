@@ -6,7 +6,7 @@
 #    By: ptison <ptison@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/22 18:22:03 by ptison            #+#    #+#              #
-#    Updated: 2025/09/23 18:50:16 by ptison           ###   ########.fr        #
+#    Updated: 2025/09/23 19:28:58 by ptison           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -100,12 +100,12 @@ SRCS        := $(VALIDATOR_SRCS) $(OPS_SRCS) $(SEPARATOR_SRCS) $(SELECTOR_SRCS) 
 # Bonus source files (checker)
 SRCS_BONUS  := checker/main_bonus.c \
                checker/reader_bonus.c \
-               checker/sorting_state.c \
-               checker/resutls_checker.c \
-               checker/push.c \
-               checker/swap.c \
-               checker/rotate.c \
-               checker/reverse_rotate.c
+               checker/sorting_state_bonus.c \
+               checker/resutls_checker_bonus.c \
+               checker/push_bonus.c \
+               checker/swap_bonus.c \
+               checker/rotate_bonus.c \
+               checker/reverse_rotate_bonus.c
 
 OBJS        := $(SRCS:src/%.c=bin/%.o)
 OBJS_BONUS  := $(SRCS_BONUS:checker/%.c=bin/checker_%.o)

@@ -12,7 +12,6 @@
 
 #include "ft_strtoi_internal.h"
 
-
 /**
  * @brief Calculate cutoff value for overflow detection
  *

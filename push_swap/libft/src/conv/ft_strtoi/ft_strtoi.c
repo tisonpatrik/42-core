@@ -41,11 +41,11 @@ static void	skip_whitespace(const char **current_position)
  * @param last_digit_limit Last digit threshold
  * @return Tuple of (accumulated_value, overflow_flag, any_digits_flag)
  */
-static  t_parse_result	parse_digits(const char **current_position,
+static t_parse_result	parse_digits(const char **current_position,
 		unsigned int overflow_threshold, unsigned int last_digit_limit)
 {
 	t_parse_result	result;
-	unsigned int			current_digit;
+	unsigned int	current_digit;
 
 	result.accumulated_value = 0;
 	result.overflow_detected = 0;
@@ -72,10 +72,10 @@ static  t_parse_result	parse_digits(const char **current_position,
 
 int	ft_strtoi10(const char *nptr, char **endptr)
 {
-	const char				*current_position;
-	int						is_negative;
-	unsigned int			overflow_threshold;
-	unsigned int			last_digit_limit;
+	const char		*current_position;
+	int				is_negative;
+	unsigned int	overflow_threshold;
+	unsigned int	last_digit_limit;
 	t_parse_result	result;
 
 	current_position = nptr;

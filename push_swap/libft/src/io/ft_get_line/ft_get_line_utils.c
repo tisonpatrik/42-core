@@ -6,11 +6,11 @@
 /*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 18:18:20 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/23 12:59:53 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/23 19:18:01 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fgl_internal.h"
+#include "gl_internal.h"
 
 int	read_to_buffer(int fd, t_buffer *buffer)
 {

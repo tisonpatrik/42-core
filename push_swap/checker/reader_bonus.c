@@ -6,13 +6,11 @@
 /*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 18:27:42 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/23 18:58:39 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/23 19:45:35 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../include/ops.h"
-#include "../../libft/include/libft.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -42,39 +40,67 @@ static t_operation	parse_operation_string(const char *str)
 		return (RRR);
 	else if (ft_strncmp(str, "rr", 3) == 0 && ft_strlen(str) == 2)
 		return (RR);
-	else
-		return (OP_INVALID);
+	return (OP_INVALID);
 }
 
 static t_operation	process_operation_line(void)
 {
 	char		*line;
+	char		*trimmed_line;
 	t_operation	op;
-	size_t		len;
-	ssize_t		bytes_read;
 
-	line = NULL;
-	len = 0;
-	bytes_read = getline(&line, &len, stdin);
-	if (bytes_read <= 0)
-	{
-		if (line)
-			free(line);
+	line = ft_get_line(STDIN_FILENO);
+	if (line == NULL)
 		return (OP_EOF);
-	}
-	// Remove newline
-	if (bytes_read > 0 && line[bytes_read - 1] == '\n')
-		line[bytes_read - 1] = '\0';
-	op = parse_operation_string(line);
+	trimmed_line = ft_strtrim(line, "\n");
 	free(line);
+	if (trimmed_line == NULL)
+		return (OP_ALLOC_FAIL);
+	op = parse_operation_string(trimmed_line);
+	free(trimmed_line);
 	return (op);
 }
 
+static t_list	*create_operation_node(t_operation op)
+{
+	t_operation	*op_ptr;
+	t_list		*new_node;
+
+	op_ptr = malloc(sizeof(t_operation));
+	if (!op_ptr)
+		return (NULL);
+	*op_ptr = op;
+	new_node = ft_lstnew(op_ptr);
+	if (!new_node)
+	{
+		free(op_ptr);
+		return (NULL);
+	}
+	return (new_node);
+}
+
+static int	add_operation_to_list(t_list **operations, t_operation op)
+{
+	t_list	*new_node;
+
+	if (op == OP_INVALID)
+	{
+		ft_lstclear(operations, free);
+		return (0);
+	}
+	new_node = create_operation_node(op);
+	if (!new_node)
+	{
+		ft_lstclear(operations, free);
+		return (0);
+	}
+	ft_lstadd_back(operations, new_node);
+	return (1);
+}
 
 t_list	*get_operations(void)
 {
 	t_list		*operations;
-	t_list		*new_node;
 	t_operation	op;
 
 	operations = NULL;
@@ -85,26 +111,8 @@ t_list	*get_operations(void)
 			break ;
 		if (op == OP_ALLOC_FAIL)
 			continue ;
-		if (op == OP_INVALID)
-		{
-			ft_lstclear(&operations, free);
+		if (!add_operation_to_list(&operations, op))
 			return (NULL);
-		}
-		t_operation *op_ptr = malloc(sizeof(t_operation));
-		if (!op_ptr)
-		{
-			ft_lstclear(&operations, free);
-			return (NULL);
-		}
-		*op_ptr = op;
-		new_node = ft_lstnew(op_ptr);
-		if (!new_node)
-		{
-			free(op_ptr);
-			ft_lstclear(&operations, free);
-			return (NULL);
-		}
-		ft_lstadd_back(&operations, new_node);
 	}
 	return (operations);
 }

@@ -1,20 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push.c                                             :+:      :+:    :+:   */
+/*   push_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 10:21:27 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/23 18:36:13 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/23 19:50:37 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../include/stack.h"
+#include "checker_bonus.h"
 #include <stdbool.h>
 #include <unistd.h>
-#include "../include/stack.h"
 
-bool	push(t_stack **source, t_stack **target)
+static bool	push(t_stack **source, t_stack **target)
 {
 	t_node	*popped_node;
 
@@ -31,3 +32,19 @@ bool	push(t_stack **source, t_stack **target)
 	return (true);
 }
 
+bool	apply_push_operation(t_checker_state *state, t_operation op)
+{
+	if (op == PA)
+	{
+		if (get_size(state->b) == 0)
+			return (false);
+		return (push(&state->b, &state->a));
+	}
+	else if (op == PB)
+	{
+		if (get_size(state->a) == 0)
+			return (false);
+		return (push(&state->a, &state->b));
+	}
+	return (false);
+}

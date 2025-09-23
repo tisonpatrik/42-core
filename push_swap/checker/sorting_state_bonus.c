@@ -10,10 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <unistd.h>
 #include "../include/stack.h"
 #include "checker_bonus.h"
+#include <stdlib.h>
+#include <unistd.h>
 
 static void	cleanup_failed_state(t_checker_state *state, t_stack *a, t_stack *b)
 {
@@ -66,10 +66,11 @@ void	free_checker_state(t_checker_state *state)
 	free(state);
 }
 
-t_checker_state	*create_state_for_checker(int *numbers, int n, t_list *operations)
+t_checker_state	*create_state_for_checker(int *numbers, int n,
+		t_list *operations)
 {
 	t_checker_state	*state;
-	
+
 	state = create_checker_state(numbers, n);
 	if (!state)
 		return (NULL);

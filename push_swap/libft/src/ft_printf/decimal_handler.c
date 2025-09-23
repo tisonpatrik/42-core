@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "ft_printf_internal.h"
 
 int	handle_decimal(va_list args)
