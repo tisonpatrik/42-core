@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:12:25 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/23 11:20:32 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/23 11:32:08 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,10 @@ int	handle_pointer(va_list args)
 	ptr = va_arg(args, void *);
 	if (ptr == NULL)
 	{
-		ft_putstr_fd("(nil)", 1);
+		ft_putstr_fd("(nil)", STDOUT_FILENO);
 		return (5);
 	}
-	ft_putstr_fd("0x", 1);
+	ft_putstr_fd("0x", STDOUT_FILENO);
 	hex_count = get_hex_count((unsigned long)ptr);
 	ft_putptr(ptr);
 	return (2 + hex_count);

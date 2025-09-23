@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 11:03:49 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/23 11:25:15 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/23 11:27:42 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,4 @@ int	handle_decimal(va_list args);
 int	handle_unsigned(va_list args);
 int	handle_hex(char type, va_list args);
 int	handle_percent(void);
-int	dispatch_conversion(char type, va_list args);
-char	parse_format(const char *format, int *i);
 #endif

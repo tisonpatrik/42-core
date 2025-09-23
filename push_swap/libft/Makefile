@@ -6,7 +6,7 @@
 #    By: ptison <ptison@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/17 11:24:23 by ptison            #+#    #+#              #
-#    Updated: 2025/09/23 11:00:29 by ptison           ###   ########.fr        #
+#    Updated: 2025/09/23 11:32:08 by ptison           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,6 +60,9 @@ IO_SRCS     :=  src/io/ft_putchar_fd.c \
                 src/io/ft_putendl_fd.c \
                 src/io/ft_putnbr_fd.c \
                 src/io/ft_putstr_fd.c \
+                src/io/ft_putnbr_hex.c \
+                src/io/ft_putnbr_unsigned.c \
+                src/io/ft_putptr.c \
                 src/io/ft_get_line/ft_get_line.c \
                 src/io/ft_get_line/ft_get_line_utils.c
 
@@ -68,17 +71,14 @@ CONV_SRCS   :=  src/conv/ft_atoi.c \
 				src/conv/ft_strtoi/utils.c \
 				src/conv/ft_strtoi/ft_strtoi.c
 
-PRINTF_SRCS :=  src/ft_printf/dispatcher.c \
-                src/ft_printf/ft_printf.c \
-                src/ft_printf/parser.c \
-                src/ft_printf/utils.c \
-                src/ft_printf/handlers/char_handler.c \
-                src/ft_printf/handlers/decimal_handler.c \
-                src/ft_printf/handlers/hex_handler.c \
-                src/ft_printf/handlers/percent_handler.c \
-                src/ft_printf/handlers/pointer_handler.c \
-                src/ft_printf/handlers/string_handler.c \
-                src/ft_printf/handlers/unsigned_handler.c
+PRINTF_SRCS :=  src/ft_printf/ft_printf.c \
+                src/ft_printf/char_handler.c \
+                src/ft_printf/decimal_handler.c \
+                src/ft_printf/hex_handler.c \
+                src/ft_printf/percent_handler.c \
+                src/ft_printf/pointer_handler.c \
+                src/ft_printf/string_handler.c \
+                src/ft_printf/unsigned_handler.c
 
 LIST_SRCS   :=  src/list/ft_lstadd_back_bonus.c \
                 src/list/ft_lstadd_front_bonus.c \

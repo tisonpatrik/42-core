@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 13:35:10 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/23 11:17:21 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/23 11:32:08 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,20 +22,21 @@ int	handle_decimal(va_list args)
 	n = va_arg(args, int);
 	count = 0;
 	temp = n;
-	if (n < 0)
-		count = 1;
 	if (n == 0)
 		count = 1;
 	else
 	{
 		if (temp < 0)
+		{
 			temp = -temp;
+			count = 1;
+		}
 		while (temp > 0)
 		{
 			temp /= 10;
 			count++;
 		}
 	}
-	ft_putnbr_fd(n, 1);
+	ft_putnbr_fd(n, STDOUT_FILENO);
 	return (count);
 }

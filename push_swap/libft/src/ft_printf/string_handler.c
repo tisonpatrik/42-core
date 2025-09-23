@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:12:25 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/23 11:20:35 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/23 11:32:08 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,6 @@ int	handle_string(va_list args)
 	if (s == NULL)
 		s = "(null)";
 	count = ft_strlen(s);
-	ft_putstr_fd(s, 1);
+	ft_putstr_fd(s, STDOUT_FILENO);
 	return (count);
 }
