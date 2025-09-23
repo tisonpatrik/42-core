@@ -6,15 +6,16 @@
 /*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:58:57 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/23 18:26:18 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/23 18:35:10 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/ops.h"
 #include <stdlib.h>
 #include <unistd.h>
+#include "../include/stack.h"
+#include "checker_bonus.h"
 
-static void	cleanup_failed_state(t_sorting_state *state, t_stack *a, t_stack *b)
+static void	cleanup_failed_state(t_checker_state *state, t_stack *a, t_stack *b)
 {
 	if (a)
 		free_stack(a);
@@ -24,15 +25,15 @@ static void	cleanup_failed_state(t_sorting_state *state, t_stack *a, t_stack *b)
 		free(state);
 }
 
-t_sorting_state	*create_sorting_state(int *numbers, int len)
+static t_checker_state	*create_checker_state(int *numbers, int len)
 {
-	t_sorting_state	*state;
+	t_checker_state	*state;
 	t_stack			*a;
 	t_stack			*b;
 
 	if (!numbers || len <= 0)
 		return (NULL);
-	state = malloc(sizeof(t_sorting_state));
+	state = malloc(sizeof(t_checker_state));
 	if (!state)
 		return (NULL);
 	a = create_stack();
@@ -50,7 +51,7 @@ t_sorting_state	*create_sorting_state(int *numbers, int len)
 	return (state);
 }
 
-void	free_sorting_state(t_sorting_state *state)
+void	free_checker_state(t_checker_state *state)
 {
 	if (!state)
 		return ;
@@ -65,22 +66,13 @@ void	free_sorting_state(t_sorting_state *state)
 	free(state);
 }
 
-void	save_operation(t_sorting_state *state, t_operation operation)
+t_checker_state	*create_state_for_checker(int *numbers, int n, t_list *operations)
 {
-	t_list	*new_node;
-	int		*op_ptr;
-
+	t_checker_state	*state;
+	
+	state = create_checker_state(numbers, n);
 	if (!state)
-		return ;
-	op_ptr = malloc(sizeof(int));
-	if (!op_ptr)
-		return ;
-	*op_ptr = operation;
-	new_node = ft_lstnew(op_ptr);
-	if (!new_node)
-	{
-		free(op_ptr);
-		return ;
-	}
-	ft_lstadd_back(&state->operations, new_node);
+		return (NULL);
+	state->operations = operations;
+	return (state);
 }

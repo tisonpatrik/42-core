@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:50:33 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/22 18:27:46 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/23 18:32:30 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,10 @@ typedef enum e_operation
 	RR,
 	RRA,
 	RRB,
-	RRR
+	RRR,
+	OP_INVALID = -1,
+	OP_EOF = -2,
+	OP_ALLOC_FAIL = -3
 }				t_operation;
 
 typedef struct s_sorting_state
@@ -40,8 +43,6 @@ typedef struct s_sorting_state
 }				t_sorting_state;
 
 t_sorting_state	*create_sorting_state(int *numbers, int n);
-t_sorting_state	*create_state_for_checker(int *numbers, int n,
-					t_list *operations);
 void			free_sorting_state(t_sorting_state *state);
 void			save_operation(t_sorting_state *state, t_operation operation);
 void			print_operation(t_operation op);

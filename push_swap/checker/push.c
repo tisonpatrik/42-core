@@ -1,35 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   resutls_checker.c                                  :+:      :+:    :+:   */
+/*   push.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/22 18:07:40 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/22 18:30:08 by ptison           ###   ########.fr       */
+/*   Created: 2025/08/17 10:21:27 by ptison            #+#    #+#             */
+/*   Updated: 2025/09/23 18:36:13 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/solver.h"
+#include <stdbool.h>
+#include <unistd.h>
+#include "../include/stack.h"
 
-void validate_inputs(t_sorting_state *state)
+bool	push(t_stack **source, t_stack **target)
 {
-    if (state->a->size == 0)
-    {
-        exit(1);
-    }
-    if (is_sorted(state->a))
-    {
-        ft_printf("OK\n");
-        exit(1);
-    }
+	t_node	*popped_node;
+
+	if (!source || !*source)
+		return (false);
+	if (!target || !*target)
+		return (false);
+	if (get_size(*source) == 0)
+		return (false);
+	popped_node = pop(source);
+	if (!popped_node)
+		return (false);
+	push_to_stack(*target, popped_node);
+	return (true);
 }
 
-
-void	check_result(t_sorting_state *state)
-{
-	if (is_sorted(state->a))
-		ft_printf("OK\n");
-	else
-		ft_printf("KO\n");
-}
