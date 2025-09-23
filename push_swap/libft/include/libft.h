@@ -6,17 +6,15 @@
 /*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 13:28:28 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/22 18:28:30 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/23 12:54:26 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 
-/* Include all libft modules */
 # include "conv.h"
 # include "core.h"
-# include "get_next_line.h"
 # include "io.h"
 # include "list.h"
 # include "math.h"
