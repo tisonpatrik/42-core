@@ -6,17 +6,12 @@
 /*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:12:25 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/22 18:29:49 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/23 11:18:44 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/printf.h"
-#include "../../include/io.h"
-#include <stdarg.h>
-#include <unistd.h>
+#include "ft_printf_internal.h"
 
-int		dispatch_conversion(char type, va_list args);
-char	parse_format(const char *format, int *i);
 
 int	ft_printf(const char *format, ...)
 {

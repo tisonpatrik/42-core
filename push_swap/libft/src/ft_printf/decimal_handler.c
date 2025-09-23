@@ -1,37 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   unsigned_handler.c                                 :+:      :+:    :+:   */
+/*   decimal_handler.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/21 21:12:25 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/22 18:30:08 by ptison           ###   ########.fr       */
+/*   Created: 2025/08/17 13:35:10 by ptison            #+#    #+#             */
+/*   Updated: 2025/09/23 11:17:21 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../include/printf.h"
-#include <stdarg.h>
 
-int	handle_unsigned(va_list args)
+#include "ft_printf_internal.h"
+
+int	handle_decimal(va_list args)
 {
-	unsigned int	n;
-	int				count;
-	unsigned int	temp;
+	int		n;
+	int		count;
+	long	temp;
 
-	n = va_arg(args, unsigned int);
+	n = va_arg(args, int);
 	count = 0;
 	temp = n;
+	if (n < 0)
+		count = 1;
 	if (n == 0)
 		count = 1;
 	else
 	{
+		if (temp < 0)
+			temp = -temp;
 		while (temp > 0)
 		{
 			temp /= 10;
 			count++;
 		}
 	}
-	ft_putnbr_unsigned(n);
+	ft_putnbr_fd(n, 1);
 	return (count);
 }

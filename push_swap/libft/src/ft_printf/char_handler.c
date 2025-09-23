@@ -1,18 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   printf.h                                           :+:      :+:    :+:   */
+/*   char_handler.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/17 12:00:25 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/23 11:06:16 by ptison           ###   ########.fr       */
+/*   Created: 2025/05/21 21:12:25 by ptison            #+#    #+#             */
+/*   Updated: 2025/09/23 11:16:54 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PRINTF_H
-# define PRINTF_H
+#include "ft_printf_internal.h"
 
-int		ft_printf(const char *fmt, ...);
+int	handle_char(va_list args)
+{
+	char	c;
 
-#endif
+	c = va_arg(args, int);
+	ft_putchar_fd(c, 1);
+	return (1);
+}

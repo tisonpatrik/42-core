@@ -1,28 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   string_handler.c                                   :+:      :+:    :+:   */
+/*   hex_handler.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:12:25 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/22 18:30:08 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/23 11:19:32 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../include/io.h"
-#include "../../../include/str.h"
-#include <stdarg.h>
+#include "ft_printf_internal.h"
 
-int	handle_string(va_list args)
+int	handle_hex(char type, va_list args)
 {
-	char	*s;
-	int		count;
+	unsigned int	n;
+	int				count;
+	unsigned int	temp;
 
-	s = va_arg(args, char *);
-	if (s == NULL)
-		s = "(null)";
-	count = ft_strlen(s);
-	ft_putstr_fd(s, 1);
+	n = va_arg(args, unsigned int);
+	count = 0;
+	temp = n;
+	if (n == 0)
+		count = 1;
+	else
+	{
+		while (temp > 0)
+		{
+			temp /= 16;
+			count++;
+		}
+	}
+	ft_putnbr_hex(n, (type == 'X'));
 	return (count);
 }

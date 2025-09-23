@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 13:28:28 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/23 10:59:24 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/23 11:25:37 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,5 +19,8 @@ void	ft_putstr_fd(char *s, int fd);
 void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
 char	*ft_get_line(int fd);
+void	ft_putnbr_unsigned(unsigned int n);
+void	ft_putnbr_hex(unsigned int n, int uppercase);
+void	ft_putptr(void *ptr);
 
 #endif

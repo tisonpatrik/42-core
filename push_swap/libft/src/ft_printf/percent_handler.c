@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   percent_handler.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 13:35:24 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/17 13:35:27 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/23 11:20:27 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../include/io.h"
+#include "ft_printf_internal.h"
 
 int	handle_percent(void)
 {

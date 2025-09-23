@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   dispatcher.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 13:34:55 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/17 13:34:55 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/23 11:17:25 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "handlers/handlers.h"
-#include <stdarg.h>
+#include "ft_printf_internal.h"
+
 
 int	dispatch_conversion(char type, va_list args)
 {

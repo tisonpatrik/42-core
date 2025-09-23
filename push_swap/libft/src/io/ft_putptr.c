@@ -1,23 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   char_handler.c                                     :+:      :+:    :+:   */
+/*   ft_putptr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/21 21:12:25 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/22 18:30:08 by ptison           ###   ########.fr       */
+/*   Created: 2025/09/23 11:24:32 by ptison            #+#    #+#             */
+/*   Updated: 2025/09/23 11:24:41 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../include/io.h"
-#include <stdarg.h>
+#include "../../include/io.h"
 
-int	handle_char(va_list args)
+void	ft_putptr(void *ptr)
 {
-	char	c;
+	unsigned long	addr;
+	char			*hex_digits;
+	char			buffer[32];
+	int				i;
 
-	c = va_arg(args, int);
-	ft_putchar_fd(c, 1);
-	return (1);
+	addr = (unsigned long)ptr;
+	hex_digits = "0123456789abcdef";
+	i = 0;
+	while (addr >= 16)
+	{
+		buffer[i++] = hex_digits[addr % 16];
+		addr /= 16;
+	}
+	buffer[i++] = hex_digits[addr];
+	while (i > 0)
+		ft_putchar_fd(buffer[--i], 1);
 }

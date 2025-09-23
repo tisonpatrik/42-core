@@ -6,14 +6,11 @@
 /*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:12:25 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/22 18:30:08 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/23 11:20:32 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../include/io.h"
-#include "../../../include/printf.h"
-#include <stdarg.h>
-#include <stdlib.h>
+#include "ft_printf_internal.h"
 
 int	get_hex_count(unsigned long ptr)
 {

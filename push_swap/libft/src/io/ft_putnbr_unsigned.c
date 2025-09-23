@@ -1,39 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   hex_handler.c                                      :+:      :+:    :+:   */
+/*   ft_putnbr_unsigned.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/21 21:12:25 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/22 18:30:08 by ptison           ###   ########.fr       */
+/*   Created: 2025/09/23 11:22:51 by ptison            #+#    #+#             */
+/*   Updated: 2025/09/23 11:23:14 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../include/printf.h"
-#include "../../../include/io.h"
-#include "../../../include/conv.h"
-#include <stdarg.h>
+#include "../../include/io.h"
 
-int	handle_hex(char type, va_list args)
+void	ft_putnbr_unsigned(unsigned int n)
 {
-	unsigned int	n;
-	int				count;
+	int				digits;
 	unsigned int	temp;
+	int				i;
 
-	n = va_arg(args, unsigned int);
-	count = 0;
+	digits = 1;
 	temp = n;
-	if (n == 0)
-		count = 1;
-	else
+	while (temp >= 10)
 	{
-		while (temp > 0)
-		{
-			temp /= 16;
-			count++;
-		}
+		digits++;
+		temp /= 10;
 	}
-	ft_putnbr_hex(n, (type == 'X'));
-	return (count);
+	while (digits > 0)
+	{
+		temp = n;
+		i = 1;
+		while (i < digits)
+		{
+			temp /= 10;
+			i++;
+		}
+		ft_putchar_fd((temp % 10) + '0', 1);
+		digits--;
+	}
 }
