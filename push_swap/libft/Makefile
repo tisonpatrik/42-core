@@ -6,7 +6,7 @@
 #    By: ptison <ptison@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/17 11:24:23 by ptison            #+#    #+#              #
-#    Updated: 2025/09/22 21:39:35 by ptison           ###   ########.fr        #
+#    Updated: 2025/09/23 11:00:29 by ptison           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,8 @@ MEM_SRCS    :=  src/mem/ft_arena.c \
                 src/mem/ft_memcmp.c \
                 src/mem/ft_memcpy.c \
                 src/mem/ft_memmove.c \
-                src/mem/ft_memset.c
+                src/mem/ft_memset.c \
+                src/mem/ft_realloc.c
 
 STR_SRCS    :=  src/str/ft_split.c \
                 src/str/ft_strchr.c \
@@ -58,7 +59,9 @@ STR_SRCS    :=  src/str/ft_split.c \
 IO_SRCS     :=  src/io/ft_putchar_fd.c \
                 src/io/ft_putendl_fd.c \
                 src/io/ft_putnbr_fd.c \
-                src/io/ft_putstr_fd.c
+                src/io/ft_putstr_fd.c \
+                src/io/ft_get_line/ft_get_line.c \
+                src/io/ft_get_line/ft_get_line_utils.c
 
 CONV_SRCS   :=  src/conv/ft_atoi.c \
                 src/conv/ft_itoa.c \
@@ -95,10 +98,7 @@ SORT_SRCS   :=  src/sort/ft_heap_sort.c
 
 SEARCH_SRCS :=  src/search/ft_lower_bound.c
 
-GET_NEXT_LINE_SRCS := src/get_next_line/get_next_line.c \
-                      src/get_next_line/get_next_line_utils.c
-
-SRCS        := $(CORE_SRCS) $(MEM_SRCS) $(STR_SRCS) $(IO_SRCS) $(CONV_SRCS) $(PRINTF_SRCS) $(MATH_SRCS) $(SORT_SRCS) $(SEARCH_SRCS) $(GET_NEXT_LINE_SRCS)
+SRCS        := $(CORE_SRCS) $(MEM_SRCS) $(STR_SRCS) $(IO_SRCS) $(CONV_SRCS) $(PRINTF_SRCS) $(MATH_SRCS) $(SORT_SRCS) $(SEARCH_SRCS)
 
 ifdef BONUS
   SRCS      += $(LIST_SRCS)

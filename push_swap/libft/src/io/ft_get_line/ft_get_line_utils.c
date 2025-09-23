@@ -1,18 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   ft_get_line_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 18:18:20 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/22 22:22:02 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/23 10:56:29 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "internal.h"
-#include <stdlib.h>
-#include <unistd.h>
+#include "fgl_internal.h"
 
 int	read_to_buffer(int fd, t_buffer *buffer)
 {

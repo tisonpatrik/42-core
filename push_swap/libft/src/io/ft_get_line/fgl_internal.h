@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   internal.h                                         :+:      :+:    :+:   */
+/*   fgl_internal.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 22:10:44 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/22 22:21:48 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/23 10:59:50 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,19 @@
 # define GNL_INTERNAL_H
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
+#  define BUFFER_SIZE 4096
 # endif
 
-# include "../../include/get_next_line.h"
+#include "../../../include/io.h"
+#include "../../../include/mem.h" 
+
 # include <stddef.h>
+#include <unistd.h>
+#include <stdlib.h> 
 
 typedef struct s_buffer
 {
-	char	data[BUFFER_SIZE + 1];
+	char	data[BUFFER_SIZE];
 	size_t	pos;
 	size_t	size;
 }			t_buffer;

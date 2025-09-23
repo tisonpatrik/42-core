@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   ft_get_line.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 18:18:16 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/22 22:22:09 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/23 10:56:34 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "internal.h"
+#include "fgl_internal.h"
 
-char	*get_next_line(int fd)
+char	*ft_get_line(int fd)
 {
 	static t_buffer	buffer;
 	t_line			line;
