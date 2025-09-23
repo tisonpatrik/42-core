@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 18:18:20 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/23 10:56:29 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/23 12:59:53 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	read_to_buffer(int fd, t_buffer *buffer)
 {
-	size_t	bytes_read;
+	ssize_t	bytes_read;
 
 	bytes_read = read(fd, buffer->data, BUFFER_SIZE);
 	if (bytes_read <= 0)

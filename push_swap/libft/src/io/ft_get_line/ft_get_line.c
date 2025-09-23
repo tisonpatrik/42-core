@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 18:18:16 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/23 10:56:34 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/23 12:59:53 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,11 @@ char	*ft_get_line(int fd)
 		if (buffer.pos >= buffer.size)
 		{
 			if (!read_to_buffer(fd, &buffer))
+			{
+				if (line.data == NULL)
+					return (NULL);
 				break ;
+			}
 		}
 		if (!process_buffer_chunk(&line, &buffer))
 			return (NULL);
