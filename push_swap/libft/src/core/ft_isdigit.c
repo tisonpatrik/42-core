@@ -6,11 +6,10 @@
 /*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 20:08:37 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/22 18:29:25 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/23 11:33:06 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/core.h"
 
 /**
  * @brief Tests if a character is a decimal digit

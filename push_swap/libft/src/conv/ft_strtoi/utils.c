@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 18:56:40 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/19 19:02:56 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/23 12:18:24 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <errno.h>
-#include <limits.h>
+#include "ft_strtoi_internal.h"
+
 
 /**
  * @brief Calculate cutoff value for overflow detection

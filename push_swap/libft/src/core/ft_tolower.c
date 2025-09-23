@@ -6,11 +6,10 @@
 /*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 20:08:37 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/22 18:29:44 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/23 11:33:15 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/core.h"
 
 /**
  * @brief Converts a character to lowercase

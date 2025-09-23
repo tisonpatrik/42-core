@@ -6,28 +6,11 @@
 /*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 18:54:44 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/22 21:39:43 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/23 12:21:14 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../include/conv.h"
-#include "../../../include/core.h"
-#include "../../../include/ft_strtoi.h"
-#include <limits.h>
-
-unsigned int					calculate_cutoff(int is_negative);
-unsigned int					calculate_cutlim(unsigned int *cutoff_value);
-int								would_overflow(unsigned int current_accumulated,
-									unsigned int overflow_threshold,
-									unsigned int last_digit_limit,
-									unsigned int current_digit);
-
-int								handle_overflow(int is_negative);
-
-void							set_endptr(char **end_pointer,
-									const char *original_string_start,
-									const char *current_position,
-									int digits_found);
+#include "ft_strtoi_internal.h"
 
 static int	parse_sign(const char **p)
 {
@@ -58,10 +41,10 @@ static void	skip_whitespace(const char **current_position)
  * @param last_digit_limit Last digit threshold
  * @return Tuple of (accumulated_value, overflow_flag, any_digits_flag)
  */
-static struct s_parse_result	parse_digits(const char **current_position,
+static  t_parse_result	parse_digits(const char **current_position,
 		unsigned int overflow_threshold, unsigned int last_digit_limit)
 {
-	struct s_parse_result	result;
+	t_parse_result	result;
 	unsigned int			current_digit;
 
 	result.accumulated_value = 0;
@@ -93,7 +76,7 @@ int	ft_strtoi10(const char *nptr, char **endptr)
 	int						is_negative;
 	unsigned int			overflow_threshold;
 	unsigned int			last_digit_limit;
-	struct s_parse_result	result;
+	t_parse_result	result;
 
 	current_position = nptr;
 	is_negative = 0;
