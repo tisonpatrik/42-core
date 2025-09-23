@@ -36,3 +36,5 @@ obj/
 *.backup
 
 libftTester/
+printfTester/
+gnlTester/

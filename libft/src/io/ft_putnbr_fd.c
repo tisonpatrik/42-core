@@ -3,18 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:12:25 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/17 12:35:11 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/22 22:02:44 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/ft/io.h"
-#include <unistd.h>
-
-void	ft_putchar_fd(char c, int fd);
-void	ft_putstr_fd(char *s, int fd);
+#include "../../include/io.h"
 
 /**
  * @brief Outputs an integer to a file descriptor

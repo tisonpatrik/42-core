@@ -3,19 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:12:25 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/17 12:35:07 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/22 21:49:24 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/ft/str.h"
-#include "../../include/ft/mem.h"
-#include <stddef.h>
+#include "../../include/str.h"
+#include "../../include/mem.h"
 #include <stdlib.h>
 
-char	is_in_set(char c, const char *set)
+static char	is_in_set(char c, const char *set)
 {
 	while (*set)
 	{
@@ -26,7 +25,7 @@ char	is_in_set(char c, const char *set)
 	return (0);
 }
 
-size_t	find_start(const char *s1, const char *set)
+static size_t	find_start(const char *s1, const char *set)
 {
 	size_t	i;
 
@@ -36,7 +35,7 @@ size_t	find_start(const char *s1, const char *set)
 	return (i);
 }
 
-size_t	find_end(const char *s1, const char *set, size_t start)
+static size_t	find_end(const char *s1, const char *set, size_t start)
 {
 	size_t	pos;
 

@@ -3,14 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   ft_isdigit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 20:08:37 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/17 12:34:34 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/23 11:33:06 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "../../include/ft/core.h"
 
 /**
  * @brief Tests if a character is a decimal digit

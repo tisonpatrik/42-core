@@ -3,27 +3,44 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:12:25 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/17 13:30:35 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/23 11:32:08 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/ft/printf.h"
-#include "../../include/ft/io.h"
-#include <stdarg.h>
-#include <unistd.h>
+#include "ft_printf_internal.h"
 
-int		dispatch_conversion(char type, va_list args);
-char	parse_format(const char *format, int *i);
+static int	dispatch_conversion(char type, va_list args)
+{
+	if (type == 'c')
+		return (handle_char(args));
+	else if (type == 's')
+		return (handle_string(args));
+	else if (type == 'p')
+		return (handle_pointer(args));
+	else if (type == 'd' || type == 'i')
+		return (handle_decimal(args));
+	else if (type == 'u')
+		return (handle_unsigned(args));
+	else if (type == 'x' || type == 'X')
+		return (handle_hex(type, args));
+	else if (type == '%')
+		return (handle_percent());
+	else
+	{
+		ft_putchar_fd('%', STDOUT_FILENO);
+		ft_putchar_fd(type, STDOUT_FILENO);
+		return (2);
+	}
+}
 
 int	ft_printf(const char *format, ...)
 {
 	int		i;
 	int		total;
 	va_list	args;
-	char	type;
 
 	i = 0;
 	total = 0;
@@ -32,9 +49,8 @@ int	ft_printf(const char *format, ...)
 	{
 		if (format[i] == '%' && format[i + 1])
 		{
-			i++;
-			type = parse_format(format, &i);
-			total += dispatch_conversion(type, args);
+			total += dispatch_conversion(format[i + 1], args);
+			i += 2;
 		}
 		else
 		{

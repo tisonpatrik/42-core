@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:12:25 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/17 13:30:19 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/22 18:29:13 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/ft/conv.h"
+#include "../../include/conv.h"
 #include <stdlib.h>
 
-static int	get_len(int n)
+int	get_len(int n)
 {
 	int	len;
 

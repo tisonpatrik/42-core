@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:12:25 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/17 12:34:59 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/22 21:52:06 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/ft/str.h"
-
-size_t	ft_strlen(const char *s);
+#include <stdlib.h>
+#include "../../include/str.h"
 
 /**
  * @brief Concatenate string to a specific size

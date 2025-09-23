@@ -3,21 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:12:25 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/17 12:34:58 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/22 21:52:21 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/ft/str.h"
-#include <stddef.h>
+#include "../../include/str.h"
 #include <stdlib.h>
-#include <string.h>
-
-size_t	ft_strlen(const char *str);
-size_t	ft_strlcpy(char *dest, const char *src, size_t size);
-size_t	ft_strlcat(char *dest, const char *src, size_t dsize);
 
 /**
  * @brief Concatenates two strings
@@ -50,6 +44,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 
 /*
 #include <stdio.h>
+
 int	main(void)
 {
 	char	*s1;

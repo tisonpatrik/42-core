@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:12:25 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/17 12:35:12 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/22 22:00:50 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/ft/io.h"
-
-void	ft_putchar_fd(char c, int fd);
+#include "../../include/io.h"
 
 /**
  * @brief Outputs a string to a file descriptor

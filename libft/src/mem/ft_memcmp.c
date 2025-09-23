@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:24:11 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/17 12:34:51 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/22 18:30:08 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/ft/mem.h"
+#include "../../include/mem.h"
 
 /**
  * @brief Compares memory areas

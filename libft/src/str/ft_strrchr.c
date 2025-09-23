@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: patrik <patrik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:12:25 by ptison            #+#    #+#             */
-/*   Updated: 2025/08/17 12:35:06 by patrik           ###   ########.fr       */
+/*   Updated: 2025/09/22 21:49:32 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/ft/str.h"
-
-size_t	ft_strlen(const char *s);
+#include "../../include/str.h"
+#include <stdlib.h>
 
 /**
  * @brief Locates the last occurrence of a character in a string
