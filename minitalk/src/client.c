@@ -6,17 +6,14 @@
 /*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 21:14:51 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/24 14:58:35 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/24 15:56:21 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minitalk.h"
 
-int			g_confirm_flag = 0;
-
 static void	signal_handler(int sig)
 {
-	g_confirm_flag = 1;
 	(void)sig;
 }
 
@@ -33,9 +30,7 @@ static void	send_bit(int pid, int bit)
 		ft_putstr_fd("Error", 2);
 		exit(EXIT_FAILURE);
 	}
-	while (!g_confirm_flag)
-		;
-	g_confirm_flag = 0;
+	pause();
 }
 
 static void	send_message(pid_t pid, char *message)
@@ -49,8 +44,7 @@ static void	send_message(pid_t pid, char *message)
 		j = 7;
 		while (j >= 0)
 		{
-			send_bit(pid, (message[i] >> i) & 1);
-			usleep(400);
+			send_bit(pid, (message[i] >> j) & 1);
 			j--;
 		}
 		i++;
@@ -59,18 +53,18 @@ static void	send_message(pid_t pid, char *message)
 
 int	main(int argc, char **argv)
 {
-	t_pid	pid;
+	pid_t				pid;
+	struct sigaction	sa;
 
 	if (argc < 3)
-	{
 		exit(EXIT_FAILURE);
-	}
 	pid = ft_atoi(argv[1]);
 	if (pid < 1)
-	{
 		exit(EXIT_FAILURE);
-	}
-	signal(SIGUSR2, signal_handler);
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	sa.sa_handler = signal_handler;
+	sigaction(SIGUSR2, &sa, NULL);
 	send_message(pid, argv[2]);
 	return (EXIT_SUCCESS);
 }
