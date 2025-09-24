@@ -6,15 +6,8 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 21:19:54 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/23 21:21:44 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/24 15:13:01 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
-#ifndef CLIENT_H 
-# define CLIENT_H
-
-#include <stdlib.h>
-
-
-#endif
