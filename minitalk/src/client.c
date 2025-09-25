@@ -19,28 +19,41 @@ void	signal_handler(int sig)
 	(void)sig;
 }
 
-void	encode_char(pid_t pid, char c)
+void	send_char_bits(pid_t pid, char c)
 {
 	int	i;
+	int	bit;
 
 	i = 0;
 	while (i < 8)
 	{
-		if (c & (1 << (7 - i)))
+		bit = (c >> (7 - i)) & 1;
+		if (bit == 1)
 			kill(pid, SIGUSR1);
 		else
 			kill(pid, SIGUSR2);
 		i++;
-		usleep(1000);
+		usleep(700);
 	}
+}
+
+void	send_message(pid_t pid, char *message)
+{
+	int	i;
+
+	i = 0;
+	while (message[i] != '\0')
+	{
+		send_char_bits(pid, message[i]);
+		i++;
+	}
+	send_char_bits(pid, '\n');
 }
 
 int	main(int argc, char *argv[])
 {
 	pid_t	pid;
-	int	i;
 
-	i = 0;
 	if (argc != 3)
 	{
 		return (1);
@@ -52,8 +65,6 @@ int	main(int argc, char *argv[])
 	{
 		return (1);
 	}
-	while (argv[2][i] != '\0')
-		encode_char(pid, argv[2][i++]);
-	encode_char(pid, '\n');
+	send_message(pid, argv[2]);
 	return (0);
 }

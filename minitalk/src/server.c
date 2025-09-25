@@ -18,12 +18,21 @@ void	signal_handler(int signo, siginfo_t *info, void *ctx)
 {
 	static unsigned char	data = 0;
 	static char				nbits = 0;
+	int						bit_position;
+	int						mask;
 
 	(void)ctx;
 	if (signo == SIGUSR1)
-		data |= 1 << (7 - nbits++);
-	if (signo == SIGUSR2)
+	{
+		bit_position = 7 - nbits;
+		mask = 1 << bit_position;
+		data = data | mask;
 		nbits++;
+	}
+	else if (signo == SIGUSR2)
+	{
+		nbits++;
+	}
 	if (nbits == 8)
 	{
 		write(STDOUT_FILENO, &data, 1);
