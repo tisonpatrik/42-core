@@ -6,22 +6,14 @@
 /*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 18:07:40 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/23 19:52:31 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/25 15:42:44 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/stack.h"
 #include "checker_bonus.h"
 #include <stdbool.h>
-#include <stdlib.h>
 
-void	validate_inputs(t_checker_state *state)
-{
-	if (state->a->size == 0)
-	{
-		exit(1);
-	}
-}
 
 static bool	apply_operation(t_checker_state *state, t_operation op)
 {
@@ -59,7 +51,6 @@ void	check_result(t_checker_state *state)
 		ft_printf("KO\n");
 		return ;
 	}
-	validate_inputs(state);
 	if (!state->operations)
 	{
 		if (is_sorted(state->a) && state->b->size == 0)
