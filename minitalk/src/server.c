@@ -10,57 +10,43 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minitalk.h"
+#include "../libft/include/libft.h"
+#include <signal.h>
+#include <unistd.h>
 
-static void	handle_signal(int sig, siginfo_t *info, void *context)
+void	signal_handler(int signo, siginfo_t *info, void *context)
 {
-	static unsigned char	character = 0;
-	static int				bit_count = 0;
-	static pid_t			client_pid = 0;
+	static unsigned char	data = 0;
+	static char				nbits = 0;
+	pid_t					pidof_sender;
 
 	(void)context;
-	if (client_pid != info->si_pid)
+	pidof_sender = info->si_pid;
+	if (signo == SIGUSR1)
+		data |= 1 << (7 - nbits++);
+	if (signo == SIGUSR2)
+		nbits++;
+	if (nbits == 8)
 	{
-		bit_count = 0;
-		character = 0;
+		write(STDOUT_FILENO, &data, 1);
+		nbits = 0;
+		data = 0;
 	}
-	client_pid = info->si_pid;
-
-	character <<= 1;
-	if (sig == SIGUSR1)
-		character |= 1;
-	if (++bit_count == 8)
-	{
-		if (character == '\0')
-			write(1, "\n", 1);
-		else
-			write(1, &character, 1);
-		bit_count = 0;
-		character = 0;
-	}
-	kill(client_pid, SIGUSR2);
-}
-
-static void setup_signal_handler(void)
-{
-    struct sigaction sa;
-
-    sigemptyset(&sa.sa_mask);
-    sigaddset(&sa.sa_mask, SIGUSR1);
-    sigaddset(&sa.sa_mask, SIGUSR2);
-
-    sa.sa_sigaction = &handle_signal;
-    sa.sa_flags = SA_SIGINFO;
-    sigaction(SIGUSR1, &sa, NULL);
-    sigaction(SIGUSR2, &sa, NULL);
+	kill(pidof_sender, SIGUSR1);
 }
 
 int	main(void)
 {
-	ft_printf("%d\n", getpid());
-	setup_signal_handler();
-	while (1)
-		pause();
-	return (EXIT_SUCCESS);
-}
+	struct sigaction	sa_action;
 
+	ft_printf("%d",getpid());
+	sa_action.sa_flags = SA_SIGINFO;
+	sa_action.sa_sigaction = signal_handler;
+	sigemptyset(&sa_action.sa_mask);
+	sigaction(SIGUSR1, &sa_action, NULL);
+	sigaction(SIGUSR2, &sa_action, NULL);
+	while (1)
+	{
+		pause();
+	}
+}
