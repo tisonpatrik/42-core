@@ -14,14 +14,12 @@
 #include <signal.h>
 #include <unistd.h>
 
-void	signal_handler(int signo, siginfo_t *info, void *context)
+void	signal_handler(int signo, siginfo_t *info, void *ctx)
 {
 	static unsigned char	data = 0;
 	static char				nbits = 0;
-	pid_t					pidof_sender;
 
-	(void)context;
-	pidof_sender = info->si_pid;
+	(void)ctx;
 	if (signo == SIGUSR1)
 		data |= 1 << (7 - nbits++);
 	if (signo == SIGUSR2)
@@ -32,14 +30,14 @@ void	signal_handler(int signo, siginfo_t *info, void *context)
 		nbits = 0;
 		data = 0;
 	}
-	kill(pidof_sender, SIGUSR1);
+	kill(info->si_pid, SIGUSR1);
 }
 
 int	main(void)
 {
 	struct sigaction	sa_action;
 
-	ft_printf("%d",getpid());
+	ft_printf("%d \n", getpid());
 	sa_action.sa_flags = SA_SIGINFO;
 	sa_action.sa_sigaction = signal_handler;
 	sigemptyset(&sa_action.sa_mask);

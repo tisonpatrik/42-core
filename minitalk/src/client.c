@@ -19,7 +19,7 @@ void	signal_handler(int sig)
 	(void)sig;
 }
 
-void	encode_char(int pid, char c)
+void	encode_char(pid_t pid, char c)
 {
 	int	i;
 
@@ -37,7 +37,7 @@ void	encode_char(int pid, char c)
 
 int	main(int argc, char *argv[])
 {
-	int	server_pid;
+	pid_t	pid;
 	int	i;
 
 	i = 0;
@@ -45,14 +45,15 @@ int	main(int argc, char *argv[])
 	{
 		return (1);
 	}
-	server_pid = ft_atoi(argv[1]);
+	pid = ft_atoi(argv[1]);
 	signal(SIGUSR1, &signal_handler);
 	signal(SIGUSR2, &signal_handler);
-	if (server_pid <= 0)
+	if (pid <= 0)
 	{
 		return (1);
 	}
 	while (argv[2][i] != '\0')
-		encode_char(server_pid, argv[2][i++]);
+		encode_char(pid, argv[2][i++]);
+	encode_char(pid, '\n');
 	return (0);
 }
