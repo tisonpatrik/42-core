@@ -3,17 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/26 15:49:35 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/26 16:37:36 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/26 18:33:52 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../lib/libft/include/libft.h"
+#include "../include/fdf.h"
+#include <errno.h>
 #include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 int	get_file_descriptor(char *file_name)
 {
@@ -25,27 +27,97 @@ int	get_file_descriptor(char *file_name)
 		perror("open");
 		exit(EXIT_FAILURE);
 	}
-	printf("%d \n", fd);
 	return (fd);
 }
 
-void	get_map(char *file_name)
+void	fatal_cleanup_and_exit(int *buf, char **tmp)
 {
-	int		fd;
-	char	*line;
-
-	fd = get_file_descriptor(file_name);
-	while (true)
-	{
-		line = ft_get_line(fd);
-		if (line == NULL)
-		{
-			break ;
-		}
-		printf("%s \n", line);
-	}
+	if (buf)
+		free(buf);
+	if (tmp)
+		ft_free_array(tmp);
+	exit(EXIT_FAILURE);
 }
 
+void	store_token(const char *tok, int *out, int *out_index,
+		char **parts_for_cleanup)
+{
+	char	*endptr;
+	int		val;
+
+	endptr = NULL;
+	if (!tok || tok[0] == '\0')
+		fatal_cleanup_and_exit(out, parts_for_cleanup);
+	errno = 0;
+	val = ft_strtoi10(tok, &endptr);
+	if (*endptr != '\0' || errno == ERANGE)
+		fatal_cleanup_and_exit(out, parts_for_cleanup);
+	out[(*out_index)++] = val;
+}
+
+void	fill_from_parts(char **parts, int *out)
+{
+	int	j;
+	int	out_index;
+
+	out_index = 0;
+	j = 0;
+	if (!parts)
+		fatal_cleanup_and_exit(out, NULL);
+	while (parts[j])
+	{
+		store_token(parts[j], out, &out_index, parts);
+		j++;
+	}
+	ft_free_array(parts);
+}
+
+int	get_count_parts(char **parts)
+{
+	int	j;
+	int	count;
+
+	j = 0;
+	count = 0;
+	while (parts[j])
+	{
+		if (parts[j][0] == '\0')
+			fatal_cleanup_and_exit(NULL, parts);
+		count++;
+		j++;
+	}
+	return (count);
+}
+
+void get_map(char *file_name)
+{
+    int   fd = get_file_descriptor(file_name);
+    char *text_line;
+
+    while ((text_line = ft_get_line(fd)) != NULL)
+    {
+        // Trim \r\n from end to prevent empty tokens
+        char trim_chars[] = {CHAR_CARRIAGE_RETURN, CHAR_NEWLINE, CHAR_NULL};
+        char *trimmed_line = ft_strtrim(text_line, trim_chars);
+        free(text_line);
+        if (!trimmed_line)
+            fatal_cleanup_and_exit(NULL, NULL);
+
+        char **set = ft_split(trimmed_line, CHAR_SPACE);
+        free(trimmed_line);
+        if (!set)
+            fatal_cleanup_and_exit(NULL, NULL);
+
+        int total = get_count_parts(set);
+        int *line = (int *)malloc(sizeof(int) * total);
+        if (!line)
+            fatal_cleanup_and_exit(NULL, set);
+
+        fill_from_parts(set, line);
+        free(line);
+    }
+    close(fd);
+}
 int	main(int argc, char **argv)
 {
 	if (argc != 2)
