@@ -14,7 +14,6 @@
 #include "checker_bonus.h"
 #include <stdbool.h>
 
-
 static bool	apply_operation(t_checker_state *state, t_operation op)
 {
 	if (apply_swap_operation(state, op))
