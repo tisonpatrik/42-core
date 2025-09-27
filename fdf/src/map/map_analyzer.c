@@ -10,22 +10,28 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../../include/map.h"
 
-
-static int	count_file_rows(const char *file_name)
+static void	get_count_of_rows(char *trimmed, int *row_count)
 {
-	int		fd;
+	char	**tokens;
+
+	tokens = ft_split(trimmed, CHAR_SPACE);
+	free(trimmed);
+	if (tokens)
+	{
+		ft_free_array(tokens);
+		row_count++;
+	}
+}
+
+static int	count_file_rows(int fd)
+{
 	char	*line;
 	char	*trimmed;
 	char	**tokens;
 	int		row_count;
 
-	fd = get_file_fd(file_name);
-	if (fd < 0)
-		return (-1);
-	
 	row_count = 0;
 	while ((line = ft_get_line(fd)) != NULL)
 	{
@@ -33,32 +39,20 @@ static int	count_file_rows(const char *file_name)
 		free(line);
 		if (!trimmed)
 			continue ;
-		tokens = ft_split(trimmed, CHAR_SPACE);
-		free(trimmed);
-		if (tokens)
-		{
-			ft_free_array(tokens);
-			row_count++;
-		}
+		get_count_of_rows(trimmed, &row_count);
 	}
 	close(fd);
 	return (row_count);
 }
 
-
-static int	find_max_row_length(const char *file_name, t_map_info *info)
+static int	find_max_row_length(int fd, t_map_info *info)
 {
-	int		fd;
 	char	*line;
 	char	*trimmed;
 	char	**tokens;
 	int		token_count;
 	int		max_tokens;
 
-	fd = get_file_fd(file_name);
-	if (fd < 0)
-		return (0);
-	
 	max_tokens = 0;
 	while ((line = ft_get_line(fd)) != NULL)
 	{
@@ -77,34 +71,30 @@ static int	find_max_row_length(const char *file_name, t_map_info *info)
 		}
 	}
 	close(fd);
-	
 	info->ncols = max_tokens;
 	info->total_cells = info->nrows * info->ncols;
 	return (1);
 }
 
-
 t_map_info	*analyze_map_file(const char *file_name)
 {
 	t_map_info	*info;
 	int			row_count;
+	int			fd;
 
-	// Step 1: Count total rows
-	row_count = count_file_rows(file_name);
+	fd = get_file_fd(file_name);
+	if (fd < 0)
+		return (NULL);
+	row_count = count_file_rows(fd);
 	if (row_count <= 0)
 		return (NULL);
-	
-	// Step 2: Allocate map_info structure
 	info = allocate_map_info(row_count);
 	if (!info)
 		return (NULL);
-	
-	// Step 3: Find maximum row length
-	if (!find_max_row_length(file_name, info))
+	if (!find_max_row_length(fd, info))
 	{
 		free_map_info(info);
 		return (NULL);
 	}
-	
 	return (info);
 }

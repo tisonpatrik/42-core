@@ -10,20 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../../include/map.h"
-
 
 static int	parse_row_tokens(char **tokens, t_map *map, int row_index)
 {
 	int	value;
 	int	col_index;
 	int	token_count;
+	int	i;
 
+	i = 0;
 	token_count = count_tokens(tokens);
-	
-	// Parse actual tokens
-	for (int i = 0; tokens[i]; i++)
+	while (tokens[i])
 	{
 		value = parse_token(tokens[i]);
 		if (value == -1)
@@ -32,17 +30,17 @@ static int	parse_row_tokens(char **tokens, t_map *map, int row_index)
 		map->cells[col_index].z = value;
 		map->cells[col_index].has_color = 0;
 		map->cells[col_index].color = 0;
+		i++;
 	}
-	
-	// Fill remaining cells in this row with zeros
-	for (int i = token_count; i < map->ncols; i++)
+	i = token_count;
+	while (i < map->ncols)
 	{
 		col_index = row_index * map->ncols + i;
 		map->cells[col_index].z = 0;
 		map->cells[col_index].has_color = 0;
 		map->cells[col_index].color = 0;
+		i++;
 	}
-	
 	return (1);
 }
 
@@ -57,7 +55,6 @@ int	parse_map_data(t_map *map, const char *file_name)
 	fd = get_file_fd(file_name);
 	if (fd < 0)
 		return (0);
-	
 	row_index = 0;
 	while ((line = ft_get_line(fd)) != NULL)
 	{
@@ -69,7 +66,6 @@ int	parse_map_data(t_map *map, const char *file_name)
 		free(trimmed);
 		if (!tokens)
 			continue ;
-		
 		if (!parse_row_tokens(tokens, map, row_index))
 		{
 			ft_free_array(tokens);

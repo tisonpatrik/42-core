@@ -38,37 +38,34 @@ typedef struct s_cell
 
 typedef struct s_map_info
 {
-	int			nrows;
-	int			ncols;
-	int			total_cells;
+	int			count_rows;
+	int			count_columns;
 }				t_map_info;
 
 typedef struct s_map
 {
 	t_arena		*arena;
 	t_cell		*cells;
-	int			nrows;
-	int			ncols;
-	int			total_cells;
+	int			count_rows;
+	int			count_columns;
 }				t_map;
 
-void free_map_arena(t_map *map);
-void free_map_info(t_map_info *info);
-t_map_info *allocate_map_info(int nrows);
-size_t calculate_arena_size(int nrows, int ncols);
-int setup_arena_layout(t_map *map, int nrows, int ncols);
-t_map *map_arena_init(t_map_info *info);
+void			free_map_arena(t_map *map);
+void			free_map_info(t_map_info *info);
 
-t_map_info *analyze_map_file(const char *file_name);
+t_map_info		*allocate_map_info(int count_of_rows, int count_of_columns);
+size_t			calculate_arena_size(int nrows, int ncols);
+int				setup_arena_layout(t_map *map, int nrows, int ncols);
+t_map			*map_arena_init(t_map_info *info);
 
-int parse_map_data(t_map *map, const char *file_name);
+t_map_info		*analyze_map_file(const char *file_name);
 
-// Map reader - main orchestrator
-t_map *read_map_from_file(const char *file_name);
-void free_map(t_map *map);
+int				parse_map_data(t_map *map, const char *file_name);
 
-// Utility functions
-int get_file_fd(const char *file_name);
-int count_tokens(char **tokens);
-int parse_token(const char *token);
+t_map			*read_map_from_file(const char *file_name);
+void			free_map(t_map *map);
+
+int				get_file_fd(const char *file_name);
+int				count_tokens(char **tokens);
+int				parse_token(const char *token);
 #endif

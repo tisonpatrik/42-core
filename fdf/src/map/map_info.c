@@ -10,9 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../../include/map.h"
-
 
 void	free_map_info(t_map_info *info)
 {
@@ -21,17 +19,14 @@ void	free_map_info(t_map_info *info)
 	free(info);
 }
 
-t_map_info	*allocate_map_info(int nrows)
+t_map_info	*allocate_map_info(int count_of_rows, int count_of_columns)
 {
 	t_map_info	*info;
 
 	info = malloc(sizeof(t_map_info));
 	if (!info)
 		return (NULL);
-	info->nrows = nrows;
-	info->ncols = 0;  // Will be set later
-	info->total_cells = 0;  // Will be calculated as nrows * ncols
+	info->count_rows = count_of_rows;
+	info->count_columns = count_of_columns;
 	return (info);
 }
-
-

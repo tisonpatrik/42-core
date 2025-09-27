@@ -28,9 +28,7 @@ size_t	calculate_arena_size(int nrows, int ncols)
 
 	total_cells = nrows * ncols;
 	cells_size = sizeof(t_cell) * (size_t)total_cells;
-	
 	cells_size = (cells_size + 7) & ~7;
-	
 	size = cells_size;
 	return (size);
 }
@@ -50,12 +48,9 @@ t_map	*map_arena_init(t_map_info *info)
 	t_map	*map;
 	size_t	arena_size;
 
-	// Allocate map structure
 	map = malloc(sizeof(t_map));
 	if (!map)
 		return (NULL);
-	
-	// Setup memory arena
 	arena_size = calculate_arena_size(info->nrows, info->ncols);
 	map->arena = ft_arena_create(arena_size);
 	if (!map->arena)
@@ -63,18 +58,14 @@ t_map	*map_arena_init(t_map_info *info)
 		free(map);
 		return (NULL);
 	}
-	
-	// Setup arena layout
 	map->nrows = info->nrows;
 	map->ncols = info->ncols;
 	map->total_cells = info->total_cells;
-	
 	if (!setup_arena_layout(map, map->nrows, map->ncols))
 	{
 		ft_arena_destroy(map->arena);
 		free(map);
 		return (NULL);
 	}
-	
 	return (map);
 }
