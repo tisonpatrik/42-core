@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 12:31:10 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/27 12:58:18 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/27 16:45:35 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,13 @@ typedef struct s_cell
 	uint32_t	color;
 }				t_cell;
 
+typedef struct s_map_info
+{
+	int			nrows;
+	int			total_cells;
+	int			*row_counts;
+}				t_map_info;
+
 typedef struct s_map
 {
 	t_arena		*arena;
@@ -45,6 +52,23 @@ typedef struct s_map
 	int			nrows;
 	int			total_cells;
 }				t_map;
+
 void free_map_arena(t_map *map);
-t_map *build_map_arena_from_file(const char *path);
+void free_map_info(t_map_info *info);
+t_map_info *allocate_map_info(int nrows);
+size_t calculate_arena_size(int nrows, int total_cells);
+int setup_arena_layout(t_map *map, int nrows, int total_cells);
+
+t_map_info *analyze_map_file(const char *file_name);
+
+int parse_map_data(t_map *map, const char *file_name);
+
+// Map reader - main orchestrator
+t_map *read_map_from_file(const char *file_name);
+void free_map(t_map *map);
+
+// Utility functions
+int get_file_fd(const char *file_name);
+int count_tokens(char **tokens);
+int parse_token(const char *token);
 #endif
