@@ -16,10 +16,10 @@
 # include "../lib/libft/include/libft.h"
 # include "fcntl.h"
 # include <errno.h>
+# include <stdint.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
-#include <stdint.h>
 
 typedef enum e_chars
 {
@@ -32,22 +32,19 @@ typedef enum e_chars
 typedef struct s_cell
 {
 	int			z;
-	bool		has_color;
+	int			has_color;
 	uint32_t	color;
 }				t_cell;
 
 typedef struct s_map
 {
-	t_cell		**rows;
-	int			*cols;
+	t_arena		*arena;
+	t_cell		*cells;
+	int			*row_counts;
+	int			*row_offsets;
 	int			nrows;
-	int			cap;
+	int			total_cells;
 }				t_map;
-
-void			map_push_row(t_map *map, t_cell *line_cells, int len);
-void			map_free(t_map *map);
-void			map_init(t_map *map);
-
-t_map			get_map(char *file_name);
-
+void free_map_arena(t_map *map);
+t_map *build_map_arena_from_file(const char *path);
 #endif
