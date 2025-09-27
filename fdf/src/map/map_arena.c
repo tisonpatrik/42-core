@@ -6,48 +6,75 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 12:43:16 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/27 16:43:12 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/27 17:34:22 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/map.h"
 
-void	free_map_arena(t_map *map)
+void	free_map(t_map *map)
 {
 	if (!map)
 		return ;
 	if (map->arena)
 		ft_arena_destroy(map->arena);
-	// Don't free map itself - it's not allocated with malloc
 }
 
-size_t	calculate_arena_size(int nrows, int total_cells)
+size_t	calculate_arena_size(int nrows, int ncols)
 {
 	size_t	size;
 	size_t	cells_size;
-	size_t	row_counts_size;
-	size_t	row_offsets_size;
+	int		total_cells;
 
+	total_cells = nrows * ncols;
 	cells_size = sizeof(t_cell) * (size_t)total_cells;
-	row_counts_size = sizeof(int) * (size_t)nrows;
-	row_offsets_size = sizeof(int) * (size_t)(nrows + 1);
 	
-	// Apply 8-byte alignment (same as ft_arena_alloc)
 	cells_size = (cells_size + 7) & ~7;
-	row_counts_size = (row_counts_size + 7) & ~7;
-	row_offsets_size = (row_offsets_size + 7) & ~7;
 	
-	size = cells_size + row_counts_size + row_offsets_size;
+	size = cells_size;
 	return (size);
 }
 
-int	setup_arena_layout(t_map *map, int nrows, int total_cells)
+int	setup_arena_layout(t_map *map, int nrows, int ncols)
 {
+	int	total_cells;
+
+	total_cells = nrows * ncols;
 	map->cells = (t_cell *)ft_arena_alloc(map->arena, sizeof(t_cell)
 			* (size_t)total_cells);
-	map->row_counts = (int *)ft_arena_alloc(map->arena, sizeof(int)
-			* (size_t)nrows);
-	map->row_offsets = (int *)ft_arena_alloc(map->arena, sizeof(int)
-			* (size_t)(nrows + 1));
-	return (map->cells && map->row_counts && map->row_offsets);
+	return (map->cells != NULL);
+}
+
+t_map	*map_arena_init(t_map_info *info)
+{
+	t_map	*map;
+	size_t	arena_size;
+
+	// Allocate map structure
+	map = malloc(sizeof(t_map));
+	if (!map)
+		return (NULL);
+	
+	// Setup memory arena
+	arena_size = calculate_arena_size(info->nrows, info->ncols);
+	map->arena = ft_arena_create(arena_size);
+	if (!map->arena)
+	{
+		free(map);
+		return (NULL);
+	}
+	
+	// Setup arena layout
+	map->nrows = info->nrows;
+	map->ncols = info->ncols;
+	map->total_cells = info->total_cells;
+	
+	if (!setup_arena_layout(map, map->nrows, map->ncols))
+	{
+		ft_arena_destroy(map->arena);
+		free(map);
+		return (NULL);
+	}
+	
+	return (map);
 }

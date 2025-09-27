@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:43:14 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/27 16:43:16 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/27 17:29:53 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,20 +46,20 @@ static int	count_file_rows(const char *file_name)
 }
 
 
-static int	count_tokens_per_row(const char *file_name, t_map_info *info)
+static int	find_max_row_length(const char *file_name, t_map_info *info)
 {
 	int		fd;
 	char	*line;
 	char	*trimmed;
 	char	**tokens;
-	int		row_count;
 	int		token_count;
+	int		max_tokens;
 
 	fd = get_file_fd(file_name);
 	if (fd < 0)
 		return (0);
 	
-	row_count = 0;
+	max_tokens = 0;
 	while ((line = ft_get_line(fd)) != NULL)
 	{
 		trimmed = ft_strtrim(line, "\r\n\0");
@@ -71,13 +71,15 @@ static int	count_tokens_per_row(const char *file_name, t_map_info *info)
 		if (tokens)
 		{
 			token_count = count_tokens(tokens);
-			info->row_counts[row_count] = token_count;
-			info->total_cells += token_count;
+			if (token_count > max_tokens)
+				max_tokens = token_count;
 			ft_free_array(tokens);
-			row_count++;
 		}
 	}
 	close(fd);
+	
+	info->ncols = max_tokens;
+	info->total_cells = info->nrows * info->ncols;
 	return (1);
 }
 
@@ -97,8 +99,8 @@ t_map_info	*analyze_map_file(const char *file_name)
 	if (!info)
 		return (NULL);
 	
-	// Step 3: Count tokens per row
-	if (!count_tokens_per_row(file_name, info))
+	// Step 3: Find maximum row length
+	if (!find_max_row_length(file_name, info))
 	{
 		free_map_info(info);
 		return (NULL);

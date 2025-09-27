@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:43:19 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/27 16:43:19 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/27 17:29:53 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ void	free_map_info(t_map_info *info)
 {
 	if (!info)
 		return ;
-	if (info->row_counts)
-		free(info->row_counts);
 	free(info);
 }
 
@@ -31,13 +29,8 @@ t_map_info	*allocate_map_info(int nrows)
 	if (!info)
 		return (NULL);
 	info->nrows = nrows;
-	info->total_cells = 0;
-	info->row_counts = malloc(sizeof(int) * nrows);
-	if (!info->row_counts)
-	{
-		free(info);
-		return (NULL);
-	}
+	info->ncols = 0;  // Will be set later
+	info->total_cells = 0;  // Will be calculated as nrows * ncols
 	return (info);
 }
 

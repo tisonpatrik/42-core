@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 12:31:10 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/27 16:45:35 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/27 17:34:22 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,25 +39,25 @@ typedef struct s_cell
 typedef struct s_map_info
 {
 	int			nrows;
+	int			ncols;
 	int			total_cells;
-	int			*row_counts;
 }				t_map_info;
 
 typedef struct s_map
 {
 	t_arena		*arena;
 	t_cell		*cells;
-	int			*row_counts;
-	int			*row_offsets;
 	int			nrows;
+	int			ncols;
 	int			total_cells;
 }				t_map;
 
 void free_map_arena(t_map *map);
 void free_map_info(t_map_info *info);
 t_map_info *allocate_map_info(int nrows);
-size_t calculate_arena_size(int nrows, int total_cells);
-int setup_arena_layout(t_map *map, int nrows, int total_cells);
+size_t calculate_arena_size(int nrows, int ncols);
+int setup_arena_layout(t_map *map, int nrows, int ncols);
+t_map *map_arena_init(t_map_info *info);
 
 t_map_info *analyze_map_file(const char *file_name);
 
