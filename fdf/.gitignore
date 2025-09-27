@@ -36,3 +36,4 @@ obj/
 *.backup
 
 maps/
+.vscode/

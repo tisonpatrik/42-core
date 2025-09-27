@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/26 15:49:35 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/26 18:33:52 by ptison           ###   ########.fr       */
+/*   Created: 2025/09/27 11:37:00 by ptison            #+#    #+#             */
+/*   Updated: 2025/09/27 11:37:43 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,34 +89,36 @@ int	get_count_parts(char **parts)
 	return (count);
 }
 
-void get_map(char *file_name)
+void	get_map(char *file_name)
 {
-    int   fd = get_file_descriptor(file_name);
-    char *text_line;
+	int		fd;
+	char	*text_line;
+		char trim_chars[] = {CHAR_CARRIAGE_RETURN, CHAR_NEWLINE, CHAR_NULL};
+	char	*trimmed_line;
+	char	**set;
+	int		total;
+	int		*line;
 
-    while ((text_line = ft_get_line(fd)) != NULL)
-    {
-        // Trim \r\n from end to prevent empty tokens
-        char trim_chars[] = {CHAR_CARRIAGE_RETURN, CHAR_NEWLINE, CHAR_NULL};
-        char *trimmed_line = ft_strtrim(text_line, trim_chars);
-        free(text_line);
-        if (!trimmed_line)
-            fatal_cleanup_and_exit(NULL, NULL);
-
-        char **set = ft_split(trimmed_line, CHAR_SPACE);
-        free(trimmed_line);
-        if (!set)
-            fatal_cleanup_and_exit(NULL, NULL);
-
-        int total = get_count_parts(set);
-        int *line = (int *)malloc(sizeof(int) * total);
-        if (!line)
-            fatal_cleanup_and_exit(NULL, set);
-
-        fill_from_parts(set, line);
-        free(line);
-    }
-    close(fd);
+	fd = get_file_descriptor(file_name);
+	while ((text_line = ft_get_line(fd)) != NULL)
+	{
+		// Trim \r\n from end to prevent empty tokens
+		trimmed_line = ft_strtrim(text_line, trim_chars);
+		free(text_line);
+		if (!trimmed_line)
+			fatal_cleanup_and_exit(NULL, NULL);
+		set = ft_split(trimmed_line, CHAR_SPACE);
+		free(trimmed_line);
+		if (!set)
+			fatal_cleanup_and_exit(NULL, NULL);
+		total = get_count_parts(set);
+		line = (int *)malloc(sizeof(int) * total);
+		if (!line)
+			fatal_cleanup_and_exit(NULL, set);
+		fill_from_parts(set, line);
+		free(line);
+	}
+	close(fd);
 }
 int	main(int argc, char **argv)
 {
