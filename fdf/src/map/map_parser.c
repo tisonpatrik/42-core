@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:43:26 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/27 17:29:53 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/27 21:01:12 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,16 @@ static int	parse_row_tokens(char **tokens, t_map *map, int row_index)
 		value = parse_token(tokens[i]);
 		if (value == -1)
 			return (0);
-		col_index = row_index * map->ncols + i;
+		col_index = row_index * map->count_columns + i;
 		map->cells[col_index].z = value;
 		map->cells[col_index].has_color = 0;
 		map->cells[col_index].color = 0;
 		i++;
 	}
 	i = token_count;
-	while (i < map->ncols)
+	while (i < map->count_columns)
 	{
-		col_index = row_index * map->ncols + i;
+		col_index = row_index * map->count_columns + i;
 		map->cells[col_index].z = 0;
 		map->cells[col_index].has_color = 0;
 		map->cells[col_index].color = 0;
@@ -44,17 +44,12 @@ static int	parse_row_tokens(char **tokens, t_map *map, int row_index)
 	return (1);
 }
 
-int	parse_map_data(t_map *map, const char *file_name)
+int	parse_map(t_map *map, int fd)
 {
-	int		fd;
 	char	*line;
 	char	*trimmed;
 	char	**tokens;
 	int		row_index;
-
-	fd = get_file_fd(file_name);
-	if (fd < 0)
-		return (0);
 	row_index = 0;
 	while ((line = ft_get_line(fd)) != NULL)
 	{

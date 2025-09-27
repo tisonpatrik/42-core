@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 12:31:10 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/27 17:34:22 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/27 20:59:37 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct s_map_info
 {
 	int			count_rows;
 	int			count_columns;
+	int			fd;
 }				t_map_info;
 
 typedef struct s_map
@@ -50,19 +51,24 @@ typedef struct s_map
 	int			count_columns;
 }				t_map;
 
-void			free_map_arena(t_map *map);
-void			free_map_info(t_map_info *info);
-
-t_map_info		*allocate_map_info(int count_of_rows, int count_of_columns);
-size_t			calculate_arena_size(int nrows, int ncols);
-int				setup_arena_layout(t_map *map, int nrows, int ncols);
-t_map			*map_arena_init(t_map_info *info);
+t_map			*read_map_from_file(const char *file_name);
 
 t_map_info		*analyze_map_file(const char *file_name);
 
-int				parse_map_data(t_map *map, const char *file_name);
+t_map_info		*allocate_map_info(int count_of_rows, int count_of_columns, int fd);
+void			free_map_info(t_map_info *info);
 
-t_map			*read_map_from_file(const char *file_name);
+t_map			*alocate_map(t_map_info *info);
+
+
+void			free_map_arena(t_map *map);
+
+size_t			calculate_arena_size(int nrows, int ncols);
+int				setup_arena_layout(t_map *map, int nrows, int ncols);
+
+
+
+int	parse_map(t_map *map, int fd);
 void			free_map(t_map *map);
 
 int				get_file_fd(const char *file_name);
