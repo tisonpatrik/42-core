@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 18:28:18 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/27 11:37:30 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/28 15:03:47 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,10 @@
 # define VALIDATOR_H
 
 # include "../libft/include/libft.h"
+# include <stdlib.h>
+# include <errno.h>
+
+# define CH_SPACE ' '
 
 typedef struct s_parser_result
 {
@@ -21,18 +25,10 @@ typedef struct s_parser_result
 	int			count;
 }				t_parser_result;
 
-int				get_count_of_arguments(int argc, char *argv[]);
-void			fill_from_parts(char **parts, int *out, int *out_index);
-void			fill_numbers(int argc, char *argv[], int *out);
-void			check_duplicates(int *arr, int n);
-t_parser_result	parse_args(int argc, char *argv[]);
-
-int				count_parts(char **parts);
-void			store_token(const char *tok, int *out, int *out_index,
-					char **parts_for_cleanup);
+void			fatal_cleanup_and_exit(int *buf, char **tmp);
 
 int				*indexize_array(const int *values, int n);
-
-void			fatal_cleanup_and_exit(int *buf, char **tmp);
+int	get_count_of_arguments(int argc, char *argv[]);
+t_parser_result	parse_args(int argc, char *argv[]);
 
 #endif

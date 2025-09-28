@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 20:56:32 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/27 11:37:29 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/28 14:39:53 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,16 @@ int	main(int argc, char *argv[])
 	result = parse_args(argc, argv);
 	if (result.input == NULL)
 	{
-		return (1);
+		return (EXIT_FAILURE);
 	}
 	state = create_sorting_state(result.input, result.count);
 	free(result.input);
 	if (!state)
 	{
-		return (1);
+		return (EXIT_FAILURE);
 	}
 	solve_push_swap(state);
 	print_operations(state);
 	free_sorting_state(state);
-	return (0);
+	return (EXIT_SUCCESS);
 }

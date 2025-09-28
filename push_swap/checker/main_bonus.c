@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 18:27:35 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/27 11:37:30 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/28 14:40:39 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ static int	parse_and_validate_input(int argc, char *argv[],
 {
 	*result = parse_args(argc, argv);
 	if (result->input == NULL)
-		return (1);
-	return (0);
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }
 
 static int	create_and_validate_state(t_parser_result *result,
@@ -35,8 +35,8 @@ static int	create_and_validate_state(t_parser_result *result,
 {
 	*state = create_state_for_checker(result->input, result->count, operations);
 	if (!*state)
-		return (1);
-	return (0);
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }
 
 int	main(int argc, char *argv[])
@@ -56,5 +56,5 @@ int	main(int argc, char *argv[])
 	free(result.input);
 	check_result(state);
 	free_checker_state(state);
-	return (0);
+	return (EXIT_SUCCESS);
 }
