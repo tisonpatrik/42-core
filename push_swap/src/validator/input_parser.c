@@ -6,41 +6,30 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 21:00:04 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/27 11:37:30 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/28 15:19:53 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/validator.h"
 #include <stdlib.h>
 
-int	get_count_of_arguments(int argc, char *argv[])
+static void	store_token(const char *tok, int *out, int *out_index,
+		char **parts_for_cleanup)
 {
-	int		total;
-	int		i;
-	char	**parts;
+	char	*endptr;
+	int		val;
 
-	total = 0;
-	i = 1;
-	while (i < argc)
-	{
-		if (!argv[i] || argv[i][0] == '\0')
-			fatal_cleanup_and_exit(NULL, NULL);
-		if (ft_strchr(argv[i], ' '))
-		{
-			parts = ft_split(argv[i], ' ');
-			total += count_parts(parts);
-			ft_free_array(parts);
-		}
-		else
-		{
-			total++;
-		}
-		i++;
-	}
-	return (total);
+	endptr = NULL;
+	if (!tok || tok[0] == '\0')
+		fatal_cleanup_and_exit(out, parts_for_cleanup);
+	errno = 0;
+	val = ft_strtoi10(tok, &endptr);
+	if (*endptr != '\0' || errno == ERANGE)
+		fatal_cleanup_and_exit(out, parts_for_cleanup);
+	out[(*out_index)++] = val;
 }
 
-void	fill_from_parts(char **parts, int *out, int *out_index)
+static void	fill_from_parts(char **parts, int *out, int *out_index)
 {
 	int	j;
 
@@ -55,7 +44,7 @@ void	fill_from_parts(char **parts, int *out, int *out_index)
 	ft_free_array(parts);
 }
 
-void	fill_numbers(int argc, char *argv[], int *out)
+static void	fill_numbers(int argc, char *argv[], int *out)
 {
 	int		out_index;
 	int		i;
@@ -65,9 +54,9 @@ void	fill_numbers(int argc, char *argv[], int *out)
 	i = 1;
 	while (i < argc)
 	{
-		if (ft_strchr(argv[i], ' '))
+		if (ft_strchr(argv[i], CH_SPACE))
 		{
-			parts = ft_split(argv[i], ' ');
+			parts = ft_split(argv[i], CH_SPACE);
 			fill_from_parts(parts, out, &out_index);
 		}
 		else
@@ -78,24 +67,19 @@ void	fill_numbers(int argc, char *argv[], int *out)
 	}
 }
 
-void	check_duplicates(int *arr, int n)
+static bool	has_duplicates(int *arr, int n)
 {
-	int	i;
-	int	j;
+    if (n < 2)
+        return false;
 
-	i = 0;
-	j = 1;
-	while (i < n - 1)
-	{
-		j = i + 1;
-		while (j < n)
-		{
-			if (arr[i] == arr[j])
-				fatal_cleanup_and_exit(arr, NULL);
-			j++;
-		}
+    ft_heap_sort(arr, n);
+	size_t i = 1;
+    while (i < n) {
+        if (arr[i] == arr[i - 1])
+            return true;
 		i++;
-	}
+    }
+	return (false);
 }
 
 t_parser_result	parse_args(int argc, char *argv[])
@@ -111,7 +95,8 @@ t_parser_result	parse_args(int argc, char *argv[])
 	if (!buf)
 		fatal_cleanup_and_exit(NULL, NULL);
 	fill_numbers(argc, argv, buf);
-	check_duplicates(buf, total);
+	if (has_duplicates(buf, total))
+		fatal_cleanup_and_exit(buf, NULL);
 	res.input = buf;
 	res.count = total;
 	return (res);

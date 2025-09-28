@@ -6,14 +6,16 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 21:17:51 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/27 11:37:29 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/28 15:23:21 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/validator.h"
-#include <errno.h>
 
-int	count_parts(char **parts)
+
+
+
+static int	get_count_of_parts(char **parts)
 {
 	int	j;
 	int	count;
@@ -32,18 +34,30 @@ int	count_parts(char **parts)
 	return (count);
 }
 
-void	store_token(const char *tok, int *out, int *out_index,
-		char **parts_for_cleanup)
-{
-	char	*endptr;
-	int		val;
 
-	endptr = NULL;
-	if (!tok || tok[0] == '\0')
-		fatal_cleanup_and_exit(out, parts_for_cleanup);
-	errno = 0;
-	val = ft_strtoi10(tok, &endptr);
-	if (*endptr != '\0' || errno == ERANGE)
-		fatal_cleanup_and_exit(out, parts_for_cleanup);
-	out[(*out_index)++] = val;
+int	get_count_of_arguments(int argc, char *argv[])
+{
+	int		total;
+	int		i;
+	char	**parts;
+
+	total = 0;
+	i = 1;
+	while (i < argc)
+	{
+		if (ft_is_null_or_empty(argv[i]))
+			fatal_cleanup_and_exit(NULL, NULL);
+		if (ft_strchr(argv[i], CH_SPACE))
+		{
+			parts = ft_split(argv[i], CH_SPACE);
+			total += get_count_of_parts(parts);
+			ft_free_array(parts);
+		}
+		else
+		{
+			total++;
+		}
+		i++;
+	}
+	return (total);
 }

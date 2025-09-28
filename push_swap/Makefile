@@ -6,7 +6,7 @@
 #    By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/22 18:22:03 by ptison            #+#    #+#              #
-#    Updated: 2025/09/27 11:35:32 by ptison           ###   ########.fr        #
+#    Updated: 2025/09/28 14:50:50 by ptison           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,8 @@ LIBFT       := $(LIBFT_DIR)/bin/libft.a
 # Validator source files
 VALIDATOR_SRCS := src/validator/input_parser.c \
                   src/validator/normalization.c \
-                  src/validator/tokenizer.c
+                  src/validator/tokenizer.c \
+                  src/validator/utils.c
 
 # Operations source files
 OPS_SRCS    := src/ops/push.c \

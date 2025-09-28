@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 17:59:38 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/27 11:37:29 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/28 14:44:59 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,3 @@ int	*indexize_array(const int *values, int n)
 	return (res);
 }
 
-void	fatal_cleanup_and_exit(int *buf, char **tmp)
-{
-	if (buf)
-		free(buf);
-	if (tmp)
-		ft_free_array(tmp);
-	ft_putstr_fd("Error\n", 2);
-	exit(1);
-}
