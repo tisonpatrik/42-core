@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 18:27:56 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/29 22:04:39 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/29 22:17:17 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,6 @@ t_position				evaluate_with_lookahead(t_candidate *candidates,
 
 t_position				select_best_move(t_sorting_state *ps);
 
-int						compare_candidates(const void *a, const void *b);
+int						compare_candidates(t_candidate *a, t_candidate *b);
 t_position				create_invalid_position(void);
 #endif

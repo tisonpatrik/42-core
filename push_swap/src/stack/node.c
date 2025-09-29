@@ -6,12 +6,11 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:49:11 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/27 11:34:30 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/29 22:24:19 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/stack.h"
-#include <stdlib.h>
 
 t_node	*create_node(int content)
 {

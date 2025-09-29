@@ -6,13 +6,11 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 20:41:58 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/27 11:37:30 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/29 22:19:50 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/snapshot_arena.h"
-#include <stdbool.h>
-#include <stdlib.h>
 
 static void	clear_snapshots(t_snapshot_arena *arena)
 {

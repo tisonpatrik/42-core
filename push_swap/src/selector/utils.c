@@ -6,12 +6,11 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 20:39:18 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/29 21:57:16 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/29 22:19:55 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/selector.h"
-#include <stdbool.h>
 
 /*
  * Calculates the merged cost for rotating both stacks.
