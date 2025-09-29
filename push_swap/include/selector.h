@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 18:27:56 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/27 11:37:30 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/29 22:04:39 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef struct s_position
 	int					cost_b;
 	int					from_index;
 	int					to_index;
+	bool				is_valid;
 }						t_position;
 
 typedef struct s_candidate
@@ -73,9 +74,9 @@ typedef struct s_selector_arena
 t_selector_arena		*allocate_arena(int max_candidates, int len_of_inputs);
 void					free_selector_arena(t_selector_arena *arena);
 
-t_candidate				*build_filtered_candidates(t_candidate *candidates,
+bool					build_filtered_candidates(t_candidate *candidates,
 							int threshold_offset, t_selector_arena *arena);
-t_candidate				*build_top_k_candidates(t_candidate *candidates,
+bool					build_top_k_candidates(t_candidate *candidates,
 							int max_k, t_selector_arena *arena);
 bool					is_better_position(t_position a, t_position b);
 
@@ -84,14 +85,14 @@ int						find_target_position(int *sorted_array, int array_size,
 int						merged_cost(int a, int b);
 int						signed_cost(int idx, int size);
 
-t_candidate				*enumerate_candidates(t_sorting_state *state,
+bool					enumerate_candidates(t_sorting_state *state,
 							t_selector_arena *arena);
 
 t_position				evaluate_with_lookahead(t_candidate *candidates,
 							t_selector_arena *arena);
 
-t_position				select_best_move(t_sorting_state *ps,
-							int max_candidates, t_simulation_config config);
+t_position				select_best_move(t_sorting_state *ps);
 
 int						compare_candidates(const void *a, const void *b);
+t_position				create_invalid_position(void);
 #endif

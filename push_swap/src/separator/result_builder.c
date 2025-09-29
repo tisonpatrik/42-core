@@ -5,14 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/09 19:35:00 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/29 20:56:51 by ptison           ###   ########.fr       */
+/*   Created: 2025/09/29 21:52:53 by ptison            #+#    #+#             */
+/*   Updated: 2025/09/29 21:52:54 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/separator.h"
-#include <stdbool.h>
-#include <stdlib.h>
 
 /*
  * Reconstructs the LIS sequence from tracking arrays.
@@ -25,7 +23,7 @@
  * @param computation: The LIS computation state with tracking arrays
  * @param computation_result: The result containing best length and end position
  */
-static void	reconstruct_lis_sequence_from_tracking(t_node **lis_nodes,
+static void	create_lis_sequence_from_tracking(t_node **lis_nodes,
 		t_lis_computation *computation, t_lis_result *computation_result)
 {
 	size_t	result_index;
@@ -84,7 +82,8 @@ static void	reverse_sequence_to_correct_order(t_node **lis_nodes,
 void	build_lis_result(t_lis_computation *computation,
 		t_lis_result *computation_result, t_separator_arena *arena)
 {
-	reconstruct_lis_sequence_from_tracking(arena->lis_nodes, computation,
+	create_lis_sequence_from_tracking(arena->lis_nodes, computation,
 		computation_result);
-	reverse_sequence_to_correct_order(arena->lis_nodes, computation_result->best_len);
+	reverse_sequence_to_correct_order(arena->lis_nodes,
+		computation_result->best_len);
 }

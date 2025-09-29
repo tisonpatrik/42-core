@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 21:41:03 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/27 11:37:30 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/29 22:08:47 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,34 +15,39 @@
 static t_position	find_best_move(t_sorting_state *state,
 		t_selector_arena *arena)
 {
-	t_candidate	*candidates;
-	t_candidate	*filtered_candidates;
-	t_candidate	*top_k_candidates;
 	t_position	result;
 
-	candidates = enumerate_candidates(state, arena);
-	filtered_candidates = build_filtered_candidates(candidates,
-			arena->config.cost_threshold_offset, arena);
-	top_k_candidates = build_top_k_candidates(filtered_candidates,
-			arena->config.max_candidates, arena);
-	result = evaluate_with_lookahead(top_k_candidates, arena);
+	if (!enumerate_candidates(state, arena))
+	{
+		return (create_invalid_position());
+	}
+	if (!build_filtered_candidates(arena->candidates,
+			arena->config.cost_threshold_offset, arena))
+	{
+		return (create_invalid_position());
+	}
+	if (!build_top_k_candidates(arena->filtered_candidates,
+			arena->config.max_candidates, arena))
+	{
+		return (create_invalid_position());
+	}
+	result = evaluate_with_lookahead(arena->top_k_candidates, arena);
 	return (result);
 }
 
-t_position	select_best_move(t_sorting_state *ps, int max_candidates,
-		t_simulation_config config)
+t_position	select_best_move(t_sorting_state *ps)
 {
 	t_selector_arena	*arena;
 	t_position			result;
+	t_simulation_config	config;
 
+	config = default_selector_config();
 	arena = allocate_arena(ps->b->size, ps->len_of_inputs);
 	if (!arena)
 	{
-		result.total = INT_MAX;
-		return (result);
+		return (create_invalid_position());
 	}
 	arena->config = config;
-	arena->config.max_candidates = max_candidates;
 	result = find_best_move(ps, arena);
 	free_selector_arena(arena);
 	return (result);

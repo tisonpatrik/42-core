@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 19:33:17 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/29 19:33:39 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/29 21:46:10 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static void	initialize_lis_tracking_for_position(t_lis_computation *computation,
  * arrays
  * @param best_result: Pointer to store the best LIS result
  */
-void	compute_longest_increasing_lens(t_lis_computation *computation,
+void	compute_longest_lens(t_lis_computation *computation,
 		t_lis_result *best_result)
 {
 	int	current_position;

@@ -6,14 +6,11 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 20:41:17 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/27 11:37:30 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/29 21:49:49 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/selector.h"
-#include "../../include/snapshot_arena.h"
-#include <stdbool.h>
-#include <stdio.h>
 
 /*
  * Creates a candidate move from stack B to stack A with calculated costs.
@@ -44,6 +41,7 @@ static t_candidate	get_candidate(int from_idx, int to_idx, int size_a,
 	pos.cost_b = cost_b;
 	pos.from_index = from_idx;
 	pos.to_index = to_idx;
+	pos.is_valid = true;
 	candidate.position = pos;
 	candidate.score = pos.total;
 	return (candidate);
@@ -79,16 +77,18 @@ static void	populate_candidates(t_snapshot_arena *snapshot,
 	arena->candidate_count = candidate_idx;
 }
 
-t_candidate	*enumerate_candidates(t_sorting_state *state,
-		t_selector_arena *arena)
+bool	enumerate_candidates(t_sorting_state *state, t_selector_arena *arena)
 {
 	if (!take_snapshots(arena->snapshot_arena, state->a, state->b))
-		return (NULL);
+	{
+		arena->candidate_count = 0;
+		return (false);
+	}
 	if (arena->snapshot_arena->size_b == 0)
 	{
 		arena->candidate_count = 0;
-		return (NULL);
+		return (false);
 	}
 	populate_candidates(arena->snapshot_arena, arena);
-	return (arena->candidates);
+	return (true);
 }

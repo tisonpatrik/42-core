@@ -15,6 +15,7 @@
 size_t	calculate_lis_length(t_node **lis_nodes)
 {
 	size_t	count;
+
 	count = 0;
 	while (lis_nodes[count] != NULL)
 		count++;

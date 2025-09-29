@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 20:49:22 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/27 11:37:30 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/29 21:58:10 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,13 +143,9 @@ static t_position	find_best_candidate(t_candidate *candidates, int count,
 t_position	evaluate_with_lookahead(t_candidate *candidates,
 		t_selector_arena *arena)
 {
-	t_position	invalid_position;
-
-	if (!arena || !arena->snapshot_arena || !candidates
-		|| arena->top_k_count == 0)
+	if (arena->top_k_count == 0)
 	{
-		invalid_position.total = INT_MAX;
-		return (invalid_position);
+		return (create_invalid_position());
 	}
 	return (find_best_candidate(candidates, arena->top_k_count, arena));
 }
