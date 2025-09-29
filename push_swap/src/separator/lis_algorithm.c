@@ -1,17 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lis_computation.c                                  :+:      :+:    :+:   */
+/*   lis_algorithm.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/17 21:25:30 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/27 11:37:29 by ptison           ###   ########.fr       */
+/*   Created: 2025/09/29 19:33:17 by ptison            #+#    #+#             */
+/*   Updated: 2025/09/29 19:33:39 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/separator.h"
-#include <stdbool.h>
 
 static void	update_best_lis_if_improved(t_lis_computation *computation,
 		t_lis_result *best_result, int current_position)
@@ -73,7 +72,7 @@ static void	initialize_lis_tracking_for_position(t_lis_computation *computation,
  * arrays
  * @param best_result: Pointer to store the best LIS result
  */
-static void	compute_longest_increasing_lens(t_lis_computation *computation,
+void	compute_longest_increasing_lens(t_lis_computation *computation,
 		t_lis_result *best_result)
 {
 	int	current_position;
@@ -95,21 +94,4 @@ static void	compute_longest_increasing_lens(t_lis_computation *computation,
 		update_best_lis_if_improved(computation, best_result, current_position);
 		current_position++;
 	}
-}
-
-t_node	**get_lis_nodes(t_stack *stack, t_separator_arena *arena)
-{
-	int				stack_size;
-	t_lis_result	result;
-
-	stack_size = get_size(stack);
-	if (stack_size <= 0)
-	{
-		if (!arena->lis_nodes)
-			return (NULL);
-		return (arena->lis_nodes);
-	}
-	extract_stack_values_to_computation(stack, arena->computation);
-	compute_longest_increasing_lens(arena->computation, &result);
-	return (build_lis_result(arena->computation, &result, arena));
 }

@@ -6,7 +6,7 @@
 #    By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/22 18:22:03 by ptison            #+#    #+#              #
-#    Updated: 2025/09/29 18:58:56 by ptison           ###   ########.fr        #
+#    Updated: 2025/09/29 20:10:37 by ptison           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,90 +24,25 @@ AR          := ar
 ARFLAGS     := rcs
 RM          := rm -f
 MKDIR_P     := mkdir -p
-RM_RF		:= rm -rf
+RM_RF       := rm -rf
 
 SRC_DIR     := src
 LIBFT_DIR   := libft
 LIBFT       := $(LIBFT_DIR)/bin/libft.a
 
-# Validator source files
-VALIDATOR_SRCS := src/validator/argument_counter.c \
-                  src/validator/input_parser.c \
-                  src/validator/normalization.c \
-                  src/validator/parser_result.c \
-                  src/validator/tokenizer.c \
-
-# Operations source files
-OPS_SRCS    := src/ops/push.c \
-               src/ops/reverse_rotate.c \
-               src/ops/rotate.c \
-               src/ops/swap.c \
-               src/ops/sorting_state.c \
-               src/ops/utils.c
-
-# Separator source files
-SEPARATOR_SRCS := src/separator/separator.c \
-                  src/separator/separator_arena.c \
-                  src/separator/result_builder.c \
-                  src/separator/utils.c \
-                  src/separator/lis_computation.c
-
-# Selector source files
-SELECTOR_SRCS := src/selector/candidate_enumerator.c \
-                 src/selector/candidate_comparator.c \
-                 src/selector/candidates_builder.c \
-                 src/selector/snapshot_arena.c \
-                 src/selector/lookahead_evaluator.c \
-                 src/selector/sorting_heuristic.c \
-                 src/selector/nearbest.c \
-                 src/selector/result_builder.c \
-                 src/selector/selector_arena.c \
-                 src/selector/utils.c \
-                 src/selector/target_position.c \
-                 src/selector/config.c
-
-# Solver source files
-SOLVER_SRCS := src/solver/sort.c \
-               src/solver/sort_three.c \
-               src/solver/apply_combined.c \
-               src/solver/align_min_to_top.c
-
-# Optimizer source files
-OPTIMIZER_SRCS := src/optimizer/optimizer_core.c \
-                  src/optimizer/utils.c \
-                  src/optimizer/bubble_operations.c \
-                  src/optimizer/bubble_search.c \
-                  src/optimizer/bubble_strategy.c \
-                  src/optimizer/merge_neighbors.c \
-                  src/optimizer/merge_core.c \
-                  src/optimizer/merge_logic.c \
-                  src/optimizer/cancel_core.c \
-                  src/optimizer/cancel_logic.c \
-                  src/optimizer/cancel_strategy.c \
-                  src/optimizer/properties.c
-
-# Stack source files
-STACK_SRCS  := src/stack/stack.c \
-               src/stack/ops.c \
-               src/stack/node.c \
-               src/stack/tools.c
-
-# Main source files
-MAIN_SRCS   := src/solver/main.c
-
 # All source files
-SRCS        := $(VALIDATOR_SRCS) $(OPS_SRCS) $(SEPARATOR_SRCS) $(SELECTOR_SRCS) \
-               $(SOLVER_SRCS) $(OPTIMIZER_SRCS) $(STACK_SRCS) $(MAIN_SRCS)
+SRCS        := $(shell find ./src -iname "*.c")
+MAIN_SRCS   := $(shell find ./src/sover -iname "*.c")
 
 # Bonus source files (checker)
 SRCS_BONUS  := checker/main_bonus.c \
-               checker/reader_bonus.c \
-               checker/sorting_state_bonus.c \
-               checker/resutls_checker_bonus.c \
-               checker/push_bonus.c \
-               checker/swap_bonus.c \
-               checker/rotate_bonus.c \
-               checker/reverse_rotate_bonus.c
+	           checker/reader_bonus.c \
+	           checker/sorting_state_bonus.c \
+	           checker/resutls_checker_bonus.c \
+	           checker/push_bonus.c \
+	           checker/swap_bonus.c \
+	           checker/rotate_bonus.c \
+	           checker/reverse_rotate_bonus.c
 
 OBJS        := $(SRCS:src/%.c=bin/%.o)
 OBJS_BONUS  := $(SRCS_BONUS:checker/%.c=bin/checker_%.o)
