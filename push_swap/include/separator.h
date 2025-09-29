@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 18:28:01 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/29 19:34:27 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/29 20:53:51 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,9 @@ void					push_non_lis_into_b(t_sorting_state *state);
 t_separator_arena		*allocate_separator_arena(int element_count);
 void					free_separator_arena(t_separator_arena *arena);
 
-t_node					**get_lis_nodes(t_stack *stack,
-							t_separator_arena *arena);
+void					get_lis_nodes(t_stack *stack, t_separator_arena *arena);
 
-t_node					**build_lis_result(t_lis_computation *computation,
+void build_lis_result(t_lis_computation *computation,
 							t_lis_result *computation_result,
 							t_separator_arena *arena);
 void	process_stack_elements(t_sorting_state *state, int size_a,

@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 19:35:00 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/27 11:37:29 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/29 20:56:51 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,14 +81,10 @@ static void	reverse_sequence_to_correct_order(t_node **lis_nodes,
  * @param arena: Memory arena containing the lis_nodes array
  * @return: Array of nodes forming the longest increasing subsequence
  */
-t_node	**build_lis_result(t_lis_computation *computation,
+void	build_lis_result(t_lis_computation *computation,
 		t_lis_result *computation_result, t_separator_arena *arena)
 {
-	t_node	**lis_nodes;
-
-	lis_nodes = arena->lis_nodes;
-	reconstruct_lis_sequence_from_tracking(lis_nodes, computation,
+	reconstruct_lis_sequence_from_tracking(arena->lis_nodes, computation,
 		computation_result);
-	reverse_sequence_to_correct_order(lis_nodes, computation_result->best_len);
-	return (lis_nodes);
+	reverse_sequence_to_correct_order(arena->lis_nodes, computation_result->best_len);
 }

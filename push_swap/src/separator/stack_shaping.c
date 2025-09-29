@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 19:29:33 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/29 19:36:02 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/29 20:59:19 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,6 @@
 size_t	calculate_lis_length(t_node **lis_nodes)
 {
 	size_t	count;
-
-	if (!lis_nodes)
-		return (0);
 	count = 0;
 	while (lis_nodes[count] != NULL)
 		count++;
