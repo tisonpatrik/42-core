@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 18:28:01 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/29 20:53:51 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/29 21:46:15 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,11 @@ void					free_separator_arena(t_separator_arena *arena);
 
 void					get_lis_nodes(t_stack *stack, t_separator_arena *arena);
 
-void build_lis_result(t_lis_computation *computation,
+void					build_lis_result(t_lis_computation *computation,
 							t_lis_result *computation_result,
 							t_separator_arena *arena);
-void	process_stack_elements(t_sorting_state *state, int size_a,
-		t_node **lis_nodes);
-void	compute_longest_increasing_lens(t_lis_computation *computation,
-		t_lis_result *best_result);
+void					process_stack_elements(t_sorting_state *state,
+							int size_a, t_node **lis_nodes);
+void					compute_longest_lens(t_lis_computation *computation,
+							t_lis_result *best_result);
 #endif

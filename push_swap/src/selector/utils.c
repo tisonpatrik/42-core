@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 20:39:18 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/27 11:37:30 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/29 21:57:16 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,4 +97,13 @@ bool	is_better_position(t_position a, t_position b)
 	if (a.to_index != b.to_index)
 		return (a.to_index < b.to_index);
 	return (a.from_index < b.from_index);
+}
+
+t_position	create_invalid_position(void)
+{
+	t_position	result;
+
+	result.total = INT_MAX;
+	result.is_valid = false;
+	return (result);
 }

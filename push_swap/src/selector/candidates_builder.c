@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 22:15:11 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/27 11:37:30 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/29 21:37:11 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static void	sort_candidates_by_cost(t_candidate *candidates, int count)
  * @param arena: Selector arena containing storage arrays and metadata
  * @return: Array of top-k candidates, or NULL if no candidates available
  */
-t_candidate	*build_top_k_candidates(t_candidate *candidates, int max_k,
+bool	build_top_k_candidates(t_candidate *candidates, int max_k,
 		t_selector_arena *arena)
 {
 	int	n;
@@ -75,7 +75,7 @@ t_candidate	*build_top_k_candidates(t_candidate *candidates, int max_k,
 	if (n <= 0)
 	{
 		arena->top_k_count = 0;
-		return (NULL);
+		return (false);
 	}
 	sort_candidates_by_cost(candidates, n);
 	if (max_k > 0 && max_k < n)
@@ -84,5 +84,5 @@ t_candidate	*build_top_k_candidates(t_candidate *candidates, int max_k,
 		k = n;
 	ft_memcpy(arena->top_k_candidates, candidates, sizeof(t_candidate) * k);
 	arena->top_k_count = k;
-	return (arena->top_k_candidates);
+	return (true);
 }
