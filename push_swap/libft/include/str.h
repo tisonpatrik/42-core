@@ -13,8 +13,8 @@
 #ifndef STR_H
 # define STR_H
 
-# include <stddef.h>
 # include <stdbool.h>
+# include <stddef.h>
 
 char	*ft_strchr(const char *s, int c);
 size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
@@ -32,5 +32,5 @@ char	**ft_split(char const *s, char c);
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 void	ft_striteri(char *s, void (*f)(unsigned int, char *));
 
-bool		ft_is_null_or_empty(const char *str);
+bool	ft_is_null_or_empty(const char *str);
 #endif
