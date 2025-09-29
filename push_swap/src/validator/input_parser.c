@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 21:00:04 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/28 15:19:53 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/29 09:54:51 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,19 +85,17 @@ static bool	has_duplicates(int *arr, int n)
 t_parser_result	parse_args(int argc, char *argv[])
 {
 	t_parser_result	res;
-	int				total;
+	t_count_of_arguments				count;
 	int				*buf;
 
 	if (argc < 2)
-		exit(0);
-	total = get_count_of_arguments(argc, argv);
-	buf = (int *)malloc(sizeof(int) * total);
+		return (create_parser_result(NULL, 0, NO_ARGS));
+	count = get_count_of_arguments(argc, argv);
+	buf = (int *)malloc(sizeof(int) * count.count);
 	if (!buf)
-		fatal_cleanup_and_exit(NULL, NULL);
+		return (create_parser_result(NULL, 0, FAILURE));
 	fill_numbers(argc, argv, buf);
-	if (has_duplicates(buf, total))
-		fatal_cleanup_and_exit(buf, NULL);
-	res.input = buf;
-	res.count = total;
-	return (res);
+	if (has_duplicates(buf, count.count))
+		return (create_parser_result(buf, count.count, FAILURE));
+	return (create_parser_result(buf, count.count, SUCCESS));
 }
