@@ -41,4 +41,3 @@ int	*indexize_array(const int *values, int n)
 	free(sorted);
 	return (res);
 }
-

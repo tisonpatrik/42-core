@@ -10,10 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../../include/validator.h"
 
-t_parser_result	create_parser_result(int *input, int count, t_validation_error error)
+t_parser_result	create_parser_result(int *input, int count,
+		t_validation_error error)
 {
 	t_parser_result	result;
 
@@ -32,7 +32,8 @@ void	free_parser_result(t_parser_result *result)
 	}
 }
 
-t_count_of_arguments	create_count_of_arguments(int count, t_validation_error error)
+t_count_of_arguments	create_count_of_arguments(int count,
+		t_validation_error error)
 {
 	t_count_of_arguments	result;
 
@@ -40,4 +41,3 @@ t_count_of_arguments	create_count_of_arguments(int count, t_validation_error err
 	result.error = error;
 	return (result);
 }
-

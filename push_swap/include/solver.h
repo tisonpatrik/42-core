@@ -13,12 +13,12 @@
 #ifndef SOLVER_H
 # define SOLVER_H
 
-#include <stdlib.h>
-#include <unistd.h>
-#include "ops.h"
-#include "selector.h"
-#include "stack.h"
-#include "validator.h"
+# include "ops.h"
+# include "selector.h"
+# include "stack.h"
+# include "validator.h"
+# include <stdlib.h>
+# include <unistd.h>
 
 void	solve_push_swap(t_sorting_state *state);
 void	apply_combined(t_sorting_state *ps, t_position p, bool push_to_b);

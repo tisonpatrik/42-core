@@ -6,7 +6,7 @@
 #    By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/17 11:24:23 by ptison            #+#    #+#              #
-#    Updated: 2025/09/27 11:37:30 by ptison           ###   ########.fr        #
+#    Updated: 2025/09/29 18:58:56 by ptison           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,8 @@ MEM_SRCS    :=  src/mem/ft_arena.c \
                 src/mem/ft_memset.c \
                 src/mem/ft_realloc.c
 
-STR_SRCS    :=  src/str/ft_split.c \
+STR_SRCS    :=  src/str/ft_is_empty.c \
+                src/str/ft_split.c \
                 src/str/ft_strchr.c \
                 src/str/ft_strdup.c \
                 src/str/ft_striteri.c \

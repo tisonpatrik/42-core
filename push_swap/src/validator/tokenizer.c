@@ -6,59 +6,76 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 21:17:51 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/29 09:54:48 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/29 18:58:56 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/validator.h"
 
-
-
-
-static int	get_count_of_parts(char **parts)
+static void	store_value(int value, int *out, int *out_index)
 {
-	int	j;
-	int	count;
+	int	current_index;
 
-	j = 0;
-	count = 0;
-	if (!parts)
-		fatal_cleanup_and_exit(NULL, NULL);
-	while (parts[j])
-	{
-		if (parts[j][0] == '\0')
-			fatal_cleanup_and_exit(NULL, parts);
-		count++;
-		j++;
-	}
-	return (count);
+	current_index = *out_index;
+	out[current_index] = value;
+	*out_index = current_index + 1;
 }
 
-
-t_count_of_arguments	get_count_of_arguments(int argc, char *argv[])
+static void	store_token(const char *tok, int *out, int *out_index)
 {
-	int		total;
-	int		i;
+	char	*endptr;
+	int		val;
+
+	endptr = NULL;
+	if (!tok || tok[0] == '\0')
+	{
+		store_value(INT_MIN, out, out_index);
+		return ;
+	}
+	errno = 0;
+	val = ft_strtoi10(tok, &endptr);
+	if (*endptr != '\0' || errno == ERANGE)
+	{
+		store_value(INT_MIN, out, out_index);
+		return ;
+	}
+	store_value(val, out, out_index);
+}
+
+static void	fill_from_parts(char *str, int *out, int *out_index)
+{
+	int		j;
 	char	**parts;
 
-	total = 0;
+	j = 0;
+	parts = ft_split(str, CH_SPACE);
+	if (!parts)
+		return ;
+	while (parts[j])
+	{
+		store_token(parts[j], out, out_index);
+		j++;
+	}
+	ft_free_array(parts);
+}
+
+void	fill_numbers(int argc, char *argv[], int *out)
+{
+	int		out_index;
+	int		i;
+
+	out_index = 0;
 	i = 1;
 	while (i < argc)
 	{
-		if (ft_is_null_or_empty(argv[i]))
-			return (create_count_of_arguments(0, FAILURE));
-		
 		if (ft_strchr(argv[i], CH_SPACE))
 		{
-			parts = ft_split(argv[i], CH_SPACE);
-			total += get_count_of_parts(parts);
-			ft_free_array(parts);
+			fill_from_parts(argv[i], out, &out_index);
 		}
 		else
 		{
-			total++;
+			store_token(argv[i], out, &out_index);
 		}
 		i++;
 	}
-	return (total);
 }
