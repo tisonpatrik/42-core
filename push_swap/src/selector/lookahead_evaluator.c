@@ -6,12 +6,11 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 20:49:22 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/29 21:58:10 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/29 22:19:36 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/selector.h"
-#include <stdbool.h>
 
 /*
  * Counts breakpoints in stack A to assess sorting progress.

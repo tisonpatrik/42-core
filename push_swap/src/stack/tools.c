@@ -6,13 +6,11 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:48:36 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/27 11:37:29 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/29 22:24:44 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/stack.h"
-#include <stdbool.h>
-#include <stdlib.h>
 
 void	clear_stack(t_stack *stack)
 {

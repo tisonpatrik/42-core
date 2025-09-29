@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 22:23:46 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/27 11:37:30 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/29 22:17:41 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,18 +109,16 @@ static int	compare_index_criteria(const t_candidate *a, const t_candidate *b)
 	return (0);
 }
 
-int	compare_candidates(const void *a, const void *b)
+int	compare_candidates(t_candidate *a, t_candidate *b)
 {
-	const t_candidate	*atemp = (const t_candidate *)a;
-	const t_candidate	*btemp = (const t_candidate *)b;
 	int					result;
 
-	result = compare_primary_criteria(atemp, btemp);
+	result = compare_primary_criteria(a, b);
 	if (result != 0)
 		return (result);
-	result = compare_cost_criteria(atemp, btemp);
+	result = compare_cost_criteria(a, b);
 	if (result != 0)
 		return (result);
-	result = compare_index_criteria(atemp, btemp);
+	result = compare_index_criteria(a, b);
 	return (result);
 }

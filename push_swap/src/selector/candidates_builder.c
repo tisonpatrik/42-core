@@ -6,12 +6,11 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 22:15:11 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/29 21:37:11 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/29 22:19:17 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/selector.h"
-#include <stdbool.h>
 
 /*
  * Sorts candidates by cost using bubble sort algorithm.

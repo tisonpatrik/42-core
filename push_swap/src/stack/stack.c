@@ -6,12 +6,11 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:46:09 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/09 18:50:21 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/29 22:24:37 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/stack.h"
-#include <stdlib.h>
 
 t_stack	*create_stack(void)
 {

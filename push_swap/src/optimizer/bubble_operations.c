@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 20:50:41 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/27 11:37:11 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/29 22:20:22 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
  * @param index: Index of the operation to set
  * @param op: New operation to set at the index
  */
-void	set_operation_at_index(t_list *list, int index, t_operation op)
+static void	set_operation_at_index(t_list *list, int index, t_operation op)
 {
 	t_list	*current;
 	int		i;

@@ -6,12 +6,11 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:48:52 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/09 18:48:56 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/29 22:24:33 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/stack.h"
-#include <stdlib.h>
 
 void	push_to_stack(t_stack *stack, t_node *node)
 {

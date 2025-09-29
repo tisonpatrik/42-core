@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 22:12:48 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/27 11:37:29 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/29 22:20:57 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
  * @param a: Stack A operation to find target for
  * @return: Target operation that should be paired with the input
  */
-t_operation	get_target_operation_for_a(t_operation a)
+static t_operation	get_target_operation_for_a(t_operation a)
 {
 	if (a == RA)
 		return (RB);
@@ -41,7 +41,7 @@ t_operation	get_target_operation_for_a(t_operation a)
  * @param a: Stack B operation to find target for
  * @return: Target operation that should be paired with the input
  */
-t_operation	get_target_operation_for_b(t_operation a)
+static t_operation	get_target_operation_for_b(t_operation a)
 {
 	if (a == RB)
 		return (RA);
@@ -60,7 +60,7 @@ t_operation	get_target_operation_for_b(t_operation a)
  * @param ctx: Bubble context containing search parameters and state
  * @return: True if target was found and bubbled, false otherwise
  */
-bool	search_and_bubble_b(t_bubble_context *ctx)
+static bool	search_and_bubble_b(t_bubble_context *ctx)
 {
 	t_operation	a;
 	t_operation	want;
@@ -98,7 +98,7 @@ bool	search_and_bubble_b(t_bubble_context *ctx)
  * @param ctx: Bubble context containing search parameters and state
  * @return: True if target was found and bubbled, false otherwise
  */
-bool	search_and_bubble_a(t_bubble_context *ctx)
+static bool	search_and_bubble_a(t_bubble_context *ctx)
 {
 	t_operation	a;
 	t_operation	want;
