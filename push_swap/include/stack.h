@@ -15,8 +15,7 @@
 
 # include "../libft/include/libft.h"
 # include <stdbool.h>
-#include <stdlib.h>
-
+# include <stdlib.h>
 
 typedef struct s_node
 {
