@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 18:28:18 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/29 18:50:16 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/04 18:11:13 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,24 +20,24 @@
 
 # define CH_SPACE ' '
 
-typedef enum e_validation_error
+typedef enum e_validation_status
 {
 	SUCCESS = 0,
 	FAILURE,
 	NO_ARGS,
-}						t_validation_error;
+}						t_validation_status;
 
 typedef struct s_count_of_arguments
 {
 	int					count;
-	t_validation_error	error;
+	t_validation_status	error;
 }						t_count_of_arguments;
 
 typedef struct s_parser_result
 {
 	int					*input;
 	int					count;
-	t_validation_error	error;
+	t_validation_status	error;
 }						t_parser_result;
 
 int						*indexize_array(const int *values, int n);
@@ -45,11 +45,11 @@ t_count_of_arguments	get_count_of_arguments(int argc, char *argv[]);
 t_parser_result			parse_args(int argc, char *argv[]);
 
 t_parser_result			create_parser_result(int *input, int count,
-							t_validation_error error);
+							t_validation_status error);
 void					free_parser_result(t_parser_result *result);
 
 t_count_of_arguments	create_count_of_arguments(int count,
-							t_validation_error error);
+							t_validation_status error);
 
 void					fill_numbers(int argc, char *argv[], int *out);
 #endif

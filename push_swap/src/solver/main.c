@@ -6,24 +6,24 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 20:56:32 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/29 19:17:16 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/04 18:18:37 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/solver.h"
+#include <unistd.h>
 
-static void	handle_validation_error(t_parser_result result)
+static void	handle_error(t_parser_result result)
 {
-	free_parser_result(&result);
 	if (result.error == FAILURE)
-		ft_putstr_fd("Error\n", 2);
-	exit(EXIT_FAILURE);
-}
-
-static void	handle_state_error(t_parser_result result)
-{
-	free_parser_result(&result);
-	ft_putstr_fd("Error\n", 2);
+	{
+		free_parser_result(&result);
+		ft_putstr_fd("Error\n", STDERR_FILENO);
+	}
+	if(result.error == NO_ARGS)
+	{
+		free_parser_result(&result);
+	}
 	exit(EXIT_FAILURE);
 }
 
@@ -34,11 +34,11 @@ int	main(int argc, char *argv[])
 
 	result = parse_args(argc, argv);
 	if (result.error != SUCCESS)
-		handle_validation_error(result);
+		handle_error(result);
 	state = create_sorting_state(result.input, result.count);
 	if (!state)
 	{
-		handle_state_error(result);
+		handle_error(result);
 	}
 	solve_push_swap(state);
 	print_operations(state);

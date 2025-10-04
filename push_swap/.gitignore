@@ -36,3 +36,4 @@ obj/
 *.backup
 
 checker_linux
+push_swap_tester

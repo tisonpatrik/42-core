@@ -6,15 +6,12 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 21:00:04 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/29 19:11:48 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/04 18:11:40 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/validator.h"
 
-/*
-	Assume duplicates if malloc fails
-*/
 static bool	has_duplicates(int *arr, int n)
 {
 	int	*copy;
@@ -41,24 +38,25 @@ static bool	has_duplicates(int *arr, int n)
 	return (false);
 }
 
-static bool	has_negative_numbers(int *arr, int n)
+static bool	has_int_min(int *arr, int n)
 {
 	int	i;
 
 	i = 0;
 	while (i < n)
 	{
-		if (arr[i] < 0)
-			return (false);
+		if (arr[i] == INT_MIN)
+			return (true);
 		i++;
 	}
-	return (true);
+	return (false);
 }
 
 t_parser_result	parse_args(int argc, char *argv[])
 {
 	t_count_of_arguments	count;
 	int						*buf;
+	int						*normalized;
 
 	if (argc < 2)
 		return (create_parser_result(NULL, 0, NO_ARGS));
@@ -67,8 +65,15 @@ t_parser_result	parse_args(int argc, char *argv[])
 	if (!buf)
 		return (create_parser_result(NULL, 0, FAILURE));
 	fill_numbers(argc, argv, buf);
-	if (has_duplicates(buf, count.count) || !has_negative_numbers(buf,
-			count.count))
-		return (create_parser_result(buf, count.count, FAILURE));
-	return (create_parser_result(buf, count.count, SUCCESS));
+	if (has_duplicates(buf, count.count) || has_int_min(buf, count.count))
+	{
+		free(buf);
+		return (create_parser_result(NULL, count.count, FAILURE));
+	}
+	normalized = indexize_array(buf, count.count);
+	free(buf); 
+	if (!normalized)
+		return (create_parser_result(NULL, count.count, FAILURE));
+	
+	return (create_parser_result(normalized, count.count, SUCCESS));
 }

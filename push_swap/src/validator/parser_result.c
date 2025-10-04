@@ -6,14 +6,14 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 16:06:28 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/29 09:35:51 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/04 18:12:51 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/validator.h"
 
 t_parser_result	create_parser_result(int *input, int count,
-		t_validation_error error)
+		t_validation_status error)
 {
 	t_parser_result	result;
 
@@ -33,7 +33,7 @@ void	free_parser_result(t_parser_result *result)
 }
 
 t_count_of_arguments	create_count_of_arguments(int count,
-		t_validation_error error)
+		t_validation_status error)
 {
 	t_count_of_arguments	result;
 

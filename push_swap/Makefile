@@ -6,7 +6,7 @@
 #    By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/22 18:22:03 by ptison            #+#    #+#              #
-#    Updated: 2025/10/04 13:00:50 by ptison           ###   ########.fr        #
+#    Updated: 2025/10/04 17:24:02 by ptison           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -71,14 +71,20 @@ bin/checker_%.o: checker/%.c | $(BIN_DIR)
 	@$(MKDIR_P) $(dir $@)
 	@$(CC) $(CFLAGS) -Wno-sign-compare $(CPPFLAGS) -c $< -o $@
 
+bin/%.debug.o: src/%.c | $(BIN_DIR)
+	@$(MKDIR_P) $(dir $@)
+	$(CC) $(CFLAGS) $(DEBUG_FLAGS) $(CPPFLAGS) -c $< -o $@
+
 -include $(DEPS)
 
 # --------------------------- Convenience ------------------------------------
 
 bonus: $(NAME) $(CHECKER)
 
-debug:
-	@$(MAKE) CFLAGS="$(CFLAGS) $(DEBUG_FLAGS)" all
+OBJS_DEBUG := $(SRCS:src/%.c=$(BIN_DIR)/%.debug.o)
+
+debug: $(LIBFT) $(OBJS_DEBUG) | $(BIN_DIR)
+	$(CC) $(CFLAGS) $(DEBUG_FLAGS) $(OBJS_DEBUG) $(LIBFT) -o $(NAME)
 
 valgrind:
 	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME) 77 25 55 16 52 24 28 83 4 71 85 98 89 99 30 68 92 59 6 17 91 34 86 47 8 3 57 39 65 44 69 23 80 50 60 56 46 27 21 48 54 63 42 20 73 35 97 93 11 10 22 18 87 2 96 15 72 45 29 38 49 67 79 41 94 76 36 19 5 33 12 14 40 88 78 1 84 90 58 32 61 70 43 0 82 95 9 26 75 13 53 31 37 64 62 66 74 81 7 51
@@ -86,7 +92,7 @@ valgrind:
 # --------------------------- Cleaning ---------------------------------------
 
 clean:
-	@$(RM) $(OBJS) $(OBJS_BONUS) $(OBJS_CHECKER_DEPS) $(DEPS)
+	@$(RM) $(OBJS) $(OBJS_BONUS) $(OBJS_CHECKER_DEPS) $(OBJS_DEBUG) $(DEPS)
 	@find $(BIN_DIR) -type f \( -name '*.o' -o -name '*.d' \) -delete 2>/dev/null || true
 	@$(MAKE) -C $(LIBFT_DIR) clean
 
