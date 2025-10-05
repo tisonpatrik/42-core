@@ -71,9 +71,8 @@ t_parser_result	parse_args(int argc, char *argv[])
 		return (create_parser_result(NULL, count.count, FAILURE));
 	}
 	normalized = indexize_array(buf, count.count);
-	free(buf); 
+	free(buf);
 	if (!normalized)
 		return (create_parser_result(NULL, count.count, FAILURE));
-	
 	return (create_parser_result(normalized, count.count, SUCCESS));
 }

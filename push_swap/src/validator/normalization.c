@@ -15,7 +15,7 @@
 
 /*
  * Checks if the array is already indexed (contains values 0, 1, 2, ..., n-1).
- * 
+ *
  * @param values: Array to check
  * @param n: Number of elements in the array
  * @return: true if already indexed, false otherwise
@@ -35,8 +35,9 @@ static bool	is_already_indexed(const int *values, int n)
 }
 
 /*
- * Performs the actual indexing of the array by sorting and mapping values to indices.
- * 
+ * Performs the actual indexing of the array by sorting and mapping values to
+ * indices.
+ *
  * @param values: Array to index
  * @param n: Number of elements in the array
  * @return: New indexed array or NULL on failure
@@ -71,7 +72,7 @@ static int	*perform_indexing(const int *values, int n)
 /*
  * Orchestrates the indexing process by first validating if indexing is needed,
  * then performing the indexing if necessary.
- * 
+ *
  * @param values: Array to index
  * @param n: Number of elements in the array
  * @return: Indexed array or NULL on failure
@@ -82,7 +83,6 @@ int	*indexize_array(const int *values, int n)
 
 	if (!values || n <= 0)
 		return (NULL);
-	
 	if (is_already_indexed(values, n))
 	{
 		res = malloc(sizeof(int) * n);
@@ -91,6 +91,5 @@ int	*indexize_array(const int *values, int n)
 		ft_memcpy(res, values, (size_t)n * sizeof values[0]);
 		return (res);
 	}
-	
 	return (perform_indexing(values, n));
 }

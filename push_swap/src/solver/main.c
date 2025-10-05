@@ -20,7 +20,7 @@ static void	handle_error(t_parser_result result)
 		free_parser_result(&result);
 		ft_putstr_fd("Error\n", STDERR_FILENO);
 	}
-	if(result.error == NO_ARGS)
+	if (result.error == NO_ARGS)
 	{
 		free_parser_result(&result);
 	}
