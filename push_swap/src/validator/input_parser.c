@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 21:00:04 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/04 18:11:40 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/05 20:20:08 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,20 +38,6 @@ static bool	has_duplicates(int *arr, int n)
 	return (false);
 }
 
-static bool	has_int_min(int *arr, int n)
-{
-	int	i;
-
-	i = 0;
-	while (i < n)
-	{
-		if (arr[i] == INT_MIN)
-			return (true);
-		i++;
-	}
-	return (false);
-}
-
 t_parser_result	parse_args(int argc, char *argv[])
 {
 	t_count_of_arguments	count;
@@ -61,11 +47,13 @@ t_parser_result	parse_args(int argc, char *argv[])
 	if (argc < 2)
 		return (create_parser_result(NULL, 0, NO_ARGS));
 	count = get_count_of_arguments(argc, argv);
+	if (count.count == 0)
+		return (create_parser_result(NULL, 0, NO_ARGS));
 	buf = (int *)malloc(sizeof(int) * count.count);
 	if (!buf)
 		return (create_parser_result(NULL, 0, FAILURE));
 	fill_numbers(argc, argv, buf);
-	if (has_duplicates(buf, count.count) || has_int_min(buf, count.count))
+	if (has_duplicates(buf, count.count))
 	{
 		free(buf);
 		return (create_parser_result(NULL, count.count, FAILURE));

@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 18:22:09 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/29 18:22:18 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/05 18:29:18 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ t_count_of_arguments	get_count_of_arguments(int argc, char *argv[])
 	while (i < argc)
 	{
 		if (ft_is_null_or_empty(argv[i]))
-			return (create_count_of_arguments(0, FAILURE));
+			return (create_count_of_arguments(0, SUCCESS));
 		total += count_words_in_string(argv[i]);
 		i++;
 	}

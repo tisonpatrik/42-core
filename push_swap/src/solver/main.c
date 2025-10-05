@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 20:56:32 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/04 18:18:37 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/05 18:28:01 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,12 @@ static void	handle_error(t_parser_result result)
 	{
 		free_parser_result(&result);
 		ft_putstr_fd("Error\n", STDERR_FILENO);
+		exit(EXIT_FAILURE);
 	}
 	if (result.error == NO_ARGS)
 	{
 		free_parser_result(&result);
+		exit(EXIT_SUCCESS);
 	}
 	exit(EXIT_FAILURE);
 }
