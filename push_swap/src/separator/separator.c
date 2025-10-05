@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:49:32 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/29 20:54:26 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/05 18:17:53 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@ void	push_non_lis_into_b(t_sorting_state *state)
 {
 	t_separator_arena	*arena;
 	int					size_a;
+	size_t				lis_len;
+	int					n;
+	int					br;
 
 	size_a = get_size(state->a);
 	if (size_a <= 3)
@@ -36,6 +39,17 @@ void	push_non_lis_into_b(t_sorting_state *state)
 	if (!arena)
 		return ;
 	get_lis_nodes(state->a, arena);
+	lis_len = 0;
+	while (arena->lis_nodes[lis_len])
+		lis_len++;
+	n = get_size(state->a);
+	br = count_breaks(state->a);
+	if ((lis_len * 10 < (size_t)n * 3) && (br >= n - 2))
+	{
+		reverse_chain_mode(state);
+		free_separator_arena(arena);
+		return ;
+	}
 	process_stack_elements(state, size_a, arena->lis_nodes);
 	free_separator_arena(arena);
 }

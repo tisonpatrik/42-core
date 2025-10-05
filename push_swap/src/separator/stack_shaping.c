@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 19:29:33 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/05 17:22:14 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/05 18:20:06 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,4 +140,122 @@ void	process_stack_elements(t_sorting_state *state, int size_a,
 		}
 		i++;
 	}
+}
+
+/*
+ * Finds the index of the minimum value in a stack, starting from the head.
+ * Returns the index from the head (0 = head position).
+ *
+ * @param s: Stack to search in
+ * @return: Index of minimum value from head position
+ */
+static int	find_min_index(t_stack *s)
+{
+	int		n;
+	t_node	*cur;
+	int		best_val;
+	int		best_idx;
+	int		i;
+	int		v;
+
+	n = get_size(s);
+	if (n <= 0)
+		return (0);
+	cur = get_head(s);
+	best_val = cur->content;
+	best_idx = 0;
+	i = 0;
+	while (i < n)
+	{
+		v = cur->content;
+		if (v < best_val)
+		{
+			best_val = v;
+			best_idx = i;
+		}
+		cur = get_next(cur);
+		i++;
+	}
+	return (best_idx);
+}
+
+/*
+ * Counts the number of "breaks" (inversions) in a circular stack.
+ * A break occurs when current element > next element (circularly).
+ *
+ * @param a: Stack to analyze
+ * @return: Number of breaks/inversions
+ */
+int	count_breaks(t_stack *a)
+{
+	int		n;
+	t_node	*cur;
+	int		breaks;
+	int		i;
+	int		v;
+	int		nv;
+
+	n = get_size(a);
+	if (n <= 1)
+		return (0);
+	cur = get_head(a);
+	breaks = 0;
+	i = 0;
+	while (i < n)
+	{
+		v = cur->content;
+		if (i == n - 1)
+			nv = get_head(a)->content;
+		else
+			nv = get_next(cur)->content;
+		if (v > nv)
+			breaks++;
+		cur = get_next(cur);
+		i++;
+	}
+	return (breaks);
+}
+
+/*
+ * Implements reverse chain mode as a fallback when LIS is too short.
+ * This mode only does separation: keeps minimum in A, pushes everything else to B.
+ * The standard reinsertion phase will handle merging B back to A.
+ *
+ * Algorithm:
+ * 1. Rotate minimum in A to the top (cheapest direction)
+ * 2. Push all other elements to B (without shaping)
+ * 3. Return - let standard reinsertion handle B->A merge
+ *
+ * @param state: The sorting state containing both stacks
+ */
+void	reverse_chain_mode(t_sorting_state *state)
+{
+	int	n;
+	int	idx_min_a;
+	int	k;
+
+	n = get_size(state->a);
+	if (n <= 1)
+		return ;
+	idx_min_a = find_min_index(state->a);
+	if (idx_min_a <= n / 2)
+	{
+		k = 0;
+		while (k < idx_min_a)
+		{
+			rotate_a(state);
+			k++;
+		}
+	}
+	else
+	{
+		k = idx_min_a;
+		while (k < n)
+		{
+			reverse_rotate_a(state);
+			k++;
+		}
+	}
+	while (get_size(state->a) > 1)
+		push_b(state);
 }

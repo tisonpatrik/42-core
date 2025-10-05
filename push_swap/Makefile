@@ -6,7 +6,7 @@
 #    By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/22 18:22:03 by ptison            #+#    #+#              #
-#    Updated: 2025/10/04 17:24:02 by ptison           ###   ########.fr        #
+#    Updated: 2025/10/05 18:18:49 by ptison           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -103,4 +103,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re bonus debug valgrind
+.PHONY: all clean fclean re bonus valgrind
