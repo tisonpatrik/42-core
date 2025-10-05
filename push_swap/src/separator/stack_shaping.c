@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 19:29:33 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/29 20:59:19 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/05 15:57:48 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,19 @@ bool	is_node_in_lis(t_node *node, t_node **lis_nodes, size_t lis_count)
 }
 
 /*
+ * Resets the B shaping state variables to their initial values.
+ * This ensures clean state for each new sorting operation.
+ *
+ * @param state: The sorting state containing the shaping variables
+ */
+void	reset_b_shaping(t_sorting_state *state)
+{
+	state->min_b = 0;
+	state->max_b = 0;
+	state->has_b_range = false;
+}
+
+/*
  * Updates the range tracking for stack B values.
  * Maintains min and max values to enable mid-point calculations for shaping.
  *
@@ -68,25 +81,22 @@ static void	update_b_range(int value, int *min_b, int *max_b, bool *has_b_range)
  * Applies shaping algorithm to maintain stack B in a semi-sorted state.
  *
  * The shaping algorithm maintains stack B by:
- * - Tracking the range of values in B using static variables
+ * - Tracking the range of values in B using state variables
  * - Calculating the midpoint between min and max values
  * - Rotating smaller elements to the bottom to keep larger elements near the
  * top
  * - This facilitates easier insertion during the merging phase
  *
- * @param state: The sorting state containing both stacks
+ * @param state: The sorting state containing both stacks and shaping variables
  */
 static void	apply_shaping(t_sorting_state *state)
 {
-	static int	min_b = 0;
-	static int	max_b = 0;
-	static bool	has_b_range = false;
-	int			mid;
-	int			value;
+	int	mid;
+	int	value;
 
 	value = state->b->head->content;
-	update_b_range(value, &min_b, &max_b, &has_b_range);
-	mid = (min_b + max_b) / 2;
+	update_b_range(value, &state->min_b, &state->max_b, &state->has_b_range);
+	mid = (state->min_b + state->max_b) / 2;
 	if (value < mid)
 	{
 		rotate_b(state);
@@ -113,6 +123,7 @@ void	process_stack_elements(t_sorting_state *state, int size_a,
 	size_t	lis_count;
 
 	lis_count = calculate_lis_length(lis_nodes);
+	reset_b_shaping(state);
 	i = 0;
 	while (i < size_a)
 	{
