@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 19:29:33 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/05 18:20:06 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/05 20:31:10 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,43 +143,6 @@ void	process_stack_elements(t_sorting_state *state, int size_a,
 }
 
 /*
- * Finds the index of the minimum value in a stack, starting from the head.
- * Returns the index from the head (0 = head position).
- *
- * @param s: Stack to search in
- * @return: Index of minimum value from head position
- */
-static int	find_min_index(t_stack *s)
-{
-	int		n;
-	t_node	*cur;
-	int		best_val;
-	int		best_idx;
-	int		i;
-	int		v;
-
-	n = get_size(s);
-	if (n <= 0)
-		return (0);
-	cur = get_head(s);
-	best_val = cur->content;
-	best_idx = 0;
-	i = 0;
-	while (i < n)
-	{
-		v = cur->content;
-		if (v < best_val)
-		{
-			best_val = v;
-			best_idx = i;
-		}
-		cur = get_next(cur);
-		i++;
-	}
-	return (best_idx);
-}
-
-/*
  * Counts the number of "breaks" (inversions) in a circular stack.
  * A break occurs when current element > next element (circularly).
  *
@@ -218,7 +181,8 @@ int	count_breaks(t_stack *a)
 
 /*
  * Implements reverse chain mode as a fallback when LIS is too short.
- * This mode only does separation: keeps minimum in A, pushes everything else to B.
+ * This mode only does separation: keeps minimum in A,
+	pushes everything else to B.
  * The standard reinsertion phase will handle merging B back to A.
  *
  * Algorithm:

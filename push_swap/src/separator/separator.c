@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:49:32 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/05 20:22:13 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/05 20:41:24 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,25 +35,39 @@ static bool	compute_lis_and_metrics(t_sorting_state *state,
 /*
  * Determines separation strategy based on LIS quality metrics.
  *
- * @param state: The sorting state containing both stacks
- * @param arena: Arena to free if using reverse chain mode
+ * Uses reverse chain strategy when:
+ * - LIS length is less than 30% of total elements (poor LIS quality)
+ * - AND there are many breaks in the sequence (nearly sorted)
+ *
+ * @param n: Total number of elements
  * @param lis_len: Length of computed LIS
  * @param breaks: Number of breaks in the sequence
- * @return: true if reverse chain mode was used, false if normal processing
+ * @return: true if reverse chain mode should be used,
+	false for normal processing
  */
-static bool	choose_separation_strategy(t_sorting_state *state,
+static bool	is_reverse_strategy(int n, size_t lis_len, int breaks)
+{
+	const double	lis_treshold_percent = 0.30;
+	const int		min_breaks_treshold = n - 2;
+	bool			poor_lis_quality;
+	bool			many_breaks;
+
+	poor_lis_quality = (double)lis_len < (double)n * lis_treshold_percent;
+	many_breaks = breaks >= min_breaks_treshold;
+	return (poor_lis_quality && many_breaks);
+}
+
+static void	execute_separation_strategy(t_sorting_state *state,
 		t_separator_arena *arena, size_t lis_len, int breaks)
 {
-	int	n;
-
-	n = get_size(state->a);
-	if ((lis_len * 10 < (size_t)n * 3) && (breaks >= n - 2))
+	if (is_reverse_strategy(get_size(state->a), lis_len, breaks))
 	{
 		reverse_chain_mode(state);
-		free_separator_arena(arena);
-		return (true);
 	}
-	return (false);
+	else
+	{
+		process_stack_elements(state, get_size(state->a), arena->lis_nodes);
+	}
 }
 
 /*
@@ -86,8 +100,6 @@ void	push_non_lis_into_b(t_sorting_state *state)
 		free_separator_arena(arena);
 		return ;
 	}
-	if (choose_separation_strategy(state, arena, lis_len, breaks))
-		return ;
-	process_stack_elements(state, size_a, arena->lis_nodes);
+	execute_separation_strategy(state, arena, lis_len, breaks);
 	free_separator_arena(arena);
 }

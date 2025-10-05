@@ -6,47 +6,12 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 21:01:47 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/27 11:37:16 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/05 20:31:10 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/selector.h"
 #include "../../include/solver.h"
-
-/*
- * Finds the index of the minimum element in the stack.
- *
- * This function traverses the entire stack to locate the element
- * with the smallest value and returns its index (0-based).
- * The search starts from the head of the stack and compares
- * each element to find the minimum.
- *
- * @param stack: Stack to search for the minimum element
- * @return: Index of the minimum element (0-based)
- */
-static int	find_min_index(t_stack *stack)
-{
-	int		min_index;
-	int		min_value;
-	int		current_index;
-	t_node	*current_node;
-
-	min_index = 0;
-	min_value = get_content(get_head(stack));
-	current_node = get_head(stack);
-	current_index = 0;
-	while (current_node != NULL)
-	{
-		if (get_content(current_node) < min_value)
-		{
-			min_value = get_content(current_node);
-			min_index = current_index;
-		}
-		current_node = get_next(current_node);
-		current_index++;
-	}
-	return (min_index);
-}
 
 /*
  * Performs the necessary rotations to align the minimum element to the top.

@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 18:28:13 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/29 22:24:26 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/05 20:31:10 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ t_node				*get_tail(t_stack *stack);
 int					get_content(t_node *node);
 t_node				*get_next(t_node *node);
 t_node				*get_prev(t_node *node);
+int					find_min_index(t_stack *stack);
 
 void				free_stack(t_stack *stack);
 
