@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 19:29:33 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/05 16:06:58 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/05 17:22:14 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,16 +91,12 @@ static void	update_b_range(int value, int *min_b, int *max_b, bool *has_b_range)
  */
 static void	apply_shaping(t_sorting_state *state)
 {
-	int	mid;
-	int	value;
-
-	value = state->b->head->content;
-	update_b_range(value, &state->min_b, &state->max_b, &state->has_b_range);
-	mid = (state->min_b + state->max_b) / 2;
-	if (value < mid)
-	{
+	if (get_size(state->b) < 2)
+		return ;
+	update_b_range(state->b->head->content, &state->min_b, &state->max_b,
+		&state->has_b_range);
+	if (state->b->head->content < (state->min_b + state->max_b) / 2)
 		rotate_b(state);
-	}
 }
 
 /*
@@ -121,9 +117,13 @@ void	process_stack_elements(t_sorting_state *state, int size_a,
 	int		i;
 	t_node	*current;
 	size_t	lis_count;
+	size_t	pushes_total;
+	bool	enable_shaping;
 
 	lis_count = calculate_lis_length(lis_nodes);
 	reset_b_shaping(state);
+	pushes_total = (size_a > (int)lis_count) ? (size_a - (int)lis_count) : 0;
+	enable_shaping = (pushes_total >= 3);
 	i = 0;
 	while (i < size_a)
 	{
@@ -135,7 +135,8 @@ void	process_stack_elements(t_sorting_state *state, int size_a,
 		else
 		{
 			push_b(state);
-			apply_shaping(state);
+			if (enable_shaping)
+				apply_shaping(state);
 		}
 		i++;
 	}
