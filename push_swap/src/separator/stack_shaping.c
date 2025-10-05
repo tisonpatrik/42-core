@@ -6,13 +6,13 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 19:29:33 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/05 15:59:58 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/05 16:06:58 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/separator.h"
 
-size_t	calculate_lis_length(t_node **lis_nodes)
+static size_t	calculate_lis_length(t_node **lis_nodes)
 {
 	size_t	count;
 
@@ -22,7 +22,7 @@ size_t	calculate_lis_length(t_node **lis_nodes)
 	return (count);
 }
 
-bool	is_node_in_lis(t_node *node, t_node **lis_nodes, size_t lis_count)
+static bool	is_node_in_lis(t_node *node, t_node **lis_nodes, size_t lis_count)
 {
 	size_t	i;
 
@@ -44,7 +44,7 @@ bool	is_node_in_lis(t_node *node, t_node **lis_nodes, size_t lis_count)
  *
  * @param state: The sorting state containing the shaping variables
  */
-void	reset_b_shaping(t_sorting_state *state)
+static void	reset_b_shaping(t_sorting_state *state)
 {
 	state->min_b = 0;
 	state->max_b = 0;

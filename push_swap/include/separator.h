@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 18:28:01 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/05 15:57:48 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/05 16:06:16 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ void					build_lis_result(t_lis_computation *computation,
 							t_separator_arena *arena);
 void					process_stack_elements(t_sorting_state *state,
 							int size_a, t_node **lis_nodes);
-void					reset_b_shaping(t_sorting_state *state);
 void					compute_longest_lens(t_lis_computation *computation,
 							t_lis_result *best_result);
 #endif
