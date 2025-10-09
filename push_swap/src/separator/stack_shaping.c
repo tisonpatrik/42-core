@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 19:29:33 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/05 20:53:56 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/09 15:04:00 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,21 @@ static void	apply_shaping(t_sorting_state *state)
 		rotate_b(state);
 }
 
+static bool	shaping_is_enabled(t_sorting_state *state, int size_a,
+		int lis_count)
+{
+	int		pushes_total;
+	bool	enable_shaping;
+
+	reset_b_shaping(state);
+	if (size_a > lis_count)
+		pushes_total = size_a - lis_count;
+	else
+		pushes_total = 0;
+	enable_shaping = (pushes_total >= 3);
+	return (enable_shaping);
+}
+
 /*
  * Processes each element in stack A to implement the core separation logic.
  *
@@ -117,13 +132,10 @@ void	process_stack_elements(t_sorting_state *state, int size_a,
 	int		i;
 	t_node	*current;
 	size_t	lis_count;
-	size_t	pushes_total;
 	bool	enable_shaping;
 
 	lis_count = calculate_lis_length(lis_nodes);
-	reset_b_shaping(state);
-	pushes_total = (size_a > (int)lis_count) ? (size_a - (int)lis_count) : 0;
-	enable_shaping = (pushes_total >= 3);
+	enable_shaping = shaping_is_enabled(state, size_a, lis_count);
 	i = 0;
 	while (i < size_a)
 	{
@@ -141,4 +153,3 @@ void	process_stack_elements(t_sorting_state *state, int size_a,
 		i++;
 	}
 }
-
