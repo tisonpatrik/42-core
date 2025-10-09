@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:49:32 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/05 20:41:24 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/09 11:35:37 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,20 @@
  * @return: true if computation successful, false otherwise
  */
 static bool	compute_lis_and_metrics(t_sorting_state *state,
-		t_separator_arena *arena, size_t *lis_len, int *breaks)
+		t_separator_arena *arena, int *breaks)
 {
+	int	size;
+
 	get_lis_nodes(state->a, arena);
-	*lis_len = 0;
-	while (arena->lis_nodes[*lis_len])
-		(*lis_len)++;
-	*breaks = count_breaks(state->a);
+	size = get_size(state->a);
+	if (size <= 1)
+	{
+		*breaks = 0;
+	}
+	else
+	{
+		*breaks = get_count_of_breaks(state->a, size);
+	}
 	return (true);
 }
 
@@ -58,9 +65,9 @@ static bool	is_reverse_strategy(int n, size_t lis_len, int breaks)
 }
 
 static void	execute_separation_strategy(t_sorting_state *state,
-		t_separator_arena *arena, size_t lis_len, int breaks)
+		t_separator_arena *arena, int breaks)
 {
-	if (is_reverse_strategy(get_size(state->a), lis_len, breaks))
+	if (is_reverse_strategy(get_size(state->a), arena->lis_length, breaks))
 	{
 		reverse_chain_mode(state);
 	}
@@ -86,7 +93,6 @@ void	push_non_lis_into_b(t_sorting_state *state)
 {
 	t_separator_arena	*arena;
 	int					size_a;
-	size_t				lis_len;
 	int					breaks;
 
 	size_a = get_size(state->a);
@@ -95,11 +101,11 @@ void	push_non_lis_into_b(t_sorting_state *state)
 	arena = allocate_separator_arena(size_a);
 	if (!arena)
 		return ;
-	if (!compute_lis_and_metrics(state, arena, &lis_len, &breaks))
+	if (!compute_lis_and_metrics(state, arena, &breaks))
 	{
 		free_separator_arena(arena);
 		return ;
 	}
-	execute_separation_strategy(state, arena, lis_len, breaks);
+	execute_separation_strategy(state, arena, breaks);
 	free_separator_arena(arena);
 }

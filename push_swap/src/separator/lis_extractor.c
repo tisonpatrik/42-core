@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 21:25:30 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/29 21:53:47 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/09 11:34:52 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,5 @@ void	get_lis_nodes(t_stack *stack, t_separator_arena *arena)
 	extract_stack_values_to_computation(stack, arena->computation);
 	compute_longest_lens(arena->computation, &result);
 	build_lis_result(arena->computation, &result, arena);
+	arena->lis_length = result.best_len;
 }

@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:49:46 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/27 11:37:29 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/09 11:34:52 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,5 +74,6 @@ t_separator_arena	*allocate_separator_arena(int element_count)
 	}
 	setup_arena_memory_layout(arena, element_count);
 	arena->computation->n = element_count;
+	arena->lis_length = 0;
 	return (arena);
 }

@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 18:28:01 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/05 18:17:53 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/09 11:34:52 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct s_separator_arena
 {
 	t_lis_computation	*computation;
 	t_node				**lis_nodes;
+	size_t				lis_length;
 	t_arena				*arena;
 }						t_separator_arena;
 
@@ -54,5 +55,5 @@ void					process_stack_elements(t_sorting_state *state,
 void					compute_longest_lens(t_lis_computation *computation,
 							t_lis_result *best_result);
 void					reverse_chain_mode(t_sorting_state *state);
-int						count_breaks(t_stack *a);
+int						get_count_of_breaks(t_stack *a, int size);
 #endif

@@ -6,49 +6,12 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/05 20:54:04 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/05 20:54:06 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/09 11:44:54 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+
 #include "../../include/separator.h"
-
-/*
- * Counts the number of "breaks" (inversions) in a circular stack.
- * A break occurs when current element > next element (circularly).
- *
- * @param a: Stack to analyze
- * @return: Number of breaks/inversions
- */
-int	count_breaks(t_stack *a)
-{
-	int		n;
-	t_node	*cur;
-	int		breaks;
-	int		i;
-	int		v;
-	int		nv;
-
-	n = get_size(a);
-	if (n <= 1)
-		return (0);
-	cur = get_head(a);
-	breaks = 0;
-	i = 0;
-	while (i < n)
-	{
-		v = cur->content;
-		if (i == n - 1)
-			nv = get_head(a)->content;
-		else
-			nv = get_next(cur)->content;
-		if (v > nv)
-			breaks++;
-		cur = get_next(cur);
-		i++;
-	}
-	return (breaks);
-}
-
 /*
  * Implements reverse chain mode as a fallback when LIS is too short.
  * This mode only does separation: keeps minimum in A,
