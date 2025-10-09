@@ -6,13 +6,14 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 13:28:28 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/27 11:37:38 by ptison           ###   ########.fr       */
+/*   Updated: 2025/09/28 15:23:12 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STR_H
 # define STR_H
 
+# include <stdbool.h>
 # include <stddef.h>
 
 char	*ft_strchr(const char *s, int c);
@@ -31,4 +32,5 @@ char	**ft_split(char const *s, char c);
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 void	ft_striteri(char *s, void (*f)(unsigned int, char *));
 
+bool	ft_is_null_or_empty(const char *str);
 #endif
