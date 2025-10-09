@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 18:27:35 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/28 14:40:39 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/09 16:36:34 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 
 static int	handle_error(void)
 {
-	ft_putstr_fd("Error\n", 2);
-	return (1);
+	ft_putstr_fd("Error\n", STDERR_FILENO);
+	exit(EXIT_FAILURE);
 }
 
 static int	parse_and_validate_input(int argc, char *argv[],

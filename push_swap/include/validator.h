@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 18:28:18 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/04 18:11:13 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/09 16:52:58 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,5 +51,5 @@ void					free_parser_result(t_parser_result *result);
 t_count_of_arguments	create_count_of_arguments(int count,
 							t_validation_status error);
 
-void					fill_numbers(int argc, char *argv[], int *out);
+bool					fill_numbers(int argc, char *argv[], int *out);
 #endif

@@ -6,11 +6,12 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 21:00:04 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/05 20:20:08 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/09 16:52:52 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/validator.h"
+#include <limits.h>
 
 static bool	has_duplicates(int *arr, int n)
 {
@@ -52,8 +53,7 @@ t_parser_result	parse_args(int argc, char *argv[])
 	buf = (int *)malloc(sizeof(int) * count.count);
 	if (!buf)
 		return (create_parser_result(NULL, 0, FAILURE));
-	fill_numbers(argc, argv, buf);
-	if (has_duplicates(buf, count.count))
+	if (!fill_numbers(argc, argv, buf) || has_duplicates(buf, count.count))
 	{
 		free(buf);
 		return (create_parser_result(NULL, count.count, FAILURE));
