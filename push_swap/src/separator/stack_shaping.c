@@ -6,37 +6,11 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 19:29:33 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/09 15:04:00 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/09 15:11:35 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/separator.h"
-
-static size_t	calculate_lis_length(t_node **lis_nodes)
-{
-	size_t	count;
-
-	count = 0;
-	while (lis_nodes[count] != NULL)
-		count++;
-	return (count);
-}
-
-static bool	is_node_in_lis(t_node *node, t_node **lis_nodes, size_t lis_count)
-{
-	size_t	i;
-
-	if (!node || !lis_nodes)
-		return (false);
-	i = 0;
-	while (i < lis_count)
-	{
-		if (lis_nodes[i] == node)
-			return (true);
-		i++;
-	}
-	return (false);
-}
 
 /*
  * Resets the B shaping state variables to their initial values.

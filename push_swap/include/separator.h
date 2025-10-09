@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 18:28:01 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/09 11:34:52 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/09 15:11:22 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,8 @@ void					compute_longest_lens(t_lis_computation *computation,
 							t_lis_result *best_result);
 void					reverse_chain_mode(t_sorting_state *state);
 int						get_count_of_breaks(t_stack *a, int size);
+
+size_t					calculate_lis_length(t_node **lis_nodes);
+bool					is_node_in_lis(t_node *node, t_node **lis_nodes,
+							size_t lis_count);
 #endif
