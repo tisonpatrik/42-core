@@ -6,7 +6,7 @@
 #    By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/26 16:33:26 by ptison            #+#    #+#              #
-#    Updated: 2025/09/27 16:32:53 by ptison           ###   ########.fr        #
+#    Updated: 2025/10/10 13:24:20 by ptison           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,15 +17,15 @@ NAME        := $(BIN_DIR)/$(PROJECT)
 MAKEFLAGS   += --silent
 
 # Compiler settings
-CC          := cc
-CFLAGS      := -Wall -Wextra -Werror -Iinclude -Ilib/libft/include
+CC          := gcc
+CFLAGS      := -Wall -Wextra -Werror -Iinclude -Ilib/libft/include -I$(MLX42_DIR)/include
 DEBUG_FLAGS := -g -O0 -DDEBUG
 SANITIZE_FLAGS := -fsanitize=address -fsanitize=undefined
 
-# MLX flags for graphics (Linux) - commented out for now
-# MLX_DIR     := /usr/local/lib
-# MLX_FLAGS   := -L$(MLX_DIR) -lmlx -lXext -lX11 -lm
-MLX_FLAGS   :=
+# MLX42 flags for graphics (Linux)
+MLX42_DIR   := lib/MLX42
+MLX42_LIB   := $(MLX42_DIR)/build/libmlx42.a
+MLX42_FLAGS := -I$(MLX42_DIR)/include -ldl -lglfw -pthread -lm
 
 # Build tools
 AR          := ar
@@ -50,8 +50,8 @@ DEPS        := $(OBJS:.o=.d)
 all: $(NAME)
 
 # Main executable
-$(NAME): $(LIBFT) $(OBJS) | $(BIN_DIR)
-	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(MLX_FLAGS) -o $(NAME)
+$(NAME): $(LIBFT) $(MLX42_LIB) $(OBJS) | $(BIN_DIR)
+	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(MLX42_LIB) $(MLX42_FLAGS) -o $(NAME)
 
 # Create bin directory
 $(BIN_DIR):
@@ -60,6 +60,12 @@ $(BIN_DIR):
 # Build libft
 $(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR) bonus
+
+# Build MLX42
+$(MLX42_LIB):
+	@echo "Building MLX42..."
+	@cd $(MLX42_DIR) && cmake -B build
+	@cd $(MLX42_DIR) && cmake --build build -j4
 
 # Compile source files
 bin/%.o: src/%.c | $(BIN_DIR)
@@ -79,6 +85,7 @@ clean:
 	@find src/ -name "*.o" -delete 2>/dev/null || true
 	@find src/ -name "*.d" -delete 2>/dev/null || true
 	@$(MAKE) -C $(LIBFT_DIR) clean
+	@$(RM_RF) $(MLX42_DIR)/build
 
 # Full clean
 fclean: clean
