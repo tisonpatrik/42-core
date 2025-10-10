@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 11:37:00 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/27 17:32:40 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/10 13:09:30 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ bool	has_fdf_extension(const char *filename)
 	{
 		return (false);
 	}
-	return (ft_strncmp(filename + (len - ext_len), ext, ext_len) == false);
+	return (ft_strncmp(filename + (len - ext_len), ext, ext_len) == 0);
 }
 
 int	main(int argc, char **argv)
@@ -33,18 +33,18 @@ int	main(int argc, char **argv)
 
 	if (argc != 2)
 	{
-		ft_putstr_fd("Usage: ./fdf <map_file>\n", 2);
+		ft_putstr_fd("Usage: ./fdf <map_file>\n", STDERR_FILENO);
 		return (EXIT_FAILURE);
 	}
-	if (has_fdf_extension(argv[1]))
+	if (!has_fdf_extension(argv[1]))
 	{
-		ft_putstr_fd("Only .fdf files are allowed", 2);
+		ft_putstr_fd("Only .fdf files are allowed\n", STDERR_FILENO);
 		return (EXIT_FAILURE);
 	}
 	map = read_map_from_file(argv[1]);
 	if (!map)
 	{
-		ft_putstr_fd("Error: Failed to load map\n", 2);
+		ft_putstr_fd("Error: Failed to load map\n", STDERR_FILENO);
 		return (EXIT_FAILURE);
 	}
 	free_map(map);
