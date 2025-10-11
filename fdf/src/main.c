@@ -6,11 +6,11 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 11:37:00 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/10 13:09:30 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/10 15:10:23 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/map.h"
+#include "../include/app.h"
 
 bool	has_fdf_extension(const char *filename)
 {
@@ -29,7 +29,7 @@ bool	has_fdf_extension(const char *filename)
 
 int	main(int argc, char **argv)
 {
-	t_map	*map;
+	t_app	app;
 
 	if (argc != 2)
 	{
@@ -41,12 +41,9 @@ int	main(int argc, char **argv)
 		ft_putstr_fd("Only .fdf files are allowed\n", STDERR_FILENO);
 		return (EXIT_FAILURE);
 	}
-	map = read_map_from_file(argv[1]);
-	if (!map)
-	{
-		ft_putstr_fd("Error: Failed to load map\n", STDERR_FILENO);
-		return (EXIT_FAILURE);
-	}
-	free_map(map);
+	app = app_init(argv[1]);
+	app_run(app);
+	free_app(app);
+
 	return (EXIT_SUCCESS);
 }
