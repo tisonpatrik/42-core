@@ -6,11 +6,11 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 22:04:54 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/27 11:37:31 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/11 20:45:02 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/math.h"
+#include "../../include/ft_math.h"
 #include "../../include/sort.h"
 
 /**
