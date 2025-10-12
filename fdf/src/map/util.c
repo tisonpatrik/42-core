@@ -6,11 +6,11 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:40:00 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/11 17:53:33 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/12 20:12:38 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/map.h"
+# include "../../include/map.h"
 
 int	get_file_fd(const char *file_name)
 {

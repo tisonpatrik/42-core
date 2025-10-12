@@ -1,19 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   render.c                                           :+:      :+:    :+:   */
+/*   view.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/10 14:09:04 by ptison            #+#    #+#              */
-/*   Updated: 2025/10/11 17:35:00 by ptison           ###   ########.fr       */
+/*   Created: 2025/10/12 19:28:48 by ptison            #+#    #+#             */
+/*   Updated: 2025/10/12 22:03:26 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/app.h"
+#ifndef VIEW_H
+#define VIEW_H
+# include "types.h"
+# include "map.h"
+# include <math.h>
+# include "render.h"
+# include "../lib/MLX42/include/MLX42/MLX42.h"
 
-void	render_map(t_app *app)
+
+typedef struct s_view
 {
-	// Display the image (only once during initialization)
-	mlx_image_to_window(app->mlx, app->image, 0, 0);
-}
+	int			width;
+	int			height;
+	int			x_offset;
+	int			y_offset;
+	int			interval;
+	float		alpha;
+	float		beta;
+	float		xrotate;
+	float		yrotate;
+	float		zrotate;
+	float		zoom;
+	float		zscale;
+}				t_view;
+
+
+#endif

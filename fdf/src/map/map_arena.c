@@ -6,11 +6,11 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 12:43:16 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/27 20:54:19 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/12 20:12:38 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/map.h"
+# include "../../include/map.h"
 
 void	free_map(t_map *map)
 {

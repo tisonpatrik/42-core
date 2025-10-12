@@ -6,11 +6,11 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 11:37:00 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/10 15:10:23 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/12 20:32:13 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/app.h"
+# include "../include/app.h"
 
 bool	has_fdf_extension(const char *filename)
 {
@@ -42,7 +42,7 @@ int	main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	}
 	app = app_init(argv[1]);
-	app_run(app);
+	app_run(&app);
 	free_app(app);
 
 	return (EXIT_SUCCESS);

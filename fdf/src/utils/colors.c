@@ -6,12 +6,12 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 17:24:35 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/11 17:28:44 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/12 20:12:38 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
-#include "../../include/app.h"
+# include "../../include/utils.h"
 
 /**
  * Creates MLX42 color from individual RGBA components
@@ -62,18 +62,6 @@ uint32_t	rgba_to_mlx(uint32_t rgba_color)
 	
 	return create_mlx_color(r, g, b, a);
 }
-
-
-
-/**
- * Common color definitions for easy use
- */
-uint32_t	get_white(void)		{ return create_mlx_color(255, 255, 255, 255); }
-uint32_t	get_black(void)		{ return create_mlx_color(0, 0, 0, 255); }
-uint32_t	get_red(void)		{ return create_mlx_color(255, 0, 0, 255); }
-uint32_t	get_green(void)		{ return create_mlx_color(0, 255, 0, 255); }
-uint32_t	get_blue(void)		{ return create_mlx_color(0, 0, 255, 255); }
-uint32_t	get_purple(void)	{ return create_mlx_color(136, 57, 239, 255); } // #8839ef
 
 /**
  * Catppuccin color palette

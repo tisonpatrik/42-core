@@ -6,15 +6,16 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 12:31:10 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/27 20:59:37 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/12 20:08:46 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MAP_H
 # define MAP_H
 
+# include "types.h"
 # include "../lib/libft/include/libft.h"
-# include "fcntl.h"
+# include <fcntl.h>
 # include <errno.h>
 # include <stdint.h>
 # include <stdio.h>
@@ -28,7 +29,6 @@ typedef enum e_chars
 	CHAR_CARRIAGE_RETURN = '\r',
 	CHAR_NULL = '\0',
 }				t_chars;
-
 typedef struct s_cell
 {
 	int			z;

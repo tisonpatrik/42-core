@@ -6,11 +6,11 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:43:26 by ptison            #+#    #+#             */
-/*   Updated: 2025/09/27 21:01:12 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/12 20:12:38 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/map.h"
+# include "../../include/map.h"
 
 static int	parse_row_tokens(char **tokens, t_map *map, int row_index)
 {
