@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:40:00 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/12 20:12:38 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/13 20:53:03 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,10 @@ int	count_tokens(char **tokens)
 
 int	parse_token(const char *token)
 {
-	char	*endptr;
 	int		value;
 
 	if (!token || token[0] == '\0')
 		return (-1);
-	errno = 0;
-	value = ft_strtoi10(token, &endptr);
-	if (*endptr != '\0' || errno == ERANGE)
-		return (-1);
+	value = ft_atoi(token);
 	return (value);
 }

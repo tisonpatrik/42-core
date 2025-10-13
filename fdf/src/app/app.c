@@ -5,40 +5,27 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/10 13:36:35 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/12 22:01:34 by ptison           ###   ########.fr       */
+/*   Created: 2025/10/13 21:14:06 by ptison            #+#    #+#             */
+/*   Updated: 2025/10/13 22:37:42 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/app.h"
+# include "../../include/app.h"
 
-void	handle_error(const char *message)
+void	run_app(t_fdf *fdf)
 {
-	if (errno == 0)
+	display_menu(fdf->mlx);
+	draw_image(fdf);
+	if (mlx_image_to_window(fdf->mlx, fdf->image, 0, 0) == -1)
 	{
-		ft_putstr_fd("FdF: ", 2);
-		ft_putendl_fd((char *)message, 2);
-	}
-	else
-		perror("FdF");
-	exit(1);
-}
-
-void	app_run(t_app *app)
-{
-	render_image(app);
-	if (mlx_image_to_window(app->mlx, app->image, 0, 0) == -1)
-	{
-		free_map(app->map);
-		mlx_close_window(app->mlx);
+		free_map(fdf->map);
+		mlx_close_window(fdf->mlx);
 		handle_error(mlx_strerror(mlx_errno));
 	}
-	mlx_loop_hook(app->mlx, &handle_keybinds, app);
-	mlx_loop_hook(app->mlx, &handle_rotate, app);
-	mlx_loop_hook(app->mlx, &handle_projection, app);
-	mlx_scroll_hook(app->mlx, &handle_scroll, app);
-	mlx_loop_hook(app->mlx, &render_image, app);
-	mlx_loop(app->mlx);
-	mlx_terminate(app->mlx);
-
+	mlx_loop_hook(fdf->mlx, &ft_hook, fdf);
+	mlx_loop_hook(fdf->mlx, &ft_hook_rotate, fdf);
+	mlx_loop_hook(fdf->mlx, &ft_hook_project, fdf);
+	mlx_scroll_hook(fdf->mlx, &fdf_scrollhook, fdf);
+	mlx_loop_hook(fdf->mlx, &draw_image, fdf);
+	mlx_loop(fdf->mlx);
 }

@@ -6,7 +6,7 @@
 #    By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/26 16:33:26 by ptison            #+#    #+#              #
-#    Updated: 2025/10/12 20:08:46 by ptison           ###   ########.fr        #
+#    Updated: 2025/10/13 19:53:43 by ptison           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,6 @@ LIBFT       := $(LIBFT_DIR)/bin/libft.a
 # Source files organization
 MAP_SRCS    := $(shell find ./src/map -iname "*.c")
 APP_SRCS    := $(shell find ./src/app -iname "*.c")
-RENDER_SRCS := $(shell find ./src/render -iname "*.c")
 VIEW_SRCS   := $(shell find ./src/view -iname "*.c")
 UTILS_SRCS  := $(shell find ./src/utils -iname "*.c")
 MAIN_SRCS   := $(shell find ./src -maxdepth 1 -iname "*.c")

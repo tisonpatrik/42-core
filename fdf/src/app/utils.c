@@ -1,39 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   view.h                                             :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/12 19:28:48 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/12 22:03:26 by ptison           ###   ########.fr       */
+/*   Created: 2025/10/13 20:45:49 by ptison            #+#    #+#             */
+/*   Updated: 2025/10/13 22:24:49 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef VIEW_H
-#define VIEW_H
-# include "types.h"
-# include "map.h"
-# include <math.h>
-# include "render.h"
-# include "../lib/MLX42/include/MLX42/MLX42.h"
+# include "../../include/app.h"
 
 
-typedef struct s_view
+void	make_upper(unsigned int i, char *c)
 {
-	int			width;
-	int			height;
-	int			x_offset;
-	int			y_offset;
-	int			interval;
-	float		alpha;
-	float		beta;
-	float		xrotate;
-	float		yrotate;
-	float		zrotate;
-	float		zoom;
-	float		zscale;
-}				t_view;
+	i++;
+	*c = ft_toupper(*c);
+}
 
+void	draw_reset(mlx_image_t *image)
+{
+	uint32_t	i;
+	uint32_t	j;
 
-#endif
+	i = 0;
+	while (i < image->height)
+	{
+		j = 0;
+		while (j < image->width)
+		{
+			mlx_put_pixel(image, j, i, BACKGROUND);
+			j++;
+		}
+		i++;
+	}
+}
