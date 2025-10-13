@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 20:47:30 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/13 23:02:21 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/13 23:33:44 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,8 @@ void	free_map(t_view *map)
 {
 	if (!map)
 		return ;
-	if (map->grid.grid2d)
-		ft_free_tab((void **)map->grid.grid2d, map->grid_info.rows);
 	if (map->grid.grid3d)
-		ft_free_tab((void **)map->grid.grid3d, map->grid_info.rows);
+		ft_free_tab((void **)map->grid.grid3d, map->grid.rows);
 	free(map);
 }
 

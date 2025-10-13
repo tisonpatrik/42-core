@@ -6,7 +6,7 @@
 #    By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/26 16:33:26 by ptison            #+#    #+#              #
-#    Updated: 2025/10/13 19:53:43 by ptison           ###   ########.fr        #
+#    Updated: 2025/10/13 23:25:09 by ptison           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,12 +40,12 @@ LIBFT_DIR   := lib/libft
 LIBFT       := $(LIBFT_DIR)/bin/libft.a
 
 # Source files organization
-MAP_SRCS    := $(shell find ./src/map -iname "*.c")
+# MAP_SRCS    := $(shell find ./src/map -iname "*.c")  # Commented out - conflicting with app/map_parser.c
 APP_SRCS    := $(shell find ./src/app -iname "*.c")
 VIEW_SRCS   := $(shell find ./src/view -iname "*.c")
 UTILS_SRCS  := $(shell find ./src/utils -iname "*.c")
 MAIN_SRCS   := $(shell find ./src -maxdepth 1 -iname "*.c")
-ALL_SRCS    := $(MAP_SRCS) $(APP_SRCS) $(RENDER_SRCS) $(VIEW_SRCS) $(UTILS_SRCS) $(MAIN_SRCS)
+ALL_SRCS    := $(APP_SRCS) $(RENDER_SRCS) $(VIEW_SRCS) $(UTILS_SRCS) $(MAIN_SRCS)
 OBJS        := $(ALL_SRCS:src/%.c=bin/%.o)
 DEPS        := $(OBJS:.o=.d)
 

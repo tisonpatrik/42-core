@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 20:48:20 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/13 23:07:05 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/13 23:33:44 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static double	percent(int start, int end, int current)
 	return (placement / distance);
 }
 
-int	get_color(t_point2d current, t_point2d a, t_point2d b)
+int	get_color(t_point2d_temp current, t_point2d_temp a, t_point2d_temp b)
 {
 	int		red;
 	int		green;
@@ -79,12 +79,12 @@ void	set_zcolor(t_view *map)
 	double	perc;
 
 	i = -1;
-	while (++i < map->grid_info.rows)
+	while (++i < map->grid.rows)
 	{
 		j = -1;
-		while (++j < map->grid_info.cols)
+		while (++j < map->grid.cols)
 		{
-			perc = percent(map->grid_info.low, map->grid_info.high, map->grid.grid3d[i][j].z);
+			perc = percent(map->grid.low, map->grid.high, map->grid.grid3d[i][j].z);
 			map->grid.grid3d[i][j].zcolor = zcolor(perc);
 		}
 	}

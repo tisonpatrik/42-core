@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 13:36:16 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/13 23:11:17 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/13 23:33:44 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,13 +72,13 @@ typedef struct s_point3d
 	int		zcolor;
 }				t_point3d;
 
-typedef struct s_point2d
+/* Temporary structure for 2D calculations - not stored */
+typedef struct s_point2d_temp
 {
 	int		x;
 	int		y;
-	int		z;
 	int		rgba;
-}			t_point2d;
+}			t_point2d_temp;
 
 typedef struct s_camera
 {
@@ -94,24 +94,18 @@ typedef struct s_camera
 	double			zscale;
 }					t_camera;
 
-typedef struct s_grid_info
+typedef struct s_grid
 {
+	t_point3d		**grid3d;
 	int				rows;
 	int				cols;
 	int				high;
 	int				low;
-}					t_grid_info;
-
-typedef struct s_grid
-{
-	t_point3d		**grid3d;
-	t_point2d		**grid2d;
 }					t_grid;
 
 typedef struct s_view
 {
 	t_camera		camera;
-	t_grid_info		grid_info;
 	t_grid			grid;
 }					t_view;
 
@@ -126,20 +120,31 @@ typedef struct s_fdf
 void		init_map(t_view *map);
 void		malloc_grid(t_view *map);
 t_view		*parse_input(char *filename);
-/* map_parser.c */
+/* file_reader.c */
+char		**read_map_file_lines_from_fd(int fd, int *line_count);
+void		free_map_lines(char **lines);
+/* data_validator.c */
 int			hex_to_int(const char *hex_str);
-int			parse_color(int fd, t_view *map, char *tabj);
-void		parse_column(int fd, t_view *map, char **tab, int i);
+int			parse_color_from_token(char *token);
+int			validate_map_line(char *line);
+int			get_column_count(char *line);
+/* data_builder.c */
+void		build_point3d(t_point3d *point, int row, int col, int z_value, t_view *map);
+void		build_column_from_tokens(char **tokens, t_view *map, int row);
+/* map_orchestrator.c */
+int			parse_map_from_lines(char **lines, int line_count, t_view *map);
+int			get_map_dimensions(char **lines, int line_count, t_view *map);
+/* map_parser.c */
 void		parse_map(int fd, t_view *map);
-int			get_cols(int fd, t_view *map, char *line);
 void		get_dimensions(int fd, t_view *map);
+int			get_cols(int fd, t_view *map, char *line);
 /* fdf_error.c */
 void		ft_free_tab(void **ptr, size_t len);
 void		free_map(t_view *map);
 void		handle_error(const char *message);
 void		error_map(int fd, t_view *map, char *message);
 /* fdf_draw.c */
-void		project(t_view *map, int i, int j);
+t_point2d_temp	project_point(t_point3d point, t_view *map);
 void		draw_image(void *param);
 void		display_menu(mlx_t *mlx);
 /* fdf_rotate.c */
@@ -159,7 +164,7 @@ void		ft_hook_project(void *param);
 void		make_upper(unsigned int i, char *c);
 void		draw_reset(mlx_image_t *image);
 /* fdf_color.c */
-int			get_color(t_point2d current, t_point2d a, t_point2d b);
+int			get_color(t_point2d_temp current, t_point2d_temp a, t_point2d_temp b);
 void		set_zcolor(t_view *map);
 
 #endif

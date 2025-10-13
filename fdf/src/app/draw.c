@@ -6,20 +6,62 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 20:47:57 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/13 23:02:21 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/13 23:02:21 by ptison            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../include/app.h"
 
-static void	bresenham(mlx_image_t *image, t_point2d a, t_point2d b)
-{
-	int			error[2];
-	t_point2d	cur;
+/* ========================================================================== */
+/* PROJECTION FUNCTIONS - On-the-fly 3D to 2D conversion                    */
+/* ========================================================================== */
 
+t_point2d_temp	project_point(t_point3d point, t_view *map)
+{
+	t_point2d_temp	result;
+	double			temp_x;
+	double			temp_y;
+	double			temp_z;
+
+	temp_x = point.x;
+	temp_y = point.y;
+	temp_z = point.z * map->camera.zscale;
+	
+	/* Apply rotations */
+	rotate_z(&temp_x, &temp_y, map->camera.zrotate);
+	rotate_x(&temp_y, &temp_z, map->camera.xrotate);
+	rotate_y(&temp_x, &temp_z, map->camera.yrotate);
+	
+	/* Project to 2D screen coordinates */
+	result.x = (int)((temp_x * map->camera.zoom - temp_y * map->camera.zoom)
+			* cos(map->camera.alpha) + map->camera.x_offset);
+	result.y = (int)(-temp_z * map->camera.zoom
+			+ (temp_x * map->camera.zoom + temp_y * map->camera.zoom)
+			* sin(map->camera.beta) + map->camera.y_offset);
+	result.rgba = point.zcolor;
+	
+	return (result);
+}
+
+/* ========================================================================== */
+/* DRAWING FUNCTIONS - Optimized Bresenham with on-the-fly projection       */
+/* ========================================================================== */
+
+static void	bresenham(mlx_image_t *image, t_point3d a_3d, t_point3d b_3d, t_view *map)
+{
+	t_point2d_temp	a;
+	t_point2d_temp	b;
+	t_point2d_temp	cur;
+	int				error[2];
+
+	/* Project 3D points to 2D on-the-fly */
+	a = project_point(a_3d, map);
+	b = project_point(b_3d, map);
+	
 	cur.x = a.x;
 	cur.y = a.y;
 	error[0] = abs(b.x - a.x) - abs(b.y - a.y);
+	
 	while (cur.x != b.x || cur.y != b.y)
 	{
 		if ((uint32_t)cur.x < image->width && (uint32_t)cur.y < image->height)
@@ -40,44 +82,26 @@ static void	bresenham(mlx_image_t *image, t_point2d a, t_point2d b)
 	}
 }
 
-void	project(t_view *map, int i, int j)
-{
-	t_point3d	*previous;
-	t_point3d	temp;
-	t_point2d	*new;
-
-	previous = &(map->grid.grid3d[i][j]);
-	new = &(map->grid.grid2d[i][j]);
-	temp.x = previous->x;
-	temp.y = previous->y;
-	temp.z = previous->z * map->camera.zscale;
-	rotate_z(&temp.x, &temp.y, map->camera.zrotate);
-	rotate_x(&temp.y, &temp.z, map->camera.xrotate);
-	rotate_y(&temp.x, &temp.z, map->camera.yrotate);
-	new->x = (int)((temp.x * map->camera.zoom - temp.y * map->camera.zoom)
-			* cos(map->camera.alpha) + map->camera.x_offset);
-	new->y = (int)(-temp.z * map->camera.zoom
-			+ (temp.x * map->camera.zoom + temp.y * map->camera.zoom)
-			* sin(map->camera.beta) + map->camera.y_offset);
-	new->rgba = previous->zcolor;
-}
-
 static void	draw_line(t_fdf *fdf, int x, int y)
 {
-	if (y == 0 && x == 0)
-		project(fdf->map, y, x);
-	if (y + 1 < fdf->map->grid_info.rows)
+	t_point3d	*current;
+	t_point3d	*right;
+	t_point3d	*down;
+
+	current = &(fdf->map->grid.grid3d[y][x]);
+	
+	/* Draw vertical line (down) */
+	if (y + 1 < fdf->map->grid.rows)
 	{
-		project(fdf->map, y + 1, x);
-		bresenham(fdf->image, fdf->map->grid.grid2d[y][x],
-			fdf->map->grid.grid2d[y + 1][x]);
+		down = &(fdf->map->grid.grid3d[y + 1][x]);
+		bresenham(fdf->image, *current, *down, fdf->map);
 	}
-	if (x + 1 < fdf->map->grid_info.cols)
+	
+	/* Draw horizontal line (right) */
+	if (x + 1 < fdf->map->grid.cols)
 	{
-		if (y == 0)
-			project(fdf->map, y, x + 1);
-		bresenham(fdf->image, fdf->map->grid.grid2d[y][x],
-			fdf->map->grid.grid2d[y][x + 1]);
+		right = &(fdf->map->grid.grid3d[y][x + 1]);
+		bresenham(fdf->image, *current, *right, fdf->map);
 	}
 }
 
@@ -90,10 +114,10 @@ void	draw_image(void *param)
 	fdf = (t_fdf *)param;
 	draw_reset(fdf->image);
 	i = -1;
-	while (++i < fdf->map->grid_info.rows)
+	while (++i < fdf->map->grid.rows)
 	{
 		j = -1;
-		while (++j < fdf->map->grid_info.cols)
+		while (++j < fdf->map->grid.cols)
 			draw_line(fdf, j, i);
 	}
 }
