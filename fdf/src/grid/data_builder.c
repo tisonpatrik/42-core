@@ -17,20 +17,20 @@
 /* ========================================================================== */
 
 void	build_point3d(t_point3d *point, int row, int col, int z_value, 
-					  t_view *map)
+					  t_grid *grid, t_camera *camera)
 {
 	int	x_offset;
 	int	y_offset;
 
-	x_offset = (map->grid.cols - 1) * map->camera.interval / 2;
-	y_offset = (map->grid.rows - 1) * map->camera.interval / 2;
+	x_offset = (grid->cols - 1) * camera->interval / 2;
+	y_offset = (grid->rows - 1) * camera->interval / 2;
 	
-	point->x = (double)col * map->camera.interval - x_offset;
-	point->y = (double)row * map->camera.interval - y_offset;
-	point->z = (double)z_value * map->camera.interval;
+	point->x = (double)col * camera->interval - x_offset;
+	point->y = (double)row * camera->interval - y_offset;
+	point->z = (double)z_value * camera->interval;
 }
 
-void	build_column_from_tokens(char **tokens, t_view *map, int row)
+void	build_column_from_tokens(char **tokens, t_grid *grid, t_camera *camera, int row)
 {
 	t_point3d	*point;
 	int			col;
@@ -38,15 +38,15 @@ void	build_column_from_tokens(char **tokens, t_view *map, int row)
 	int			color;
 
 	col = 0;
-	while (col < map->grid.cols && tokens[col])
+	while (col < grid->cols && tokens[col])
 	{
 		z_value = ft_atoi(tokens[col]);
-		point = &(map->grid.grid3d[row][col]);
+		point = &(grid->grid3d[row][col]);
 		
-		build_point3d(point, row, col, z_value, map);
+		build_point3d(point, row, col, z_value, grid, camera);
 		
-		map->grid.high = ft_max(map->grid.high, point->z);
-		map->grid.low = ft_min(map->grid.low, point->z);
+		grid->high = ft_max(grid->high, point->z);
+		grid->low = ft_min(grid->low, point->z);
 		
 		color = parse_color_from_token(tokens[col]);
 		point->mapcolor = (color == -1) ? 0xFFFFFFFF : (unsigned int)color;

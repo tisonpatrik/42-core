@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 12:31:10 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/13 23:02:14 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/14 00:58:23 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ typedef struct s_map_info
 	int			fd;
 }				t_map_info;
 
-typedef struct s_view
+typedef struct s_map
 {
 	t_arena		*arena;
 	t_cell		*cells;

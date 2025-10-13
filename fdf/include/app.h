@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 13:36:16 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/13 23:33:44 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/14 01:01:37 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "../lib/libft/include/libft.h"
 # include "../lib/MLX42/include/MLX42/MLX42.h"
+# include "../include/map.h"
 
 # include <limits.h>
 # include <fcntl.h>
@@ -112,14 +113,23 @@ typedef struct s_view
 typedef struct s_fdf
 {
 	mlx_t		*mlx;
-	t_view		*map;
+	t_view		*view;
 	mlx_image_t	*image;
 }				t_fdf;
 
-/* map_init.c */
-void		init_map(t_view *map);
-void		malloc_grid(t_view *map);
-t_view		*parse_input(char *filename);
+/* grid_allocator.c */
+int			allocate_grid_memory(t_view *view);
+void		free_grid_memory(t_view *view);
+/* map_initializer.c */
+void		init_camera_defaults(t_camera *camera);
+void		init_grid_defaults(t_grid *grid);
+void		init_map_defaults(t_view *view);
+void		calculate_camera_interval(t_view *view);
+/* grid_factory.c */
+t_view		*create_view(void);
+t_view		*create_map_from_file(const char *filename);
+void		destroy_map(t_view *view);
+
 /* file_reader.c */
 char		**read_map_file_lines_from_fd(int fd, int *line_count);
 void		free_map_lines(char **lines);
@@ -129,22 +139,22 @@ int			parse_color_from_token(char *token);
 int			validate_map_line(char *line);
 int			get_column_count(char *line);
 /* data_builder.c */
-void		build_point3d(t_point3d *point, int row, int col, int z_value, t_view *map);
-void		build_column_from_tokens(char **tokens, t_view *map, int row);
+void		build_point3d(t_point3d *point, int row, int col, int z_value, t_grid *grid, t_camera *camera);
+void		build_column_from_tokens(char **tokens, t_grid *grid, t_camera *camera, int row);
 /* map_orchestrator.c */
-int			parse_map_from_lines(char **lines, int line_count, t_view *map);
-int			get_map_dimensions(char **lines, int line_count, t_view *map);
+int			parse_map_from_lines(char **lines, int line_count, t_view *view);
+int			get_map_dimensions(char **lines, int line_count, t_view *view);
 /* map_parser.c */
-void		parse_map(int fd, t_view *map);
-void		get_dimensions(int fd, t_view *map);
-int			get_cols(int fd, t_view *map, char *line);
+void		parse_map_for_view(int fd, t_view *view);
+void		get_dimensions(int fd, t_view *view);
+int			get_cols(int fd, t_view *view, char *line);
 /* fdf_error.c */
 void		ft_free_tab(void **ptr, size_t len);
-void		free_map(t_view *map);
+void		free_view(t_view *view);
 void		handle_error(const char *message);
-void		error_map(int fd, t_view *map, char *message);
+void		error_map(int fd, t_view *view, char *message);
 /* fdf_draw.c */
-t_point2d_temp	project_point(t_point3d point, t_view *map);
+t_point2d_temp	project_point(t_point3d point, t_view *view);
 void		draw_image(void *param);
 void		display_menu(mlx_t *mlx);
 /* fdf_rotate.c */
@@ -165,6 +175,6 @@ void		make_upper(unsigned int i, char *c);
 void		draw_reset(mlx_image_t *image);
 /* fdf_color.c */
 int			get_color(t_point2d_temp current, t_point2d_temp a, t_point2d_temp b);
-void		set_zcolor(t_view *map);
+void		set_zcolor(t_view *view);
 
 #endif

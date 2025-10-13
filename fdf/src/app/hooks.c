@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 20:46:35 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/13 23:02:21 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/14 00:11:40 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,23 +18,23 @@ void	fdf_scrollhook(double xdelta, double ydelta, void *param)
 
 	fdf = (t_fdf *)param;
 	if (ydelta > 0)
-		fdf->map->camera.zoom *= 1.02;
-	else if (ydelta < 0 && fdf->map->camera.zoom * 0.98 > 0)
-		fdf->map->camera.zoom *= 0.98;
+		fdf->view->camera.zoom *= 1.02;
+	else if (ydelta < 0 && fdf->view->camera.zoom * 0.98 > 0)
+		fdf->view->camera.zoom *= 0.98;
 	xdelta++;
 }
 
-static void	reset_map(t_view *map)
+static void	reset_map(t_view *view)
 {
-	map->camera.alpha = 0.46373398 / 2;
-	map->camera.beta = 0.46373398;
-	map->camera.xrotate = 0;
-	map->camera.yrotate = 0;
-	map->camera.zrotate = 0;
-	map->camera.x_offset = WIDTH / 2;
-	map->camera.y_offset = HEIGHT / 2;
-	map->camera.zoom = 1;
-	map->camera.zscale = 1;
+	view->camera.alpha = 0.46373398 / 2;
+	view->camera.beta = 0.46373398;
+	view->camera.xrotate = 0;
+	view->camera.yrotate = 0;
+	view->camera.zrotate = 0;
+	view->camera.x_offset = WIDTH / 2;
+	view->camera.y_offset = HEIGHT / 2;
+	view->camera.zoom = 1;
+	view->camera.zscale = 1;
 }
 
 void	ft_hook(void *param)
@@ -43,17 +43,17 @@ void	ft_hook(void *param)
 
 	fdf = (t_fdf *)param;
 	if (mlx_is_key_down(fdf->mlx, MLX_KEY_0))
-		reset_map(fdf->map);
+		reset_map(fdf->view);
 	if (mlx_is_key_down(fdf->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(fdf->mlx);
 	if (mlx_is_key_down(fdf->mlx, MLX_KEY_LEFT))
-		fdf->map->camera.x_offset -= 5;
+		fdf->view->camera.x_offset -= 5;
 	if (mlx_is_key_down(fdf->mlx, MLX_KEY_RIGHT))
-		fdf->map->camera.x_offset += 5; 
+		fdf->view->camera.x_offset += 5; 
 	if (mlx_is_key_down(fdf->mlx, MLX_KEY_DOWN))
-		fdf->map->camera.y_offset += 5;
+		fdf->view->camera.y_offset += 5;
 	if (mlx_is_key_down(fdf->mlx, MLX_KEY_UP))
-		fdf->map->camera.y_offset -= 5;
+		fdf->view->camera.y_offset -= 5;
 	if (mlx_is_key_down(fdf->mlx, MLX_KEY_EQUAL))
 		fdf_scrollhook(0, 1, param);
 	if (mlx_is_key_down(fdf->mlx, MLX_KEY_MINUS))
@@ -67,18 +67,18 @@ void	ft_hook_project(void *param)
 	fdf = (t_fdf *)param;
 	if (mlx_is_key_down(fdf->mlx, MLX_KEY_1))
 	{
-		fdf->map->camera.alpha = 0.523599;
-		fdf->map->camera.beta = fdf->map->camera.alpha;
+		fdf->view->camera.alpha = 0.523599;
+		fdf->view->camera.beta = fdf->view->camera.alpha;
 	}
 	if (mlx_is_key_down(fdf->mlx, MLX_KEY_2))
 	{
-		fdf->map->camera.alpha = 0.6370452;
-		fdf->map->camera.beta = fdf->map->camera.alpha;
+		fdf->view->camera.alpha = 0.6370452;
+		fdf->view->camera.beta = fdf->view->camera.alpha;
 	}
 	if (mlx_is_key_down(fdf->mlx, MLX_KEY_3))
 	{
-		fdf->map->camera.alpha = 0.46373398 / 2;
-		fdf->map->camera.beta = 0.46373398;
+		fdf->view->camera.alpha = 0.46373398 / 2;
+		fdf->view->camera.beta = 0.46373398;
 	}
 }
 
@@ -94,15 +94,15 @@ void	ft_hook_rotate(void *param)
 	else if (mlx_is_key_down(fdf->mlx, MLX_KEY_PERIOD))
 		sign = 1;
 	if (mlx_is_key_down(fdf->mlx, MLX_KEY_Q))
-		fdf->map->camera.alpha += sign * 0.03; 
+		fdf->view->camera.alpha += sign * 0.03; 
 	if (mlx_is_key_down(fdf->mlx, MLX_KEY_W))
-		fdf->map->camera.beta += sign * 0.03;
+		fdf->view->camera.beta += sign * 0.03;
 	if (mlx_is_key_down(fdf->mlx, MLX_KEY_S))
-		fdf->map->camera.zscale += sign * 0.03;
+		fdf->view->camera.zscale += sign * 0.03;
 	if (mlx_is_key_down(fdf->mlx, MLX_KEY_X))
-		fdf->map->camera.xrotate += sign * 0.02;
+		fdf->view->camera.xrotate += sign * 0.02;
 	if (mlx_is_key_down(fdf->mlx, MLX_KEY_Y))
-		fdf->map->camera.yrotate += sign * 0.02;
+		fdf->view->camera.yrotate += sign * 0.02;
 	if (mlx_is_key_down(fdf->mlx, MLX_KEY_Z))
-		fdf->map->camera.zrotate += sign * 0.02;
+		fdf->view->camera.zrotate += sign * 0.02;
 }

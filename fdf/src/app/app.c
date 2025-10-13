@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 21:14:06 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/13 22:37:42 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/14 00:54:52 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	run_app(t_fdf *fdf)
 	draw_image(fdf);
 	if (mlx_image_to_window(fdf->mlx, fdf->image, 0, 0) == -1)
 	{
-		free_map(fdf->map);
+		free_view(fdf->view);
 		mlx_close_window(fdf->mlx);
 		handle_error(mlx_strerror(mlx_errno));
 	}

@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 11:37:00 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/13 21:56:25 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/14 01:00:29 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,11 @@ int32_t	main(int argc, char **argv)
 	}
 	
 	fdf = init_fdf(argv[1]);
+
+
 	run_app(fdf);
 	mlx_terminate(fdf->mlx);
-	free_map(fdf->map);
+	destroy_map(fdf->view);
+
 	return (0);
 }

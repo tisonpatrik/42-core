@@ -16,7 +16,7 @@
 /* HIGH-LEVEL PARSING FUNCTIONS - Orchestrate the process                   */
 /* ========================================================================== */
 
-int	parse_map_from_lines(char **lines, int line_count, t_view *map)
+int	parse_map_from_lines(char **lines, int line_count, t_view *view)
 {
 	char	**tokens;
 	int		row;
@@ -28,14 +28,14 @@ int	parse_map_from_lines(char **lines, int line_count, t_view *map)
 		if (!tokens)
 			return (0);
 		
-		build_column_from_tokens(tokens, map, row);
-		ft_free_tab((void **)tokens, map->grid.cols);
+		build_column_from_tokens(tokens, &view->grid, &view->camera, row);
+		ft_free_tab((void **)tokens, view->grid.cols);
 		row++;
 	}
 	return (1);
 }
 
-int	get_map_dimensions(char **lines, int line_count, t_view *map)
+int	get_map_dimensions(char **lines, int line_count, t_view *view)
 {
 	int	cols;
 	int	row;
@@ -47,8 +47,8 @@ int	get_map_dimensions(char **lines, int line_count, t_view *map)
 	if (cols == 0)
 		return (0);
 	
-	map->grid.cols = cols;
-	map->grid.rows = line_count;
+	view->grid.cols = cols;
+	view->grid.rows = line_count;
 	
 	/* Validate all lines have same column count */
 	row = 1;

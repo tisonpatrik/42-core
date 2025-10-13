@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 20:48:20 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/13 23:33:44 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/14 00:11:40 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,20 +72,20 @@ static int	zcolor(double perc)
 		return (COLOR_TEN); 
 }
 
-void	set_zcolor(t_view *map)
+void	set_zcolor(t_view *view)
 {
 	int		i;
 	int		j;
 	double	perc;
 
 	i = -1;
-	while (++i < map->grid.rows)
+	while (++i < view->grid.rows)
 	{
 		j = -1;
-		while (++j < map->grid.cols)
+		while (++j < view->grid.cols)
 		{
-			perc = percent(map->grid.low, map->grid.high, map->grid.grid3d[i][j].z);
-			map->grid.grid3d[i][j].zcolor = zcolor(perc);
+			perc = percent(view->grid.low, view->grid.high, view->grid.grid3d[i][j].z);
+			view->grid.grid3d[i][j].zcolor = zcolor(perc);
 		}
 	}
 }

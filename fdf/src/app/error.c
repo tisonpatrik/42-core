@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 20:47:30 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/13 23:33:44 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/14 00:54:18 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,13 @@ void	ft_free_tab(void **tab, size_t len)
 	free(tab);
 }
 
-void	free_map(t_view *map)
+void	free_view(t_view *view)
 {
-	if (!map)
+	if (!view)
 		return ;
-	if (map->grid.grid3d)
-		ft_free_tab((void **)map->grid.grid3d, map->grid.rows);
-	free(map);
+	if (view->grid.grid3d)
+		ft_free_tab((void **)view->grid.grid3d, view->grid.rows);
+	free(view);
 }
 
 void	handle_error(const char *message)
@@ -46,9 +46,9 @@ void	handle_error(const char *message)
 	exit(1);
 }
 
-void	error_map(int fd, t_view *map, char *message)
+void	error_map(int fd, t_view *view, char *message)
 {
 	close(fd);
-	free_map(map);
+	free_view(view);
 	handle_error(message);
 }
