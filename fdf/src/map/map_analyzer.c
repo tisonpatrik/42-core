@@ -6,11 +6,11 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:43:14 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/12 20:12:38 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/16 21:25:55 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../include/map.h"
+# include "../../include/heightmap.h"
 
 static bool	analyze_line(char *line, int *max_columns)
 {
@@ -34,9 +34,9 @@ static bool	analyze_line(char *line, int *max_columns)
 	return (true);
 }
 
-t_map_info	*analyze_map_file(const char *file_name)
+t_heightmap_info	*analyze_heightmap_file(const char *file_name)
 {
-	t_map_info	*info;
+	t_heightmap_info	*info;
 	int			fd;
 	char		*line;
 	int			count_rows;
@@ -56,7 +56,7 @@ t_map_info	*analyze_map_file(const char *file_name)
 	}
 	close(fd);
 
-	info = allocate_map_info(count_rows, max_columns, fd);
+	info = allocate_heightmap_info(count_rows, max_columns, fd);
 	if (!info)
 		return (NULL);
 	return (info);

@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 22:14:16 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/16 15:08:45 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/16 21:25:55 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	build_grid_point3d(t_point3d *point, size_t row, int col, int z_value,
 	point->z = (double)z_value * interval;
 }
 
-void	build_grid_column_from_tokens(t_map *map, t_grid *grid, size_t row_index)
+void	build_grid_column_from_tokens(t_heightmap *heightmap, t_grid *grid, size_t row_index)
 {
 	t_point3d	*point;
 	int			col;
@@ -51,8 +51,8 @@ void	build_grid_column_from_tokens(t_map *map, t_grid *grid, size_t row_index)
 	col = 0;
 	while (col < grid->cols)
 	{
-		map_index = row_index * map->cols + col;
-		z_value = map->points[map_index].z;
+		map_index = row_index * heightmap->cols + col;
+		z_value = heightmap->points[map_index].z;
 		point = &(grid->grid3d[row_index][col]);
 		
 		build_grid_point3d(point, row_index, col, z_value, grid, interval);
@@ -60,7 +60,7 @@ void	build_grid_column_from_tokens(t_map *map, t_grid *grid, size_t row_index)
 		grid->high = ft_max(grid->high, point->z);
 		grid->low = ft_min(grid->low, point->z);
 		
-		color = map->points[map_index].color;
+		color = heightmap->points[map_index].color;
 		point->mapcolor = (color == -1) ? 0xFFFFFFFF : (unsigned int)color;
 		
 		col++;
@@ -77,17 +77,17 @@ void	init_grid_defaults(t_grid *grid)
 }
 
 
-t_grid	*get_grid(t_map *map)
+t_grid	*get_grid(t_heightmap *heightmap)
 {
     size_t row = 0;
-	t_grid *grid = allocate_grid(map->rows, map->cols);
+	t_grid *grid = allocate_grid(heightmap->rows, heightmap->cols);
 	
 	if (!grid)
 		return (NULL);
 
-    while (row < map->rows)
+	while (row < heightmap->rows)
     {
-        build_grid_column_from_tokens(map, grid, row);
+		build_grid_column_from_tokens(heightmap, grid, row);
         row++;
     }
 	

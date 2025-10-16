@@ -6,18 +6,18 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 12:43:16 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/15 15:03:37 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/16 21:25:55 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../include/map.h"
+# include "../../include/heightmap.h"
 
-void	free_map(t_map *map)
+void	free_heightmap(t_heightmap *heightmap)
 {
-	if (!map)
+	if (!heightmap)
 		return ;
-	if (map->arena)
-		ft_arena_destroy(map->arena);
+	if (heightmap->arena)
+		ft_arena_destroy(heightmap->arena);
 }
 
 size_t	calculate_arena_size(int nrows, int ncols)
@@ -33,38 +33,38 @@ size_t	calculate_arena_size(int nrows, int ncols)
 	return (size);
 }
 
-int	setup_arena_layout(t_map *map, int nrows, int ncols)
+int	setup_arena_layout(t_heightmap *heightmap, int nrows, int ncols)
 {
 	int	total_cells;
 
 	total_cells = nrows * ncols;
-	map->points = (t_point *)ft_arena_alloc(map->arena, sizeof(t_point)
+	heightmap->points = (t_point *)ft_arena_alloc(heightmap->arena, sizeof(t_point)
 			* (size_t)total_cells);
-	return (map->points != NULL);
+	return (heightmap->points != NULL);
 }
 
-t_map	*alocate_map(t_map_info *info)
+t_heightmap	*allocate_heightmap(t_heightmap_info *info)
 {
-	t_map	*map;
+	t_heightmap	*heightmap;
 	size_t	arena_size;
 
-	map = malloc(sizeof(t_map));
-	if (!map)
+	heightmap = malloc(sizeof(t_heightmap));
+	if (!heightmap)
 		return (NULL);
 	arena_size = calculate_arena_size(info->expected_count_rows, info->expected_count_columns);
-	map->arena = ft_arena_create(arena_size);
-	if (!map->arena)
+	heightmap->arena = ft_arena_create(arena_size);
+	if (!heightmap->arena)
 	{
-		free(map);
+		free(heightmap);
 		return (NULL);
 	}
-	map->rows = info->expected_count_rows;
-	map->cols = info->expected_count_columns;
-	if (!setup_arena_layout(map, map->rows, map->cols))
+	heightmap->rows = info->expected_count_rows;
+	heightmap->cols = info->expected_count_columns;
+	if (!setup_arena_layout(heightmap, heightmap->rows, heightmap->cols))
 	{
-		ft_arena_destroy(map->arena);
-		free(map);
+		ft_arena_destroy(heightmap->arena);
+		free(heightmap);
 		return (NULL);
 	}
-	return (map);
+	return (heightmap);
 }

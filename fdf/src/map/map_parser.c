@@ -6,11 +6,11 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:43:26 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/15 16:48:09 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/16 21:25:55 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../include/map.h"
+# include "../../include/heightmap.h"
 # include "../../include/app.h"
 
 /* Privátní funkce pro parsing barvy z hex stringu do MLX42 ARGB formátu */
@@ -91,7 +91,7 @@ t_token_data	parse_token(const char *token)
 }
 
 
-static bool	parse_row_tokens(char **tokens, t_map *map, int row_index)
+static bool	parse_row_tokens(char **tokens, t_heightmap *heightmap, int row_index)
 {
 	t_token_data	data;
 	int				col_index;
@@ -105,23 +105,23 @@ static bool	parse_row_tokens(char **tokens, t_map *map, int row_index)
 		data = parse_token(tokens[i]);
 		if (data.z_value == -1)
 			return (false);
-		col_index = row_index * map->cols + i;
-		map->points[col_index].z = data.z_value;
-		map->points[col_index].color = data.color;
+		col_index = row_index * heightmap->cols + i;
+		heightmap->points[col_index].z = data.z_value;
+		heightmap->points[col_index].color = data.color;
 		i++;
 	}
 	i = token_count;
-	while (i < map->cols)
+	while (i < heightmap->cols)
 	{
-		col_index = row_index * map->cols + i;
-		map->points[col_index].z = 0;
-		map->points[col_index].color = 0xFFFFFFFF;  /* Default bílá barva s alpha kanálem pro MLX42 */
+		col_index = row_index * heightmap->cols + i;
+		heightmap->points[col_index].z = 0;
+		heightmap->points[col_index].color = 0xFFFFFFFF;  /* Default bílá barva s alpha kanálem pro MLX42 */
 		i++;
 	}
 	return (true);
 }
 
-bool	parse_map(t_map *map, int fd)
+bool	parse_heightmap(t_heightmap *heightmap, int fd)
 {
 	char	*line;
 	char	*trimmed;
@@ -138,7 +138,7 @@ bool	parse_map(t_map *map, int fd)
 		free(trimmed);
 		if (!tokens)
 			continue ;
-		if (!parse_row_tokens(tokens, map, row_index))
+		if (!parse_row_tokens(tokens, heightmap, row_index))
 		{
 			ft_free_array(tokens);
 			close(fd);
