@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 13:36:16 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/14 01:01:37 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/16 11:16:02 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ typedef struct s_grid
 	int				cols;
 	int				high;
 	int				low;
+	t_arena			*arena;
 }					t_grid;
 
 typedef struct s_view

@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:43:19 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/12 20:12:38 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/15 15:03:13 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ t_map_info	*allocate_map_info(int count_of_rows, int count_of_columns, int fd)
 	info = malloc(sizeof(t_map_info));
 	if (!info)
 		return (NULL);
-	info->count_rows = count_of_rows;
-	info->count_columns = count_of_columns;
+	info->expected_count_rows = count_of_rows;
+	info->expected_count_columns = count_of_columns;
 	info->fd = fd;
 	return (info);
 }

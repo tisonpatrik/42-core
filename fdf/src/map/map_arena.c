@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 12:43:16 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/12 20:12:38 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/15 15:03:37 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ size_t	calculate_arena_size(int nrows, int ncols)
 	int		total_cells;
 
 	total_cells = nrows * ncols;
-	cells_size = sizeof(t_cell) * (size_t)total_cells;
+	cells_size = sizeof(t_point) * (size_t)total_cells;
 	cells_size = (cells_size + 7) & ~7;
 	size = cells_size;
 	return (size);
@@ -38,9 +38,9 @@ int	setup_arena_layout(t_map *map, int nrows, int ncols)
 	int	total_cells;
 
 	total_cells = nrows * ncols;
-	map->cells = (t_cell *)ft_arena_alloc(map->arena, sizeof(t_cell)
+	map->points = (t_point *)ft_arena_alloc(map->arena, sizeof(t_point)
 			* (size_t)total_cells);
-	return (map->cells != NULL);
+	return (map->points != NULL);
 }
 
 t_map	*alocate_map(t_map_info *info)
@@ -51,16 +51,16 @@ t_map	*alocate_map(t_map_info *info)
 	map = malloc(sizeof(t_map));
 	if (!map)
 		return (NULL);
-	arena_size = calculate_arena_size(info->count_rows, info->count_columns);
+	arena_size = calculate_arena_size(info->expected_count_rows, info->expected_count_columns);
 	map->arena = ft_arena_create(arena_size);
 	if (!map->arena)
 	{
 		free(map);
 		return (NULL);
 	}
-	map->count_rows = info->count_rows;
-	map->count_columns = info->count_columns;
-	if (!setup_arena_layout(map, map->count_rows, map->count_columns))
+	map->rows = info->expected_count_rows;
+	map->cols = info->expected_count_columns;
+	if (!setup_arena_layout(map, map->rows, map->cols))
 	{
 		ft_arena_destroy(map->arena);
 		free(map);

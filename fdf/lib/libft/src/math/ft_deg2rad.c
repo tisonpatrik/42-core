@@ -1,26 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_math.h                                          :+:      :+:    :+:   */
+/*   ft_deg2rad.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/22 18:28:41 by ptison            #+#    #+#             */
+/*   Created: 2025/10/15 19:35:54 by ptison            #+#    #+#             */
 /*   Updated: 2025/10/15 19:36:50 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_MATH_H
-# define FT_MATH_H
-
-# include <stdbool.h>
-
-# define M_PI 3.14159265358979323846
-
-int		ft_abs(int n);
-void	ft_swap_int(int *a, int *b);
-int		ft_max(int a, int b);
-int		ft_min(int a, int b);
-double	ft_deg2rad(double degrees);
-
-#endif
+#include "../../include/ft_math.h"
+/**
+ * @brief Converts degrees to radians
+ *
+ * This function converts an angle from degrees to radians using the formula:
+ * radians = degrees * (π / 180)
+ *
+ * @param degrees The angle in degrees to convert
+ * @return The angle in radians
+ */
+double	ft_deg2rad(double degrees)
+{
+	return (degrees * (M_PI / 180.0));
+}

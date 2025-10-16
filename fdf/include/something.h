@@ -1,26 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_math.h                                          :+:      :+:    :+:   */
+/*   something.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/22 18:28:41 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/15 19:36:50 by ptison           ###   ########.fr       */
+/*   Created: 2025/10/15 22:14:50 by ptison            #+#    #+#             */
+/*   Updated: 2025/10/16 14:35:19 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_MATH_H
-# define FT_MATH_H
+#ifndef SOMETHING_H
+# define SOMETHING_H
 
-# include <stdbool.h>
+# include "../include/app.h"
+# include "../include/map.h"
 
-# define M_PI 3.14159265358979323846
-
-int		ft_abs(int n);
-void	ft_swap_int(int *a, int *b);
-int		ft_max(int a, int b);
-int		ft_min(int a, int b);
-double	ft_deg2rad(double degrees);
-
+void set_camera_isometric(t_camera *cam, int screen_w, int screen_h);
+t_grid	*allocate_grid(int rows, int cols);
+t_grid	*get_grid(t_map *map);
+void	free_grid(t_view *view);
 #endif

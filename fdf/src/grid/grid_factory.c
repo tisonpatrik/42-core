@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 23:33:44 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/14 01:01:57 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/15 16:49:47 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,6 @@ t_view	*create_map_from_file(const char *filename)
 	
 	/* Set color information */
 	set_zcolor(view);
-	t_map *map = read_map_from_file(filename);
-	(void)map;
-	free_map(map);
 	return (view);
 }
 

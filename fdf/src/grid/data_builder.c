@@ -12,10 +12,6 @@
 
 # include "../../include/app.h"
 
-/* ========================================================================== */
-/* DATA STRUCTURE BUILDING FUNCTIONS - Pure data transformation             */
-/* ========================================================================== */
-
 void	build_point3d(t_point3d *point, int row, int col, int z_value, 
 					  t_grid *grid, t_camera *camera)
 {
@@ -30,7 +26,7 @@ void	build_point3d(t_point3d *point, int row, int col, int z_value,
 	point->z = (double)z_value * camera->interval;
 }
 
-void	build_column_from_tokens(char **tokens, t_grid *grid, t_camera *camera, int row)
+void	build_column_from_tokens(char **tokens, t_grid *grid, t_camera *camera, int row_intex)
 {
 	t_point3d	*point;
 	int			col;
@@ -41,9 +37,9 @@ void	build_column_from_tokens(char **tokens, t_grid *grid, t_camera *camera, int
 	while (col < grid->cols && tokens[col])
 	{
 		z_value = ft_atoi(tokens[col]);
-		point = &(grid->grid3d[row][col]);
+		point = &(grid->grid3d[row_intex][col]);
 		
-		build_point3d(point, row, col, z_value, grid, camera);
+		build_point3d(point, row_intex, col, z_value, grid, camera);
 		
 		grid->high = ft_max(grid->high, point->z);
 		grid->low = ft_min(grid->low, point->z);

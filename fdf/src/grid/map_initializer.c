@@ -30,7 +30,7 @@ void	init_camera_defaults(t_camera *camera)
 	camera->interval = 0;
 }
 
-void	init_grid_defaults(t_grid *grid)
+void	get_grid_defaults(t_grid *grid)
 {
 	grid->high = INT_MIN;
 	grid->low = INT_MAX;
@@ -42,7 +42,7 @@ void	init_grid_defaults(t_grid *grid)
 void	init_map_defaults(t_view *view)
 {
 	init_camera_defaults(&view->camera);
-	init_grid_defaults(&view->grid);
+	get_grid_defaults(&view->grid);
 }
 
 void	calculate_camera_interval(t_view *view)
