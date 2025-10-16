@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   something.h                                        :+:      :+:    :+:   */
+/*   experimental.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 22:14:50 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/16 14:35:19 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/16 15:08:31 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SOMETHING_H
-# define SOMETHING_H
+#ifndef EXPERIMENTAL_H
+# define EXPERIMENTAL_H
 
 # include "../include/app.h"
 # include "../include/map.h"

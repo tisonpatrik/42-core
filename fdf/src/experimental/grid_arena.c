@@ -6,11 +6,11 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 11:00:34 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/16 11:16:02 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/16 15:08:40 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../include/something.h"
+# include "../../include/experimental.h"
 
 t_grid	*allocate_grid(int rows, int cols)
 {
