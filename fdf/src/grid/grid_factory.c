@@ -6,11 +6,11 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 23:33:44 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/15 16:49:47 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/17 01:16:24 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../include/app.h"
+# include "../../include/old_app.h"
 
 /* ========================================================================== */
 /* VIEW CREATION - Pure view structure management                            */

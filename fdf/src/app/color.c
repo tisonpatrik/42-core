@@ -6,11 +6,11 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 20:48:20 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/14 00:11:40 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/17 01:16:24 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../include/app.h"
+# include "../../include/old_app.h"
 
 static int	radiant(int start, int end, double percentage)
 {

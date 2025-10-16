@@ -6,11 +6,11 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 21:10:20 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/16 15:16:04 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/17 01:16:24 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../include/app.h"
+# include "../../include/old_app.h"
 
 t_fdf	*init_fdf(char *filename)
 {

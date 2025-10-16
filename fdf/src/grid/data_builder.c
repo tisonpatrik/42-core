@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../include/app.h"
+# include "../../include/old_app.h"
 
 void	build_point3d(t_point3d *point, int row, int col, int z_value, 
 					  t_grid *grid, t_camera *camera)

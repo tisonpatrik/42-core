@@ -6,14 +6,14 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 22:14:50 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/16 21:25:55 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/17 01:16:41 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXPERIMENTAL_H
 # define EXPERIMENTAL_H
 
-# include "../include/app.h"
+# include "../include/old_app.h"
 # include "../include/heightmap.h"
 
 void set_camera_isometric(t_camera *cam, int screen_w, int screen_h);
