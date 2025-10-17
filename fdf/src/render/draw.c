@@ -68,7 +68,7 @@ t_point2d_temp	project_point(t_point3d point, t_camera *camera)
 	result.y = (int)(-temp_z * camera->zoom
 			+ (temp_x * camera->zoom + temp_y * camera->zoom)
 			* sin(camera->beta) + camera->y_offset);
-	result.rgba = point.zcolor;
+	result.rgba = point.mapcolor;
 	
 	
 	return (result);

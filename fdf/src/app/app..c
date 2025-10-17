@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 20:47:59 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/18 00:12:29 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/18 00:20:53 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,7 @@ t_app	*init_app(char *filename)
 	if (!grid)
 		return (NULL);
 
-	// Initialize camera with grid dimensions
 	init_camera_defaults(&camera, WIDTH, HEIGHT);
-
-	// Set zcolor using old implementation's function
-	set_zcolor(grid);
-	
 
 	app = malloc(sizeof(t_app));
 	if (!app)

@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 22:59:17 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/17 23:55:41 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/18 00:20:17 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,29 +29,7 @@ static double	percent(int start, int end, int current)
 	return (placement / distance);
 }
 
-static int	zcolor(double perc)
-{
-	if (perc < 0.1)
-		return (COLOR_ONE);
-	else if (perc < 0.2)
-		return (COLOR_TWO);
-	else if (perc < 0.3)
-		return (COLOR_THREE);
-	else if (perc < 0.4)
-		return (COLOR_FOUR);
-	else if (perc < 0.5)
-		return (COLOR_FIVE);
-	else if (perc < 0.6)
-		return (COLOR_SIX);
-	else if (perc < 0.7)
-		return (COLOR_SEVEN);
-	else if (perc < 0.8)
-		return (COLOR_EIGHT);
-	else if (perc < 0.9)
-		return (COLOR_NINE);
-	else
-		return (COLOR_TEN); 
-}
+
 
 int	get_color(t_point2d_temp current, t_point2d_temp a, t_point2d_temp b)
 {
@@ -70,27 +48,6 @@ int	get_color(t_point2d_temp current, t_point2d_temp a, t_point2d_temp b)
 	green = radiant((a.rgba >> 16) & 0xFF, (b.rgba >> 16) & 0xFF, percentage);
 	blue = radiant((a.rgba >> 8) & 0xFF, (b.rgba >> 8) & 0xFF, percentage);
 	return ((red << 24) | (green << 16) | blue << 8 | 0xFF);
-}
-
-
-
-
-void	set_zcolor(t_grid *grid)
-{
-	int		i;
-	int		j;
-	double	perc;
-
-	i = -1;
-	while (++i < grid->rows)
-	{
-		j = -1;
-		while (++j < grid->cols)
-		{
-			perc = percent(grid->low, grid->high, grid->grid3d[i][j].z);
-			grid->grid3d[i][j].zcolor = zcolor(perc);
-		}
-	}
 }
 
 
