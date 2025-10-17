@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 22:14:50 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/18 00:40:52 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/18 00:48:47 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,17 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <limits.h>
+# include <stdbool.h>
+
+
+typedef enum e_chars
+{
+	CHAR_SPACE = ' ',
+	CHAR_NEWLINE = '\n',
+	CHAR_CARRIAGE_RETURN = '\r',
+	CHAR_NULL = '\0',
+}				t_chars;
+
 
 typedef struct s_point3d
 {
@@ -43,18 +54,6 @@ typedef struct s_grid
 	t_arena			*arena;
 }					t_grid;
 
-typedef struct s_view
-{
-	t_camera		camera;
-	t_grid			grid;
-}					t_view;
-typedef enum e_chars
-{
-	CHAR_SPACE = ' ',
-	CHAR_NEWLINE = '\n',
-	CHAR_CARRIAGE_RETURN = '\r',
-	CHAR_NULL = '\0',
-}				t_chars;
 
 typedef struct s_token_data
 {
@@ -77,8 +76,6 @@ t_token_data	parse_token(const char *token);
 t_grid			*allocate_grid(int rows, int cols);
 t_grid_info		analyze_grid_file(const char *filename);
 t_grid			*create_grid_from_file(const char *filename, int width, int height);
-double			calculate_grid_interval(size_t rows, size_t cols, int width, int height);
 bool	parse_grid_row(char **tokens, t_grid *grid, int row_index, int width, int height);
 void	free_grid(t_grid *grid);
-void	free_wierd_view(t_view *view);
 #endif

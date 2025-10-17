@@ -6,40 +6,32 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 20:47:59 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/18 00:32:35 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/18 01:03:10 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 # include "../../include/app.h"
 
+
 t_app	*init_app(char *filename)
 {
-    
-	t_camera camera;
-	t_grid *grid;
 	t_app *app;
 	
-	grid = get_grid(filename, WIDTH, HEIGHT);
-	
-	if (!grid)
-		return (NULL);
-
-	init_camera_defaults(&camera, WIDTH, HEIGHT);
-
 	app = malloc(sizeof(t_app));
 	if (!app)
+		return (NULL);
+	
+	app->renderer = init_renderer();
+	app->grid = create_grid_from_file(filename, WIDTH, HEIGHT);
+	if (!app->grid)
 	{
-		free_grid(grid);
+		free(app);
 		return (NULL);
 	}
-
-	app->grid = grid;  // Use pointer instead of copy
-	app->camera = camera;
-	app->renderer.mlx = mlx_init(WIDTH, HEIGHT, "FdF", true);
-	app->renderer.img = mlx_new_image(app->renderer.mlx, WIDTH, HEIGHT);
-	app->renderer.width = WIDTH;
-	app->renderer.height = HEIGHT;
+	
+	app->camera = init_camera_defaults(WIDTH, HEIGHT);
+	
 
 	return (app);
 }
@@ -73,6 +65,7 @@ static void	handle_error(const char *message)
 		perror("FdF");
 	exit(1);
 }
+
 void	run_app(t_app *app)
 {
 	display_menu(app->renderer.mlx);

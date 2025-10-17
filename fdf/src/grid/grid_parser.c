@@ -41,7 +41,13 @@ static t_token_data	parse_token_with_color(const char *token, char *comma_pos)
 	
 	return (data);
 }
+static double	calculate_grid_interval(size_t rows, size_t cols, int width, int height)
+{
+	double	interval;
 
+	interval = ft_min(width / cols, height / rows) / 2.0;
+	return (ft_max(2, interval));
+}
 t_token_data	parse_token(const char *token)
 {
 	t_token_data	data;

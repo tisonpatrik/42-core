@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 20:46:35 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/18 00:25:56 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/18 01:05:41 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,26 +24,13 @@ void	scrollhook(double xdelta, double ydelta, void *param)
 	xdelta++;
 }
 
-static void	reset_map(t_camera *cam)
-{
-	cam->alpha = 0.46373398 / 2;
-	cam->beta = 0.46373398;
-	cam->xrotate = 0;
-	cam->yrotate = 0;
-	cam->zrotate = 0;
-	cam->x_offset = WIDTH / 2;
-	cam->y_offset = HEIGHT / 2;
-	cam->zoom = 1;
-	cam->zscale = 1;
-}
-
 void	hook(void *param)
 {
 	t_app	*app;
 
 	app = (t_app *)param;
 	if (mlx_is_key_down(app->renderer.mlx, MLX_KEY_0))
-		reset_map(&app->camera);
+		reset_camera(&app->camera, app->renderer.width, app->renderer.height);
 	if (mlx_is_key_down(app->renderer.mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(app->renderer.mlx);
 	if (mlx_is_key_down(app->renderer.mlx, MLX_KEY_LEFT))

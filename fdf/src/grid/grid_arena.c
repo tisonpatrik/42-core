@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 11:00:34 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/18 00:30:21 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/18 00:46:26 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,14 +76,4 @@ void	free_grid(t_grid *grid)
 	
 	ft_arena_destroy(grid->arena);
 	// Don't call free(grid) - it's arena allocated!
-}
-
-void	free_wierd_view(t_view *view)
-{
-	if (!view || !view->grid.arena)
-		return;
-	
-	ft_arena_destroy(view->grid.arena);
-	view->grid.arena = NULL;
-	view->grid.grid3d = NULL;
 }

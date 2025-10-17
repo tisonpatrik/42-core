@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 22:11:47 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/17 23:09:06 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/18 01:01:04 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,14 @@
 # define WIDTH				1920
 # define HEIGHT				1200
 
+typedef struct s_renderer {
+    mlx_t       *mlx;
+    mlx_image_t *img;
+    int          width;
+    int          height;
+} t_renderer;
 
+t_renderer	init_renderer(void);
 t_point2d_temp	project_point(t_point3d point, t_camera *camera);
 void	display_menu(mlx_t *mlx);
 void	draw_image(mlx_image_t *image, t_grid *grid, t_camera *camera);

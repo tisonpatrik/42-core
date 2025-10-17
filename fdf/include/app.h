@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 20:45:19 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/18 00:26:20 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/18 00:59:36 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,6 @@
 # include "../include/grid.h"
 # include "../include/renderer.h"
 
-typedef struct s_renderer {
-    mlx_t       *mlx;
-    mlx_image_t *img;
-    int          width;
-    int          height;
-} t_renderer;
 
 typedef struct s_app {
     t_grid      *grid;

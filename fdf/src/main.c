@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 11:37:00 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/18 00:00:06 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/18 00:50:42 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,21 +27,7 @@ bool	has_fdf_extension(const char *filename)
 	return (ft_strncmp(filename + (len - ext_len), ext, ext_len) == 0);
 }
 
-
-void run_new_implementation(char *filename)
-{
-	t_app *app = init_app(filename);
-	if (!app)
-	{
-		ft_putstr_fd("Failed to initialize new app\n", STDERR_FILENO);
-		return;
-	}
-	run_app(app);
-	free_app(app);
-}
-
-
-int32_t	main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	if (argc != 2)
 	{
@@ -55,7 +41,14 @@ int32_t	main(int argc, char **argv)
 	}
 	
 	
-	run_new_implementation(argv[1]);
+	t_app *app = init_app(argv[1]);
+	if (!app)
+	{
+		ft_putstr_fd("Failed to initialize new app\n", STDERR_FILENO);
+		return (EXIT_FAILURE);
+	}
+	run_app(app);
+	free_app(app);
 
 	return (0);
 }
