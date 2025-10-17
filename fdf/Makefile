@@ -6,7 +6,7 @@
 #    By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/26 16:33:26 by ptison            #+#    #+#              #
-#    Updated: 2025/10/16 15:16:33 by ptison           ###   ########.fr        #
+#    Updated: 2025/10/17 20:42:27 by ptison           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,9 +44,10 @@ LIBFT       := $(LIBFT_DIR)/bin/libft.a
 APP_SRCS    := $(shell find ./src/app -iname "*.c")
 GRID_SRCS   := $(shell find ./src/grid -iname "*.c")
 MAP_SRCS := $(shell find ./src/map -iname "*.c")
+CAMERA_SRCS := $(shell find ./src/camera -iname "*.c")
 EXPERIMENTAL_SRCS := $(shell find ./src/experimental -iname "*.c")
 MAIN_SRCS   := $(shell find ./src -maxdepth 1 -iname "*.c")
-ALL_SRCS    := $(APP_SRCS) $(GRID_SRCS) $(MAP_SRCS) $(EXPERIMENTAL_SRCS) $(MAIN_SRCS)
+ALL_SRCS    := $(APP_SRCS) $(GRID_SRCS) $(MAP_SRCS) $(CAMERA_SRCS) $(EXPERIMENTAL_SRCS) $(MAIN_SRCS)
 OBJS        := $(ALL_SRCS:src/%.c=bin/%.o)
 DEPS        := $(OBJS:.o=.d)
 

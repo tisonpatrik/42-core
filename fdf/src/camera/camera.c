@@ -6,22 +6,12 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 19:40:11 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/17 01:16:24 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/17 20:38:28 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/old_app.h"
+#include "../../include/camera.h"
 
-typedef struct s_vec3 {
-    double x;
-    double y;
-    double z;
-} t_vec3;
-
-typedef struct s_pt2 {
-    double x;
-    double y;
-} t_pt2;
 
 void set_camera_isometric(t_camera *cam, int screen_w, int screen_h)
 {

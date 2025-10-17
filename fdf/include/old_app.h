@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   app.h                                              :+:      :+:    :+:   */
+/*   old_app.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 13:36:16 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/16 23:45:14 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/17 20:37:07 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include "../lib/libft/include/libft.h"
 # include "../lib/MLX42/include/MLX42/MLX42.h"
 # include "../include/heightmap.h"
-
+# include "../include/camera.h"
 # include <limits.h>
 # include <fcntl.h>
 # include <stdlib.h>
@@ -81,19 +81,6 @@ typedef struct s_point2d_temp
 	int		rgba;
 }			t_point2d_temp;
 
-typedef struct s_camera
-{
-	int				x_offset;
-	int				y_offset;
-	double			interval;
-	double			alpha;
-	double			beta;
-	double			xrotate;
-	double			yrotate;
-	double			zrotate;
-	double			zoom;
-	double			zscale;
-}					t_camera;
 
 typedef struct s_grid
 {
