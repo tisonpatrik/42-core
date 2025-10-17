@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 20:47:59 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/17 22:44:52 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/17 23:13:14 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_app	*init_app(char *filename)
 	t_grid *grid;
 	t_app *app;
 	
-	init_camera_defaults(&camera);
+	init_camera_defaults(&camera, WIDTH, HEIGHT);
 	grid = get_grid(heightmap);
 	
 	if (!grid)
@@ -35,6 +35,11 @@ t_app	*init_app(char *filename)
 	// Calculate interval based on grid dimensions (same as old implementation)
 	double interval = ft_min(WIDTH / grid->cols, HEIGHT / grid->rows) / 2.0;
 	camera.interval = ft_max(2, interval);
+	
+	printf("NEW IMPLEMENTATION - Camera setup:\n");
+	printf("  Alpha: %.8f\n", camera.alpha);
+	printf("  Beta: %.8f\n", camera.beta);
+	printf("  Interval: %.2f\n", camera.interval);
 
 	app = malloc(sizeof(t_app));
 	if (!app)
@@ -56,6 +61,7 @@ t_app	*init_app(char *filename)
 static void	draw_image_hook_app(void *param)
 {
 	t_app	*app = (t_app *)param;
+	printf("draw_image_hook_app called\n");
 	draw_image(app->r.img, app->grid, &app->cam);
 }
 
@@ -70,8 +76,21 @@ void	free_app(t_app *app)
 	free(app);
 }
 
+
+static void	handle_error(const char *message)
+{
+	if (errno == 0)
+	{
+		ft_putstr_fd("FdF: ", 2);
+		ft_putendl_fd((char *)message, 2);
+	}
+	else
+		perror("FdF");
+	exit(1);
+}
 void	run_app(t_app *app)
 {
+	printf("=== RUNNING NEW IMPLEMENTATION ===\n");
 	display_menu(app->r.mlx);
 	draw_image(app->r.img, app->grid, &app->cam);
 	printf("draw_image\n");

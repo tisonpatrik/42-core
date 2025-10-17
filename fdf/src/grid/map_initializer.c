@@ -16,19 +16,7 @@
 /* MAP INITIALIZATION - Pure initialization logic                           */
 /* ========================================================================== */
 
-void	init_camera_defaults(t_camera *camera)
-{
-	camera->alpha = 0.46373398 / 2;
-	camera->beta = 0.46373398;
-	camera->xrotate = 0;
-	camera->yrotate = 0;
-	camera->zrotate = 0;
-	camera->x_offset = WIDTH / 2;
-	camera->y_offset = HEIGHT / 2;
-	camera->zoom = 1;
-	camera->zscale = 1;
-	camera->interval = 0;
-}
+
 
 void	get_grid_defaults(t_grid *grid)
 {
@@ -41,7 +29,7 @@ void	get_grid_defaults(t_grid *grid)
 
 void	init_map_defaults(t_view *view)
 {
-	init_camera_defaults(&view->camera);
+	init_camera_defaults(&view->camera, WIDTH, HEIGHT);
 	get_grid_defaults(&view->grid);
 }
 
@@ -51,4 +39,8 @@ void	calculate_camera_interval(t_view *view)
 
 	interval = ft_min(WIDTH / view->grid.cols, HEIGHT / view->grid.rows) / 2.0;
 	view->camera.interval = ft_max(2, interval);
+	
+	printf("OLD IMPLEMENTATION - Interval calculated:\n");
+	printf("  Grid: %dx%d\n", view->grid.rows, view->grid.cols);
+	printf("  Calculated interval: %.2f\n", view->camera.interval);
 }

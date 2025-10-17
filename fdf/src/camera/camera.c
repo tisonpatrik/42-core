@@ -6,11 +6,25 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 19:40:11 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/17 20:38:28 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/17 23:11:23 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/camera.h"
+
+void	init_camera_defaults(t_camera *camera, int width, int height)
+{
+	camera->alpha = 0.46373398 / 2;
+	camera->beta = 0.46373398;
+	camera->xrotate = 0;
+	camera->yrotate = 0;
+	camera->zrotate = 0;
+	camera->x_offset = width / 2;
+	camera->y_offset = height / 2;
+	camera->zoom = 1;
+	camera->zscale = 1;
+	camera->interval = 0;
+}
 
 
 void set_camera_isometric(t_camera *cam, int screen_w, int screen_h)

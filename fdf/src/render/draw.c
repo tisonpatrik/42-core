@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 # include "../../include/renderer.h"
-# include "../../include/old_app.h"
 
 /* ========================================================================== */
 /* UTILITY FUNCTIONS                                                          */
@@ -70,6 +69,18 @@ t_point2d_temp	project_point(t_point3d point, t_camera *camera)
 			+ (temp_x * camera->zoom + temp_y * camera->zoom)
 			* sin(camera->beta) + camera->y_offset);
 	result.rgba = point.zcolor;
+	
+	// Debug: print first few points
+	static int debug_count = 0;
+	if (debug_count < 5) {
+		printf("Point[%d]: 3D(%.2f,%.2f,%.2f) -> 2D(%d,%d)\n", 
+			   debug_count, point.x, point.y, point.z, result.x, result.y);
+		debug_count++;
+	}
+	if (debug_count == 5) {
+		printf("--- Debug: Reset counter for next draw_image call ---\n");
+		debug_count = 0;
+	}
 	
 	return (result);
 }
@@ -141,7 +152,8 @@ void	draw_image(mlx_image_t *image, t_grid *grid, t_camera *camera)
 	int		i;
 	int		j;
 
-
+	printf("draw_image called - grid: %dx%d, camera interval: %.2f\n", 
+		   grid->rows, grid->cols, camera->interval);
 	draw_reset(image);
 	i = -1;
 	while (++i < grid->rows)
@@ -150,6 +162,7 @@ void	draw_image(mlx_image_t *image, t_grid *grid, t_camera *camera)
 		while (++j < grid->cols)
 			draw_line(image, grid, j, i, camera);
 	}
+	printf("draw_image finished\n");
 }
 
 void	display_menu(mlx_t *mlx)

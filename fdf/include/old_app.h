@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 13:36:16 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/17 22:32:19 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/17 23:12:05 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@
 # include <stdio.h>
 # include <string.h>
 #include <unistd.h>
-
+# include "../include/color.h"
+# include "../include/renderer.h"
 
 # define WIDTH				1920
 # define HEIGHT				1200
@@ -64,39 +65,9 @@
 # define INVALID_MAP		"Map is invalid"
 # define FILE_ERROR			"Unable to open file"
 
-typedef struct s_point3d
-{
-	double	x;
-	double	y;
-	double	z;
-	int		mapcolor;
-	int		zcolor;
-}				t_point3d;
-
-/* Temporary structure for 2D calculations - not stored */
-typedef struct s_point2d_temp
-{
-	int		x;
-	int		y;
-	int		rgba;
-}			t_point2d_temp;
 
 
-typedef struct s_grid
-{
-	t_point3d		**grid3d;
-	int				rows;
-	int				cols;
-	int				high;
-	int				low;
-	t_arena			*arena;
-}					t_grid;
 
-typedef struct s_view
-{
-	t_camera		camera;
-	t_grid			grid;
-}					t_view;
 
 typedef struct s_fdf
 {
@@ -109,7 +80,6 @@ typedef struct s_fdf
 int			allocate_grid_memory(t_view *view);
 void		free_grid_memory(t_view *view);
 /* map_initializer.c */
-void		init_camera_defaults(t_camera *camera);
 void		init_grid_defaults(t_grid *grid);
 void		init_map_defaults(t_view *view);
 void		calculate_camera_interval(t_view *view);
@@ -154,7 +124,6 @@ void		ft_hook_rotate(void *param);
 void		ft_hook_project(void *param);
 
 /* fdf_color.c */
-int			get_color(t_point2d_temp current, t_point2d_temp a, t_point2d_temp b);
 void		set_zcolor(t_view *view);
 void		make_upper(unsigned int i, char *c);
 
