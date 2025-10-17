@@ -6,11 +6,11 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 12:43:16 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/16 21:25:55 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/18 00:33:14 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../include/heightmap.h"
+# include "../../include/grid.h"
 
 void	free_heightmap(t_heightmap *heightmap)
 {

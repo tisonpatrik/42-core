@@ -6,25 +6,21 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 22:14:16 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/18 00:10:05 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/18 00:32:44 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 
 # include "../../include/grid.h"
-# include "../../include/heightmap.h"
-# include "../../lib/libft/include/ft_math.h"
-# include <limits.h>
 
-# define WIDTH 1920
-# define HEIGHT 1080
 
-static double	calculate_grid_interval(size_t rows, size_t cols)
+
+static double	calculate_grid_interval(size_t rows, size_t cols, int width, int height)
 {
 	double	interval;
 
-	interval = ft_min(WIDTH / cols, HEIGHT / rows) / 2.0;
+	interval = ft_min(width / cols, height / rows) / 2.0;
 	return (ft_max(2, interval));
 }
 
@@ -42,7 +38,7 @@ void	build_grid_point3d(t_point3d *point, size_t row, int col, int z_value,
 	point->z = (double)z_value * interval;
 }
 
-void	build_grid_column_from_tokens(t_heightmap *heightmap, t_grid *grid, size_t row_index)
+void	build_grid_column_from_tokens(t_heightmap *heightmap, t_grid *grid, size_t row_index, int width, int height)
 {
 	t_point3d	*point;
 	int			col;
@@ -51,7 +47,7 @@ void	build_grid_column_from_tokens(t_heightmap *heightmap, t_grid *grid, size_t 
 	size_t		map_index;
 	double		interval;
 
-	interval = calculate_grid_interval(grid->rows, grid->cols);
+	interval = calculate_grid_interval(grid->rows, grid->cols, width, height);
 	
 	col = 0;
 	while (col < grid->cols)
@@ -66,7 +62,10 @@ void	build_grid_column_from_tokens(t_heightmap *heightmap, t_grid *grid, size_t 
 		grid->low = ft_min(grid->low, point->z);
 		
 		color = heightmap->points[map_index].color;
-		point->mapcolor = (color == -1) ? 0xFFFFFFFF : (unsigned int)color;
+		if (color == -1)
+			point->mapcolor = 0xFFFFFFFF;
+		else
+			point->mapcolor = (unsigned int)color;
 		
 		col++;
 	}
@@ -82,9 +81,10 @@ void	init_grid_defaults(t_grid *grid)
 }
 
 
-t_grid	*get_grid(t_heightmap *heightmap)
+t_grid	*get_grid(const char *filename, int width, int height)
 {
     size_t row = 0;
+	t_heightmap *heightmap = read_heightmap_from_file(filename);
 	t_grid *grid = allocate_grid(heightmap->rows, heightmap->cols);
 	
 	if (!grid)
@@ -92,7 +92,7 @@ t_grid	*get_grid(t_heightmap *heightmap)
 
 	while (row < heightmap->rows)
     {
-		build_grid_column_from_tokens(heightmap, grid, row);
+		build_grid_column_from_tokens(heightmap, grid, row, width, height);
         row++;
     }
 	

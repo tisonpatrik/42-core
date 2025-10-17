@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 20:47:59 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/18 00:20:53 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/18 00:32:35 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 
 t_app	*init_app(char *filename)
 {
-    t_heightmap *heightmap = read_heightmap_from_file(filename);
+    
 	t_camera camera;
 	t_grid *grid;
 	t_app *app;
 	
-	grid = get_grid(heightmap);
+	grid = get_grid(filename, WIDTH, HEIGHT);
 	
 	if (!grid)
 		return (NULL);
@@ -35,11 +35,11 @@ t_app	*init_app(char *filename)
 	}
 
 	app->grid = grid;  // Use pointer instead of copy
-	app->cam = camera;
-	app->r.mlx = mlx_init(WIDTH, HEIGHT, "FdF", true);
-	app->r.img = mlx_new_image(app->r.mlx, WIDTH, HEIGHT);
-	app->r.width = WIDTH;
-	app->r.height = HEIGHT;
+	app->camera = camera;
+	app->renderer.mlx = mlx_init(WIDTH, HEIGHT, "FdF", true);
+	app->renderer.img = mlx_new_image(app->renderer.mlx, WIDTH, HEIGHT);
+	app->renderer.width = WIDTH;
+	app->renderer.height = HEIGHT;
 
 	return (app);
 }
@@ -47,7 +47,7 @@ t_app	*init_app(char *filename)
 static void	draw_image_hook_app(void *param)
 {
 	t_app	*app = (t_app *)param;
-	draw_image(app->r.img, app->grid, &app->cam);
+	draw_image(app->renderer.img, app->grid, &app->camera);
 }
 
 void	free_app(t_app *app)
@@ -56,8 +56,8 @@ void	free_app(t_app *app)
 		return;
 	if (app->grid)
 		free_grid(app->grid);
-	if (app->r.mlx)
-		mlx_terminate(app->r.mlx);
+	if (app->renderer.mlx)
+		mlx_terminate(app->renderer.mlx);
 	free(app);
 }
 
@@ -75,19 +75,19 @@ static void	handle_error(const char *message)
 }
 void	run_app(t_app *app)
 {
-	display_menu(app->r.mlx);
-	draw_image(app->r.img, app->grid, &app->cam);
-	if (mlx_image_to_window(app->r.mlx, app->r.img, 0, 0) == -1)
+	display_menu(app->renderer.mlx);
+	draw_image(app->renderer.img, app->grid, &app->camera);
+	if (mlx_image_to_window(app->renderer.mlx, app->renderer.img, 0, 0) == -1)
 	{
-		mlx_close_window(app->r.mlx);
+		mlx_close_window(app->renderer.mlx);
 		free_grid(app->grid);
 		free(app);
 		handle_error(mlx_strerror(mlx_errno));
 	}
-	mlx_loop_hook(app->r.mlx, &hook, app);
-	mlx_loop_hook(app->r.mlx, &hook_rotate, app);
-	mlx_loop_hook(app->r.mlx, &hook_project, app);
-	mlx_scroll_hook(app->r.mlx, &scrollhook, app);
-	mlx_loop_hook(app->r.mlx, &draw_image_hook_app, app);
-	mlx_loop(app->r.mlx);
+	mlx_loop_hook(app->renderer.mlx, &hook, app);
+	mlx_loop_hook(app->renderer.mlx, &hook_rotate, app);
+	mlx_loop_hook(app->renderer.mlx, &hook_project, app);
+	mlx_scroll_hook(app->renderer.mlx, &scrollhook, app);
+	mlx_loop_hook(app->renderer.mlx, &draw_image_hook_app, app);
+	mlx_loop(app->renderer.mlx);
 }
