@@ -6,12 +6,11 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:43:26 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/17 01:16:24 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/17 23:53:12 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../include/heightmap.h"
-# include "../../include/old_app.h"
 
 /* Privátní funkce pro parsing barvy z hex stringu do MLX42 ARGB formátu */
 static uint32_t	parse_color_to_mlx42(const char *color_str)

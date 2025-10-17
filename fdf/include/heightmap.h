@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 12:31:10 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/16 21:24:02 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/17 23:55:49 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "../lib/libft/include/libft.h"
 # include <fcntl.h>
-
+# include "../include/utils.h"
 # include <errno.h>
 # include <stdint.h>
 # include <stdio.h>

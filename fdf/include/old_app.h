@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 13:36:16 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/17 23:50:28 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/17 23:56:13 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 #include <unistd.h>
 # include "../include/color.h"
 # include "../include/renderer.h"
-
+# include "../include/utils.h"
 # define WIDTH				1920
 # define HEIGHT				1200
 
@@ -92,7 +92,6 @@ void		destroy_map(t_view *view);
 char		**read_map_file_lines_from_fd(int fd, int *line_count);
 void		free_map_lines(char **lines);
 /* data_validator.c */
-int			hex_to_int(const char *hex_str);
 int			parse_color_from_token(char *token);
 int			validate_map_line(char *line);
 int			get_column_count(char *line);

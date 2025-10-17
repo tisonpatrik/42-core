@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 20:47:59 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/17 23:17:50 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/17 23:58:53 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,9 @@ t_app	*init_app(char *filename)
 	
 	if (!grid)
 		return (NULL);
+
+	// Set zcolor using old implementation's function
+	set_zcolor(grid);
 
 	// Fix alpha and beta to match old implementation
 	camera.alpha = 0.46373398 / 2;  // = 0.23186669
