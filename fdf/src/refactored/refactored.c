@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 20:47:59 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/17 22:33:20 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/17 22:44:52 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,18 @@ t_app	*init_app(char *filename)
 	t_app *app;
 	
 	init_camera_defaults(&camera);
-	set_camera_isometric(&camera, WIDTH, HEIGHT);
 	grid = get_grid(heightmap);
 	
 	if (!grid)
 		return (NULL);
+
+	// Fix alpha and beta to match old implementation
+	camera.alpha = 0.46373398 / 2;  // = 0.23186669
+	camera.beta = 0.46373398;       // = 0.46373
+	
+	// Calculate interval based on grid dimensions (same as old implementation)
+	double interval = ft_min(WIDTH / grid->cols, HEIGHT / grid->rows) / 2.0;
+	camera.interval = ft_max(2, interval);
 
 	app = malloc(sizeof(t_app));
 	if (!app)
@@ -67,6 +74,7 @@ void	run_app(t_app *app)
 {
 	display_menu(app->r.mlx);
 	draw_image(app->r.img, app->grid, &app->cam);
+	printf("draw_image\n");
 	if (mlx_image_to_window(app->r.mlx, app->r.img, 0, 0) == -1)
 	{
 		mlx_close_window(app->r.mlx);
