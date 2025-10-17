@@ -6,12 +6,13 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 11:00:34 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/17 22:23:27 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/18 00:10:05 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../include/old_app.h"
+# include "../../include/grid.h"
 # include "../../lib/libft/include/mem.h"
+# include <limits.h>
 
 t_grid	*allocate_grid(int rows, int cols)
 {

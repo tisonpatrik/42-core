@@ -1,19 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   refactored.c                                       :+:      :+:    :+:   */
+/*   app..c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 20:47:59 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/17 23:58:53 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/18 00:12:29 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 # include "../../include/app.h"
-
-# include <stdlib.h>
 
 t_app	*init_app(char *filename)
 {
@@ -22,22 +20,16 @@ t_app	*init_app(char *filename)
 	t_grid *grid;
 	t_app *app;
 	
-	init_camera_defaults(&camera, WIDTH, HEIGHT);
 	grid = get_grid(heightmap);
 	
 	if (!grid)
 		return (NULL);
 
+	// Initialize camera with grid dimensions
+	init_camera_defaults(&camera, WIDTH, HEIGHT);
+
 	// Set zcolor using old implementation's function
 	set_zcolor(grid);
-
-	// Fix alpha and beta to match old implementation
-	camera.alpha = 0.46373398 / 2;  // = 0.23186669
-	camera.beta = 0.46373398;       // = 0.46373
-	
-	// Calculate interval based on grid dimensions (same as old implementation)
-	double interval = ft_min(WIDTH / grid->cols, HEIGHT / grid->rows) / 2.0;
-	camera.interval = ft_max(2, interval);
 	
 
 	app = malloc(sizeof(t_app));

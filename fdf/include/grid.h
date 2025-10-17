@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 22:14:50 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/17 23:07:14 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/18 00:12:04 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "../include/heightmap.h"
 # include "../include/camera.h"
+
 typedef struct s_point3d
 {
 	double	x;

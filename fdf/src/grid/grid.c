@@ -6,14 +6,19 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 22:14:16 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/17 20:46:26 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/18 00:10:05 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 
-# include "../../include/old_app.h"
 # include "../../include/grid.h"
+# include "../../include/heightmap.h"
+# include "../../lib/libft/include/ft_math.h"
+# include <limits.h>
+
+# define WIDTH 1920
+# define HEIGHT 1080
 
 static double	calculate_grid_interval(size_t rows, size_t cols)
 {

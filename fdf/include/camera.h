@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 20:36:23 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/17 23:11:40 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/18 00:11:23 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # define CAMERA_H
 
 # include <math.h>
+# include "../lib/libft/include/libft.h"
 
 typedef struct s_vec3 {
     double x;

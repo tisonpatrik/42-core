@@ -6,11 +6,12 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 19:40:11 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/17 23:11:23 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/18 00:11:39 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/camera.h"
+#include "../../lib/libft/include/ft_math.h"
 
 void	init_camera_defaults(t_camera *camera, int width, int height)
 {
@@ -23,7 +24,7 @@ void	init_camera_defaults(t_camera *camera, int width, int height)
 	camera->y_offset = height / 2;
 	camera->zoom = 1;
 	camera->zscale = 1;
-	camera->interval = 0;
+
 }
 
 
