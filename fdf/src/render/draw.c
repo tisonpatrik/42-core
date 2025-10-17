@@ -70,17 +70,6 @@ t_point2d_temp	project_point(t_point3d point, t_camera *camera)
 			* sin(camera->beta) + camera->y_offset);
 	result.rgba = point.zcolor;
 	
-	// Debug: print first few points
-	static int debug_count = 0;
-	if (debug_count < 5) {
-		printf("Point[%d]: 3D(%.2f,%.2f,%.2f) -> 2D(%d,%d)\n", 
-			   debug_count, point.x, point.y, point.z, result.x, result.y);
-		debug_count++;
-	}
-	if (debug_count == 5) {
-		printf("--- Debug: Reset counter for next draw_image call ---\n");
-		debug_count = 0;
-	}
 	
 	return (result);
 }
@@ -94,6 +83,7 @@ static void	bresenham(mlx_image_t *image, t_point3d a_3d, t_point3d b_3d, t_came
 	t_point2d_temp	a;
 	t_point2d_temp	b;
 	t_point2d_temp	cur;
+	
 	int				error[2];
 
 	/* Project 3D points to 2D on-the-fly */
@@ -152,8 +142,6 @@ void	draw_image(mlx_image_t *image, t_grid *grid, t_camera *camera)
 	int		i;
 	int		j;
 
-	printf("draw_image called - grid: %dx%d, camera interval: %.2f\n", 
-		   grid->rows, grid->cols, camera->interval);
 	draw_reset(image);
 	i = -1;
 	while (++i < grid->rows)
@@ -162,7 +150,6 @@ void	draw_image(mlx_image_t *image, t_grid *grid, t_camera *camera)
 		while (++j < grid->cols)
 			draw_line(image, grid, j, i, camera);
 	}
-	printf("draw_image finished\n");
 }
 
 void	display_menu(mlx_t *mlx)

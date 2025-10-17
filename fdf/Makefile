@@ -6,7 +6,7 @@
 #    By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/26 16:33:26 by ptison            #+#    #+#              #
-#    Updated: 2025/10/17 22:15:48 by ptison           ###   ########.fr        #
+#    Updated: 2025/10/17 23:17:50 by ptison           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,11 +45,12 @@ APP_SRCS    := $(shell find ./src/app -iname "*.c")
 GRID_SRCS   := $(shell find ./src/grid -iname "*.c")
 MAP_SRCS := $(shell find ./src/map -iname "*.c")
 CAMERA_SRCS := $(shell find ./src/camera -iname "*.c")
+COLOR_SRCS := $(shell find ./src/color -iname "*.c")
 RENDER_SRCS := $(shell find ./src/render -iname "*.c")
 REFACTORED_SRCS := $(shell find ./src/refactored -iname "*.c")
 EXPERIMENTAL_SRCS := $(shell find ./src/experimental -iname "*.c")
 MAIN_SRCS   := $(shell find ./src -maxdepth 1 -iname "*.c")
-ALL_SRCS    := $(APP_SRCS) $(GRID_SRCS) $(MAP_SRCS) $(CAMERA_SRCS) $(RENDER_SRCS) $(REFACTORED_SRCS) $(EXPERIMENTAL_SRCS) $(MAIN_SRCS)
+ALL_SRCS    := $(APP_SRCS) $(GRID_SRCS) $(MAP_SRCS) $(CAMERA_SRCS) $(COLOR_SRCS) $(RENDER_SRCS) $(REFACTORED_SRCS) $(EXPERIMENTAL_SRCS) $(MAIN_SRCS)
 OBJS        := $(ALL_SRCS:src/%.c=bin/%.o)
 DEPS        := $(OBJS:.o=.d)
 

@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 13:36:16 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/17 23:12:05 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/17 23:50:28 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,8 +123,5 @@ void		fdf_scrollhook(double xdelta, double ydelta, void *param);
 void		ft_hook_rotate(void *param);
 void		ft_hook_project(void *param);
 
-/* fdf_color.c */
-void		set_zcolor(t_view *view);
-void		make_upper(unsigned int i, char *c);
 
 #endif

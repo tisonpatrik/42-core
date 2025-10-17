@@ -40,7 +40,4 @@ void	calculate_camera_interval(t_view *view)
 	interval = ft_min(WIDTH / view->grid.cols, HEIGHT / view->grid.rows) / 2.0;
 	view->camera.interval = ft_max(2, interval);
 	
-	printf("OLD IMPLEMENTATION - Interval calculated:\n");
-	printf("  Grid: %dx%d\n", view->grid.rows, view->grid.cols);
-	printf("  Calculated interval: %.2f\n", view->camera.interval);
 }

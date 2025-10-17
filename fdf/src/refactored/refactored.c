@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 20:47:59 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/17 23:13:14 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/17 23:17:50 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,6 @@ t_app	*init_app(char *filename)
 	double interval = ft_min(WIDTH / grid->cols, HEIGHT / grid->rows) / 2.0;
 	camera.interval = ft_max(2, interval);
 	
-	printf("NEW IMPLEMENTATION - Camera setup:\n");
-	printf("  Alpha: %.8f\n", camera.alpha);
-	printf("  Beta: %.8f\n", camera.beta);
-	printf("  Interval: %.2f\n", camera.interval);
 
 	app = malloc(sizeof(t_app));
 	if (!app)
@@ -61,7 +57,6 @@ t_app	*init_app(char *filename)
 static void	draw_image_hook_app(void *param)
 {
 	t_app	*app = (t_app *)param;
-	printf("draw_image_hook_app called\n");
 	draw_image(app->r.img, app->grid, &app->cam);
 }
 
@@ -90,10 +85,8 @@ static void	handle_error(const char *message)
 }
 void	run_app(t_app *app)
 {
-	printf("=== RUNNING NEW IMPLEMENTATION ===\n");
 	display_menu(app->r.mlx);
 	draw_image(app->r.img, app->grid, &app->cam);
-	printf("draw_image\n");
 	if (mlx_image_to_window(app->r.mlx, app->r.img, 0, 0) == -1)
 	{
 		mlx_close_window(app->r.mlx);
