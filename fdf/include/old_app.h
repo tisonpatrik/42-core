@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 13:36:16 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/17 20:37:07 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/17 22:32:19 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,28 +141,21 @@ void		ft_free_tab(void **ptr, size_t len);
 void		free_view(t_view *view);
 void		handle_error(const char *message);
 void		error_map(int fd, t_view *view, char *message);
-/* fdf_draw.c */
-t_point2d_temp	project_point(t_point3d point, t_view *view);
-void		draw_image(void *param);
-void		display_menu(mlx_t *mlx);
-/* fdf_rotate.c */
-void		rotate_x(double *y, double *z, double alpha);
-void		rotate_y(double *x, double *z, double beta);
-void		rotate_z(double *x, double *y, double gamma);
+
+
 /* fdf_init.c */
 t_fdf		*init_fdf(char *filename);
 /* fdf_app.c */
-void		run_app(t_fdf *fdf);
+void		run_fdf(t_fdf *fdf);
 /* fdf_hooks.c */
 void		ft_hook(void *param);
 void		fdf_scrollhook(double xdelta, double ydelta, void *param);
 void		ft_hook_rotate(void *param);
 void		ft_hook_project(void *param);
-/* fdf_utils.c*/
-void		make_upper(unsigned int i, char *c);
-void		draw_reset(mlx_image_t *image);
+
 /* fdf_color.c */
 int			get_color(t_point2d_temp current, t_point2d_temp a, t_point2d_temp b);
 void		set_zcolor(t_view *view);
+void		make_upper(unsigned int i, char *c);
 
 #endif

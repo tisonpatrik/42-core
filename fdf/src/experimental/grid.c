@@ -6,14 +6,14 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 22:14:16 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/17 20:39:05 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/17 20:46:26 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 
 # include "../../include/old_app.h"
-# include "../../include/experimental.h"
+# include "../../include/grid.h"
 
 static double	calculate_grid_interval(size_t rows, size_t cols)
 {

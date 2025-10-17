@@ -10,13 +10,44 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+# include "../../include/renderer.h"
 # include "../../include/old_app.h"
+
+/* ========================================================================== */
+/* UTILITY FUNCTIONS                                                          */
+/* ========================================================================== */
+
+void	make_upper(unsigned int i, char *c)
+{
+	i++;
+	*c = ft_toupper(*c);
+}
+
+
+
+void	draw_reset(mlx_image_t *image)
+{
+	uint32_t	i;
+	uint32_t	j;
+
+	i = 0;
+	while (i < image->height)
+	{
+		j = 0;
+		while (j < image->width)
+		{
+			mlx_put_pixel(image, j, i, BACKGROUND);
+			j++;
+		}
+		i++;
+	}
+}
 
 /* ========================================================================== */
 /* PROJECTION FUNCTIONS - On-the-fly 3D to 2D conversion                    */
 /* ========================================================================== */
 
-t_point2d_temp	project_point(t_point3d point, t_view *view)
+t_point2d_temp	project_point(t_point3d point, t_camera *camera)
 {
 	t_point2d_temp	result;
 	double			temp_x;
@@ -25,19 +56,19 @@ t_point2d_temp	project_point(t_point3d point, t_view *view)
 
 	temp_x = point.x;
 	temp_y = point.y;
-	temp_z = point.z * view->camera.zscale;
+	temp_z = point.z * camera->zscale;
 	
 	/* Apply rotations */
-	rotate_z(&temp_x, &temp_y, view->camera.zrotate);
-	rotate_x(&temp_y, &temp_z, view->camera.xrotate);
-	rotate_y(&temp_x, &temp_z, view->camera.yrotate);
+	rotate_z(&temp_x, &temp_y, camera->zrotate);
+	rotate_x(&temp_y, &temp_z, camera->xrotate);
+	rotate_y(&temp_x, &temp_z, camera->yrotate);
 	
 	/* Project to 2D screen coordinates */
-	result.x = (int)((temp_x * view->camera.zoom - temp_y * view->camera.zoom)
-			* cos(view->camera.alpha) + view->camera.x_offset);
-	result.y = (int)(-temp_z * view->camera.zoom
-			+ (temp_x * view->camera.zoom + temp_y * view->camera.zoom)
-			* sin(view->camera.beta) + view->camera.y_offset);
+	result.x = (int)((temp_x * camera->zoom - temp_y * camera->zoom)
+			* cos(camera->alpha) + camera->x_offset);
+	result.y = (int)(-temp_z * camera->zoom
+			+ (temp_x * camera->zoom + temp_y * camera->zoom)
+			* sin(camera->beta) + camera->y_offset);
 	result.rgba = point.zcolor;
 	
 	return (result);
@@ -47,7 +78,7 @@ t_point2d_temp	project_point(t_point3d point, t_view *view)
 /* DRAWING FUNCTIONS - Optimized Bresenham with on-the-fly projection       */
 /* ========================================================================== */
 
-static void	bresenham(mlx_image_t *image, t_point3d a_3d, t_point3d b_3d, t_view *view)
+static void	bresenham(mlx_image_t *image, t_point3d a_3d, t_point3d b_3d, t_camera *camera)
 {
 	t_point2d_temp	a;
 	t_point2d_temp	b;
@@ -55,8 +86,8 @@ static void	bresenham(mlx_image_t *image, t_point3d a_3d, t_point3d b_3d, t_view
 	int				error[2];
 
 	/* Project 3D points to 2D on-the-fly */
-	a = project_point(a_3d, view);
-	b = project_point(b_3d, view);
+	a = project_point(a_3d, camera);
+	b = project_point(b_3d, camera);
 	
 	cur.x = a.x;
 	cur.y = a.y;
@@ -82,43 +113,42 @@ static void	bresenham(mlx_image_t *image, t_point3d a_3d, t_point3d b_3d, t_view
 	}
 }
 
-static void	draw_line(t_fdf *fdf, int x, int y)
+static void	draw_line(mlx_image_t *image, t_grid *grid, int x, int y, t_camera *camera)
 {
 	t_point3d	*current;
 	t_point3d	*right;
 	t_point3d	*down;
 
-	current = &(fdf->view->grid.grid3d[y][x]);
+	current = &(grid->grid3d[y][x]);
 	
 	/* Draw vertical line (down) */
-	if (y + 1 < fdf->view->grid.rows)
+	if (y + 1 < grid->rows)
 	{
-		down = &(fdf->view->grid.grid3d[y + 1][x]);
-		bresenham(fdf->image, *current, *down, fdf->view);
+		down = &(grid->grid3d[y + 1][x]);
+		bresenham(image, *current, *down, camera);
 	}
 	
 	/* Draw horizontal line (right) */
-	if (x + 1 < fdf->view->grid.cols)
+	if (x + 1 < grid->cols)
 	{
-		right = &(fdf->view->grid.grid3d[y][x + 1]);
-		bresenham(fdf->image, *current, *right, fdf->view);
+		right = &(grid->grid3d[y][x + 1]);
+		bresenham(image, *current, *right, camera);
 	}
 }
 
-void	draw_image(void *param)
+void	draw_image(mlx_image_t *image, t_grid *grid, t_camera *camera)
 {
 	int		i;
 	int		j;
-	t_fdf	*fdf;
 
-	fdf = (t_fdf *)param;
-	draw_reset(fdf->image);
+
+	draw_reset(image);
 	i = -1;
-	while (++i < fdf->view->grid.rows)
+	while (++i < grid->rows)
 	{
 		j = -1;
-		while (++j < fdf->view->grid.cols)
-			draw_line(fdf, j, i);
+		while (++j < grid->cols)
+			draw_line(image, grid, j, i, camera);
 	}
 }
 

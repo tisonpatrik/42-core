@@ -6,11 +6,12 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 11:00:34 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/16 15:08:40 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/17 22:23:27 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../include/experimental.h"
+# include "../../include/old_app.h"
+# include "../../lib/libft/include/mem.h"
 
 t_grid	*allocate_grid(int rows, int cols)
 {
@@ -67,7 +68,16 @@ t_grid	*allocate_grid(int rows, int cols)
 	return (grid);
 }
 
-void	free_grid(t_view *view)
+void	free_grid(t_grid *grid)
+{
+	if (!grid || !grid->arena)
+		return;
+	
+	ft_arena_destroy(grid->arena);
+	// Don't call free(grid) - it's arena allocated!
+}
+
+void	free_wierd_view(t_view *view)
 {
 	if (!view || !view->grid.arena)
 		return;

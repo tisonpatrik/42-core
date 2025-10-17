@@ -6,13 +6,12 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 11:37:00 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/17 20:42:25 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/17 22:34:11 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../include/old_app.h"
-# include "../include/experimental.h"
-# include "../include/camera.h"
+# include "../include/app.h"
 
 bool	has_fdf_extension(const char *filename)
 {
@@ -104,7 +103,6 @@ void	compare_grids(t_grid *standard_grid, t_grid *experimental_grid)
 
 int32_t	main(int argc, char **argv)
 {
-	t_fdf		*fdf;
 
 	if (argc != 2)
 	{
@@ -117,28 +115,21 @@ int32_t	main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	}
 	
-	fdf = init_fdf(argv[1]);
+	// t_fdf *fdf = init_fdf(argv[1]);
+	// run_fdf(fdf);
+	// mlx_terminate(fdf->mlx);
+	// destroy_map(fdf->view);
 
-	t_heightmap *heightmap = read_heightmap_from_file(argv[1]);
-	t_camera camera;
-	t_grid *grid;
-	
-	init_camera_defaults(&camera);
-	set_camera_isometric(&camera, WIDTH, HEIGHT);
-	grid = get_grid(heightmap);
-	compare_grids(&fdf->view->grid, grid);
-
-	if (!grid)
+	t_app *app = init_app(argv[1]);
+	if (!app)
 	{
-		ft_putstr_fd("Failed to create grid\n", STDERR_FILENO);
+		ft_putstr_fd("Failed to initialize app\n", STDERR_FILENO);
 		return (EXIT_FAILURE);
 	}
+	run_app(app);
+	free_app(app);
+	// compare_grids(&fdf->view->grid, &app->grid);
 
-	// Compare standard grid (from fdf->view) with experimental grid
-
-	run_app(fdf);
-	mlx_terminate(fdf->mlx);
-	destroy_map(fdf->view);
 
 	return (0);
 }
