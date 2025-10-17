@@ -116,38 +116,12 @@ bool	parse_grid_row(char **tokens, t_grid *grid, int row_index, int width, int h
 	return (true);
 }
 
-t_grid_info	analyze_grid_file(const char *filename)
+t_grid_info	init_grid_info(void)
 {
 	t_grid_info	info;
-	char		*line;
-	char		**tokens;
-	int			fd;
 
 	info.rows = 0;
 	info.cols = 0;
-	info.fd = -1;
-	
-	fd = open(filename, O_RDONLY);
-	if (fd < 0)
-		return (info);
-	
-	info.fd = fd;
-	
-	while ((line = ft_get_line(fd)) != NULL)
-	{
-		tokens = ft_split(line, ' ');
-		free(line);
-		
-		if (tokens)
-		{
-			info.cols = ft_max(info.cols, count_tokens(tokens));
-			ft_free_array(tokens);
-		}
-		info.rows++;
-	}
-	
-	close(fd);
-	info.fd = open(filename, O_RDONLY);
 	return (info);
 }
 

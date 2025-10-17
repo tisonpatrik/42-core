@@ -6,11 +6,12 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 23:55:32 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/17 23:55:43 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/18 01:08:05 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../include/utils.h"
+
 
 int	hex_to_int(const char *hex_str)
 {
@@ -31,4 +32,16 @@ int	hex_to_int(const char *hex_str)
 		i++;
 	}
 	return (result);
+}
+
+void	fdf_error(const char *message)
+{
+	if (errno == 0)
+	{
+		ft_putstr_fd("FdF: ", 2);
+		ft_putendl_fd((char *)message, 2);
+	}
+	else
+		perror("FdF");
+	exit(1);
 }

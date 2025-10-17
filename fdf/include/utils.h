@@ -6,12 +6,19 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 23:54:55 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/17 23:55:09 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/18 01:08:05 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef UTILS_H
 # define UTILS_H
 
+# include "../lib/MLX42/include/MLX42/MLX42.h"
+# include "../lib/libft/include/libft.h"
+# include <errno.h>
+# include <stdlib.h>
+# include <stdio.h>
+
 int	hex_to_int(const char *hex_str);
+void	fdf_error(const char *message);
 #endif

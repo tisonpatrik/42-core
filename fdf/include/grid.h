@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 22:14:50 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/18 00:48:47 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/18 01:43:19 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,15 +66,15 @@ typedef struct s_grid_info
 {
 	int32_t		rows;
 	int32_t		cols;
-	int32_t		fd;
 }				t_grid_info;
 
 
-
+t_grid_info	analyze_grid_file(const char *filename);
+int				get_file_fd(const char *file_name);
+t_grid_info	init_grid_info(void);
 int				count_tokens(char **tokens);
 t_token_data	parse_token(const char *token);
 t_grid			*allocate_grid(int rows, int cols);
-t_grid_info		analyze_grid_file(const char *filename);
 t_grid			*create_grid_from_file(const char *filename, int width, int height);
 bool	parse_grid_row(char **tokens, t_grid *grid, int row_index, int width, int height);
 void	free_grid(t_grid *grid);
