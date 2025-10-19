@@ -10,14 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
-
-# include "../../include/grid.h"
-
-
-
-
-
+#include "../../include/grid.h"
 
 t_grid	*create_grid_from_file(const char *filename, int width, int height)
 {
@@ -27,13 +20,10 @@ t_grid	*create_grid_from_file(const char *filename, int width, int height)
 	info = analyze_grid_file(filename, width, height);
 	if (info.rows == 0 || info.cols == 0)
 		return (NULL);
-	
 	grid = allocate_grid(info.rows, info.cols);
 	if (!grid)
 		return (NULL);
-	
 	if (!parse_grid_lines(filename, grid, &info))
 		return (NULL);
-	
 	return (grid);
 }

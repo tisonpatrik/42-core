@@ -6,11 +6,11 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 20:46:05 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/17 22:32:37 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/19 21:50:38 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../include/renderer.h"
+#include "../../include/renderer.h"
 
 void	rotate_x(double *y, double *z, double alpha)
 {

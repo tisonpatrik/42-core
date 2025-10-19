@@ -10,12 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../include/grid.h"
 
-# include "../../include/grid.h"
-
-
-
-static bool handle_grid_row_error(char **tokens, int fd, t_grid *grid)
+static bool	handle_grid_row_error(char **tokens, int fd, t_grid *grid)
 {
 	ft_free_array(tokens);
 	close(fd);
@@ -34,7 +31,6 @@ static bool	parse_file_content(int fd, t_grid *grid, t_grid_info *info)
 	{
 		tokens = ft_split(line, CHAR_SPACE);
 		free(line);
-		
 		if (tokens)
 		{
 			if (!parse_grid_row(tokens, grid, row_index, info))
@@ -50,7 +46,7 @@ static bool	parse_file_content(int fd, t_grid *grid, t_grid_info *info)
 
 bool	parse_grid_lines(const char *filename, t_grid *grid, t_grid_info *info)
 {
-	int		fd;
+	int	fd;
 
 	fd = get_file_fd(filename);
 	if (!parse_file_content(fd, grid, info))

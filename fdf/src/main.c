@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../include/app.h"
+#include "../include/app.h"
 
 bool	has_fdf_extension(const char *filename)
 {
@@ -29,6 +29,8 @@ bool	has_fdf_extension(const char *filename)
 
 int	main(int argc, char **argv)
 {
+	t_app	*app;
+
 	if (argc != 2)
 	{
 		ft_putstr_fd("Usage: ./fdf <map_file>\n", STDERR_FILENO);
@@ -39,9 +41,7 @@ int	main(int argc, char **argv)
 		ft_putstr_fd("Only .fdf files are allowed\n", STDERR_FILENO);
 		return (EXIT_FAILURE);
 	}
-	
-	
-	t_app *app = init_app(argv[1]);
+	app = init_app(argv[1]);
 	if (!app)
 	{
 		ft_putstr_fd("Failed to initialize new app\n", STDERR_FILENO);
@@ -49,6 +49,5 @@ int	main(int argc, char **argv)
 	}
 	run_app(app);
 	free_app(app);
-
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 22:14:50 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/19 21:30:38 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/19 21:39:42 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,4 +79,5 @@ t_grid			*allocate_grid(int rows, int cols);
 t_grid			*create_grid_from_file(const char *filename, int width, int height);
 void	free_grid(t_grid *grid);
 bool	parse_grid_row(char **tokens, t_grid *grid, int row_index, t_grid_info *info);
+t_token_data	parse_token(const char *token);
 #endif

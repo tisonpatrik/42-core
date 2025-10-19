@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../include/grid.h"
+#include "../../include/grid.h"
 
 static int	count_tokens(char **tokens)
 {
@@ -31,7 +31,6 @@ static void	analyze_file_content(int fd, t_grid_info *info)
 	{
 		tokens = ft_split(line, CHAR_SPACE);
 		free(line);
-		
 		if (tokens)
 		{
 			info->cols = ft_max(info->cols, count_tokens(tokens));
@@ -41,7 +40,8 @@ static void	analyze_file_content(int fd, t_grid_info *info)
 	}
 }
 
-static double	calculate_grid_interval(size_t rows, size_t cols, int width, int height)
+static double	calculate_grid_interval(size_t rows, size_t cols, int width,
+		int height)
 {
 	double	interval;
 
@@ -61,24 +61,21 @@ static t_grid_info	init_grid_info(void)
 	return (info);
 }
 
-
 t_grid_info	analyze_grid_file(const char *filename, int width, int height)
 {
 	t_grid_info	info;
 	int			fd;
 
 	info = init_grid_info();
-	
 	fd = get_file_fd(filename);
 	analyze_file_content(fd, &info);
 	close(fd);
-	
 	if (info.rows > 0 && info.cols > 0)
 	{
-		info.interval = calculate_grid_interval(info.rows, info.cols, width, height);
+		info.interval = calculate_grid_interval(info.rows, info.cols, width,
+				height);
 		info.x_offset = info.cols * info.interval / 2;
 		info.y_offset = info.rows * info.interval / 2;
 	}
-	
 	return (info);
 }

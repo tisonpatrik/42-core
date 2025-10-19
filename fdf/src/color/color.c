@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../include/color.h"
+#include "../../include/color.h"
 
 static int	radiant(int start, int end, double percentage)
 {
@@ -28,8 +28,6 @@ static double	percent(int start, int end, int current)
 		return (1.0);
 	return (placement / distance);
 }
-
-
 
 int	get_color(t_point2d_temp current, t_point2d_temp a, t_point2d_temp b)
 {
@@ -49,5 +47,3 @@ int	get_color(t_point2d_temp current, t_point2d_temp a, t_point2d_temp b)
 	blue = radiant((a.rgba >> 8) & 0xFF, (b.rgba >> 8) & 0xFF, percentage);
 	return ((red << 24) | (green << 16) | blue << 8 | 0xFF);
 }
-
-

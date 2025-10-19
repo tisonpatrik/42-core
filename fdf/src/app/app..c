@@ -10,23 +10,23 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
-# include "../../include/app.h"
+#include "../../include/app.h"
 
 static void	draw_image_hook_app(void *param)
 {
-	t_app	*app = (t_app *)param;
+	t_app	*app;
+
+	app = (t_app *)param;
 	draw_image(app->renderer.img, app->grid, &app->camera);
 }
 
 t_app	*init_app(char *filename)
 {
-	t_app *app;
-	
+	t_app	*app;
+
 	app = malloc(sizeof(t_app));
 	if (!app)
 		return (NULL);
-	
 	app->renderer = init_renderer();
 	app->grid = create_grid_from_file(filename, WIDTH, HEIGHT);
 	if (!app->grid)
@@ -34,26 +34,20 @@ t_app	*init_app(char *filename)
 		free(app);
 		return (NULL);
 	}
-	
 	app->camera = init_camera_defaults(WIDTH, HEIGHT);
-	
-
 	return (app);
 }
-
-
 
 void	free_app(t_app *app)
 {
 	if (!app)
-		return;
+		return ;
 	if (app->grid)
 		free_grid(app->grid);
 	if (app->renderer.mlx)
 		mlx_terminate(app->renderer.mlx);
 	free(app);
 }
-
 
 void	run_app(t_app *app)
 {

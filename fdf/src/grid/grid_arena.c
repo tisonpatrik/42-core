@@ -10,15 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../include/grid.h"
+#include "../../include/grid.h"
 
 static t_arena	*create_grid_arena(int rows, int cols)
 {
 	size_t	total_size;
 
-	total_size = sizeof(t_grid) + 
-	             sizeof(t_point3d *) * rows + 
-	             sizeof(t_point3d) * rows * cols;
+	total_size = sizeof(t_grid) + sizeof(t_point3d *) * rows + sizeof(t_point3d)
+		* rows * cols;
 	return (ft_arena_create(total_size));
 }
 
@@ -80,7 +79,6 @@ t_grid	*allocate_grid(int rows, int cols)
 void	free_grid(t_grid *grid)
 {
 	if (!grid || !grid->arena)
-		return;
-	
+		return ;
 	ft_arena_destroy(grid->arena);
 }

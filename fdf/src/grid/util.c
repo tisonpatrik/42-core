@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../include/grid.h"
+#include "../../include/grid.h"
 
 int	get_file_fd(const char *file_name)
 {
@@ -24,4 +24,3 @@ int	get_file_fd(const char *file_name)
 	}
 	return (fd);
 }
-
