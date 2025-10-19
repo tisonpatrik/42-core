@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 16:40:00 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/18 00:33:34 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/19 21:13:20 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,5 @@ int	get_file_fd(const char *file_name)
 		return (-1);
 	}
 	return (fd);
-}
-
-int	count_tokens(char **tokens)
-{
-	int	count;
-
-	count = 0;
-	while (tokens[count])
-		count++;
-	return (count);
 }
 

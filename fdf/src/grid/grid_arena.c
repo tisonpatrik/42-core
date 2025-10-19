@@ -6,66 +6,74 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 11:00:34 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/18 01:44:39 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/19 21:07:33 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../../include/grid.h"
-# include "../../lib/libft/include/mem.h"
-# include <limits.h>
 
-t_grid	*allocate_grid(int rows, int cols)
+static t_arena	*create_grid_arena(int rows, int cols)
 {
-	t_arena	*arena;
-	t_grid	*grid;
 	size_t	total_size;
-	int		i;
 
-	// Calculate total memory needed
 	total_size = sizeof(t_grid) + 
 	             sizeof(t_point3d *) * rows + 
 	             sizeof(t_point3d) * rows * cols;
-	
-	arena = ft_arena_create(total_size);
-	if (!arena)
-		return (NULL);
-	
-	// Allocate grid structure
+	return (ft_arena_create(total_size));
+}
+
+static t_grid	*allocate_grid_structure(t_arena *arena, int rows)
+{
+	t_grid	*grid;
+
 	grid = ft_arena_alloc(arena, sizeof(t_grid));
 	if (!grid)
-	{
-		ft_arena_destroy(arena);
 		return (NULL);
-	}
-	
-	// Allocate array of pointers to rows
 	grid->grid3d = ft_arena_alloc(arena, sizeof(t_point3d *) * rows);
 	if (!grid->grid3d)
-	{
-		ft_arena_destroy(arena);
 		return (NULL);
-	}
-	
-	// Allocate each row
+	return (grid);
+}
+
+static bool	allocate_grid_rows(t_grid *grid, t_arena *arena, int rows, int cols)
+{
+	int	i;
+
 	i = 0;
 	while (i < rows)
 	{
 		grid->grid3d[i] = ft_arena_alloc(arena, sizeof(t_point3d) * cols);
 		if (!grid->grid3d[i])
-		{
-			ft_arena_destroy(arena);
-			return (NULL);
-		}
+			return (false);
 		i++;
 	}
-	
-	// Initialize grid fields
+	return (true);
+}
+
+t_grid	*allocate_grid(int rows, int cols)
+{
+	t_arena	*arena;
+	t_grid	*grid;
+
+	arena = create_grid_arena(rows, cols);
+	if (!arena)
+		return (NULL);
+	grid = allocate_grid_structure(arena, rows);
+	if (!grid)
+	{
+		ft_arena_destroy(arena);
+		return (NULL);
+	}
+	if (!allocate_grid_rows(grid, arena, rows, cols))
+	{
+		ft_arena_destroy(arena);
+		return (NULL);
+	}
 	grid->rows = rows;
 	grid->cols = cols;
 	grid->high = INT_MIN;
 	grid->low = INT_MAX;
 	grid->arena = arena;
-	
 	return (grid);
 }
 
@@ -75,5 +83,4 @@ void	free_grid(t_grid *grid)
 		return;
 	
 	ft_arena_destroy(grid->arena);
-	// Don't call free(grid) - it's arena allocated!
 }

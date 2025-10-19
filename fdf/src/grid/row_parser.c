@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   row_parser.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/19 21:22:48 by ptison            #+#    #+#             */
+/*   Updated: 2025/10/19 21:30:38 by ptison           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 # include "../../include/grid.h"
 
@@ -41,14 +52,8 @@ static t_token_data	parse_token_with_color(const char *token, char *comma_pos)
 	
 	return (data);
 }
-static double	calculate_grid_interval(size_t rows, size_t cols, int width, int height)
-{
-	double	interval;
 
-	interval = ft_min(width / cols, height / rows) / 2.0;
-	return (ft_max(2, interval));
-}
-t_token_data	parse_token(const char *token)
+static t_token_data	parse_token(const char *token)
 {
 	t_token_data	data;
 	char			*comma_pos;
@@ -71,19 +76,13 @@ t_token_data	parse_token(const char *token)
 	return (data);
 }
 
-bool	parse_grid_row(char **tokens, t_grid *grid, int row_index, int width, int height)
+static bool	process_row_tokens(char **tokens, t_grid *grid, int row_index, 
+								double interval, int x_offset, int y_offset)
 {
 	t_token_data	data;
 	t_point3d		*point;
 	int				col_index;
-	double			interval;
-	int				x_offset;
-	int				y_offset;
 
-	interval = calculate_grid_interval(grid->rows, grid->cols, width, height);
-	x_offset = (grid->cols - 1) * interval / 2;
-	y_offset = (grid->rows - 1) * interval / 2;
-	
 	col_index = 0;
 	while (tokens[col_index] && col_index < grid->cols)
 	{
@@ -102,7 +101,16 @@ bool	parse_grid_row(char **tokens, t_grid *grid, int row_index, int width, int h
 		
 		col_index++;
 	}
-	
+	return (true);
+}
+
+static void	fill_remaining_columns(t_grid *grid, int row_index, int start_col,
+									double interval, int x_offset, int y_offset)
+{
+	t_point3d	*point;
+	int			col_index;
+
+	col_index = start_col;
 	while (col_index < grid->cols)
 	{
 		point = &(grid->grid3d[row_index][col_index]);
@@ -112,16 +120,20 @@ bool	parse_grid_row(char **tokens, t_grid *grid, int row_index, int width, int h
 		point->mapcolor = 0xFFFFFFFF;
 		col_index++;
 	}
+}
+
+bool	parse_grid_row(char **tokens, t_grid *grid, int row_index, t_grid_info *info)
+{
+	int				col_index;
+
+	if (!process_row_tokens(tokens, grid, row_index, info->interval, info->x_offset, info->y_offset))
+		return (false);
+	
+	col_index = 0;
+	while (tokens[col_index] && col_index < grid->cols)
+		col_index++;
+	
+	fill_remaining_columns(grid, row_index, col_index, info->interval, info->x_offset, info->y_offset);
 	
 	return (true);
 }
-
-t_grid_info	init_grid_info(void)
-{
-	t_grid_info	info;
-
-	info.rows = 0;
-	info.cols = 0;
-	return (info);
-}
-
