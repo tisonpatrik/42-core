@@ -6,11 +6,12 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 21:22:48 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/19 22:02:13 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/20 14:49:03 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/grid.h"
+#include "../../include/color.h"
 
 static int	process_row_tokens(char **tokens, t_grid *grid, int row_index,
 		t_grid_info *info)
@@ -49,8 +50,8 @@ static void	fill_remaining_columns(t_grid *grid, int row_index, int start_col,
 		point = &(grid->grid3d[row_index][col_index]);
 		point->x = (double)col_index * info->interval - info->x_offset;
 		point->y = (double)row_index * info->interval - info->y_offset;
-		point->z = 0.0;
-		point->mapcolor = 0xFFFFFFFF;
+        point->z = 0.0;
+        point->mapcolor = TEXT_COLOR;
 		col_index++;
 	}
 }
