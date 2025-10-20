@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 21:10:59 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/19 21:30:38 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/20 14:36:31 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,9 @@ static bool	parse_file_content(int fd, t_grid *grid, t_grid_info *info)
 	char	**tokens;
 	int		row_index;
 
+	line = ft_get_line(fd);
 	row_index = 0;
-	while ((line = ft_get_line(fd)) != NULL)
+	while (line != NULL)
 	{
 		tokens = ft_split(line, CHAR_SPACE);
 		free(line);
@@ -40,6 +41,7 @@ static bool	parse_file_content(int fd, t_grid *grid, t_grid_info *info)
 			ft_free_array(tokens);
 		}
 		row_index++;
+		line = ft_get_line(fd);
 	}
 	return (true);
 }
