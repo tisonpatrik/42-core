@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 21:38:49 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/20 15:23:21 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/22 11:50:00 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ static t_token_data	parse_token_with_color(const char *token, char *comma_pos)
 
 	data.z_value = 0;
 	data.color = 0xFF45475A;
+	data.success = true;
 	z_str = ft_substr(token, 0, comma_pos - token);
 	color_str = ft_strdup(comma_pos + 1);
 	if (z_str)
@@ -58,9 +59,10 @@ t_token_data	parse_token(const char *token)
 
 	data.z_value = 0;
     data.color = TEXT_COLOR;
+	data.success = true;
 	if (!token || token[0] == '\0')
 	{
-		data.z_value = -1;
+		data.success = false;
 		return (data);
 	}
 	comma_pos = ft_strchr(token, ',');

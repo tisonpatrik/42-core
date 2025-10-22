@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 22:14:50 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/19 21:39:42 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/22 11:49:57 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ typedef struct s_token_data
 {
 	int		z_value;
 	uint32_t	color;
+	bool	success;
 }	t_token_data;
 
 
