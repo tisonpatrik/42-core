@@ -46,11 +46,9 @@ t_point2d_temp	project_point(t_point3d point, t_camera *camera)
 	temp_x = point.x;
 	temp_y = point.y;
 	temp_z = point.z * camera->zscale;
-	/* Apply rotations */
 	rotate_z(&temp_x, &temp_y, camera->zrotate);
 	rotate_x(&temp_y, &temp_z, camera->xrotate);
 	rotate_y(&temp_x, &temp_z, camera->yrotate);
-	/* Project to 2D screen coordinates */
 	result.x = (int)((temp_x * camera->zoom - temp_y * camera->zoom)
 			* cos(camera->alpha) + camera->x_offset);
 	result.y = (int)(-temp_z * camera->zoom + (temp_x * camera->zoom + temp_y
@@ -67,7 +65,6 @@ static void	bresenham(mlx_image_t *image, t_point3d a_3d, t_point3d b_3d,
 	t_point2d_temp	cur;
 	int				error[2];
 
-	/* Project 3D points to 2D on-the-fly */
 	a = project_point(a_3d, camera);
 	b = project_point(b_3d, camera);
 	cur.x = a.x;
@@ -101,13 +98,11 @@ static void	draw_line(mlx_image_t *image, t_grid *grid, int x, int y,
 	t_point3d	*down;
 
 	current = &(grid->grid3d[y][x]);
-	/* Draw vertical line (down) */
 	if (y + 1 < grid->rows)
 	{
 		down = &(grid->grid3d[y + 1][x]);
 		bresenham(image, *current, *down, camera);
 	}
-	/* Draw horizontal line (right) */
 	if (x + 1 < grid->cols)
 	{
 		right = &(grid->grid3d[y][x + 1]);

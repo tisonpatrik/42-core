@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 19:40:11 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/18 01:04:42 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/22 21:59:40 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,9 @@ void	set_camera_isometric(t_camera *cam, int screen_w, int screen_h)
 {
 	cam->alpha = M_PI / 4.0;
 	cam->beta = atan(1.0 / sqrt(2.0));
-	cam->xrotate = cam->yrotate = cam->zrotate = 0.0;
+	cam->xrotate = 0.0;
+	cam->yrotate = 0.0;
+	cam->zrotate = 0.0;
 	cam->zoom = 1.0;
 	cam->zscale = 1.0;
 	cam->x_offset = screen_w / 2;
