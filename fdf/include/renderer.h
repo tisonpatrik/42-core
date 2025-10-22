@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 22:11:47 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/22 22:28:40 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/22 22:54:33 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,8 @@ typedef struct s_renderer {
 } t_renderer;
 
 t_renderer	init_renderer(void);
-t_point2d_temp	project_point(t_point3d point, t_camera *camera);
 void	display_menu(mlx_t *mlx);
-void	draw_image(mlx_image_t *image, t_grid *grid, t_camera *camera);
 void	draw_image_fast(mlx_image_t *image, t_grid *grid, t_camera *camera);
-void	draw_reset(mlx_image_t *image);
-
 
 void		rotate_x(double *y, double *z, double alpha);
 void		rotate_y(double *x, double *z, double beta);

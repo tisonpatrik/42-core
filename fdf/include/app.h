@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 20:45:19 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/18 00:59:36 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/22 22:54:10 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,5 @@ void	hook_project(void *param);
 void	hook_rotate(void *param);
 void	scrollhook(double xdelta, double ydelta, void *param);
 
-t_point2d_temp	project_point(t_point3d point, t_camera *camera);
 
 #endif
