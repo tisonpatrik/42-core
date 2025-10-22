@@ -12,10 +12,87 @@
 
 #include "../../include/renderer.h"
 
-void	make_upper(unsigned int i, char *c)
+static inline void putpx_fast(mlx_image_t* img, int x, int y, uint32_t col)
 {
-	i++;
-	*c = ft_toupper(*c);
+	((uint32_t*)img->pixels)[(size_t)y * img->width + x] = col;
+}
+
+static inline void draw_clear_fast(mlx_image_t* image, uint32_t color)
+{
+	size_t n = (size_t)image->width * image->height;
+	uint32_t* p = (uint32_t*)image->pixels;
+	for (size_t i = 0; i < n; ++i) p[i] = color;
+}
+
+
+static t_point2d_temp* project_all(const t_grid* grid, t_camera* camera)
+{
+	int rows = grid->rows, cols = grid->cols;
+	t_point2d_temp* out = (t_point2d_temp*)malloc((size_t)rows * cols * sizeof(*out));
+	if (!out) return NULL;
+
+	for (int y = 0; y < rows; ++y)
+	{
+		for (int x = 0; x < cols; ++x)
+		{
+			const t_point3d p3 = grid->grid3d[y][x];
+
+			double tx = p3.x;
+			double ty = p3.y;
+			double tz = p3.z * camera->zscale;
+
+			rotate_z(&tx, &ty, camera->zrotate);
+			rotate_x(&ty, &tz, camera->xrotate);
+			rotate_y(&tx, &tz, camera->yrotate);
+
+			t_point2d_temp r;
+			r.x    = (int)((tx * camera->zoom - ty * camera->zoom) * cos(camera->alpha) + camera->x_offset);
+			r.y    = (int)(-tz * camera->zoom + (tx * camera->zoom + ty * camera->zoom) * sin(camera->beta) + camera->y_offset);
+			r.rgba = p3.mapcolor;
+
+			out[(size_t)y * cols + x] = r;
+		}
+	}
+	return out;
+}
+
+static inline void bresenham_fast(mlx_image_t *image,
+                                  t_point2d_temp a, t_point2d_temp b)
+{
+	const int w = (int)image->width;
+	const int h = (int)image->height;
+
+	int x0 = a.x, y0 = a.y;
+	int x1 = b.x, y1 = b.y;
+
+	int dx = abs(x1 - x0);
+	int sx = x0 < x1 ? 1 : -1;
+	int dy = -abs(y1 - y0);
+	int sy = y0 < y1 ? 1 : -1;
+	int err = dx + dy; // dx - abs(dy)
+
+
+	int out_a = (x0 < 0) | ((x0 >= w) << 1) | ((y0 < 0) << 2) | ((y0 >= h) << 3);
+	int out_b = (x1 < 0) | ((x1 >= w) << 1) | ((y1 < 0) << 2) | ((y1 >= h) << 3);
+	if ((out_a & out_b) != 0) return;
+
+	for (;;)
+	{
+		if ((unsigned)x0 < (unsigned)w && (unsigned)y0 < (unsigned)h)
+		{
+			// Pokud mácháš barvu podle vzdálenosti, zavolej svou get_color:
+			// tady, abychom nebrzdili, jen prostě vezmeme koncovou barvu A (nebo B).
+			// Pro zachování tvého přechodu použij:
+			t_point2d_temp cur = {.x = x0, .y = y0, .rgba = a.rgba};
+			uint32_t col = get_color(cur, a, b);
+			putpx_fast(image, x0, y0, col);
+		}
+		if (x0 == x1 && y0 == y1) break;
+
+		int e2 = err << 1;
+		if (e2 >= dy) { err += dy; x0 += sx; }
+		if (e2 <= dx) { err += dx; y0 += sy; }
+	}
 }
 
 void	draw_reset(mlx_image_t *image)
@@ -123,6 +200,34 @@ void	draw_image(mlx_image_t *image, t_grid *grid, t_camera *camera)
 		while (++j < grid->cols)
 			draw_line(image, grid, j, i, camera);
 	}
+}
+
+void	draw_image_fast(mlx_image_t *image, t_grid *grid, t_camera *camera)
+{
+	// 1) rychlé vyčištění
+	draw_clear_fast(image, BACKGROUND);
+
+	t_point2d_temp* pts = project_all(grid, camera);
+	if (!pts) return;
+
+	const int rows = grid->rows;
+	const int cols = grid->cols;
+
+	for (int y = 0; y < rows; ++y)
+	{
+		for (int x = 0; x < cols; ++x)
+		{
+			if (y + 1 < rows)
+				bresenham_fast(image, pts[(size_t)y * cols + x],
+				                        pts[(size_t)(y + 1) * cols + x]);
+
+			if (x + 1 < cols)
+				bresenham_fast(image, pts[(size_t)y * cols + x],
+				                        pts[(size_t)y * cols + (x + 1)]);
+		}
+	}
+
+	free(pts);
 }
 
 void	display_menu(mlx_t *mlx)
