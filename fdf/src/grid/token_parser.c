@@ -6,26 +6,25 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 21:38:49 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/22 11:50:00 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/22 11:53:51 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/grid.h"
 #include "../../include/color.h"
+#include "../../include/grid.h"
 
 static uint32_t	parse_color_to_mlx42(const char *color_str)
 {
 	uint32_t	rgb_color;
 
 	if (!color_str)
-        return (TEXT_COLOR);
+		return (TEXT_COLOR);
 	if (ft_strncmp(color_str, "0x", 2) == 0 || ft_strncmp(color_str, "0X",
 			2) == 0)
 		rgb_color = hex_to_int(color_str + 2);
 	else
 		rgb_color = hex_to_int(color_str);
-    /* MLX42 expects RGBA with alpha in the least significant byte */
-    return ((rgb_color << 8) | 0xFF);
+	return ((rgb_color << 8) | 0xFF);
 }
 
 static t_token_data	parse_token_with_color(const char *token, char *comma_pos)
@@ -58,7 +57,7 @@ t_token_data	parse_token(const char *token)
 	char			*comma_pos;
 
 	data.z_value = 0;
-    data.color = TEXT_COLOR;
+	data.color = TEXT_COLOR;
 	data.success = true;
 	if (!token || token[0] == '\0')
 	{

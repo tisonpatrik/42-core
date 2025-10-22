@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/grid.h"
 #include "../../include/color.h"
+#include "../../include/grid.h"
 
 static bool	process_row_tokens(char **tokens, t_grid *grid, int row_index,
 		t_grid_info *info)
@@ -50,8 +50,8 @@ static void	fill_remaining_columns(t_grid *grid, int row_index, int start_col,
 		point = &(grid->grid3d[row_index][col_index]);
 		point->x = (double)col_index * info->interval - info->x_offset;
 		point->y = (double)row_index * info->interval - info->y_offset;
-        point->z = 0.0;
-        point->mapcolor = TEXT_COLOR;
+		point->z = 0.0;
+		point->mapcolor = TEXT_COLOR;
 		col_index++;
 	}
 }
