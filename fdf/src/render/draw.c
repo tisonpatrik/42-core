@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../include/renderer.h"
-#include <stdbool.h>
 
 static void putpx_fast(mlx_image_t* img, int x, int y, uint32_t col)
 {
@@ -40,6 +39,39 @@ static int cs_code(int x, int y, int w, int h)
 	if (y < 0)     code |= CS_BOTTOM;
 	else if (y >= h)  code |= CS_TOP;
 	return code;
+}
+
+static int calculate_lod_step(int rows, int cols, double zoom)
+{
+	int max_dim = rows > cols ? rows : cols;
+	
+	// Base LOD based on grid size
+	int base_step;
+	if (max_dim < 50)
+		base_step = 1;
+	else if (max_dim < 150)
+		base_step = 2;
+	else if (max_dim < 300)
+		base_step = 3;
+	else
+		base_step = 4;
+	
+	// Adjust for zoom - higher zoom = more detail (lower step)
+	// At zoom 1.0: use base_step
+	// At zoom 2.0: use base_step/2 (more detail)
+	// At zoom 0.5: use base_step*2 (less detail)
+	int final_step;
+	if (zoom >= 2.0)
+		final_step = base_step / 2;
+	else if (zoom >= 1.0)
+		final_step = base_step;
+	else if (zoom >= 0.5)
+		final_step = base_step * 2;
+	else
+		final_step = base_step * 4;
+	
+	// Ensure minimum step of 1
+	return final_step < 1 ? 1 : final_step;
 }
 
 static bool clip_line_cs(t_point2d_temp *a, t_point2d_temp *b, int w, int h)
@@ -93,12 +125,16 @@ static bool clip_line_cs(t_point2d_temp *a, t_point2d_temp *b, int w, int h)
 static t_point2d_temp* project_all(const t_grid* grid, t_camera* camera)
 {
 	int rows = grid->rows, cols = grid->cols;
-	t_point2d_temp* out = (t_point2d_temp*)malloc((size_t)rows * cols * sizeof(*out));
+	int step = calculate_lod_step(rows, cols, camera->zoom);
+	int lod_rows = (rows + step - 1) / step;
+	int lod_cols = (cols + step - 1) / step;
+	
+	t_point2d_temp* out = (t_point2d_temp*)malloc((size_t)lod_rows * lod_cols * sizeof(*out));
 	if (!out) return NULL;
 
-	for (int y = 0; y < rows; ++y)
+	for (int y = 0; y < rows; y += step)
 	{
-		for (int x = 0; x < cols; ++x)
+		for (int x = 0; x < cols; x += step)
 		{
 			const t_point3d p3 = grid->grid3d[y][x];
 
@@ -106,16 +142,16 @@ static t_point2d_temp* project_all(const t_grid* grid, t_camera* camera)
 			double ty = p3.y;
 			double tz = p3.z * camera->zscale;
 
-			rotate_z(&tx, &ty, camera->zrotate);
-			rotate_x(&ty, &tz, camera->xrotate);
-			rotate_y(&tx, &tz, camera->yrotate);
+			rotate_z(&tx, &ty, camera->sin_zrot, camera->cos_zrot);
+			rotate_x(&ty, &tz, camera->sin_xrot, camera->cos_xrot);
+			rotate_y(&tx, &tz, camera->sin_yrot, camera->cos_yrot);
 
 			t_point2d_temp r;
-			r.x    = (int)((tx * camera->zoom - ty * camera->zoom) * cos(camera->alpha) + camera->x_offset);
-			r.y    = (int)(-tz * camera->zoom + (tx * camera->zoom + ty * camera->zoom) * sin(camera->beta) + camera->y_offset);
+			r.x    = (int)((tx * camera->zoom - ty * camera->zoom) * camera->cos_alpha + camera->x_offset);
+			r.y    = (int)(-tz * camera->zoom + (tx * camera->zoom + ty * camera->zoom) * camera->sin_beta + camera->y_offset);
 			r.rgba = p3.mapcolor;
 
-			out[(size_t)y * cols + x] = r;
+			out[(size_t)(y / step) * lod_cols + (x / step)] = r;
 		}
 	}
 	return out;
@@ -163,17 +199,20 @@ void	draw_image_fast(mlx_image_t *image, t_grid *grid, t_camera *camera)
 
 	const int rows = grid->rows;
 	const int cols = grid->cols;
+	const int step = calculate_lod_step(rows, cols, camera->zoom);
+	const int lod_rows = (rows + step - 1) / step;
+	const int lod_cols = (cols + step - 1) / step;
 
-	for (int y = 0; y < rows; ++y)
+	for (int y = 0; y < lod_rows; ++y)
 	{
-		for (int x = 0; x < cols; ++x)
+		for (int x = 0; x < lod_cols; ++x)
 		{
-			if (y + 1 < rows)
-				bresenham_fast(image, pts[(size_t)y * cols + x],
-				                        pts[(size_t)(y + 1) * cols + x]);
-			if (x + 1 < cols)
-				bresenham_fast(image, pts[(size_t)y * cols + x],
-				                        pts[(size_t)y * cols + (x + 1)]);
+			if (y + 1 < lod_rows)
+				bresenham_fast(image, pts[(size_t)y * lod_cols + x],
+				                        pts[(size_t)(y + 1) * lod_cols + x]);
+			if (x + 1 < lod_cols)
+				bresenham_fast(image, pts[(size_t)y * lod_cols + x],
+				                        pts[(size_t)y * lod_cols + (x + 1)]);
 		}
 	}
 

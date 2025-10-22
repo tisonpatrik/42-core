@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 20:46:35 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/18 01:05:41 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/22 23:05:33 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,16 +56,19 @@ void	hook_project(void *param)
 	{
 		app->camera.alpha = 0.523599;
 		app->camera.beta = app->camera.alpha;
+		update_camera_trig_cache(&app->camera);
 	}
 	if (mlx_is_key_down(app->renderer.mlx, MLX_KEY_2))
 	{
 		app->camera.alpha = 0.6370452;
 		app->camera.beta = app->camera.alpha;
+		update_camera_trig_cache(&app->camera);
 	}
 	if (mlx_is_key_down(app->renderer.mlx, MLX_KEY_3))
 	{
 		app->camera.alpha = 0.46373398 / 2;
 		app->camera.beta = 0.46373398;
+		update_camera_trig_cache(&app->camera);
 	}
 }
 
@@ -81,15 +84,30 @@ void	hook_rotate(void *param)
 	else if (mlx_is_key_down(app->renderer.mlx, MLX_KEY_PERIOD))
 		sign = 1;
 	if (mlx_is_key_down(app->renderer.mlx, MLX_KEY_Q))
+	{
 		app->camera.alpha += sign * 0.03;
+		update_camera_trig_cache(&app->camera);
+	}
 	if (mlx_is_key_down(app->renderer.mlx, MLX_KEY_W))
+	{
 		app->camera.beta += sign * 0.03;
+		update_camera_trig_cache(&app->camera);
+	}
 	if (mlx_is_key_down(app->renderer.mlx, MLX_KEY_S))
 		app->camera.zscale += sign * 0.03;
 	if (mlx_is_key_down(app->renderer.mlx, MLX_KEY_X))
+	{
 		app->camera.xrotate += sign * 0.02;
+		update_camera_trig_cache(&app->camera);
+	}
 	if (mlx_is_key_down(app->renderer.mlx, MLX_KEY_Y))
+	{
 		app->camera.yrotate += sign * 0.02;
+		update_camera_trig_cache(&app->camera);
+	}
 	if (mlx_is_key_down(app->renderer.mlx, MLX_KEY_Z))
+	{
 		app->camera.zrotate += sign * 0.02;
+		update_camera_trig_cache(&app->camera);
+	}
 }

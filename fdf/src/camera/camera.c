@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 19:40:11 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/22 21:59:40 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/22 23:05:28 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ t_camera	init_camera_defaults(int width, int height)
 	camera.y_offset = height / 2;
 	camera.zoom = 1;
 	camera.zscale = 1;
+	update_camera_trig_cache(&camera);
 	return (camera);
 }
 
@@ -39,6 +40,7 @@ void	reset_camera(t_camera *cam, int width, int height)
 	cam->y_offset = height / 2;
 	cam->zoom = 1;
 	cam->zscale = 1;
+	update_camera_trig_cache(cam);
 }
 
 void	set_camera_isometric(t_camera *cam, int screen_w, int screen_h)
@@ -52,4 +54,19 @@ void	set_camera_isometric(t_camera *cam, int screen_w, int screen_h)
 	cam->zscale = 1.0;
 	cam->x_offset = screen_w / 2;
 	cam->y_offset = screen_h / 2;
+	update_camera_trig_cache(cam);
+}
+
+void	update_camera_trig_cache(t_camera *cam)
+{
+	cam->sin_alpha = sin(cam->alpha);
+	cam->cos_alpha = cos(cam->alpha);
+	cam->sin_beta = sin(cam->beta);
+	cam->cos_beta = cos(cam->beta);
+	cam->sin_xrot = sin(cam->xrotate);
+	cam->cos_xrot = cos(cam->xrotate);
+	cam->sin_yrot = sin(cam->yrotate);
+	cam->cos_yrot = cos(cam->yrotate);
+	cam->sin_zrot = sin(cam->zrotate);
+	cam->cos_zrot = cos(cam->zrotate);
 }
