@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../include/renderer.h"
+#include <stdbool.h>
 
 static inline void putpx_fast(mlx_image_t* img, int x, int y, uint32_t col)
 {
@@ -22,6 +23,76 @@ static inline void draw_clear_fast(mlx_image_t* image, uint32_t color)
 	size_t n = (size_t)image->width * image->height;
 	uint32_t* p = (uint32_t*)image->pixels;
 	for (size_t i = 0; i < n; ++i) p[i] = color;
+}
+
+// Cohen–Sutherland bitmask
+enum {
+	CS_LEFT   = 1 << 0,
+	CS_RIGHT  = 1 << 1,
+	CS_BOTTOM = 1 << 2,
+	CS_TOP    = 1 << 3
+};
+
+static inline int cs_code(int x, int y, int w, int h)
+{
+	int code = 0;
+	if (x < 0)     code |= CS_LEFT;
+	else if (x >= w)  code |= CS_RIGHT;
+	if (y < 0)     code |= CS_BOTTOM;
+	else if (y >= h)  code |= CS_TOP;
+	return code;
+}
+
+static inline bool clip_line_cs(t_point2d_temp *a, t_point2d_temp *b, int w, int h)
+{
+	int code_a = cs_code(a->x, a->y, w, h);
+	int code_b = cs_code(b->x, b->y, w, h);
+
+	for (;;)
+	{
+		// Both points inside window
+		if ((code_a | code_b) == 0)
+			return true;
+
+		// Both points outside same region
+		if ((code_a & code_b) != 0)
+			return false;
+
+		// Choose point outside window
+		int code_out = code_a ? code_a : code_b;
+		t_point2d_temp *p_out = code_a ? a : b;
+
+		// Calculate intersection point
+		int x, y;
+		if (code_out & CS_TOP)
+		{
+			x = a->x + (b->x - a->x) * (h - 1 - a->y) / (b->y - a->y);
+			y = h - 1;
+		}
+		else if (code_out & CS_BOTTOM)
+		{
+			x = a->x + (b->x - a->x) * (0 - a->y) / (b->y - a->y);
+			y = 0;
+		}
+		else if (code_out & CS_RIGHT)
+		{
+			y = a->y + (b->y - a->y) * (w - 1 - a->x) / (b->x - a->x);
+			x = w - 1;
+		}
+		else if (code_out & CS_LEFT)
+		{
+			y = a->y + (b->y - a->y) * (0 - a->x) / (b->x - a->x);
+			x = 0;
+		}
+
+		// Update point and recalculate code
+		p_out->x = x;
+		p_out->y = y;
+		if (p_out == a)
+			code_a = cs_code(a->x, a->y, w, h);
+		else
+			code_b = cs_code(b->x, b->y, w, h);
+	}
 }
 
 
@@ -62,6 +133,10 @@ static inline void bresenham_fast(mlx_image_t *image,
 	const int w = (int)image->width;
 	const int h = (int)image->height;
 
+	// Přesný ořez – když nic nezbyde, skonči
+	if (!clip_line_cs(&a, &b, w, h))
+		return;
+
 	int x0 = a.x, y0 = a.y;
 	int x1 = b.x, y1 = b.y;
 
@@ -69,24 +144,15 @@ static inline void bresenham_fast(mlx_image_t *image,
 	int sx = x0 < x1 ? 1 : -1;
 	int dy = -abs(y1 - y0);
 	int sy = y0 < y1 ? 1 : -1;
-	int err = dx + dy; // dx - abs(dy)
-
-
-	int out_a = (x0 < 0) | ((x0 >= w) << 1) | ((y0 < 0) << 2) | ((y0 >= h) << 3);
-	int out_b = (x1 < 0) | ((x1 >= w) << 1) | ((y1 < 0) << 2) | ((y1 >= h) << 3);
-	if ((out_a & out_b) != 0) return;
+	int err = dx + dy;
 
 	for (;;)
 	{
-		if ((unsigned)x0 < (unsigned)w && (unsigned)y0 < (unsigned)h)
-		{
-			// Pokud mácháš barvu podle vzdálenosti, zavolej svou get_color:
-			// tady, abychom nebrzdili, jen prostě vezmeme koncovou barvu A (nebo B).
-			// Pro zachování tvého přechodu použij:
-			t_point2d_temp cur = {.x = x0, .y = y0, .rgba = a.rgba};
-			uint32_t col = get_color(cur, a, b);
-			putpx_fast(image, x0, y0, col);
-		}
+		// Po ořezu už jsme v okně → bounds-check můžeš klidně vypustit
+		t_point2d_temp cur = { .x = x0, .y = y0, .rgba = a.rgba };
+		uint32_t col = get_color(cur, a, b);
+		putpx_fast(image, x0, y0, col);
+
 		if (x0 == x1 && y0 == y1) break;
 
 		int e2 = err << 1;
