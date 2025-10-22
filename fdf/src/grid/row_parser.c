@@ -6,11 +6,10 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 21:22:48 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/22 11:51:26 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/22 23:19:19 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/color.h"
 #include "../../include/grid.h"
 
 static bool	process_row_tokens(char **tokens, t_grid *grid, int row_index,

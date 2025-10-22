@@ -6,11 +6,10 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 21:38:49 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/22 11:53:51 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/22 23:19:23 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/color.h"
 #include "../../include/grid.h"
 
 static uint32_t	parse_color_to_mlx42(const char *color_str)

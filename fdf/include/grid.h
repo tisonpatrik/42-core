@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 22:14:50 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/22 11:49:57 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/22 23:20:20 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@
 # include <limits.h>
 # include <stdbool.h>
 
+# define BACKGROUND			0x22222200
+# define TEXT_COLOR			0xEAEAEAFF
 
 typedef enum e_chars
 {

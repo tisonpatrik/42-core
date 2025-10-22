@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 22:11:47 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/22 23:05:32 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/22 23:18:46 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,18 @@
 # include "../lib/MLX42/include/MLX42/MLX42.h"
 # include "../include/camera.h"
 # include "../include/grid.h"
-# include "../include/color.h"
 
 # define WIDTH				1920
 # define HEIGHT				1200
+# define BACKGROUND			0x22222200
+# define TEXT_COLOR			0xEAEAEAFF
+
+typedef struct s_point2d_temp
+{
+	int		x;
+	int		y;
+	int		rgba;
+}			t_point2d_temp;
 
 typedef struct s_renderer {
     mlx_t       *mlx;

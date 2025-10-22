@@ -177,9 +177,7 @@ static void bresenham_fast(mlx_image_t *image,
 
 	for (;;)
 	{
-		t_point2d_temp cur = { .x = x0, .y = y0, .rgba = a.rgba };
-		uint32_t col = get_color(cur, a, b);
-		putpx_fast(image, x0, y0, col);
+		putpx_fast(image, x0, y0, a.rgba);
 
 		if (x0 == x1 && y0 == y1) break;
 
