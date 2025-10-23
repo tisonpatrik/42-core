@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 00:25:36 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/23 13:55:20 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/23 19:45:02 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,52 +81,53 @@ static bool	clip_line_to_viewport(t_point2d_temp *a, t_point2d_temp *b, int w,
 	}
 }
 
+static t_bresenham_state	init_bresenham_state(t_point2d_temp a,
+		t_point2d_temp b)
+{
+	t_bresenham_state	state;
+
+	state.current_x = a.x;
+	state.current_y = a.y;
+	state.target_x = b.x;
+	state.target_y = b.y;
+	state.delta_x = abs(state.target_x - state.current_x);
+	state.step_x = state.current_x < state.target_x ? 1 : -1;
+	state.delta_y = -abs(state.target_y - state.current_y);
+	state.step_y = state.current_y < state.target_y ? 1 : -1;
+	state.error_accumulator = state.delta_x + state.delta_y;
+	state.color = a.rgba;
+	return (state);
+}
+
 void	draw_line_between_points(mlx_image_t *image, t_point2d_temp a,
 		t_point2d_temp b)
 {
-	int	w;
-	int	h;
-	int	x0;
-	int	y0;
-	int	x1;
-	int	y1;
-	int	dx;
-	int	sx;
-	int	dy;
-	int	sy;
-	int	err;
-	int	e2;
+	int					w;
+	int					h;
+	t_bresenham_state	state;
+	int					e2;
 
 	w = (int)image->width;
 	h = (int)image->height;
-	x0 = a.x;
-	y0 = a.y;
-	x1 = b.x;
-	y1 = b.y;
 	if (!clip_line_to_viewport(&a, &b, w, h))
 		return ;
-	x0 = a.x, y0 = a.y;
-	x1 = b.x, y1 = b.y;
-	dx = abs(x1 - x0);
-	sx = x0 < x1 ? 1 : -1;
-	dy = -abs(y1 - y0);
-	sy = y0 < y1 ? 1 : -1;
-	err = dx + dy;
+	state = init_bresenham_state(a, b);
 	for (;;)
 	{
-		set_pixel_color(image, x0, y0, a.rgba);
-		if (x0 == x1 && y0 == y1)
+		set_pixel_color(image, state.current_x, state.current_y, state.color);
+		if (state.current_x == state.target_x
+			&& state.current_y == state.target_y)
 			break ;
-		e2 = err << 1;
-		if (e2 >= dy)
+		e2 = state.error_accumulator << 1;
+		if (e2 >= state.delta_y)
 		{
-			err += dy;
-			x0 += sx;
+			state.error_accumulator += state.delta_y;
+			state.current_x += state.step_x;
 		}
-		if (e2 <= dx)
+		if (e2 <= state.delta_x)
 		{
-			err += dx;
-			y0 += sy;
+			state.error_accumulator += state.delta_x;
+			state.current_y += state.step_y;
 		}
 	}
 }
