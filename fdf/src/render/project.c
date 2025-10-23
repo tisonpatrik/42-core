@@ -6,16 +6,11 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 00:20:59 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/23 15:16:48 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/23 15:24:40 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/renderer.h"
-
-static size_t	get_lod_index(int x, int y, int step, int lod_cols)
-{
-	return ((size_t)(y / step) * lod_cols + (x / step));
-}
 
 static void	apply_rotations(t_point3d *p3, double *tz, t_camera *camera)
 {
@@ -40,9 +35,11 @@ static t_point2d_temp	project_to_screen(t_point3d p3, double tz,
 static void	project_grid_row(const t_grid *grid, t_camera *camera,
 		t_point2d_temp *out, t_lod_params lod)
 {
-	int			x;
-	t_point3d	p3;
-	double		tz;
+	int				x;
+	t_point3d		p3;
+	double			tz;
+	size_t			output_index;
+	t_point2d_temp	projected_point;
 
 	x = 0;
 	while (x < grid->cols)
@@ -50,8 +47,10 @@ static void	project_grid_row(const t_grid *grid, t_camera *camera,
 		p3 = grid->grid3d[lod.y][x];
 		tz = p3.z * camera->zscale;
 		apply_rotations(&p3, &tz, camera);
-		out[get_lod_index(x, lod.y, lod.step, lod.lod_cols)] = project_to_screen(p3,
-				tz, camera);
+		output_index = (size_t)(lod.y / lod.step) * lod.lod_cols + (x
+				/ lod.step);
+		projected_point = project_to_screen(p3, tz, camera);
+		out[output_index] = projected_point;
 		x += lod.step;
 	}
 }
