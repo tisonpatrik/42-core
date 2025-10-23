@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 00:25:36 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/23 10:17:42 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/23 13:55:20 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static bool	clip_line_to_viewport(t_point2d_temp *a, t_point2d_temp *b, int w,
 
 	code_a = calculate_clip_code(a->x, a->y, w, h);
 	code_b = calculate_clip_code(b->x, b->y, w, h);
-	for (;;)
+	while (true)
 	{
 		if ((code_a | code_b) == 0)
 			return (true);
@@ -84,17 +84,25 @@ static bool	clip_line_to_viewport(t_point2d_temp *a, t_point2d_temp *b, int w,
 void	draw_line_between_points(mlx_image_t *image, t_point2d_temp a,
 		t_point2d_temp b)
 {
-	const int	w = (int)image->width;
-	const int	h = (int)image->height;
-	int			x0 = a.x, y0;
-	int			x1 = b.x, y1;
-	int			dx;
-	int			sx;
-	int			dy;
-	int			sy;
-	int			err;
-	int			e2;
+	int	w;
+	int	h;
+	int	x0;
+	int	y0;
+	int	x1;
+	int	y1;
+	int	dx;
+	int	sx;
+	int	dy;
+	int	sy;
+	int	err;
+	int	e2;
 
+	w = (int)image->width;
+	h = (int)image->height;
+	x0 = a.x;
+	y0 = a.y;
+	x1 = b.x;
+	y1 = b.y;
 	if (!clip_line_to_viewport(&a, &b, w, h))
 		return ;
 	x0 = a.x, y0 = a.y;

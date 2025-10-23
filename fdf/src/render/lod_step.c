@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 00:22:56 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/23 10:09:16 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/23 14:23:31 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	calculate_lod_step(int rows, int cols, double zoom)
 	int	base_step;
 	int	final_step;
 
-	max_dim = rows > cols ? rows : cols;
+	max_dim = ft_max(rows, cols);
 	if (max_dim < 50)
 		base_step = 1;
 	else if (max_dim < 150)
@@ -35,5 +35,5 @@ int	calculate_lod_step(int rows, int cols, double zoom)
 		final_step = base_step * 2;
 	else
 		final_step = base_step * 4;
-	return (final_step < 1 ? 1 : final_step);
+	return (ft_max(1, final_step));
 }
