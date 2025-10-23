@@ -6,65 +6,74 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 00:20:59 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/23 14:21:50 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/23 15:16:48 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/renderer.h"
 
-static void	project_grid_row(const t_grid *grid, t_camera *camera,
-		t_point2d_temp *out, int y, int step, int lod_cols)
+static size_t	get_lod_index(int x, int y, int step, int lod_cols)
 {
-	int				x;
+	return ((size_t)(y / step) * lod_cols + (x / step));
+}
+
+static void	apply_rotations(t_point3d *p3, double *tz, t_camera *camera)
+{
+	rotate_z(&p3->x, &p3->y, camera->sin_zrot, camera->cos_zrot);
+	rotate_x(&p3->y, tz, camera->sin_xrot, camera->cos_xrot);
+	rotate_y(&p3->x, tz, camera->sin_yrot, camera->cos_yrot);
+}
+
+static t_point2d_temp	project_to_screen(t_point3d p3, double tz,
+		t_camera *camera)
+{
 	t_point2d_temp	r;
-	t_point3d		p3;
-	double			tx;
-	double			ty;
-	double			tz;
+
+	r.x = (int)((p3.x * camera->zoom - p3.y * camera->zoom) * camera->cos_alpha
+			+ camera->x_offset);
+	r.y = (int)(-tz * camera->zoom + (p3.x * camera->zoom + p3.y * camera->zoom)
+			* camera->sin_beta + camera->y_offset);
+	r.rgba = p3.mapcolor;
+	return (r);
+}
+
+static void	project_grid_row(const t_grid *grid, t_camera *camera,
+		t_point2d_temp *out, t_lod_params lod)
+{
+	int			x;
+	t_point3d	p3;
+	double		tz;
 
 	x = 0;
 	while (x < grid->cols)
 	{
-		p3 = grid->grid3d[y][x];
-		tx = p3.x;
-		ty = p3.y;
+		p3 = grid->grid3d[lod.y][x];
 		tz = p3.z * camera->zscale;
-		rotate_z(&tx, &ty, camera->sin_zrot, camera->cos_zrot);
-		rotate_x(&ty, &tz, camera->sin_xrot, camera->cos_xrot);
-		rotate_y(&tx, &tz, camera->sin_yrot, camera->cos_yrot);
-		r.x = (int)((tx * camera->zoom - ty * camera->zoom) * camera->cos_alpha
-				+ camera->x_offset);
-		r.y = (int)(-tz * camera->zoom + (tx * camera->zoom + ty * camera->zoom)
-				* camera->sin_beta + camera->y_offset);
-		r.rgba = p3.mapcolor;
-		out[(size_t)(y / step) * lod_cols + (x / step)] = r;
-		x += step;
+		apply_rotations(&p3, &tz, camera);
+		out[get_lod_index(x, lod.y, lod.step, lod.lod_cols)] = project_to_screen(p3,
+				tz, camera);
+		x += lod.step;
 	}
 }
 
 static t_point2d_temp	*project_all(const t_grid *grid, t_camera *camera)
 {
-	int				rows;
-	int				cols;
 	int				step;
 	int				lod_rows;
 	int				lod_cols;
-	int				x;
 	int				y;
 	t_point2d_temp	*out;
 
-	rows = grid->rows;
-	cols = grid->cols;
-	step = calculate_lod_step(rows, cols, camera->zoom);
-	lod_rows = (rows + step - 1) / step;
-	lod_cols = (cols + step - 1) / step;
+	step = calculate_lod_step(grid->rows, grid->cols, camera->zoom);
+	lod_rows = (grid->rows + step - 1) / step;
+	lod_cols = (grid->cols + step - 1) / step;
 	out = (t_point2d_temp *)malloc((size_t)lod_rows * lod_cols * sizeof(*out));
 	if (!out)
 		return (NULL);
 	y = 0;
-	while (y < rows)
+	while (y < grid->rows)
 	{
-		project_grid_row(grid, camera, out, y, step, lod_cols);
+		project_grid_row(grid, camera, out, (t_lod_params){step, lod_cols, y});
 		y += step;
 	}
 	return (out);
