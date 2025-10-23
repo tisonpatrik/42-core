@@ -6,11 +6,45 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 21:50:28 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/19 21:50:31 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/23 10:16:19 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/renderer.h"
+
+static void	draw_clear(mlx_image_t *image, uint32_t color)
+{
+	size_t		n;
+	uint32_t	*p;
+	size_t		i;
+
+	n = (size_t)image->width * image->height;
+	p = (uint32_t *)image->pixels;
+	i = 0;
+	while (i < n)
+	{
+		p[i] = color;
+		i++;
+	}
+}
+
+void	render_image(mlx_image_t *image, t_grid *grid, t_camera *camera)
+{
+	t_render_grid	render_grig;
+	int				y;
+
+	draw_clear(image, BACKGROUND);
+	render_grig = create_render_grid(grid, camera);
+	if (!render_grig.points)
+		return ;
+	y = 0;
+	while (y < render_grig.rows)
+	{
+		draw_grid_row(image, &render_grig, y);
+		y++;
+	}
+	free(render_grig.points);
+}
 
 t_renderer	init_renderer(void)
 {
