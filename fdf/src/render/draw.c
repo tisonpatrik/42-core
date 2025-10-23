@@ -12,39 +12,73 @@
 
 #include "../../include/renderer.h"
 
-static void draw_clear_fast(mlx_image_t* image, uint32_t color)
+static void	draw_clear(mlx_image_t *image, uint32_t color)
 {
-	size_t n = (size_t)image->width * image->height;
-	uint32_t* p = (uint32_t*)image->pixels;
-	for (size_t i = 0; i < n; ++i) p[i] = color;
+	size_t		n;
+	uint32_t	*p;
+
+	n = (size_t)image->width * image->height;
+	p = (uint32_t *)image->pixels;
+	for (size_t i = 0; i < n; ++i)
+		p[i] = color;
 }
 
-void	draw_image_fast(mlx_image_t *image, t_grid *grid, t_camera *camera)
+static void	draw_grid_row(mlx_image_t *image, t_render_grid *render_grid, int y)
 {
-	draw_clear_fast(image, BACKGROUND);
+	int	x;
+		const size_t current_index = (size_t)y * render_grid->cols + x;
+			const size_t bottom_index = (size_t)(y + 1) * render_grid->cols + x;
+			const size_t right_index = (size_t)y * render_grid->cols + (x + 1);
 
-	t_point2d_temp* pts = project_all(grid, camera);
-	if (!pts) return;
-
-	const int rows = grid->rows;
-	const int cols = grid->cols;
-	const int step = calculate_lod_step(rows, cols, camera->zoom);
-	const int lod_rows = (rows + step - 1) / step;
-	const int lod_cols = (cols + step - 1) / step;
-
-	for (int y = 0; y < lod_rows; ++y)
+	x = 0;
+	while (x < render_grid->cols)
 	{
-		for (int x = 0; x < lod_cols; ++x)
+		if (y + 1 < render_grid->rows)
 		{
-			if (y + 1 < lod_rows)
-				bresenham_fast(image, pts[(size_t)y * lod_cols + x],
-				                        pts[(size_t)(y + 1) * lod_cols + x]);
-			if (x + 1 < lod_cols)
-				bresenham_fast(image, pts[(size_t)y * lod_cols + x],
-				                        pts[(size_t)y * lod_cols + (x + 1)]);
+			draw_line_between_points(image, render_grid->points[current_index],
+				render_grid->points[bottom_index]);
 		}
+		if (x + 1 < render_grid->cols)
+		{
+			draw_line_between_points(image, render_grid->points[current_index],
+				render_grid->points[right_index]);
+		}
+		x++;
 	}
-
-	free(pts);
 }
 
+static t_render_grid	create_render_grid(t_grid *grid, t_camera *camera)
+{
+	t_render_grid	rg;
+
+	rg.points = project_all(grid, camera);
+	if (!rg.points)
+	{
+		rg.step = 0;
+		rg.rows = 0;
+		rg.cols = 0;
+		return (rg);
+	}
+	rg.step = calculate_lod_step(grid->rows, grid->cols, camera->zoom);
+	rg.rows = (grid->rows + rg.step - 1) / rg.step;
+	rg.cols = (grid->cols + rg.step - 1) / rg.step;
+	return (rg);
+}
+
+void	draw_image(mlx_image_t *image, t_grid *grid, t_camera *camera)
+{
+	t_render_grid	render_grig;
+	int				y;
+
+	draw_clear(image, BACKGROUND);
+	render_grig = create_render_grid(grid, camera);
+	if (!render_grig.points)
+		return ;
+	y = 0;
+	while (y < render_grig.rows)
+	{
+		draw_grid_row(image, &render_grig, y);
+		y++;
+	}
+	free(render_grig.points);
+}

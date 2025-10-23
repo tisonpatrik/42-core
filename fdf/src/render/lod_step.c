@@ -12,12 +12,13 @@
 
 #include "../../include/renderer.h"
 
-int calculate_lod_step(int rows, int cols, double zoom)
+int	calculate_lod_step(int rows, int cols, double zoom)
 {
-	int max_dim = rows > cols ? rows : cols;
-	
-	// Base LOD based on grid size
-	int base_step;
+	int	max_dim;
+	int	base_step;
+	int	final_step;
+
+	max_dim = rows > cols ? rows : cols;
 	if (max_dim < 50)
 		base_step = 1;
 	else if (max_dim < 150)
@@ -26,12 +27,6 @@ int calculate_lod_step(int rows, int cols, double zoom)
 		base_step = 3;
 	else
 		base_step = 4;
-	
-	// Adjust for zoom - higher zoom = more detail (lower step)
-	// At zoom 1.0: use base_step
-	// At zoom 2.0: use base_step/2 (more detail)
-	// At zoom 0.5: use base_step*2 (less detail)
-	int final_step;
 	if (zoom >= 2.0)
 		final_step = base_step / 2;
 	else if (zoom >= 1.0)
@@ -40,7 +35,5 @@ int calculate_lod_step(int rows, int cols, double zoom)
 		final_step = base_step * 2;
 	else
 		final_step = base_step * 4;
-	
-	// Ensure minimum step of 1
-	return final_step < 1 ? 1 : final_step;
+	return (final_step < 1 ? 1 : final_step);
 }
