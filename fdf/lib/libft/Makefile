@@ -3,8 +3,7 @@ BIN_DIR     := bin
 MAKEFLAGS   += --silent
 
 CC          := cc
-CFLAGS      := -Wall -Wextra -Werror -Iinclude
-
+CFLAGS      := -Wall -Wextra -Werror -Iinclude -fPIC
 AR          := ar
 ARFLAGS     := rcs
 RM          := rm -f

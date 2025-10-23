@@ -72,6 +72,25 @@ void	hook_project(void *param)
 	}
 }
 
+static void	handle_rotation(t_app *app, double sign)
+{
+	if (mlx_is_key_down(app->renderer.mlx, MLX_KEY_X))
+	{
+		app->camera.xrotate += sign * 0.02;
+		update_camera_trig_cache(&app->camera);
+	}
+	if (mlx_is_key_down(app->renderer.mlx, MLX_KEY_Y))
+	{
+		app->camera.yrotate += sign * 0.02;
+		update_camera_trig_cache(&app->camera);
+	}
+	if (mlx_is_key_down(app->renderer.mlx, MLX_KEY_Z))
+	{
+		app->camera.zrotate += sign * 0.02;
+		update_camera_trig_cache(&app->camera);
+	}
+}
+
 void	hook_rotate(void *param)
 {
 	t_app	*app;
@@ -95,19 +114,5 @@ void	hook_rotate(void *param)
 	}
 	if (mlx_is_key_down(app->renderer.mlx, MLX_KEY_S))
 		app->camera.zscale += sign * 0.03;
-	if (mlx_is_key_down(app->renderer.mlx, MLX_KEY_X))
-	{
-		app->camera.xrotate += sign * 0.02;
-		update_camera_trig_cache(&app->camera);
-	}
-	if (mlx_is_key_down(app->renderer.mlx, MLX_KEY_Y))
-	{
-		app->camera.yrotate += sign * 0.02;
-		update_camera_trig_cache(&app->camera);
-	}
-	if (mlx_is_key_down(app->renderer.mlx, MLX_KEY_Z))
-	{
-		app->camera.zrotate += sign * 0.02;
-		update_camera_trig_cache(&app->camera);
-	}
+	handle_rotation(app, sign);
 }
