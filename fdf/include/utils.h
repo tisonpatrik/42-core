@@ -16,9 +16,9 @@
 # include "../lib/MLX42/include/MLX42/MLX42.h"
 # include "../lib/libft/include/libft.h"
 # include <errno.h>
-# include <stdlib.h>
 # include <stdio.h>
+# include <stdlib.h>
 
-int	hex_to_int(const char *hex_str);
+int		hex_to_int(const char *hex_str);
 void	fdf_error(const char *message);
 #endif

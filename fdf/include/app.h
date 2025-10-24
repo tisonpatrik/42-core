@@ -10,28 +10,25 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
-
 #ifndef APP_H
 # define APP_H
 
-# include "../lib/MLX42/include/MLX42/MLX42.h"
 # include "../include/camera.h"
 # include "../include/grid.h"
 # include "../include/renderer.h"
+# include "../lib/MLX42/include/MLX42/MLX42.h"
 
+typedef struct s_app
+{
+	t_grid		*grid;
+	t_camera	camera;
+	t_renderer	renderer;
+}				t_app;
 
-typedef struct s_app {
-    t_grid      *grid;
-    t_camera     camera;
-    t_renderer   renderer; 
-} t_app;
+t_app			*init_app(char *filename);
+void			run_app(t_app *app);
+void			free_app(t_app *app);
 
-t_app	*init_app(char *filename);
-void	run_app(t_app *app);
-void	free_app(t_app *app);
-
-void	hook(void *param);
-
+void			hook(void *param);
 
 #endif

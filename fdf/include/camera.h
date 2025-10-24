@@ -10,29 +10,29 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #ifndef CAMERA_H
 # define CAMERA_H
 
-# include <math.h>
 # include "../lib/libft/include/libft.h"
+# include <math.h>
 
-typedef struct s_vec3 {
-    double x;
-    double y;
-    double z;
-} t_vec3;
+typedef struct s_vec3
+{
+	double	x;
+	double	y;
+	double	z;
+}			t_vec3;
 
-typedef struct s_pt2 {
-    double x;
-    double y;
-} t_pt2;
-
+typedef struct s_pt2
+{
+	double	x;
+	double	y;
+}			t_pt2;
 
 typedef struct s_camera
 {
-	double			interval;
-}					t_camera;
+	double	interval;
+}			t_camera;
 
 t_camera	init_camera_defaults(void);
 
