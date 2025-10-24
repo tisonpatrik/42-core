@@ -20,5 +20,7 @@
 # include <stdlib.h>
 
 int		hex_to_int(const char *hex_str);
-void	fdf_error(const char *message);
+void	fdf_error(char *message);
+
+void	handle_error(char *message);
 #endif

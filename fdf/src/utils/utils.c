@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "../../include/utils.h"
+#include <stdlib.h>
+#include <unistd.h>
 
 int	hex_to_int(const char *hex_str)
 {
@@ -33,14 +35,20 @@ int	hex_to_int(const char *hex_str)
 	return (result);
 }
 
-void	fdf_error(const char *message)
+void	fdf_error(char *message)
 {
 	if (errno == 0)
 	{
 		ft_putstr_fd("FdF: ", 2);
-		ft_putendl_fd((char *)message, 2);
+		ft_putendl_fd(message, 2);
 	}
 	else
 		perror("FdF");
-	exit(1);
+	exit(EXIT_FAILURE);
+}
+
+void	handle_error(char *message)
+{
+	ft_putstr_fd(message, STDERR_FILENO);
+	exit(EXIT_FAILURE);
 }

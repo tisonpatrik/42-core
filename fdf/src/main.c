@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 11:37:00 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/18 00:50:42 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/24 16:01:20 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,19 +33,16 @@ int	main(int argc, char **argv)
 
 	if (argc != 2)
 	{
-		ft_putstr_fd("Usage: ./fdf <map_file>\n", STDERR_FILENO);
-		return (EXIT_FAILURE);
+		handle_error("Usage: ./fdf <map_file>\n");
 	}
 	if (!has_fdf_extension(argv[1]))
 	{
-		ft_putstr_fd("Only .fdf files are allowed\n", STDERR_FILENO);
-		return (EXIT_FAILURE);
+		handle_error("Only .fdf files are allowed\n");
 	}
 	app = init_app(argv[1]);
 	if (!app)
 	{
-		ft_putstr_fd("Failed to initialize new app\n", STDERR_FILENO);
-		return (EXIT_FAILURE);
+		handle_error("Failed to initialize new app\n");
 	}
 	run_app(app);
 	free_app(app);

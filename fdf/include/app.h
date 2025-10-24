@@ -16,6 +16,7 @@
 # include "../include/camera.h"
 # include "../include/grid.h"
 # include "../include/renderer.h"
+# include "../include/utils.h"
 # include "../lib/MLX42/include/MLX42/MLX42.h"
 
 typedef struct s_app
