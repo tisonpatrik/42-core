@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 20:47:59 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/24 09:32:45 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/24 10:43:10 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void	draw_image_hook_app(void *param)
 	t_app	*app;
 
 	app = (t_app *)param;
-	render_image(app->renderer.img, app->grid, &app->camera);
+	render_image(app->renderer.img, app->grid);
 }
 
 t_app	*init_app(char *filename)
@@ -34,7 +34,7 @@ t_app	*init_app(char *filename)
 		free(app);
 		return (NULL);
 	}
-	app->camera = init_camera_defaults(WIDTH, HEIGHT);
+	app->camera = init_camera_defaults();
 	return (app);
 }
 
@@ -52,7 +52,7 @@ void	free_app(t_app *app)
 void	run_app(t_app *app)
 {
 	display_menu(app->renderer.mlx);
-	render_image(app->renderer.img, app->grid, &app->camera);
+	render_image(app->renderer.img, app->grid);
 	if (mlx_image_to_window(app->renderer.mlx, app->renderer.img, 0, 0) == -1)
 	{
 		mlx_close_window(app->renderer.mlx);

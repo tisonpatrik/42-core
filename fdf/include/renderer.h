@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 22:11:47 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/24 09:36:53 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/24 10:43:10 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ typedef struct s_renderer {
 
 t_renderer	init_renderer(void);
 void	display_menu(mlx_t *mlx);
-void	render_image(mlx_image_t *image, t_grid *grid, t_camera *camera);
-t_render_grid	create_render_grid(t_grid *grid, t_camera *camera);
+void	render_image(mlx_image_t *image, t_grid *grid);
+t_render_grid	create_render_grid(t_grid *grid);
 void draw_line_between_points(mlx_image_t *image, t_point2d_temp a, t_point2d_temp b);
 void	draw_grid_row(mlx_image_t *image, t_render_grid *render_grid, int y);
 #endif

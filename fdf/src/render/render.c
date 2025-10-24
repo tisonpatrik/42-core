@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 21:50:28 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/23 13:44:55 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/24 10:43:10 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,13 @@ static void	draw_clear(mlx_image_t *image, uint32_t color)
 	}
 }
 
-void	render_image(mlx_image_t *image, t_grid *grid, t_camera *camera)
+void	render_image(mlx_image_t *image, t_grid *grid)
 {
 	t_render_grid	render_grig;
 	int				y;
 
 	draw_clear(image, BACKGROUND);
-	render_grig = create_render_grid(grid, camera);
+	render_grig = create_render_grid(grid);
 	if (!render_grig.points)
 		return ;
 	y = 0;

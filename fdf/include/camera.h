@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 20:36:23 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/24 09:32:45 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/24 10:43:10 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,9 @@ typedef struct s_pt2 {
 
 typedef struct s_camera
 {
-	int				x_offset;
-	int				y_offset;
 	double			interval;
 }					t_camera;
 
-t_camera	init_camera_defaults(int width, int height);
+t_camera	init_camera_defaults(void);
 
 #endif
