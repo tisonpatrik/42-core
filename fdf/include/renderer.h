@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   renderer.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 22:11:47 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/24 16:15:07 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/24 18:27:22 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,10 @@
 # include "../include/grid.h"
 # include "../lib/MLX42/include/MLX42/MLX42.h"
 # include <math.h>
+
+#define COS_45 0.70710678118
+#define SIN_30 0.5
+
 # define WIDTH 1920
 # define HEIGHT 1200
 # define BACKGROUND 0x22222200
@@ -48,6 +52,7 @@ typedef struct s_render_grid
 	t_point2d	*points;
 	int			rows;
 	int			cols;
+	t_arena		*arena;
 }				t_render_grid;
 
 typedef struct s_renderer
@@ -61,9 +66,11 @@ typedef struct s_renderer
 t_renderer		init_renderer(void);
 void			display_menu(mlx_t *mlx);
 void			render_image(mlx_image_t *image, t_grid *grid);
+t_render_grid	allocate_render_grid(int rows, int cols);
 t_render_grid	create_render_grid(t_grid *grid);
-void			draw_line_between_points(mlx_image_t *image, t_point2d a,
-					t_point2d b);
+void			free_render_grid(t_render_grid *render_grid);
+void			draw_line_between_points(mlx_image_t *image, t_point2d start_point,
+					t_point2d end_point);
 void			draw_grid_row(mlx_image_t *image, t_render_grid *render_grid,
 					int y);
 #endif

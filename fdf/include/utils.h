@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 23:54:55 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/18 01:08:05 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/24 18:18:36 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <stdlib.h>
 
 int		hex_to_int(const char *hex_str);
-void	fdf_error(char *message);
+void	fdf_error(const char *message);
 
 void	handle_error(char *message);
 #endif

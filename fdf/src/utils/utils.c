@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 23:55:32 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/19 21:50:44 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/24 18:18:36 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,12 @@ int	hex_to_int(const char *hex_str)
 	return (result);
 }
 
-void	fdf_error(char *message)
+void	fdf_error(const char *message)
 {
 	if (errno == 0)
 	{
 		ft_putstr_fd("FdF: ", 2);
-		ft_putendl_fd(message, 2);
+		ft_putendl_fd((char *)message, 2);
 	}
 	else
 		perror("FdF");

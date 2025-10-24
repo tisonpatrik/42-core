@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 21:50:28 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/24 10:43:10 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/24 18:18:01 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,5 +54,5 @@ void	render_image(mlx_image_t *image, t_grid *grid)
 		draw_grid_row(image, &render_grig, y);
 		y++;
 	}
-	free(render_grig.points);
+	free_render_grid(&render_grig);
 }
