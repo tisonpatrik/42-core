@@ -15,9 +15,11 @@
 static t_point2d_temp	project_to_screen(t_point3d p3)
 {
 	t_point2d_temp	r;
-	const double	cos_alpha = 0.7071067811865476; // cos(45°)
-	const double	sin_beta = 0.5773502691896258;  // sin(30°)
+	double			cos_alpha;
+	double			sin_beta;
 
+	cos_alpha = cos(45);
+	sin_beta = sin(30);
 	r.x = (int)((p3.x - p3.y) * cos_alpha + WIDTH / 2.0);
 	r.y = (int)(-p3.z + (p3.x + p3.y) * sin_beta + HEIGHT / 2.0);
 	r.rgba = p3.mapcolor;
@@ -47,7 +49,8 @@ static t_point2d_temp	*project_all(const t_grid *grid)
 	int				y;
 	t_point2d_temp	*out;
 
-	out = (t_point2d_temp *)malloc((size_t)grid->rows * grid->cols * sizeof(*out));
+	out = (t_point2d_temp *)malloc((size_t)grid->rows * grid->cols
+			* sizeof(*out));
 	if (!out)
 		return (NULL);
 	y = 0;

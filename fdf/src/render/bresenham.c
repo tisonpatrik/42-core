@@ -47,7 +47,8 @@ void	draw_line_between_points(mlx_image_t *image, t_point2d_temp a,
 	{
 		if (state.current_x >= 0 && state.current_x < (int)image->width
 			&& state.current_y >= 0 && state.current_y < (int)image->height)
-			((uint32_t *)image->pixels)[(size_t)state.current_y * image->width + state.current_x] = state.color;
+			((uint32_t *)image->pixels)[(size_t)state.current_y * image->width
+				+ state.current_x] = state.color;
 		if (state.current_x == state.target_x
 			&& state.current_y == state.target_y)
 			break ;
