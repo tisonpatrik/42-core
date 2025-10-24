@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   bresenham.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 00:25:36 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/24 09:52:25 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/24 16:15:06 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/renderer.h"
 
-static t_bresenham_state	init_bresenham_state(t_point2d_temp a,
-		t_point2d_temp b)
+static t_bresenham_state	init_bresenham_state(t_point2d a,
+		t_point2d b)
 {
 	t_bresenham_state	state;
 
@@ -36,8 +36,8 @@ static t_bresenham_state	init_bresenham_state(t_point2d_temp a,
 	return (state);
 }
 
-void	draw_line_between_points(mlx_image_t *image, t_point2d_temp a,
-		t_point2d_temp b)
+void	draw_line_between_points(mlx_image_t *image, t_point2d a,
+		t_point2d b)
 {
 	t_bresenham_state	state;
 	int					e2;

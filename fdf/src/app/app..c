@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   app..c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 20:47:59 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/24 10:43:10 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/24 16:20:47 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ void	free_app(t_app *app)
 
 void	run_app(t_app *app)
 {
-	display_menu(app->renderer.mlx);
 	render_image(app->renderer.img, app->grid);
 	if (mlx_image_to_window(app->renderer.mlx, app->renderer.img, 0, 0) == -1)
 	{

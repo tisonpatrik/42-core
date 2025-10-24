@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   renderer.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 22:11:47 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/24 10:43:10 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/24 16:15:07 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,46 +24,46 @@
 
 typedef struct s_bresenham_state
 {
-	int				current_x;
-	int				current_y;
-	int				target_x;
-	int				target_y;
-	int				delta_x;
-	int				delta_y;
-	int				step_x;
-	int				step_y;
-	int				error_accumulator;
-	int				color;
-}					t_bresenham_state;
+	int			current_x;
+	int			current_y;
+	int			target_x;
+	int			target_y;
+	int			delta_x;
+	int			delta_y;
+	int			step_x;
+	int			step_y;
+	int			error_accumulator;
+	int			color;
+}				t_bresenham_state;
 
-typedef struct s_point2d_temp
+typedef struct s_point2d
 {
-	int				x;
-	int				y;
-	int				rgba;
-}					t_point2d_temp;
+	int			x;
+	int			y;
+	int			rgba;
+}				t_point2d;
 
 typedef struct s_render_grid
 {
-	t_point2d_temp	*points;
-	int				rows;
-	int				cols;
-}					t_render_grid;
+	t_point2d	*points;
+	int			rows;
+	int			cols;
+}				t_render_grid;
 
 typedef struct s_renderer
 {
-	mlx_t			*mlx;
-	mlx_image_t		*img;
-	int				width;
-	int				height;
-}					t_renderer;
+	mlx_t		*mlx;
+	mlx_image_t	*img;
+	int			width;
+	int			height;
+}				t_renderer;
 
-t_renderer			init_renderer(void);
-void				display_menu(mlx_t *mlx);
-void				render_image(mlx_image_t *image, t_grid *grid);
-t_render_grid		create_render_grid(t_grid *grid);
-void				draw_line_between_points(mlx_image_t *image,
-						t_point2d_temp a, t_point2d_temp b);
-void				draw_grid_row(mlx_image_t *image,
-						t_render_grid *render_grid, int y);
+t_renderer		init_renderer(void);
+void			display_menu(mlx_t *mlx);
+void			render_image(mlx_image_t *image, t_grid *grid);
+t_render_grid	create_render_grid(t_grid *grid);
+void			draw_line_between_points(mlx_image_t *image, t_point2d a,
+					t_point2d b);
+void			draw_grid_row(mlx_image_t *image, t_render_grid *render_grid,
+					int y);
 #endif

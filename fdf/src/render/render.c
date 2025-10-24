@@ -25,16 +25,16 @@ t_renderer	init_renderer(void)
 
 static void	draw_clear(mlx_image_t *image, uint32_t color)
 {
-	size_t		n;
-	uint32_t	*p;
+	size_t		count_of_pixels;
+	uint32_t	*pixels;
 	size_t		i;
 
-	n = (size_t)image->width * image->height;
-	p = (uint32_t *)image->pixels;
+	count_of_pixels = (size_t)image->width * image->height;
+	pixels = (uint32_t *)image->pixels;
 	i = 0;
-	while (i < n)
+	while (i < count_of_pixels)
 	{
-		p[i] = color;
+		pixels[i] = color;
 		i++;
 	}
 }

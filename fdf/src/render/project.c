@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   project.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 00:20:59 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/24 13:54:19 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/24 16:15:06 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/renderer.h"
 
-static t_point2d_temp	project_to_screen(t_point3d p3)
+static t_point2d	project_to_screen(t_point3d p3)
 {
-	t_point2d_temp	r;
-	double			cos_alpha;
-	double			sin_beta;
+	t_point2d	r;
+	double		cos_alpha;
+	double		sin_beta;
 
 	cos_alpha = cos(45 * M_PI / 180);
 	sin_beta = sin(30 * M_PI / 180);
@@ -26,12 +26,12 @@ static t_point2d_temp	project_to_screen(t_point3d p3)
 	return (r);
 }
 
-static void	project_grid_row(const t_grid *grid, t_point2d_temp *out, int y)
+static void	project_grid_row(const t_grid *grid, t_point2d *out, int y)
 {
-	int				x;
-	t_point3d		p3;
-	size_t			output_index;
-	t_point2d_temp	projected_point;
+	int			x;
+	t_point3d	p3;
+	size_t		output_index;
+	t_point2d	projected_point;
 
 	x = 0;
 	while (x < grid->cols)
@@ -44,13 +44,12 @@ static void	project_grid_row(const t_grid *grid, t_point2d_temp *out, int y)
 	}
 }
 
-static t_point2d_temp	*project_all(const t_grid *grid)
+static t_point2d	*project_all(const t_grid *grid)
 {
-	int				y;
-	t_point2d_temp	*out;
+	int			y;
+	t_point2d	*out;
 
-	out = (t_point2d_temp *)malloc((size_t)grid->rows * grid->cols
-			* sizeof(*out));
+	out = (t_point2d *)malloc((size_t)grid->rows * grid->cols * sizeof(*out));
 	if (!out)
 		return (NULL);
 	y = 0;
