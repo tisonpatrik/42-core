@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 00:20:59 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/24 10:43:10 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/24 13:54:19 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ static t_point2d_temp	project_to_screen(t_point3d p3)
 	double			cos_alpha;
 	double			sin_beta;
 
-	cos_alpha = cos(45);
-	sin_beta = sin(30);
+	cos_alpha = cos(45 * M_PI / 180);
+	sin_beta = sin(30 * M_PI / 180);
 	r.x = (int)((p3.x - p3.y) * cos_alpha + WIDTH / 2.0);
 	r.y = (int)(-p3.z + (p3.x + p3.y) * sin_beta + HEIGHT / 2.0);
 	r.rgba = p3.mapcolor;
