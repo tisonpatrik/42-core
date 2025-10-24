@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 20:47:59 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/23 13:46:28 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/24 09:32:45 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,6 @@ void	run_app(t_app *app)
 		fdf_error(mlx_strerror(mlx_errno));
 	}
 	mlx_loop_hook(app->renderer.mlx, &hook, app);
-	mlx_loop_hook(app->renderer.mlx, &hook_rotate, app);
-	mlx_loop_hook(app->renderer.mlx, &hook_project, app);
-	mlx_scroll_hook(app->renderer.mlx, &scrollhook, app);
 	mlx_loop_hook(app->renderer.mlx, &draw_image_hook_app, app);
 	mlx_loop(app->renderer.mlx);
 }

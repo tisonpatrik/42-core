@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 20:45:19 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/22 22:54:10 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/24 09:32:45 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,6 @@ void	run_app(t_app *app);
 void	free_app(t_app *app);
 
 void	hook(void *param);
-void	hook_project(void *param);
-void	hook_rotate(void *param);
-void	scrollhook(double xdelta, double ydelta, void *param);
 
 
 #endif
