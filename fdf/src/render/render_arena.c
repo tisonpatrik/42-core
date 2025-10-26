@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 18:19:07 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/24 18:22:36 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/26 11:41:00 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,10 @@ static t_render_grid	setup_render_grid(t_arena *arena, int rows, int cols)
 {
 	t_render_grid	render_grid;
 
-	render_grid.points = ft_arena_alloc(arena, sizeof(t_point2d) * rows * cols);
-	if (!render_grid.points)
-	{
-		ft_arena_destroy(arena);
-		render_grid.rows = 0;
-		render_grid.cols = 0;
-		render_grid.arena = NULL;
-		return (render_grid);
-	}
 	render_grid.rows = rows;
 	render_grid.cols = cols;
 	render_grid.arena = arena;
+	render_grid.points = (t_point2d*)arena->memory;
 	return (render_grid);
 }
 

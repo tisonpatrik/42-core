@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 21:10:59 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/20 14:36:31 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/26 11:41:00 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ static bool	parse_file_content(int fd, t_grid *grid, t_grid_info *info)
 				return (handle_grid_row_error(tokens, fd, grid));
 			}
 			ft_free_array(tokens);
+			row_index++;
 		}
-		row_index++;
 		line = ft_get_line(fd);
 	}
 	return (true);

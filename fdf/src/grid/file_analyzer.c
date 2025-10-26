@@ -6,7 +6,7 @@
 /*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 01:41:17 by ptison            #+#    #+#             */
-/*   Updated: 2025/10/20 14:38:14 by ptison           ###   ########.fr       */
+/*   Updated: 2025/10/26 11:41:00 by ptison           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ static void	analyze_file_content(int fd, t_grid_info *info)
 		{
 			info->cols = ft_max(info->cols, count_tokens(tokens));
 			ft_free_array(tokens);
+			info->rows++;
 		}
-		info->rows++;
 		line = ft_get_line(fd);
 	}
 }
