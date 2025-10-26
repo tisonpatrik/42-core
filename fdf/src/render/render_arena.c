@@ -27,7 +27,7 @@ static t_render_grid	setup_render_grid(t_arena *arena, int rows, int cols)
 	render_grid.rows = rows;
 	render_grid.cols = cols;
 	render_grid.arena = arena;
-	render_grid.points = (t_point2d*)arena->memory;
+	render_grid.points = (t_point2d *)arena->memory;
 	return (render_grid);
 }
 
