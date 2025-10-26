@@ -6,19 +6,19 @@
 #    By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/26 16:33:26 by ptison            #+#    #+#              #
-#    Updated: 2025/10/23 13:46:59 by ptison           ###   ########.fr        #
+#    Updated: 2025/10/26 11:01:09 by ptison           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Project configuration
 PROJECT		:= fdf
 BIN_DIR     := bin
-NAME        := $(BIN_DIR)/$(PROJECT)
+NAME        := $(PROJECT)
 MAKEFLAGS   += --silent
 
 # Compiler settings
 CC          := gcc
-CFLAGS      := -Wall -Wextra -Werror -Iinclude -Ilib/libft/include -I$(MLX42_DIR)/include
+CFLAGS      := -Wall -Wextra -Werror -MMD -MP -Iinclude -Ilib/libft/include -I$(MLX42_DIR)/include
 DEBUG_FLAGS := -g -O0 -DDEBUG
 SANITIZE_FLAGS := -fsanitize=address -fsanitize=undefined
 
@@ -40,12 +40,29 @@ LIBFT_DIR   := lib/libft
 LIBFT       := $(LIBFT_DIR)/bin/libft.a
 
 # Source files organization
-APP_SRCS    := $(shell find ./src/app -iname "*.c")
-GRID_SRCS   := $(shell find ./src/grid -iname "*.c")
-CAMERA_SRCS := $(shell find ./src/camera -iname "*.c")
-RENDER_SRCS := $(shell find ./src/render -iname "*.c")
-UTILS_SRCS := $(shell find ./src/utils -iname "*.c")
-MAIN_SRCS   := $(shell find ./src -maxdepth 1 -iname "*.c")
+APP_SRCS    := src/app/app..c \
+               src/app/hook.c
+
+GRID_SRCS   := src/grid/file_analyzer.c \
+               src/grid/grid_arena.c \
+               src/grid/grid.c \
+               src/grid/parser.c \
+               src/grid/row_parser.c \
+               src/grid/token_parser.c \
+               src/grid/util.c
+
+CAMERA_SRCS := src/camera/camera.c
+
+RENDER_SRCS := src/render/bresenham.c \
+               src/render/draw.c \
+               src/render/project.c \
+               src/render/render_arena.c \
+               src/render/render.c
+
+UTILS_SRCS  := src/utils/utils.c
+
+MAIN_SRCS   := src/main.c
+
 ALL_SRCS    := $(APP_SRCS) $(GRID_SRCS) $(CAMERA_SRCS) $(RENDER_SRCS) $(UTILS_SRCS) $(MAIN_SRCS)
 OBJS        := $(ALL_SRCS:src/%.c=bin/%.o)
 DEPS        := $(OBJS:.o=.d)
@@ -76,6 +93,9 @@ bin/%.o: src/%.c | $(BIN_DIR)
 	@$(MKDIR_P) $(dir $@)
 	@$(CC) $(CFLAGS) -c $< -o $@
 
+# Include dependency files
+-include $(DEPS)
+
 # Debug build
 debug:
 	@echo "Building debug version..."
@@ -84,17 +104,14 @@ debug:
 
 # Clean build artifacts
 clean:
-	@find $(BIN_DIR)/ -name "*.o" -delete 2>/dev/null || true
-	@find $(BIN_DIR)/ -name "*.d" -delete 2>/dev/null || true
-	@find src/ -name "*.o" -delete 2>/dev/null || true
-	@find src/ -name "*.d" -delete 2>/dev/null || true
+	@$(RM_RF) $(BIN_DIR)
 	@$(MAKE) -C $(LIBFT_DIR) clean
 	@$(RM_RF) $(MLX42_DIR)/build
 
 # Full clean
 fclean: clean
 	@echo "Full clean..."
-	@$(RM_RF) $(BIN_DIR)
+	@$(RM) $(NAME)
 	@$(MAKE) -C $(LIBFT_DIR) fclean
 
 # Rebuild
