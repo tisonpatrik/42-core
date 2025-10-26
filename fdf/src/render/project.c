@@ -26,7 +26,8 @@ static t_point2d	project_to_screen(t_point3d point_3d)
 	return (screen_point);
 }
 
-static void	project_grid_row(const t_grid *grid, t_point2d *output_points, int row_index)
+static void	project_grid_row(const t_grid *grid, t_point2d *output_points,
+		int row_index)
 {
 	int			column_index;
 	t_point3d	point_3d;

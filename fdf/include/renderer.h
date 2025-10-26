@@ -18,8 +18,8 @@
 # include "../lib/MLX42/include/MLX42/MLX42.h"
 # include <math.h>
 
-#define COS_45 0.70710678118
-#define SIN_30 0.5
+# define COS_45 0.70710678118
+# define SIN_30 0.5
 
 # define WIDTH 1920
 # define HEIGHT 1200
@@ -69,8 +69,8 @@ void			render_image(mlx_image_t *image, t_grid *grid);
 t_render_grid	allocate_render_grid(int rows, int cols);
 t_render_grid	create_render_grid(t_grid *grid);
 void			free_render_grid(t_render_grid *render_grid);
-void			draw_line_between_points(mlx_image_t *image, t_point2d start_point,
-					t_point2d end_point);
+void			draw_line_between_points(mlx_image_t *image,
+					t_point2d start_point, t_point2d end_point);
 void			draw_grid_row(mlx_image_t *image, t_render_grid *render_grid,
 					int y);
 #endif

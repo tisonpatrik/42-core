@@ -12,7 +12,8 @@
 
 #include "../../include/renderer.h"
 
-static void	initialize_bresenham_state(t_bresenham_state *state, t_point2d start_point, t_point2d end_point)
+static void	initialize_bresenham_state(t_bresenham_state *state,
+		t_point2d start_point, t_point2d end_point)
 {
 	int	x_distance;
 	int	y_distance;
@@ -37,14 +38,16 @@ static void	initialize_bresenham_state(t_bresenham_state *state, t_point2d start
 	state->error_accumulator = state->delta_x + state->delta_y;
 }
 
-static void	draw_current_pixel(mlx_image_t *image, const t_bresenham_state *state)
+static void	draw_current_pixel(mlx_image_t *image,
+		const t_bresenham_state *state)
 {
 	size_t	pixel_index;
 
 	if (state->current_x >= 0 && state->current_x < (int)image->width
 		&& state->current_y >= 0 && state->current_y < (int)image->height)
 	{
-		pixel_index = (size_t)state->current_y * image->width + state->current_x;
+		pixel_index = (size_t)state->current_y * image->width
+			+ state->current_x;
 		((uint32_t *)image->pixels)[pixel_index] = state->color;
 	}
 }
