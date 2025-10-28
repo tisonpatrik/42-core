@@ -36,6 +36,7 @@ obj/
 *.backup
 
 maps/
+lib/MLX42
 .vscode/
 fdf_linux
 fdf
