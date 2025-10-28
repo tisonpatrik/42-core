@@ -6,7 +6,7 @@
 #    By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/26 16:33:26 by ptison            #+#    #+#              #
-#    Updated: 2025/10/26 11:01:09 by ptison           ###   ########.fr        #
+#    Updated: 2025/10/28 13:31:54 by ptison           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -82,8 +82,13 @@ $(BIN_DIR):
 $(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR) bonus
 
+# Clone MLX42 if not present
+$(MLX42_DIR):
+	@echo "Cloning MLX42..."
+	git clone https://github.com/codam-coding-college/MLX42.git $(MLX42_DIR)
+
 # Build MLX42
-$(MLX42_LIB):
+$(MLX42_LIB): $(MLX42_DIR)
 	@echo "Building MLX42..."
 	@cd $(MLX42_DIR) && cmake -B build
 	@cd $(MLX42_DIR) && cmake --build build -j4
