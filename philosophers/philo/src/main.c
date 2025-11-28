@@ -4,6 +4,7 @@
 
 int main(int ac, char *av[]) {
   t_inputs inputs;
+
   if (ac < 5) {
     printf("Error, too few arguments\n");
     exit(EXIT_FAILURE);
