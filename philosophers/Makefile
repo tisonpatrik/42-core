@@ -27,8 +27,10 @@ SRC_DIR     := philo/src
 ALL_SRCS    := philo/src/main.c \
                philo/src/simulator.c \
                philo/src/simulator_arena.c \
-               philo/src/validator.c
-OBJS        := $(ALL_SRCS:philo/src/%.c=bin/%.o)
+               philo/src/validator.c \
+               philo/src/ft_strtoi.c \
+               philo/src/utils.c
+OBJS        := $(patsubst philo/src/%.c,bin/%.o,$(ALL_SRCS))
 DEPS        := $(OBJS:.o=.d)
 
 # --------------------------- Targets ----------------------------------------
@@ -56,7 +58,7 @@ bin/%.debug.o: philo/src/%.c | $(BIN_DIR)
 
 # --------------------------- Convenience ------------------------------------
 .PHONY: debug
-OBJS_DEBUG := $(ALL_SRCS:philo/src/%.c=$(BIN_DIR)/%.debug.o)
+OBJS_DEBUG := $(patsubst philo/src/%.c,bin/%.debug.o,$(ALL_SRCS))
 
 debug: $(OBJS_DEBUG) | $(BIN_DIR)
 	@$(MKDIR_P) $(BIN_DIR)

@@ -5,8 +5,6 @@ bin/
 *.a
 
 # Binaries
-/philo
-philo/libft/bin/
 
 # Editor and IDE files
 .vscode/

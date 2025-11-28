@@ -16,6 +16,12 @@ int main(int ac, char *av[]) {
     exit(EXIT_FAILURE);
   }
   simulation = create_simulation(inputs);
+  if (!simulation)
+  {
+    printf("Error, failed to create simulation\n");
+    exit(EXIT_FAILURE);
+  }
   run_simulation(simulation);
+  destroy_simulation(simulation);
   return (EXIT_SUCCESS);
 }

@@ -1,6 +1,7 @@
 
 
 #include "../include/validator.h"
+#include "../include/ft_strtoi.h"
 #include <stdbool.h>
 #include <stdlib.h>
 
@@ -21,14 +22,15 @@ t_inputs get_inputs(int count, char *arguments[]) {
   inputs.time_to_eat = time_to_eat;
   inputs.time_to_sleep = time_to_sleep;
   inputs.is_restricted = false;
+  inputs.number_of_times_each_philosopher_must_eat = 0;
   if (count == 6)
   {
       int number_of_times_each_philosopher_must_eat = ft_strtoi10(arguments[5], &endptr);
       if (*endptr != '\0' || errno == ERANGE) {
         exit(0);
       }
-      inputs.number_of_times_each_philosopher_must_eat=number_of_times_each_philosopher_must_eat;
-      inputs.is_restricted= true;
+      inputs.number_of_times_each_philosopher_must_eat = number_of_times_each_philosopher_must_eat;
+      inputs.is_restricted = true;
   }
   return inputs;
 }

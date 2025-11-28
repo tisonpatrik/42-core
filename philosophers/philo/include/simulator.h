@@ -17,9 +17,12 @@ typedef struct s_fork{
     bool is_used; } t_fork;
 
 typedef struct s_simulation{
-    t_arena *arena;
     int count_of_philosophers;
     int count_of_forks;
+    int time_to_die;
+    int time_to_eat;
+    int time_to_sleep;
+    int number_of_times_each_philosopher_must_eat;
     t_philosopher* philosophers;
     t_fork* forks;
 }        t_simulation;
@@ -27,6 +30,7 @@ typedef struct s_simulation{
 
 t_simulation* create_simulation(t_inputs inputs);
 void run_simulation(t_simulation* simulation);
+void destroy_simulation(t_simulation* simulation);
 
 
 #endif
