@@ -3,9 +3,11 @@
 #ifndef SIMULATOR_H
 #define SIMULATOR_H
 
-#include <bits/pthreadtypes.h>
+#include <pthread.h>
 #include <stdbool.h>
 #include "../include/validator.h"
+#include <stdlib.h>
+#include <sys/time.h>
 
 typedef enum e_philosopher_state{
     IS_THINKING,
@@ -17,8 +19,8 @@ typedef enum e_philosopher_state{
 
 typedef struct s_fork{
     int id;
-    bool is_used; } t_fork;
-
+    pthread_mutex_t mutex;
+} t_fork;
 
 typedef struct s_philosopher{
     int id;
@@ -34,16 +36,22 @@ typedef struct s_philosopher{
     int time_to_sleep;
     int number_of_times_each_philosopher_must_eat;
     long long start_time;
-    pthread_mutex_t print_mutex;
-    pthread_mutex_t death_mutex;
 } t_philosopher;
 
 typedef struct s_simulation{
     int count_of_philosophers;
     int count_of_forks;
+    int time_to_die;
+    int time_to_eat;
+    int time_to_sleep;
+    int number_of_times_each_philosopher_must_eat;
+    long long start_time;
+    bool simulation_running;
     t_philosopher* philosophers;
     t_fork* forks;
-}        t_simulation;
+    pthread_mutex_t print_mutex;
+    pthread_mutex_t death_mutex;
+} t_simulation;
 
 
 t_simulation* create_simulation(t_inputs inputs);
