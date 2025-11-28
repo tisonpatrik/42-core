@@ -1,7 +1,6 @@
 
 #ifndef VALIDATOR_H
 #define VALIDATOR_H
-#include "../libft/include/libft.h"
 #include <errno.h>
 #include <stdbool.h>
 

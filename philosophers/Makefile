@@ -1,13 +1,12 @@
 # Project configuration
 PROJECT		:= philo
 BIN_DIR     := bin
-BIN_NAME    := $(BIN_DIR)/$(PROJECT)
-NAME        := $(PROJECT)
+NAME        := $(BIN_DIR)/$(PROJECT)
 MAKEFLAGS   += --silent
 
 # Compiler settings
 CC          := cc
-CFLAGS      := -Wall -Wextra -Werror -Iphilo/include -Iphilo/libft/include
+CFLAGS      := -Wall -Wextra -Werror -Iphilo/include
 CPPFLAGS    := -MMD -MP
 DEBUG_FLAGS := -g -O0 -DDEBUG
 
@@ -20,8 +19,6 @@ RM_RF       := rm -rf
 
 # Directories
 SRC_DIR     := philo/src
-LIBFT_DIR   := philo/libft
-LIBFT       := $(LIBFT_DIR)/bin/libft.a
 
 
 # --------------------------- Sources ----------------------------------------
@@ -38,18 +35,12 @@ DEPS        := $(OBJS:.o=.d)
 .PHONY: all
 all: $(NAME)
 
-$(NAME): $(BIN_NAME)
-	@cp $(BIN_NAME) $(NAME)
-
-$(BIN_NAME): $(LIBFT) $(OBJS) | $(BIN_DIR)
+$(NAME): $(OBJS) | $(BIN_DIR)
 	@$(MKDIR_P) $(BIN_DIR)
-	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $@
+	@$(CC) $(CFLAGS) $(OBJS) -o $@
 
 $(BIN_DIR):
 	@$(MKDIR_P) $(BIN_DIR)
-
-$(LIBFT):
-	@$(MAKE) -C $(LIBFT_DIR) bonus
 
 # --------------------------- Compile rules ----------------------------------
 
@@ -67,13 +58,12 @@ bin/%.debug.o: philo/src/%.c | $(BIN_DIR)
 .PHONY: debug
 OBJS_DEBUG := $(ALL_SRCS:philo/src/%.c=$(BIN_DIR)/%.debug.o)
 
-debug: $(LIBFT) $(OBJS_DEBUG) | $(BIN_DIR)
+debug: $(OBJS_DEBUG) | $(BIN_DIR)
 	@$(MKDIR_P) $(BIN_DIR)
-	$(CC) $(CFLAGS) $(DEBUG_FLAGS) $(OBJS_DEBUG) $(LIBFT) -o $(BIN_NAME)
-	@cp $(BIN_NAME) $(NAME)
+	$(CC) $(CFLAGS) $(DEBUG_FLAGS) $(OBJS_DEBUG) -o $(NAME)
 
 .PHONY: valgrind
-valgrind:
+valgrind: $(NAME)
 	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME) $(ARGS)
 
 # --------------------------- Cleaning ---------------------------------------
@@ -82,15 +72,12 @@ valgrind:
 clean:
 	@$(RM) $(OBJS) $(OBJS_DEBUG) $(DEPS)
 	@find $(BIN_DIR) -type f \( -name '*.o' -o -name '*.d' \) -delete 2>/dev/null || true
-	@$(MAKE) -C $(LIBFT_DIR) clean
 
 
 .PHONY: fclean
 fclean: clean
-	@test -f $(NAME) && $(RM) $(NAME) || true
-	@$(RM) $(BIN_NAME)
+	@$(RM) $(NAME)
 	@$(RM_RF) $(BIN_DIR)
-	@$(MAKE) -C $(LIBFT_DIR) fclean
 
 .PHONY: re
 re: fclean all

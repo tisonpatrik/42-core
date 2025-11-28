@@ -5,7 +5,6 @@
 
 #include <stdbool.h>
 #include "../include/validator.h"
-#include "../libft/include/libft.h"
 
 typedef struct s_philosopher{
     int id; bool is_eating;
