@@ -1,10 +1,11 @@
 #include "../include/validator.h"
+#include "../include/simulator.h"
 #include <stdio.h>
 #include <stdlib.h>
 
 int main(int ac, char *av[]) {
   t_inputs inputs;
-
+  t_simulation* simulation;
   if (ac < 5) {
     printf("Error, too few arguments\n");
     exit(EXIT_FAILURE);
@@ -14,5 +15,7 @@ int main(int ac, char *av[]) {
     printf("Error, too much arguments\n");
     exit(EXIT_FAILURE);
   }
+  simulation = create_simulation(inputs);
+  run_simulation(simulation);
   return (EXIT_SUCCESS);
 }
