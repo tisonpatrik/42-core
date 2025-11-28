@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-t_inputs get_input(int count, char *arguments[]) {
+t_inputs get_inputs(int count, char *arguments[]) {
   char *endptr;
   endptr = NULL;
   errno = 0;
@@ -20,6 +20,7 @@ t_inputs get_input(int count, char *arguments[]) {
   inputs.time_to_die = time_to_die;
   inputs.time_to_eat = time_to_eat;
   inputs.time_to_sleep = time_to_sleep;
+  inputs.is_restricted = false;
   if (count == 6)
   {
       int number_of_times_each_philosopher_must_eat = ft_strtoi10(arguments[5], &endptr);
@@ -29,6 +30,5 @@ t_inputs get_input(int count, char *arguments[]) {
       inputs.number_of_times_each_philosopher_must_eat=number_of_times_each_philosopher_must_eat;
       inputs.is_restricted= true;
   }
-  inputs.is_restricted = false;
   return inputs;
 }

@@ -1,12 +1,13 @@
 # Project configuration
 PROJECT		:= philo
 BIN_DIR     := bin
+BIN_NAME    := $(BIN_DIR)/$(PROJECT)
 NAME        := $(PROJECT)
 MAKEFLAGS   += --silent
 
 # Compiler settings
 CC          := cc
-CFLAGS      := -Wall -Wextra -Werror -Iinclude -Ilibft/include
+CFLAGS      := -Wall -Wextra -Werror -Iphilo/include -Iphilo/libft/include
 CPPFLAGS    := -MMD -MP
 DEBUG_FLAGS := -g -O0 -DDEBUG
 
@@ -18,29 +19,31 @@ MKDIR_P     := mkdir -p
 RM_RF       := rm -rf
 
 # Directories
-SRC_DIR     := src
-LIBFT_DIR   := lib/libft
+SRC_DIR     := philo/src
+LIBFT_DIR   := philo/libft
 LIBFT       := $(LIBFT_DIR)/bin/libft.a
 
 
 # --------------------------- Sources ----------------------------------------
 
 # Source files organization
-MAIN_SRCS   := src/main.c
-
-ALL_SRCS    := $
-OBJS        := $(ALL_SRCS:src/%.c=bin/%.o)
+ALL_SRCS    := philo/src/main.c \
+               philo/src/simulator.c \
+               philo/src/simulator_arena.c \
+               philo/src/validator.c
+OBJS        := $(ALL_SRCS:philo/src/%.c=bin/%.o)
 DEPS        := $(OBJS:.o=.d)
 
 # --------------------------- Targets ----------------------------------------
-.PHONY all
+.PHONY: all
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(OBJS) | $(BIN_DIR)
-	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $@
+$(NAME): $(BIN_NAME)
+	@cp $(BIN_NAME) $(NAME)
 
-$(CHECKER): $(LIBFT) $(OBJS_BONUS) $(OBJS_CHECKER_DEPS) | $(BIN_DIR)
-	@$(CC) $(CFLAGS) $(OBJS_BONUS) $(OBJS_CHECKER_DEPS) $(LIBFT) -o $@
+$(BIN_NAME): $(LIBFT) $(OBJS) | $(BIN_DIR)
+	@$(MKDIR_P) $(BIN_DIR)
+	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $@
 
 $(BIN_DIR):
 	@$(MKDIR_P) $(BIN_DIR)
@@ -50,47 +53,44 @@ $(LIBFT):
 
 # --------------------------- Compile rules ----------------------------------
 
-bin/%.o: src/%.c | $(BIN_DIR)
+bin/%.o: philo/src/%.c | $(BIN_DIR)
 	@$(MKDIR_P) $(dir $@)
 	@$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
-bin/checker_%.o: checker/%.c | $(BIN_DIR)
-	@$(MKDIR_P) $(dir $@)
-	@$(CC) $(CFLAGS) -Wno-sign-compare $(CPPFLAGS) -c $< -o $@
-
-bin/%.debug.o: src/%.c | $(BIN_DIR)
+bin/%.debug.o: philo/src/%.c | $(BIN_DIR)
 	@$(MKDIR_P) $(dir $@)
 	$(CC) $(CFLAGS) $(DEBUG_FLAGS) $(CPPFLAGS) -c $< -o $@
 
 -include $(DEPS)
 
 # --------------------------- Convenience ------------------------------------
-.PHONY bonus
-bonus: $(NAME) $(CHECKER)
-
-OBJS_DEBUG := $(SRCS:src/%.c=$(BIN_DIR)/%.debug.o)
+.PHONY: debug
+OBJS_DEBUG := $(ALL_SRCS:philo/src/%.c=$(BIN_DIR)/%.debug.o)
 
 debug: $(LIBFT) $(OBJS_DEBUG) | $(BIN_DIR)
-	$(CC) $(CFLAGS) $(DEBUG_FLAGS) $(OBJS_DEBUG) $(LIBFT) -o $(NAME)
+	@$(MKDIR_P) $(BIN_DIR)
+	$(CC) $(CFLAGS) $(DEBUG_FLAGS) $(OBJS_DEBUG) $(LIBFT) -o $(BIN_NAME)
+	@cp $(BIN_NAME) $(NAME)
 
-.PHONY valgrind
+.PHONY: valgrind
 valgrind:
-	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME) 77 25 55 16 52 24 28 83 4 71 85 98 89 99 30 68 92 59 6 17 91 34 86 47 8 3 57 39 65 44 69 23 80 50 60 56 46 27 21 48 54 63 42 20 73 35 97 93 11 10 22 18 87 2 96 15 72 45 29 38 49 67 79 41 94 76 36 19 5 33 12 14 40 88 78 1 84 90 58 32 61 70 43 0 82 95 9 26 75 13 53 31 37 64 62 66 74 81 7 51
+	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME) $(ARGS)
 
 # --------------------------- Cleaning ---------------------------------------
 
-.PHONY clean
+.PHONY: clean
 clean:
-	@$(RM) $(OBJS) $(OBJS_BONUS) $(OBJS_CHECKER_DEPS) $(OBJS_DEBUG) $(DEPS)
+	@$(RM) $(OBJS) $(OBJS_DEBUG) $(DEPS)
 	@find $(BIN_DIR) -type f \( -name '*.o' -o -name '*.d' \) -delete 2>/dev/null || true
 	@$(MAKE) -C $(LIBFT_DIR) clean
 
 
-.PHONY fclean
+.PHONY: fclean
 fclean: clean
-	@$(RM) $(NAME) $(CHECKER)
+	@test -f $(NAME) && $(RM) $(NAME) || true
+	@$(RM) $(BIN_NAME)
 	@$(RM_RF) $(BIN_DIR)
 	@$(MAKE) -C $(LIBFT_DIR) fclean
 
-.PHONY re
+.PHONY: re
 re: fclean all

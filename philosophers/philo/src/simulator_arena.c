@@ -2,18 +2,35 @@
 #include "../include/simulator.h"
 #include <stdlib.h>
 
-static int get_arena_size(int count_of_philosophers)
+static size_t get_arena_size(int count_of_philosophers)
 {
     size_t size;
-    size= sizeof(t_simulation);
-    size += sizeof(t_philosopher) * count_of_philosophers;
+    size = sizeof(t_philosopher) * count_of_philosophers;
     size += sizeof(t_fork) * count_of_philosophers;
     return size;
 }
 
 static void setup_arena_memory(t_simulation* simulation, int count_of_philosophers)
 {
+    int i;
 
+    simulation->philosophers = ft_arena_alloc(simulation->arena, sizeof(t_philosopher) * count_of_philosophers);
+    if (!simulation->philosophers)
+        return;
+    simulation->forks = ft_arena_alloc(simulation->arena, sizeof(t_fork) * count_of_philosophers);
+    if (!simulation->forks)
+        return;
+    i = 0;
+    while (i < count_of_philosophers)
+    {
+        simulation->philosophers[i].id = i + 1;
+        simulation->philosophers[i].is_eating = false;
+        simulation->philosophers[i].is_sleeping = false;
+        simulation->philosophers[i].is_thinking = false;
+        simulation->forks[i].id = i + 1;
+        simulation->forks[i].is_used = false;
+        i++;
+    }
 }
 
 t_simulation *create_simulation(t_inputs inputs) {

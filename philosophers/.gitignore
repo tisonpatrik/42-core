@@ -1,0 +1,26 @@
+# Build artifacts
+bin/
+*.o
+*.d
+*.a
+
+# Binaries
+/philo
+philo/libft/bin/
+
+# Editor and IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Debug files
+*.dSYM/
+vgcore.*
+
+# Temporary files
+*.tmp
+*.log
+
