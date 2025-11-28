@@ -32,10 +32,6 @@ static void init_philosopher(t_philosopher* philo, int id, int count, t_inputs i
     philo->state = IS_THINKING;
     philo->left_fork_id = id - 1;
     philo->right_fork_id = id % count;
-    philo->time_to_die = inputs.time_to_die;
-    philo->time_to_eat = inputs.time_to_eat;
-    philo->time_to_sleep = inputs.time_to_sleep;
-    philo->number_of_times_each_philosopher_must_eat = inputs.number_of_times_each_philosopher_must_eat;
     philo->start_time = start_time;
 }
 

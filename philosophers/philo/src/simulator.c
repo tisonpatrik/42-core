@@ -1,16 +1,72 @@
 
 
 #include "../include/simulator.h"
+#include <bits/pthreadtypes.h>
+#include <pthread.h>
 #include <stdio.h>
+#include <unistd.h>
+
+
+void do_sleeping(int time)
+{
+    int success = usleep(time);
+    if (success!= 0)
+    {
+        exit(0);
+    }
+}
+
+void do_thinking(int time)
+{
+    int success = usleep(time);
+    if (success!= 0)
+    {
+        exit(0);
+    }
+}
+
+void do_eating(int time_for_eating, pthread_mutex_t leva_vidlicka, pthread_mutex_t prava_vidlicka)
+{
+    int success = pthread_mutex_lock(&leva_vidlicka);
+    if (success!= 0)
+    {
+        exit(0);
+    }
+
+    success = pthread_mutex_lock(&prava_vidlicka);
+    if (success!= 0)
+    {
+        exit(0);
+    }
+
+    success = usleep(time_for_eating);
+    if (success!= 0)
+    {
+        exit(0);
+    }
+    success =pthread_mutex_unlock(&leva_vidlicka);
+
+    if (success!= 0)
+    {
+        exit(0);
+    }
+    success = pthread_mutex_unlock(&prava_vidlicka);
+
+    if (success!= 0)
+    {
+        exit(0);
+    }
+
+}
+
+void *do_philosophy(void *arg)
+{
+    t_philosopher *philo = (t_philosopher *)arg;
+    return (NULL);
+}
 
 void run_simulation(t_simulation* simulation)
 {
     printf("simulation created\n");
-    printf("count_of_philosophers: %d\n", simulation->count_of_philosophers);
-    printf("count_of_forks: %d\n", simulation->count_of_forks);
-    printf("time_to_die: %d\n", simulation->time_to_die);
-    printf("time_to_eat: %d\n", simulation->time_to_eat);
-    printf("time_to_sleep: %d\n", simulation->time_to_sleep);
-    printf("number_of_times_each_philosopher_must_eat: %d\n", simulation->number_of_times_each_philosopher_must_eat);
     printf("simulating...\n");
 }

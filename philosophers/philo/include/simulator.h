@@ -15,8 +15,6 @@ typedef enum e_philosopher_state{
     IS_EATING
 }   t_philosopher_state;
 
-
-
 typedef struct s_fork{
     int id;
     pthread_mutex_t mutex;
@@ -31,10 +29,6 @@ typedef struct s_philosopher{
     t_philosopher_state state;
     int left_fork_id;
     int right_fork_id;
-    int time_to_die;
-    int time_to_eat;
-    int time_to_sleep;
-    int number_of_times_each_philosopher_must_eat;
     long long start_time;
 } t_philosopher;
 
