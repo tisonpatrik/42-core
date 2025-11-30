@@ -9,16 +9,12 @@
 #include <stdlib.h>
 #include <sys/time.h>
 
-typedef enum e_philosopher_state{
-    IS_THINKING,
-    IS_SLEEPING,
-    IS_EATING
-}   t_philosopher_state;
-
 typedef struct s_fork{
     int id;
     pthread_mutex_t mutex;
 } t_fork;
+
+typedef struct s_context t_context;
 
 typedef struct s_philosopher{
     int id;
@@ -26,13 +22,13 @@ typedef struct s_philosopher{
     int times_eaten;
     long long last_meal_time;
     long long state_start_time;
-    t_philosopher_state state;
     int left_fork_id;
     int right_fork_id;
     long long start_time;
+    t_context* context;
 } t_philosopher;
 
-typedef struct s_simulation{
+typedef struct s_context{
     int count_of_philosophers;
     int count_of_forks;
     int time_to_die;
@@ -41,16 +37,20 @@ typedef struct s_simulation{
     int number_of_times_each_philosopher_must_eat;
     long long start_time;
     bool simulation_running;
-    t_philosopher* philosophers;
     t_fork* forks;
     pthread_mutex_t print_mutex;
     pthread_mutex_t death_mutex;
-} t_simulation;
+    bool is_dead;
+} t_context;
 
 
-t_simulation* create_simulation(t_inputs inputs);
-void run_simulation(t_simulation* simulation);
-void destroy_simulation(t_simulation* simulation);
+t_context* create_context(t_inputs inputs);
+t_philosopher* create_philosophers(t_context* context, t_inputs inputs);
+void destroy_context(t_context* context);
+void destroy_philosophers(t_philosopher* philosophers, int count);
+void run_simulation(t_context* context, t_philosopher* philosophers);
+
+void *do_philosophy(void *arg);
 
 
 #endif

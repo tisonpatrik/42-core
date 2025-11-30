@@ -16,6 +16,9 @@ t_inputs get_inputs(int count, char *arguments[]) {
   if (*endptr != '\0' || errno == ERANGE) {
     exit(0);
   }
+  if (count_of_philosophers <= 0 || time_to_die <= 0 || time_to_eat <= 0 || time_to_sleep <= 0) {
+    exit(0);
+  }
   t_inputs inputs;
   inputs.count_of_philosophers = count_of_philosophers;
   inputs.time_to_die = time_to_die;
@@ -27,6 +30,9 @@ t_inputs get_inputs(int count, char *arguments[]) {
   {
       int number_of_times_each_philosopher_must_eat = ft_strtoi10(arguments[5], &endptr);
       if (*endptr != '\0' || errno == ERANGE) {
+        exit(0);
+      }
+      if (number_of_times_each_philosopher_must_eat <= 0) {
         exit(0);
       }
       inputs.number_of_times_each_philosopher_must_eat = number_of_times_each_philosopher_must_eat;

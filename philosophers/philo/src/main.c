@@ -5,7 +5,8 @@
 
 int main(int ac, char *av[]) {
   t_inputs inputs;
-  t_simulation* simulation;
+  t_context* context;
+  t_philosopher* philosophers;
   if (ac < 5) {
     printf("Error, too few arguments\n");
     exit(EXIT_FAILURE);
@@ -15,13 +16,21 @@ int main(int ac, char *av[]) {
     printf("Error, too much arguments\n");
     exit(EXIT_FAILURE);
   }
-  simulation = create_simulation(inputs);
-  if (!simulation)
+  context = create_context(inputs);
+  if (!context)
   {
-    printf("Error, failed to create simulation\n");
+    printf("Error, failed to create context\n");
     exit(EXIT_FAILURE);
   }
-  run_simulation(simulation);
-  destroy_simulation(simulation);
+  philosophers = create_philosophers(context, inputs);
+  if (!philosophers)
+  {
+    printf("Error, failed to create philosophers\n");
+    destroy_context(context);
+    exit(EXIT_FAILURE);
+  }
+  run_simulation(context, philosophers);
+  destroy_philosophers(philosophers, inputs.count_of_philosophers);
+  destroy_context(context);
   return (EXIT_SUCCESS);
 }

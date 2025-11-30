@@ -3,7 +3,6 @@
 #include "../include/simulator.h"
 #include <bits/pthreadtypes.h>
 #include <pthread.h>
-#include <stdio.h>
 #include <unistd.h>
 
 
@@ -56,7 +55,6 @@ void do_eating(int time_for_eating, pthread_mutex_t leva_vidlicka, pthread_mutex
     {
         exit(0);
     }
-
 }
 
 void *do_philosophy(void *arg)
@@ -65,8 +63,14 @@ void *do_philosophy(void *arg)
     return (NULL);
 }
 
-void run_simulation(t_simulation* simulation)
+void run_simulation(t_context* context, t_philosopher* philosophers)
 {
-    printf("simulation created\n");
-    printf("simulating...\n");
+	int i;
+
+	i = 0;
+	while (i < context->count_of_philosophers)
+	{
+		pthread_join(philosophers[i].thread, NULL);
+		i++;
+	}
 }
