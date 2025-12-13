@@ -1,36 +1,70 @@
-#include "../include/validator.h"
-#include "../include/simulator.h"
-#include <stdio.h>
-#include <stdlib.h>
 
-int main(int ac, char *av[]) {
-  t_inputs inputs;
-  t_context* context;
-  t_philosopher* philosophers;
-  if (ac < 5) {
-    printf("Error, too few arguments\n");
-    exit(EXIT_FAILURE);
-  } else if ((ac == 5) || (ac == 6)) {
-    inputs = get_inputs(ac, av);
-  } else {
-    printf("Error, too much arguments\n");
-    exit(EXIT_FAILURE);
-  }
-  context = create_context(inputs);
-  if (!context)
-  {
-    printf("Error, failed to create context\n");
-    exit(EXIT_FAILURE);
-  }
-  philosophers = create_philosophers(context, inputs);
-  if (!philosophers)
-  {
-    printf("Error, failed to create philosophers\n");
-    destroy_context(context);
-    exit(EXIT_FAILURE);
-  }
-  run_simulation(context, philosophers);
-  destroy_philosophers(philosophers, inputs.count_of_philosophers);
-  destroy_context(context);
-  return (EXIT_SUCCESS);
+#include "../include/simulator.h"
+
+/* start_simulation:
+*	Launches the simulation by creating a grim reaper thread as well as
+*	one thread for each philosopher.
+*	Returns true if the simulation was successfully started, false if there
+*	was an error.
+*/
+static bool	start_simulation(t_table *table)
+{
+	unsigned int	i;
+
+	table->start_time = get_time_in_ms() + (table->nb_philos * 2 * 10);
+	i = 0;
+	while (i < table->nb_philos)
+	{
+		if (pthread_create(&table->philos[i]->thread, NULL,
+				&philosopher, table->philos[i]) != 0)
+			return (error_failure(STR_ERR_THREAD, NULL, table));
+		i++;
+	}
+	if (table->nb_philos > 1)
+	{
+		if (pthread_create(&table->grim_reaper, NULL,
+				&grim_reaper, table) != 0)
+			return (error_failure(STR_ERR_THREAD, NULL, table));
+	}
+	return (true);
+}
+
+/* stop_simulation:
+*	Waits for all threads to be joined then destroys mutexes and frees
+*	allocated memory.
+*/
+static void	stop_simulation(t_table	*table)
+{
+	unsigned int	i;
+
+	i = 0;
+	while (i < table->nb_philos)
+	{
+		pthread_join(table->philos[i]->thread, NULL);
+		i++;
+	}
+	if (table->nb_philos > 1)
+		pthread_join(table->grim_reaper, NULL);
+	if (DEBUG_FORMATTING == true && table->must_eat_count != -1)
+		write_outcome(table);
+	destroy_mutexes(table);
+	free_table(table);
+}
+
+int	main(int ac, char **av)
+{
+	t_table	*table;
+
+	table = NULL;
+	if (ac - 1 < 4 || ac - 1 > 5)
+		return (msg(STR_USAGE, NULL, EXIT_FAILURE));
+	if (!is_valid_input(ac, av))
+		return (EXIT_FAILURE);
+	table = init_table(ac, av, 1);
+	if (!table)
+		return (EXIT_FAILURE);
+	if (!start_simulation(table))
+		return (EXIT_FAILURE);
+	stop_simulation(table);
+	return (EXIT_SUCCESS);
 }
