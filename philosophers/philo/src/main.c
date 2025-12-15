@@ -1,20 +1,47 @@
 
 #include "../include/simulator.h"
 
+static t_simulation	*initialize_simulation(int ac, char **av)
+{
+	t_parsed	parsed;
+	t_result	result;
+
+	parsed = inputs_validator(ac, av);
+	if (parsed.error)
+	{
+		printf("Error: %s\n", parsed.error);
+		return (NULL);
+	}
+	result = create_simulation(parsed.inputs);
+	if (result.error)
+	{
+		printf("Error: %s\n", result.error);
+		return (NULL);
+	}
+	return (result.simulation);
+}
+
+static void	run_simulation(t_simulation *simulation)
+{
+	char	*error;
+
+	error = start_simulation(simulation);
+	if (error)
+	{
+		printf("Error: %s\n", error);
+		destroy_simulation(simulation);
+		return ;
+	}
+	stop_simulation(simulation);
+}
+
 int	main(int ac, char **av)
 {
-	t_table	*table;
+	t_simulation	*simulation;
 
-	table = NULL;
-	if (ac - 1 < 4 || ac - 1 > 5)
-		return (msg(NULL, NULL, EXIT_FAILURE));
-	if (!is_valid_input(ac, av))
+	simulation = initialize_simulation(ac, av);
+	if (!simulation)
 		return (EXIT_FAILURE);
-	table = init_table(ac, av, 1);
-	if (!table)
-		return (EXIT_FAILURE);
-	if (!start_simulation(table))
-		return (EXIT_FAILURE);
-	stop_simulation(table);
+	run_simulation(simulation);
 	return (EXIT_SUCCESS);
 }

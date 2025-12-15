@@ -11,15 +11,15 @@ static void	print_status_debug(t_philosopher *philo,
 {
 	if (status == GOT_FORK_1)
 		printf("[%10ld]\t%03d\t%s: fork [%d]\n",
-			get_time_in_ms() - philo->table->start_time,
+			get_time_in_ms() - philo->simulation->start_time,
 			philo->id + 1, str, philo->left_fork);
 	else if (status == GOT_FORK_2)
 		printf("[%10ld]\t%03d\t%s: fork [%d]\n",
-			get_time_in_ms() - philo->table->start_time,
+			get_time_in_ms() - philo->simulation->start_time,
 			philo->id + 1, str, philo->right_fork);
 	else
 		printf("[%10ld]\t%03d\t%s\n",
-			get_time_in_ms() - philo->table->start_time,
+			get_time_in_ms() - philo->simulation->start_time,
 			philo->id + 1, str);
 }
 
@@ -50,7 +50,7 @@ static void	write_status_debug(t_philosopher *philo, t_status status)
 */
 static void	print_status(t_philosopher *philo, char *str)
 {
-	printf("%ld %d %s\n", get_time_in_ms() - philo->table->start_time,
+	printf("%ld %d %s\n", get_time_in_ms() - philo->simulation->start_time,
 		philo->id + 1, str);
 }
 
@@ -66,16 +66,16 @@ static void	print_status(t_philosopher *philo, char *str)
 */
 void	write_status(t_philosopher *philo, bool reaper_report, t_status status)
 {
-	pthread_mutex_lock(&philo->table->write_lock);
-	if (has_simulation_stopped(philo->table) == true && reaper_report == false)
+	pthread_mutex_lock(&philo->simulation->write_lock);
+	if (has_simulation_stopped(philo->simulation) == true && reaper_report == false)
 	{
-		pthread_mutex_unlock(&philo->table->write_lock);
+		pthread_mutex_unlock(&philo->simulation->write_lock);
 		return ;
 	}
 	if (DEBUG_FORMATTING == true)
 	{
 		write_status_debug(philo, status);
-		pthread_mutex_unlock(&philo->table->write_lock);
+		pthread_mutex_unlock(&philo->simulation->write_lock);
 		return ;
 	}
 	if (status == DIED)
@@ -88,29 +88,29 @@ void	write_status(t_philosopher *philo, bool reaper_report, t_status status)
 		print_status(philo, "is thinking");
 	else if (status == GOT_FORK_1 || status == GOT_FORK_2)
 		print_status(philo, "has taken a fork");
-	pthread_mutex_unlock(&philo->table->write_lock);
+	pthread_mutex_unlock(&philo->simulation->write_lock);
 }
 
 /* write_outcome:
 *	Prints the outcome of the simulation if a number of times to
 *	eat was specified. Only used for debug purposes.
 */
-void	write_outcome(t_table *table)
+void	write_outcome(t_simulation *simulation)
 {
 	unsigned int	i;
 	unsigned int	full_count;
 
 	full_count = 0;
 	i = 0;
-	while (i < table->nb_philos)
+	while (i < simulation->nb_philos)
 	{
-		if (table->philosophers[i]->times_ate >= (unsigned int)table->must_eat_count)
+		if (simulation->philosophers[i]->times_ate >= (unsigned int)simulation->must_eat_count)
 			full_count++;
 		i++;
 	}
-	pthread_mutex_lock(&table->write_lock);
+	pthread_mutex_lock(&simulation->write_lock);
 	printf("%d/%d philosophers had at least %d meals.\n",
-		full_count, table->nb_philos, table->must_eat_count);
-	pthread_mutex_unlock(&table->write_lock);
+		full_count, simulation->nb_philos, simulation->must_eat_count);
+	pthread_mutex_unlock(&simulation->write_lock);
 	return ;
 }

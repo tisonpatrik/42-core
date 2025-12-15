@@ -1,4 +1,3 @@
-
 #include "../include/simulator.h"
 
 /* get_time_in_ms:
@@ -18,14 +17,14 @@ time_t	get_time_in_ms(void)
 *	Periodically checks to see if the simulation has ended during the sleep
 *	time and cuts the sleep short if it has.
 */
-void	philo_sleep(t_table *table, time_t sleep_time)
+void	philo_sleep(t_simulation *simulation, time_t sleep_time)
 {
 	time_t	wake_up;
 
 	wake_up = get_time_in_ms() + sleep_time;
 	while (get_time_in_ms() < wake_up)
 	{
-		if (has_simulation_stopped(table))
+		if (has_simulation_stopped(simulation))
 			break ;
 		usleep(100);
 	}

@@ -1,42 +1,40 @@
-
 #include "../include/simulator.h"
 
-bool	start_simulation(t_table *table)
+char	*start_simulation(t_simulation *simulation)
 {
 	unsigned int	i;
 
-	table->start_time = get_time_in_ms() + (table->nb_philos * 2 * 10);
+	simulation->start_time = get_time_in_ms() + (simulation->nb_philos * 2 * 10);
 	i = 0;
-	while (i < table->nb_philos)
+	while (i < simulation->nb_philos)
 	{
-		if (pthread_create(&table->philosophers[i]->thread, NULL,
-				&philosopher, table->philosophers[i]) != 0)
-			return (error_failure(STR_ERR_THREAD, NULL, table));
+		if (pthread_create(&simulation->philosophers[i]->thread, NULL,
+				&philosopher, simulation->philosophers[i]) != 0)
+			return ("Thread creation failed");
 		i++;
 	}
-	if (table->nb_philos > 1)
+	if (simulation->nb_philos > 1)
 	{
-		if (pthread_create(&table->grim_reaper, NULL,
-				&grim_reaper, table) != 0)
-			return (error_failure(STR_ERR_THREAD, NULL, table));
+		if (pthread_create(&simulation->grim_reaper, NULL,
+				&grim_reaper, simulation) != 0)
+			return ("Thread creation failed");
 	}
-	return (true);
+	return (NULL);
 }
 
-void	stop_simulation(t_table	*table)
+void	stop_simulation(t_simulation	*simulation)
 {
 	unsigned int	i;
 
 	i = 0;
-	while (i < table->nb_philos)
+	while (i < simulation->nb_philos)
 	{
-		pthread_join(table->philosophers[i]->thread, NULL);
+		pthread_join(simulation->philosophers[i]->thread, NULL);
 		i++;
 	}
-	if (table->nb_philos > 1)
-		pthread_join(table->grim_reaper, NULL);
-	if (DEBUG_FORMATTING == true && table->must_eat_count != -1)
-		write_outcome(table);
-	destroy_mutexes(table);
-	free_table(table);
+	if (simulation->nb_philos > 1)
+		pthread_join(simulation->grim_reaper, NULL);
+	if (DEBUG_FORMATTING == true && simulation->must_eat_count != -1)
+		write_outcome(simulation);
+	destroy_simulation(simulation);
 }

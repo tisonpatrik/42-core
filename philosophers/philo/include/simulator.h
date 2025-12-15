@@ -32,7 +32,22 @@ there must be between 1 and %s philosophers.\n"
 
 typedef struct s_philo	t_philosopher;
 
-typedef struct s_table
+typedef struct s_inputs
+{
+	int				nb_philos;
+	time_t			time_to_die;
+	time_t			time_to_eat;
+	time_t			time_to_sleep;
+	int				must_eat_count;
+}	t_inputs;
+
+typedef struct s_parsed
+{
+	t_inputs	inputs;
+	char		*error;
+}	t_parsed;
+
+typedef struct s_simulation
 {
 	time_t			start_time;
 	unsigned int	nb_philos;
@@ -46,18 +61,25 @@ typedef struct s_table
 	pthread_mutex_t	write_lock;
 	pthread_mutex_t	*fork_locks;
 	t_philosopher			**philosophers;
-}	t_table;
+}	t_simulation;
+
+typedef struct s_result
+{
+	t_simulation	*simulation;
+	char			*error;
+}	t_result;
 
 typedef struct s_philo
 {
 	pthread_t			thread;
 	unsigned int		id;
 	unsigned int		times_ate;
+
 	unsigned int        left_fork;
 	unsigned int        right_fork;
 	pthread_mutex_t		meal_time_lock;
 	time_t				last_meal;
-	t_table				*table;
+	t_simulation				*simulation;
 }	t_philosopher;
 
 typedef enum e_status
@@ -75,37 +97,38 @@ typedef enum e_status
 ******************************************************************************/
 
 
-bool	start_simulation(t_table *table);
-void	stop_simulation(t_table	*table);
+char	*start_simulation(t_simulation *simulation);
+void	stop_simulation(t_simulation	*table);
 
-//	parsing.c
+//	validator.c
+t_parsed		inputs_validator(int ac, char **av);
 bool			is_valid_input(int ac, char **av);
+
+//	atoi.c
 int				integer_atoi(char *str);
 
-//	init.c
-t_table			*init_table(int ac, char **av, int i);
+//	arena.c
+t_result				create_simulation(t_inputs inputs);
 
 //	routines.c
 void			*philosopher(void *data);
 
 //	time.c
 time_t			get_time_in_ms(void);
-void			philo_sleep(t_table *table, time_t sleep_time);
+void			philo_sleep(t_simulation *table, time_t sleep_time);
 void			sim_start_delay(time_t start_time);
 
 //	output.c
 void			write_status(t_philosopher *philo, bool reaper, t_status status);
-void			write_outcome(t_table *table);
+void			write_outcome(t_simulation *table);
 int				msg(char *str, char *detail, int exit_no);
 
 //	grim_reaper.c
 void			*grim_reaper(void *data);
-bool			has_simulation_stopped(t_table *table);
+bool			has_simulation_stopped(t_simulation *table);
 
-//	exit.c
-void			*error_null(char *str, char *details, int dummy);
-int				error_failure(char *str, char *details, t_table *table);
-void			*free_table(t_table *table);
-void			destroy_mutexes(t_table *table);
+//	arena.c
+void			destroy_simulation(t_simulation *simulation);
+
 
 #endif
