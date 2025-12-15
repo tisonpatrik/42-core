@@ -12,12 +12,17 @@ static pthread_mutex_t	*init_forks(t_table *table)
 
 	forks = malloc(sizeof(pthread_mutex_t) * table->nb_philos);
 	if (!forks)
-		return (error_null(STR_ERR_MALLOC, NULL, 0));
+		return (NULL);
 	i = 0;
 	while (i < table->nb_philos)
 	{
 		if (pthread_mutex_init(&forks[i], 0) != 0)
-			return (error_null(STR_ERR_MUTEX, NULL, 0));
+		{
+			while (i-- > 0)
+				pthread_mutex_destroy(&forks[i]);
+			free(forks);
+			return (NULL);
+		}
 		i++;
 	}
 	return (forks);
@@ -44,14 +49,14 @@ static pthread_mutex_t	*init_forks(t_table *table)
 *	Fork 2 is free for philo #3 to take, so he eats. When he is done philo #1 can
 *	take fork 0 and eat. When he is done, philo #2 can finally get fork 1 and eat.
 */
-static void	assign_forks(t_philo *philo)
+static void	assign_forks(t_philosopher *philo)
 {
-	philo->fork[0] = philo->id;
-	philo->fork[1] = (philo->id + 1) % philo->table->nb_philos;
+	philo->left_fork = philo->id;
+	philo->right_fork = (philo->id + 1) % philo->table->nb_philos;
 	if (philo->id % 2)
 	{
-		philo->fork[0] = (philo->id + 1) % philo->table->nb_philos;
-		philo->fork[1] = philo->id;
+		philo->left_fork = (philo->id + 1) % philo->table->nb_philos;
+		philo->right_fork = philo->id;
 	}
 }
 
@@ -60,29 +65,43 @@ static void	assign_forks(t_philo *philo)
 *	Returns a pointer to the array of philosophers or NULL if
 *	initialization failed.
 */
-static t_philo	**init_philosophers(t_table *table)
+static t_philosopher	**init_philosophers(t_table *table)
 {
-	t_philo			**philos;
+	t_philosopher			**philosophers;
 	unsigned int	i;
 
-	philos = malloc(sizeof(t_philo) * table->nb_philos);
-	if (!philos)
-		return (error_null(STR_ERR_MALLOC, NULL, 0));
+	philosophers = malloc(sizeof(t_philosopher) * table->nb_philos);
+	if (!philosophers)
+		return (NULL);
 	i = 0;
 	while (i < table->nb_philos)
 	{
-		philos[i] = malloc(sizeof(t_philo) * 1);
-		if (!philos[i])
-			return (error_null(STR_ERR_MALLOC, NULL, 0));
-		if (pthread_mutex_init(&philos[i]->meal_time_lock, 0) != 0)
-			return (error_null(STR_ERR_MUTEX, NULL, 0));
-		philos[i]->table = table;
-		philos[i]->id = i;
-		philos[i]->times_ate = 0;
-		assign_forks(philos[i]);
+		philosophers[i] = malloc(sizeof(t_philosopher) * 1);
+		if (!philosophers[i])
+		{
+			while (i-- > 0)
+				free(philosophers[i]);
+			free(philosophers);
+			return (NULL);
+		}
+		if (pthread_mutex_init(&philosophers[i]->meal_time_lock, 0) != 0)
+		{
+			free(philosophers[i]);
+			while (i-- > 0)
+			{
+				pthread_mutex_destroy(&philosophers[i]->meal_time_lock);
+				free(philosophers[i]);
+			}
+			free(philosophers);
+			return (NULL);
+		}
+		philosophers[i]->table = table;
+		philosophers[i]->id = i;
+		philosophers[i]->times_ate = 0;
+		assign_forks(philosophers[i]);
 		i++;
 	}
-	return (philos);
+	return (philosophers);
 }
 
 /* init_global_mutexes:
@@ -115,7 +134,7 @@ t_table	*init_table(int ac, char **av, int i)
 
 	table = malloc(sizeof(t_table) * 1);
 	if (!table)
-		return (error_null(STR_ERR_MALLOC, NULL, 0));
+		return (NULL);
 	table->nb_philos = integer_atoi(av[i++]);
 	table->time_to_die = integer_atoi(av[i++]);
 	table->time_to_eat = integer_atoi(av[i++]);
@@ -123,8 +142,8 @@ t_table	*init_table(int ac, char **av, int i)
 	table->must_eat_count = -1;
 	if (ac - 1 == 5)
 		table->must_eat_count = integer_atoi(av[i]);
-	table->philos = init_philosophers(table);
-	if (!table->philos)
+	table->philosophers = init_philosophers(table);
+	if (!table->philosophers)
 		return (NULL);
 	if (!init_global_mutexes(table))
 		return (NULL);

@@ -6,41 +6,41 @@
 *	statuses, extra information is displayed to show which fork
 *	the philosopher has taken.
 */
-static void	print_status_debug(t_philo *philo, char *color,
+static void	print_status_debug(t_philosopher *philo,
 								char *str, t_status status)
 {
 	if (status == GOT_FORK_1)
-		printf("[%10ld]\t%s%03d\t%s\e[0m: fork [%d]\n",
+		printf("[%10ld]\t%03d\t%s: fork [%d]\n",
 			get_time_in_ms() - philo->table->start_time,
-			color, philo->id + 1, str, philo->fork[0]);
+			philo->id + 1, str, philo->left_fork);
 	else if (status == GOT_FORK_2)
-		printf("[%10ld]\t%s%03d\t%s\e[0m: fork [%d]\n",
+		printf("[%10ld]\t%03d\t%s: fork [%d]\n",
 			get_time_in_ms() - philo->table->start_time,
-			color, philo->id + 1, str, philo->fork[1]);
+			philo->id + 1, str, philo->right_fork);
 	else
-		printf("[%10ld]\t%s%03d\t%s\e[0m\n",
+		printf("[%10ld]\t%03d\t%s\n",
 			get_time_in_ms() - philo->table->start_time,
-			color, philo->id + 1, str);
+			philo->id + 1, str);
 }
 
 /* write_status_debug:
 *	Redirects the status writing for debug mode. For this option,
 *	the DEBUG_FORMATTING option must be set to 1 in philo.h.
 */
-static void	write_status_debug(t_philo *philo, t_status status)
+static void	write_status_debug(t_philosopher *philo, t_status status)
 {
 	if (status == DIED)
-		print_status_debug(philo, RED, "died", status);
+		print_status_debug(philo, "died", status);
 	else if (status == EATING)
-		print_status_debug(philo, GREEN, "is eating", status);
+		print_status_debug(philo,  "is eating", status);
 	else if (status == SLEEPING)
-		print_status_debug(philo, CYAN, "is sleeping", status);
+		print_status_debug(philo,  "is sleeping", status);
 	else if (status == THINKING)
-		print_status_debug(philo, CYAN, "is thinking", status);
+		print_status_debug(philo, "is thinking", status);
 	else if (status == GOT_FORK_1)
-		print_status_debug(philo, PURPLE, "has taken a fork", status);
+		print_status_debug(philo, "has taken a fork", status);
 	else if (status == GOT_FORK_2)
-		print_status_debug(philo, PURPLE, "has taken a fork", status);
+		print_status_debug(philo, "has taken a fork", status);
 }
 
 /* print_status:
@@ -48,7 +48,7 @@ static void	write_status_debug(t_philo *philo, t_status status)
 *	subject:
 *		timestamp_in_ms X status
 */
-static void	print_status(t_philo *philo, char *str)
+static void	print_status(t_philosopher *philo, char *str)
 {
 	printf("%ld %d %s\n", get_time_in_ms() - philo->table->start_time,
 		philo->id + 1, str);
@@ -64,7 +64,7 @@ static void	print_status(t_philo *philo, char *str)
 *	Otherwise the output will be the regular format required by the project
 *	subject.
 */
-void	write_status(t_philo *philo, bool reaper_report, t_status status)
+void	write_status(t_philosopher *philo, bool reaper_report, t_status status)
 {
 	pthread_mutex_lock(&philo->table->write_lock);
 	if (has_simulation_stopped(philo->table) == true && reaper_report == false)
@@ -104,7 +104,7 @@ void	write_outcome(t_table *table)
 	i = 0;
 	while (i < table->nb_philos)
 	{
-		if (table->philos[i]->times_ate >= (unsigned int)table->must_eat_count)
+		if (table->philosophers[i]->times_ate >= (unsigned int)table->must_eat_count)
 			full_count++;
 		i++;
 	}

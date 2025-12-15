@@ -12,17 +12,21 @@ void	*free_table(t_table *table)
 	if (!table)
 		return (NULL);
 	if (table->fork_locks != NULL)
+	{
 		free(table->fork_locks);
-	if (table->philos != NULL)
+		table->fork_locks = NULL;
+	}
+	if (table->philosophers != NULL)
 	{
 		i = 0;
 		while (i < table->nb_philos)
 		{
-			if (table->philos[i] != NULL)
-				free(table->philos[i]);
+			if (table->philosophers[i] != NULL)
+				free(table->philosophers[i]);
 			i++;
 		}
-		free(table->philos);
+		free(table->philosophers);
+		table->philosophers = NULL;
 	}
 	free(table);
 	return (NULL);
@@ -40,7 +44,7 @@ void	destroy_mutexes(t_table *table)
 	while (i < table->nb_philos)
 	{
 		pthread_mutex_destroy(&table->fork_locks[i]);
-		pthread_mutex_destroy(&table->philos[i]->meal_time_lock);
+		pthread_mutex_destroy(&table->philosophers[i]->meal_time_lock);
 		i++;
 	}
 	pthread_mutex_destroy(&table->write_lock);
@@ -54,9 +58,9 @@ void	destroy_mutexes(t_table *table)
 int	msg(char *str, char *detail, int exit_no)
 {
 	if (!detail)
-		printf(str, STR_PROG_NAME);
+		printf("error: %s",str);
 	else
-		printf(str, STR_PROG_NAME, detail);
+		printf(str, detail);
 	return (exit_no);
 }
 
@@ -65,21 +69,16 @@ int	msg(char *str, char *detail, int exit_no)
 *	returns 0 to indicate failure.
 *	Used for error management during initialization.
 */
+void	*error_null(char *str, char *details, int dummy)
+{
+	(void)dummy;
+	msg(str, details, 0);
+	return (NULL);
+}
+
 int	error_failure(char *str, char *details, t_table *table)
 {
 	if (table != NULL)
 		free_table(table);
 	return (msg(str, details, 0));
-}
-
-/* error_null:
-*	Frees any allocated memory, prints an error message and returns a NULL pointer.
-*	Used for error management during initialization.
-*/
-void	*error_null(char *str, char *details, t_table *table)
-{
-	if (table != NULL)
-		free_table(table);
-	msg(str, details, EXIT_FAILURE);
-	return (NULL);
 }

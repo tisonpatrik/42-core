@@ -7,11 +7,11 @@
 *	amount of time. The time of the last meal is recorded at the beginning of
 *	the meal, not at the end, as per the subject's requirements.
 */
-static void	eat_sleep_routine(t_philo *philo)
+static void	eat_sleep_routine(t_philosopher *philo)
 {
-	pthread_mutex_lock(&philo->table->fork_locks[philo->fork[0]]);
+	pthread_mutex_lock(&philo->table->fork_locks[philo->left_fork]);
 	write_status(philo, false, GOT_FORK_1);
-	pthread_mutex_lock(&philo->table->fork_locks[philo->fork[1]]);
+	pthread_mutex_lock(&philo->table->fork_locks[philo->right_fork]);
 	write_status(philo, false, GOT_FORK_2);
 	write_status(philo, false, EATING);
 	pthread_mutex_lock(&philo->meal_time_lock);
@@ -25,8 +25,8 @@ static void	eat_sleep_routine(t_philo *philo)
 		pthread_mutex_unlock(&philo->meal_time_lock);
 	}
 	write_status(philo, false, SLEEPING);
-	pthread_mutex_unlock(&philo->table->fork_locks[philo->fork[1]]);
-	pthread_mutex_unlock(&philo->table->fork_locks[philo->fork[0]]);
+	pthread_mutex_unlock(&philo->table->fork_locks[philo->right_fork]);
+	pthread_mutex_unlock(&philo->table->fork_locks[philo->left_fork]);
 	philo_sleep(philo->table, philo->table->time_to_sleep);
 }
 
@@ -39,7 +39,7 @@ static void	eat_sleep_routine(t_philo *philo)
 *	This helps stagger philosopher's eating routines to avoid forks being
 *	needlessly monopolized by one philosopher to the detriment of others.
 */
-static void	think_routine(t_philo *philo, bool silent)
+static void	think_routine(t_philosopher *philo, bool silent)
 {
 	time_t	time_to_think;
 
@@ -66,13 +66,13 @@ static void	think_routine(t_philo *philo, bool silent)
 *	This is a separate routine to make sure that the thread does not get
 *	stuck waiting for the second fork in the eat routine.
 */
-static void	*lone_philo_routine(t_philo *philo)
+static void	*lone_philo_routine(t_philosopher *philo)
 {
-	pthread_mutex_lock(&philo->table->fork_locks[philo->fork[0]]);
+	pthread_mutex_lock(&philo->table->fork_locks[philo->left_fork]);
 	write_status(philo, false, GOT_FORK_1);
 	philo_sleep(philo->table, philo->table->time_to_die);
 	write_status(philo, false, DIED);
-	pthread_mutex_unlock(&philo->table->fork_locks[philo->fork[0]]);
+	pthread_mutex_unlock(&philo->table->fork_locks[philo->left_fork]);
 	return (NULL);
 }
 
@@ -85,9 +85,9 @@ static void	*lone_philo_routine(t_philo *philo)
 */
 void	*philosopher(void *data)
 {
-	t_philo	*philo;
+	t_philosopher	*philo;
 
-	philo = (t_philo *)data;
+	philo = (t_philosopher *)data;
 	if (philo->table->must_eat_count == 0)
 		return (NULL);
 	pthread_mutex_lock(&philo->meal_time_lock);

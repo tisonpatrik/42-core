@@ -16,20 +16,6 @@
 # define MAX_PHILOS	250
 # define STR_MAX_PHILOS "250"
 
-# ifndef DEBUG_FORMATTING
-#  define DEBUG_FORMATTING 0
-# endif
-
-# define NC		"\e[0m"
-# define RED	"\e[31m"
-# define GREEN	"\e[32m"
-# define PURPLE	"\e[35m"
-# define CYAN	"\e[36m"
-
-# define STR_PROG_NAME	"philo:"
-# define STR_USAGE	"%s usage: ./philo <number_of_philosophers> \
-<time_to_die> <time_to_eat> <time_to_sleep> \
-[number_of_times_each_philosopher_must_eat]\n"
 # define STR_ERR_INPUT_DIGIT	"%s invalid input: %s: \
 not a valid unsigned integer between 0 and 2147483647.\n"
 # define STR_ERR_INPUT_POFLOW	"%s invalid input: \
@@ -38,11 +24,13 @@ there must be between 1 and %s philosophers.\n"
 # define STR_ERR_MALLOC	"%s error: Could not allocate memory.\n"
 # define STR_ERR_MUTEX	"%s error: Could not create mutex.\n"
 
+# define DEBUG_FORMATTING 0
+
 /******************************************************************************
 *                                 Structures                                  *
 ******************************************************************************/
 
-typedef struct s_philo	t_philo;
+typedef struct s_philo	t_philosopher;
 
 typedef struct s_table
 {
@@ -57,7 +45,7 @@ typedef struct s_table
 	pthread_mutex_t	sim_stop_lock;
 	pthread_mutex_t	write_lock;
 	pthread_mutex_t	*fork_locks;
-	t_philo			**philos;
+	t_philosopher			**philosophers;
 }	t_table;
 
 typedef struct s_philo
@@ -65,11 +53,12 @@ typedef struct s_philo
 	pthread_t			thread;
 	unsigned int		id;
 	unsigned int		times_ate;
-	unsigned int		fork[2];
+	unsigned int        left_fork;
+	unsigned int        right_fork;
 	pthread_mutex_t		meal_time_lock;
 	time_t				last_meal;
 	t_table				*table;
-}	t_philo;
+}	t_philosopher;
 
 typedef enum e_status
 {
@@ -84,6 +73,10 @@ typedef enum e_status
 /******************************************************************************
 *                           Function Prototypes                               *
 ******************************************************************************/
+
+
+bool	start_simulation(t_table *table);
+void	stop_simulation(t_table	*table);
 
 //	parsing.c
 bool			is_valid_input(int ac, char **av);
@@ -101,9 +94,8 @@ void			philo_sleep(t_table *table, time_t sleep_time);
 void			sim_start_delay(time_t start_time);
 
 //	output.c
-void			write_status(t_philo *philo, bool reaper, t_status status);
+void			write_status(t_philosopher *philo, bool reaper, t_status status);
 void			write_outcome(t_table *table);
-void			*error_null(char *str, char *details, t_table *table);
 int				msg(char *str, char *detail, int exit_no);
 
 //	grim_reaper.c
@@ -111,6 +103,7 @@ void			*grim_reaper(void *data);
 bool			has_simulation_stopped(t_table *table);
 
 //	exit.c
+void			*error_null(char *str, char *details, int dummy);
 int				error_failure(char *str, char *details, t_table *table);
 void			*free_table(t_table *table);
 void			destroy_mutexes(t_table *table);

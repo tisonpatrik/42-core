@@ -39,7 +39,7 @@ bool	has_simulation_stopped(t_table *table)
 *	flag and displays the death status.
 *	Returns true if the philosopher has been killed, false if not.
 */
-static bool	kill_philo(t_philo *philo)
+static bool	kill_philo(t_philosopher *philo)
 {
 	time_t	time;
 
@@ -69,14 +69,14 @@ static bool	end_condition_reached(t_table *table)
 	i = 0;
 	while (i < table->nb_philos)
 	{
-		pthread_mutex_lock(&table->philos[i]->meal_time_lock);
-		if (kill_philo(table->philos[i]))
+		pthread_mutex_lock(&table->philosophers[i]->meal_time_lock);
+		if (kill_philo(table->philosophers[i]))
 			return (true);
 		if (table->must_eat_count != -1)
-			if (table->philos[i]->times_ate
+			if (table->philosophers[i]->times_ate
 				< (unsigned int)table->must_eat_count)
 				all_ate_enough = false;
-		pthread_mutex_unlock(&table->philos[i]->meal_time_lock);
+		pthread_mutex_unlock(&table->philosophers[i]->meal_time_lock);
 		i++;
 	}
 	if (table->must_eat_count != -1 && all_ate_enough == true)
