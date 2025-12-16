@@ -1,5 +1,4 @@
-
-#include "../include/simulator.h"
+#include "../include/simulation.h"
 
 static t_simulation	*initialize_simulation(int ac, char **av)
 {

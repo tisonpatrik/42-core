@@ -6,7 +6,7 @@
 # include <limits.h>
 
 # define MAX_PHILOS 250
-# define MIN_TIME_MS 50
+# define MIN_TIME_MS 100
 
 typedef struct s_inputs
 {

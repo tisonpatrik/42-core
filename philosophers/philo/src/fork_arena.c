@@ -1,4 +1,4 @@
-#include "../include/simulator.h"
+#include "../include/simulation.h"
 
 /* init_forks:
 *	Allocates memory and initializes fork mutexes.

@@ -1,4 +1,4 @@
-#include "../include/simulator.h"
+#include "../include/simulation.h"
 
 /* init_global_mutexes:
 *	Initializes mutex locks for writing and the stop simulation flag.

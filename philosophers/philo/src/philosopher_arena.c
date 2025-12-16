@@ -1,4 +1,4 @@
-#include "../include/simulator.h"
+#include "../include/simulation.h"
 
 /* assign_forks:
 *	Assigns two fork ids to each philosopher. Even-numbered philosophers

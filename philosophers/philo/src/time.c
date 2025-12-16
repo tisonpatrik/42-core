@@ -1,4 +1,4 @@
-#include "../include/simulator.h"
+#include "../include/simulation.h"
 
 /* get_time_in_ms:
 *	Gets the current time in miliseconds since the Epoch (1970-01-01 00:00:00).
@@ -10,24 +10,6 @@ time_t	get_time_in_ms(void)
 
 	gettimeofday(&tv, NULL);
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
-}
-
-/* philo_sleep:
-*	Pauses the philosopher thread for a certain amount of time in miliseconds.
-*	Periodically checks to see if the simulation has ended during the sleep
-*	time and cuts the sleep short if it has.
-*/
-void	philo_sleep(t_simulation *simulation, time_t sleep_time)
-{
-	time_t	wake_up;
-
-	wake_up = get_time_in_ms() + sleep_time;
-	while (get_time_in_ms() < wake_up)
-	{
-		if (has_simulation_stopped(simulation))
-			break ;
-		usleep(100);
-	}
 }
 
 /* sim_start_delay:

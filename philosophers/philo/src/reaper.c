@@ -1,4 +1,4 @@
-#include "../include/simulator.h"
+#include "../include/simulation.h"
 
 /* set_sim_stop_flag:
 *	Sets the simulation stop flag to true or false. Only the grim

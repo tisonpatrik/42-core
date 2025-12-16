@@ -1,4 +1,4 @@
-#include "../include/simulator.h"
+#include "../include/simulation.h"
 
 char	*start_simulation(t_simulation *simulation)
 {

@@ -30,7 +30,7 @@ ALL_SRCS    := philo/src/main.c \
                  philo/src/fork_arena.c \
                  philo/src/philosopher_arena.c \
                  philo/src/validation/validator.c \
-                 philo/src/validation/atoi.c \
+                 philo/src/validation/converter.c \
                  philo/src/philosophers.c \
                  philo/src/reaper.c \
                  philo/src/time.c

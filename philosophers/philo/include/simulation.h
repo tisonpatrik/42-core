@@ -65,7 +65,6 @@ void	stop_simulation(t_simulation	*table);
 
 t_result				create_simulation(t_inputs inputs);
 time_t			get_time_in_ms(void);
-void			philo_sleep(t_simulation *table, time_t sleep_time);
 void			sim_start_delay(time_t start_time);
 
 
