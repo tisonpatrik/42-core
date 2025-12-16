@@ -1,5 +1,8 @@
 #include "../include/simulation.h"
 
+#include <stdio.h>
+#include <stdlib.h>
+
 static t_simulation	*initialize_simulation(int ac, char **av)
 {
 	t_parsed	parsed;
