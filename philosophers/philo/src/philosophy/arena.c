@@ -1,11 +1,5 @@
 #include "../../include/philosophy.h"
-#include <stdlib.h>
 
-/*
- * free_philosophers_array:
- * Helper function used for both error handling and final cleanup.
- * Destroys personal mutexes and frees memory for each philosopher up to 'count'.
- */
 static void free_philosophers_array(t_philosopher **philos, unsigned int count)
 {
     unsigned int i;
@@ -28,7 +22,6 @@ static void assign_forks(t_philosopher *philo)
     philo->fork_left = philo->id;
     philo->fork_right = (philo->id + 1) % philo->table->nb_philos;
 
-    // Even/Odd strategie pro prevenci deadlocku
     if (philo->id % 2)
     {
         philo->fork_left = (philo->id + 1) % philo->table->nb_philos;
@@ -40,7 +33,7 @@ static t_philosopher *init_single_philosopher(t_table *table, unsigned int id)
 {
     t_philosopher *philo;
 
-    philo = malloc(sizeof(t_philosopher)); // Opraveno t_philo -> t_philosopher
+    philo = malloc(sizeof(t_philosopher));
     if (!philo)
         return (NULL);
     if (pthread_mutex_init(&philo->meal_time_lock, 0) != 0)
@@ -56,11 +49,6 @@ static t_philosopher *init_single_philosopher(t_table *table, unsigned int id)
     return (philo);
 }
 
-/*
- * init_philosophers:
- * Creates the array of philosopher pointers and initializes each one.
- * If any allocation fails, it cleans up everything created so far.
- */
 t_philosopher **init_philosophers(t_table *table)
 {
     t_philosopher **philos;
@@ -75,7 +63,6 @@ t_philosopher **init_philosophers(t_table *table)
         philos[i] = init_single_philosopher(table, i);
         if (!philos[i])
         {
-            // Cleanup partial allocation
             free_philosophers_array(philos, i);
             return (NULL);
         }
@@ -84,10 +71,7 @@ t_philosopher **init_philosophers(t_table *table)
     return (philos);
 }
 
-/*
- * destroy_philosophers:
- * Public function to clean up all philosophers.
- */
+
 void destroy_philosophers(t_philosopher **philos, unsigned int count)
 {
     if (!philos)

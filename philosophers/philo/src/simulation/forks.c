@@ -1,10 +1,5 @@
-#include <pthread.h>
-#include <stdlib.h>
-/*
- * init_forks:
- * Allocates memory for 'count' mutexes and initializes them.
- * Returns NULL if allocation fails or mutex init fails.
- */
+#include "../../include/simulation.h"
+
 pthread_mutex_t *init_forks(unsigned int count)
 {
     pthread_mutex_t *forks;
@@ -18,7 +13,6 @@ pthread_mutex_t *init_forks(unsigned int count)
     {
         if (pthread_mutex_init(&forks[i], 0) != 0)
         {
-            // Rollback: Destroy successfully initialized mutexes
             while (i-- > 0)
                 pthread_mutex_destroy(&forks[i]);
             free(forks);
@@ -29,10 +23,6 @@ pthread_mutex_t *init_forks(unsigned int count)
     return (forks);
 }
 
-/*
- * destroy_forks:
- * Destroys all mutexes in the array and frees the memory.
- */
 void destroy_forks(pthread_mutex_t *forks, unsigned int count)
 {
     unsigned int i;

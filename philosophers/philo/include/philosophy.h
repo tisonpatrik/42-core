@@ -1,7 +1,12 @@
 #ifndef PHILOSOPHY_H
 #define PHILOSOPHY_H
 
-# include "table.h"
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+
+#include "table.h"
+
 
 typedef struct s_philosopher
 {

@@ -1,15 +1,5 @@
-#include "../../include/simulation.h" // Pro has_simulation_stopped a get_time
-#include <stdio.h>
-#include <unistd.h>
+#include "../../include/simulation.h"
 
-// Externí deklarace (nebo přes simulation.h)
-bool has_simulation_stopped(t_table *table);
-void sim_start_delay(time_t start_time);
-
-/*
- * write_status:
- * Thread-safe printing helper. Checks stop flag inside the lock.
- */
 static void write_status(t_philosopher *philo, char *status)
 {
     pthread_mutex_lock(&philo->table->write_lock);

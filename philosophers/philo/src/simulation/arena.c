@@ -1,18 +1,5 @@
 #include "../../include/simulation.h"
-#include <stdlib.h>
 
-// Forward deklarace (nebo je měj v headeru simulation.h, pokud jsou public)
-// Předpokládáme, že init_forks/destroy_forks jsou viditelné přes linkování
-// a jejich prototypy by měly ideálně být v simulation.h nebo table.h.
-pthread_mutex_t *init_forks(unsigned int count);
-void            destroy_forks(pthread_mutex_t *forks, unsigned int count);
-t_philosopher   **init_philosophers(t_table *table);
-void            destroy_philosophers(t_philosopher **philos, unsigned int count);
-
-/*
- * init_table:
- * Initializes the shared data structure (mutexes, forks, settings).
- */
 static bool init_table(t_table *table, t_inputs inputs)
 {
     table->nb_philos = inputs.nb_philos;

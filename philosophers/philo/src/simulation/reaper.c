@@ -1,11 +1,5 @@
 #include "../../include/simulation.h"
-#include <stdio.h>
-#include <unistd.h>
 
-/*
- * Checks if simulation has stopped.
- * Takes t_table* so it can be used by both Philosophers and Reaper.
- */
 bool has_simulation_stopped(t_table *table)
 {
     bool r;

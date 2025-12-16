@@ -1,5 +1,4 @@
 #include "../../include/simulation.h"
-#include <stdio.h>
 
 char *start_simulation(t_simulation *sim)
 {

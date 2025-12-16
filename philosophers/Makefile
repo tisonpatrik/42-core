@@ -25,15 +25,15 @@ SRC_DIR     := philo/src
 
 # Source files organization
 ALL_SRCS    := philo/src/main.c \
-				philo/src/simulator.c \
-                 philo/src/arena.c \
-                 philo/src/fork_arena.c \
-                 philo/src/philosopher_arena.c \
+				philo/src/philosophy/philosophers.c \
+                 philo/src/philosophy/arena.c \
+                 philo/src/simulation/arena.c \
+                 philo/src/simulation/forks.c \
+                 philo/src/simulation/reaper.c \
+                 philo/src/simulation/simulator.c \
+                 philo/src/simulation/time.c \
                  philo/src/validation/validator.c \
-                 philo/src/validation/converter.c \
-                 philo/src/philosophers.c \
-                 philo/src/reaper.c \
-                 philo/src/time.c
+                 philo/src/validation/converter.c
 OBJS        := $(patsubst philo/src/%.c,bin/%.o,$(ALL_SRCS))
 DEPS        := $(OBJS:.o=.d)
 

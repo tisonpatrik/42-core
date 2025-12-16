@@ -1,6 +1,8 @@
 #ifndef SIMULATION_H
 #define SIMULATION_H
 
+#include <stdlib.h>
+
 # include "table.h"
 # include "philosophy.h"
 # include "validation.h"
@@ -26,5 +28,8 @@ void            destroy_simulation(t_simulation *sim);
 char            *start_simulation(t_simulation *sim);
 void            stop_simulation(t_simulation *sim);
 time_t          get_time_in_ms(void);
-
+bool has_simulation_stopped(t_table *table);
+void sim_start_delay(time_t start_time);
+pthread_mutex_t *init_forks(unsigned int count);
+void            destroy_forks(pthread_mutex_t *forks, unsigned int count);
 #endif
