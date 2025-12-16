@@ -9,22 +9,10 @@
 # include <sys/time.h>
 # include <stdbool.h>
 
+#include "validation.h"
+
 typedef struct s_philo	t_philosopher;
 
-typedef struct s_inputs
-{
-	int				nb_philos;
-	time_t			time_to_die;
-	time_t			time_to_eat;
-	time_t			time_to_sleep;
-	int				must_eat_count;
-}	t_inputs;
-
-typedef struct s_parsed
-{
-	t_inputs	inputs;
-	bool		ok;
-}	t_parsed;
 
 typedef struct s_simulation
 {
@@ -74,8 +62,6 @@ typedef enum e_status
 char	*start_simulation(t_simulation *simulation);
 void	stop_simulation(t_simulation	*table);
 
-t_parsed		inputs_validator(int ac, char **av);
-int				ft_atoi(char *str);
 
 t_result				create_simulation(t_inputs inputs);
 time_t			get_time_in_ms(void);
