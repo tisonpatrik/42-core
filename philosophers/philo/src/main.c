@@ -7,15 +7,15 @@ static t_simulation	*initialize_simulation(int ac, char **av)
 	t_result	result;
 
 	parsed = inputs_validator(ac, av);
-	if (parsed.error)
+	if (!parsed.ok)
 	{
-		printf("Error: %s\n", parsed.error);
+		printf("Error\n");
 		return (NULL);
 	}
 	result = create_simulation(parsed.inputs);
-	if (result.error)
+	if (!result.ok)
 	{
-		printf("Error: %s\n", result.error);
+		printf("Error\n");
 		return (NULL);
 	}
 	return (result.simulation);
@@ -33,6 +33,7 @@ static void	run_simulation(t_simulation *simulation)
 		return ;
 	}
 	stop_simulation(simulation);
+	destroy_simulation(simulation);
 }
 
 int	main(int ac, char **av)

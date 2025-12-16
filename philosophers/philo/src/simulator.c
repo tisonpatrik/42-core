@@ -34,7 +34,15 @@ void	stop_simulation(t_simulation	*simulation)
 	}
 	if (simulation->nb_philos > 1)
 		pthread_join(simulation->grim_reaper, NULL);
-	if (DEBUG_FORMATTING == true && simulation->must_eat_count != -1)
-		write_outcome(simulation);
-	destroy_simulation(simulation);
+	if (simulation->must_eat_count != -1)
+	{
+		unsigned int i, full_count = 0;
+		for (i = 0; i < simulation->nb_philos; i++)
+		{
+			if (simulation->philosophers[i]->times_ate >= (unsigned int)simulation->must_eat_count)
+				full_count++;
+		}
+		printf("%d/%d philosophers had at least %d meals.\n",
+			full_count, simulation->nb_philos, simulation->must_eat_count);
+	}
 }

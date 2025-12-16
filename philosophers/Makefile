@@ -27,7 +27,8 @@ SRC_DIR     := philo/src
 ALL_SRCS    := philo/src/main.c \
 				philo/src/simulator.c \
                 philo/src/arena.c \
-                philo/src/output.c \
+                philo/src/fork_arena.c \
+                philo/src/philosopher_arena.c \
                 philo/src/validator.c \
                 philo/src/atoi.c \
                 philo/src/philosophers.c \

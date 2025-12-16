@@ -5,7 +5,7 @@
 *	Returns the converted number between 0 and INT MAX.
 *	Returns -1 if the converted number exceeds INT MAX.
 */
-int	integer_atoi(char *str)
+int	ft_atoi(char *str)
 {
 	unsigned long long int	nb;
 	int						i;

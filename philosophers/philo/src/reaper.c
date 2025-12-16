@@ -46,7 +46,8 @@ static bool	kill_philo(t_philosopher *philo)
 	if ((time - philo->last_meal) >= philo->simulation->time_to_die)
 	{
 		set_sim_stop_flag(philo->simulation, true);
-		write_status(philo, true, DIED);
+		printf("%ld %d died\n",
+			get_time_in_ms() - philo->simulation->start_time, philo->id + 1);
 		pthread_mutex_unlock(&philo->meal_time_lock);
 		return (true);
 	}
