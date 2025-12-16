@@ -45,6 +45,7 @@ static t_philosopher *init_single_philosopher(t_table *table, unsigned int id)
     philo->table = table;
     philo->id = id;
     philo->times_ate = 0;
+    philo->last_meal = 0;
     assign_forks(philo);
     return (philo);
 }

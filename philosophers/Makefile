@@ -26,14 +26,16 @@ SRC_DIR     := philo/src
 # Source files organization
 ALL_SRCS    := philo/src/main.c \
 				philo/src/philosophy/philosophers.c \
-                 philo/src/philosophy/arena.c \
-                 philo/src/simulation/arena.c \
-                 philo/src/simulation/forks.c \
-                 philo/src/simulation/reaper.c \
-                 philo/src/simulation/simulator.c \
-                 philo/src/simulation/time.c \
-                 philo/src/validation/validator.c \
-                 philo/src/validation/converter.c
+                  philo/src/philosophy/arena.c \
+                  philo/src/philosophy/states.c \
+                  philo/src/philosophy/resources.c \
+                  philo/src/simulation/arena.c \
+                  philo/src/simulation/forks.c \
+                  philo/src/simulation/reaper.c \
+                  philo/src/simulation/simulator.c \
+                  philo/src/simulation/time.c \
+                  philo/src/validation/validator.c \
+                  philo/src/validation/converter.c
 OBJS        := $(patsubst philo/src/%.c,bin/%.o,$(ALL_SRCS))
 DEPS        := $(OBJS:.o=.d)
 
@@ -70,7 +72,7 @@ debug: $(OBJS_DEBUG) | $(BIN_DIR)
 
 .PHONY: valgrind
 valgrind: $(NAME)
-	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME) $(ARGS)
+	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME) 5 800 200 200 5
 
 # --------------------------- Cleaning ---------------------------------------
 

@@ -24,6 +24,15 @@ typedef struct s_philosopher
 }   t_philosopher;
 
 
+void write_status(t_philosopher *philo, char *status);
+void precise_sleep(t_table *table, time_t duration);
+void take_forks(t_philosopher *philo);
+void drop_forks(t_philosopher *philo);
+
+void do_eating(t_philosopher *philo);
+void do_sleeping(t_philosopher *philo);
+void do_thinking(t_philosopher *philo);
+
 t_philosopher **init_philosophers(t_table *table);
 void destroy_philosophers(t_philosopher **philos, unsigned int count);
 void    *do_philosophy(void *data);
