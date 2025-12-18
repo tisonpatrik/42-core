@@ -18,7 +18,7 @@
 # include <sys/time.h>
 
 # define MAX_PHILOS 250
-# define MIN_TIME_MS 100
+# define MIN_TIME_MS 60
 
 typedef struct s_inputs
 {

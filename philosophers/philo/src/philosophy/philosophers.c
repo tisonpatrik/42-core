@@ -34,7 +34,7 @@ static void	desynchronize_philosophers(t_philosopher *philo)
 	if (philo->table->nb_philos % 2 == 0)
 	{
 		if (philo->id % 2)
-			precise_sleep(philo->table, philo->table->time_to_eat / 2);
+			precise_sleep(philo->table, 20);
 	}
 	else
 	{
