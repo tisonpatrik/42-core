@@ -29,6 +29,8 @@ ALL_SRCS    := philo/src/main.c \
                   philo/src/philosophy/arena.c \
                   philo/src/philosophy/states.c \
                   philo/src/philosophy/resources.c \
+                  philo/src/philosophy/mind.c \
+                  philo/src/philosophy/stomach.c \
                   philo/src/simulation/arena.c \
                   philo/src/simulation/forks.c \
                   philo/src/simulation/reaper.c \
