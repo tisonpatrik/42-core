@@ -1,7 +1,16 @@
-#include "../include/simulation.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/18 13:58:00 by ptison            #+#    #+#             */
+/*   Updated: 2025/12/18 13:59:04 by ptison           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
+#include "../include/simulation.h"
 
 static t_simulation	*initialize_simulation(int ac, char **av)
 {
