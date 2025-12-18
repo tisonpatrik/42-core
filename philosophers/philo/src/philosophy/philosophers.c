@@ -48,8 +48,6 @@ void	*do_philosophy(void *data)
 	t_philosopher	*philo;
 
 	philo = (t_philosopher *)data;
-	if (philo->table->must_eat_count == 0)
-		return (NULL);
 	wait_for_simulation_start(philo);
 	if (philo->table->time_to_die == 0)
 		return (NULL);

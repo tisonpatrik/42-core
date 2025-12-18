@@ -19,6 +19,7 @@ static bool	init_table(t_table *table, t_inputs inputs)
 	table->time_to_eat = inputs.time_to_eat;
 	table->time_to_sleep = inputs.time_to_sleep;
 	table->must_eat_count = inputs.must_eat_count;
+	table->have_eat_count = inputs.have_eat_count;
 	table->sim_stop = false;
 	if (pthread_mutex_init(&table->sim_stop_lock, 0) != 0)
 		return (false);

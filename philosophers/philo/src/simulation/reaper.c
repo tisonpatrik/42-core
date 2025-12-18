@@ -79,8 +79,6 @@ void	*grim_reaper(void *data)
 	t_simulation	*sim;
 
 	sim = (t_simulation *)data;
-	if (sim->table.must_eat_count == 0)
-		return (NULL);
 	sim_start_delay(sim->table.start_time);
 	while (true)
 	{
