@@ -25,8 +25,11 @@ pthread_mutex_t	*init_forks(unsigned int count)
 	{
 		if (pthread_mutex_init(&forks[i], 0) != 0)
 		{
-			while (i-- > 0)
+			while (i > 0)
+			{
+				i--;
 				pthread_mutex_destroy(&forks[i]);
+			}
 			free(forks);
 			return (NULL);
 		}
