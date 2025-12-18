@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/simulation.h"
+#include "../../include/philosophy.h"
 
 void	do_sleeping(t_philosopher *philo)
 {
