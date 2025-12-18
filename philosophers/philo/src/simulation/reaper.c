@@ -58,15 +58,15 @@ static bool	end_condition_reached(t_simulation *sim)
 		pthread_mutex_lock(&sim->philos[i]->meal_time_lock);
 		if (kill_philo(sim->philos[i]))
 			return (true);
-		if (sim->table.must_eat_count != -1)
+		if (sim->table.have_eat_count)
 		{
-			if (sim->philos[i]->times_ate < (unsigned int)sim->table.must_eat_count)
+			if (sim->philos[i]->times_ate < sim->table.must_eat_count)
 				all_ate_enough = false;
 		}
 		pthread_mutex_unlock(&sim->philos[i]->meal_time_lock);
 		i++;
 	}
-	if (sim->table.must_eat_count != -1 && all_ate_enough)
+	if (sim->table.have_eat_count && all_ate_enough)
 	{
 		set_sim_stop_flag(&sim->table, true);
 		return (true);

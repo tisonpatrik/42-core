@@ -22,11 +22,12 @@
 
 typedef struct s_inputs
 {
-	int			nb_philos;
+	unsigned int			nb_philos;
 	time_t		time_to_die;
 	time_t		time_to_eat;
 	time_t		time_to_sleep;
-	int			must_eat_count;
+	unsigned int must_eat_count;
+	bool        have_eat_count;
 }				t_inputs;
 
 typedef struct s_parsed

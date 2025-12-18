@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../include/validation.h"
+#include <stdbool.h>
 
 static bool	are_values_valid(t_inputs inp)
 {
@@ -31,9 +32,12 @@ static bool	parse_arguments(int ac, char **av, t_inputs *inputs)
 	inputs->time_to_eat = parse_positive_int(av[3]);
 	inputs->time_to_sleep = parse_positive_int(av[4]);
 	if (ac == 6)
-		inputs->must_eat_count = parse_positive_int(av[5]);
+	{
+	    inputs->must_eat_count = parse_positive_int(av[5]);
+		inputs->have_eat_count = true;
+	}
 	else
-		inputs->must_eat_count = -1;
+		inputs->have_eat_count =false;
 	if (inputs->nb_philos == -1 || inputs->time_to_die == -1
 		|| inputs->time_to_eat == -1 || inputs->time_to_sleep == -1 || (ac == 6
 			&& inputs->must_eat_count == -1))

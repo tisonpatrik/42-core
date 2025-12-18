@@ -46,13 +46,13 @@ void	stop_simulation(t_simulation *sim)
 	}
 	if (sim->table.nb_philos > 1)
 		pthread_join(sim->grim_reaper, NULL);
-	if (sim->table.must_eat_count != -1)
+	if (sim->table.have_eat_count)
 	{
 		full_count = 0;
 		i = 0;
 		while (i < sim->table.nb_philos)
 		{
-			if (sim->philos[i]->times_ate >= (unsigned int)sim->table.must_eat_count)
+			if (sim->philos[i]->times_ate >=sim->table.must_eat_count)
 				full_count++;
 			i++;
 		}
