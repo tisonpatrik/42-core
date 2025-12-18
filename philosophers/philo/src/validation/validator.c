@@ -50,10 +50,10 @@ static bool	parse_core_arguments(char **av, t_inputs *inputs)
 
 static bool	parse_optional_argument(int ac, char **av, t_inputs *inputs)
 {
+	int	temp;
+
 	if (ac == 6)
 	{
-		int	temp;
-
 		temp = parse_positive_int(av[5]);
 		if (temp == -1)
 			return (false);

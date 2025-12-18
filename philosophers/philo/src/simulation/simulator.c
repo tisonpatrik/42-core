@@ -52,7 +52,7 @@ void	stop_simulation(t_simulation *sim)
 		i = 0;
 		while (i < sim->table.nb_philos)
 		{
-			if (sim->philos[i]->times_ate >=sim->table.must_eat_count)
+			if (sim->philos[i]->times_ate >= sim->table.must_eat_count)
 				full_count++;
 			i++;
 		}

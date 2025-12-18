@@ -24,8 +24,8 @@ typedef struct s_table
 	time_t			time_to_die;
 	time_t			time_to_eat;
 	time_t			time_to_sleep;
-	unsigned int				must_eat_count;
-	bool have_eat_count;
+	unsigned int	must_eat_count;
+	bool			have_eat_count;
 	time_t			start_time;
 
 	bool			sim_stop;
