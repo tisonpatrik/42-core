@@ -25,25 +25,52 @@ static bool	are_values_valid(t_inputs inp)
 	return (true);
 }
 
-static bool	parse_arguments(int ac, char **av, t_inputs *inputs)
+static bool	parse_core_arguments(char **av, t_inputs *inputs)
 {
-	inputs->nb_philos = parse_positive_int(av[1]);
-	inputs->time_to_die = parse_positive_int(av[2]);
-	inputs->time_to_eat = parse_positive_int(av[3]);
-	inputs->time_to_sleep = parse_positive_int(av[4]);
+	int	temp;
+
+	temp = parse_positive_int(av[1]);
+	if (temp == -1)
+		return (false);
+	inputs->nb_philos = (unsigned int)temp;
+	temp = parse_positive_int(av[2]);
+	if (temp == -1)
+		return (false);
+	inputs->time_to_die = temp;
+	temp = parse_positive_int(av[3]);
+	if (temp == -1)
+		return (false);
+	inputs->time_to_eat = temp;
+	temp = parse_positive_int(av[4]);
+	if (temp == -1)
+		return (false);
+	inputs->time_to_sleep = temp;
+	return (true);
+}
+
+static bool	parse_optional_argument(int ac, char **av, t_inputs *inputs)
+{
 	if (ac == 6)
 	{
-	    inputs->must_eat_count = parse_positive_int(av[5]);
+		int	temp;
+
+		temp = parse_positive_int(av[5]);
+		if (temp == -1)
+			return (false);
+		inputs->must_eat_count = (unsigned int)temp;
 		inputs->have_eat_count = true;
 	}
 	else
-		inputs->have_eat_count =false;
-	if (inputs->nb_philos == -1 || inputs->time_to_die == -1
-		|| inputs->time_to_eat == -1 || inputs->time_to_sleep == -1 || (ac == 6
-			&& inputs->must_eat_count == -1))
-	{
+		inputs->have_eat_count = false;
+	return (true);
+}
+
+static bool	parse_arguments(int ac, char **av, t_inputs *inputs)
+{
+	if (!parse_core_arguments(av, inputs))
 		return (false);
-	}
+	if (!parse_optional_argument(ac, av, inputs))
+		return (false);
 	return (true);
 }
 
