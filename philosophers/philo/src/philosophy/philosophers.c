@@ -31,6 +31,7 @@ static void	wait_for_simulation_start(t_philosopher *philo)
 
 static void	desynchronize_philosophers(t_philosopher *philo)
 {
+	do_thinking(philo);
 	if (philo->table->nb_philos % 2 == 0)
 	{
 		if (philo->id % 2)
@@ -38,8 +39,8 @@ static void	desynchronize_philosophers(t_philosopher *philo)
 	}
 	else
 	{
-		if (philo->id % 2)
-			do_thinking(philo);
+		if (philo->id % 2 == 0)
+			precise_sleep(philo->table, 20);
 	}
 }
 
