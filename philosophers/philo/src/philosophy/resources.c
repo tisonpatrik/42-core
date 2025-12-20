@@ -14,20 +14,24 @@
 
 void	take_forks(t_philosopher *philo)
 {
-	if (philo->id % 2 == 0)
+	int	first_fork_id;
+	int	second_fork_id;
+
+	if (philo->fork_left < philo->fork_right)
 	{
-		pthread_mutex_lock(&philo->table->fork_locks[philo->fork_right]);
-		write_status(philo, "has taken a fork");
-		pthread_mutex_lock(&philo->table->fork_locks[philo->fork_left]);
-		write_status(philo, "has taken a fork");
+		first_fork_id = philo->fork_left;
+		second_fork_id = philo->fork_right;
 	}
 	else
 	{
-		pthread_mutex_lock(&philo->table->fork_locks[philo->fork_left]);
-		write_status(philo, "has taken a fork");
-		pthread_mutex_lock(&philo->table->fork_locks[philo->fork_right]);
-		write_status(philo, "has taken a fork");
+		first_fork_id = philo->fork_right;
+		second_fork_id = philo->fork_left;
 	}
+
+	pthread_mutex_lock(&philo->table->fork_locks[first_fork_id]);
+	write_status(philo, "has taken a fork");
+	pthread_mutex_lock(&philo->table->fork_locks[second_fork_id]);
+	write_status(philo, "has taken a fork");
 }
 
 void	drop_forks(t_philosopher *philo)
