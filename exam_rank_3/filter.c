@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
                 printf("%s", match_buffer);
                 i = 0;
             }
-            if (c == pattern[0])
+            if (c == pattern[i])
             {
                 match_buffer[i] = c;
                 i = 1;
