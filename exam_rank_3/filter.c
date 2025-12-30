@@ -3,36 +3,37 @@
 #include <string.h>
 #include <unistd.h>
 
-int main(int ac, char* av[])
+int main(int argc, char *argv[])
 {
-    if (ac != 2 || av[1] == NULL || strlen(av[1]) == 0)
+    if (argc != 2 || argv[1][0] == '\0')
     {
         return 1;
     }
 
-    int len = strlen(av[1]);
+    char *pattern = argv[1];
+    int pattern_len = (int)strlen(pattern);
+    char *match_buffer = malloc(pattern_len + 1);
 
-    char* buffer = malloc(len + 1);
-
-    if (!buffer)
+    if (!match_buffer)
     {
-        fprintf(stderr, "Error: malloc failed\n");
-        return 1;
+        perror("Error");
+        return EXIT_FAILURE;
     }
 
-    int i = 0;
     char c;
+    int i = 0;
+    ssize_t bytes_read;
 
-    while (read(0, &c, 1) > 0)
+    while ((bytes_read = read(STDIN_FILENO, &c, 1)) > 0)
     {
-        if (av[1][i] == c)
+        if (c == pattern[i])
         {
-            buffer[i] = c;
+            match_buffer[i] = c;
             i++;
-            if (i == len)
+            if (i == pattern_len)
             {
                 int j = 0;
-                while(j < len)
+                while (j < pattern_len)
                 {
                     printf("*");
                     j++;
@@ -42,14 +43,15 @@ int main(int ac, char* av[])
         }
         else
         {
-            buffer[i] = '\0';
-            printf("%s", buffer);
-
-            i = 0;
-
-            if (c == av[1][i])
+            if (i > 0)
             {
-                buffer[0] = c;
+                match_buffer[i] = '\0';
+                printf("%s", match_buffer);
+                i = 0;
+            }
+            if (c == pattern[0])
+            {
+                match_buffer[i] = c;
                 i = 1;
             }
             else
@@ -59,12 +61,19 @@ int main(int ac, char* av[])
         }
     }
 
-    if (i > 0)
+    if (bytes_read == -1)
     {
-        buffer[i] = '\0';
-        printf("%s", buffer);
+        perror("Error");
+        free(match_buffer);
+        return EXIT_FAILURE;
     }
 
-    free(buffer);
-    return 0;
+    if (i > 0)
+    {
+        match_buffer[i] = '\0';
+        printf("%s", match_buffer);
+    }
+
+    free(match_buffer);
+    return EXIT_SUCCESS;
 }
