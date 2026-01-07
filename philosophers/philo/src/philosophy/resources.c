@@ -27,7 +27,6 @@ void	take_forks(t_philosopher *philo)
 		first_fork_id = philo->fork_right;
 		second_fork_id = philo->fork_left;
 	}
-
 	pthread_mutex_lock(&philo->table->fork_locks[first_fork_id]);
 	write_status(philo, "has taken a fork");
 	pthread_mutex_lock(&philo->table->fork_locks[second_fork_id]);
