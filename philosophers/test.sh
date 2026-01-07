@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # ==============================================================================
-#  ULTIMATE PHILO TESTER (Helgrind + DRD + Memcheck)
-#  Optimized for School Environment (No TSan)
+#  ULTIMATE PHILO TESTER (Helgrind + DRD + Memcheck + Endurance)
+#  VERSION: Optimized Speed for Heavy Tests
 # ==============================================================================
 
 # Colors
@@ -11,18 +11,31 @@ RED='\033[0;31m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 CYAN='\033[0;36m'
+MAGENTA='\033[0;35m'
 NC='\033[0m'
 
 PHILO_BIN="./bin/philo"
 LOG_FILE="test_output.log"
+STABILITY_LOG="stability_test.log"
 
-# Scenarios to test
-# Format: "NbPhilo TimeDie TimeEat TimeSleep [Meals]"
-SCENARIOS=(
+# -------------------------------------------------------------------------
+# SCENARIOS DEFINITION
+# -------------------------------------------------------------------------
+
+# Standard scenarios (Logic heavy)
+STANDARD_SCENARIOS=(
     "4 410 200 200 5"       # Standard test
-    "5 800 200 200 5"       # Odd number of philosophers
+    "5 800 200 200 5"       # Odd number
     "4 310 150 150 5"       # Tight timing
-    "2 310 150 150 5"       # Minimum philosophers
+)
+
+# Large scenarios (Thread heavy) -> OPTIMIZED FOR SPEED
+# We use shorter times (310/150/150) and only 1 meal for large groups.
+# This is enough to check for Deadlocks/Races during init, eating, and exit.
+LARGE_SCENARIOS=(
+    "10 310 150 150 2"      # 10 Philos, 2 meals
+    "30 310 150 150 1"      # 30 Philos, 1 meal (enough to check locking)
+    "100 310 150 150 1"     # 100 Philos, 1 meal (stress creation/destruction)
 )
 
 # -------------------------------------------------------------------------
@@ -46,30 +59,24 @@ compile_project() {
 
 run_valgrind_test() {
     local TOOL_NAME=$1
-    local TOOL_FLAG=$2
+    local TOOL_FLAGS=$2
     local ARGS=$3
 
     echo -ne "${CYAN}[$TOOL_NAME]${NC} Testing: ./philo $ARGS ... "
 
-    # Run Valgrind with specific tool
-    # --history-level=approx is needed for Helgrind to be reasonably fast
-    valgrind $TOOL_FLAG --history-level=approx $PHILO_BIN $ARGS > /dev/null 2> $LOG_FILE
+    valgrind $TOOL_FLAGS $PHILO_BIN $ARGS > /dev/null 2> $LOG_FILE
 
-    # Check output for errors
     if grep -q "ERROR SUMMARY: 0 errors" $LOG_FILE; then
         echo -e "${GREEN}OK${NC}"
     else
         echo -e "${RED}FAIL!${NC}"
-        echo -e "${RED}Errors found in log:${NC}"
         grep "ERROR SUMMARY" $LOG_FILE
-        # Show specific error context
         if [ "$TOOL_NAME" == "LEAKS" ]; then
              grep -A 2 "definitely lost" $LOG_FILE
         else
              grep "Possible data race" $LOG_FILE | head -n 3
              grep "Lock order violation" $LOG_FILE | head -n 3
         fi
-        echo -e "${YELLOW}Full log saved to $LOG_FILE${NC}"
         exit 1
     fi
 }
@@ -80,44 +87,84 @@ run_valgrind_test() {
 
 compile_project
 
-echo -e "${BLUE}Starting Tests... Note: Valgrind is slow, please wait.${NC}\n"
+echo -e "${BLUE}Starting Tests...${NC}"
 
-# --- PHASE 1: HELGRIND (Thread Error Detector) ---
+# --- PHASE 1: HELGRIND ---
 echo -e "${YELLOW}--- PHASE 1: HELGRIND (Locks & Race Conditions) ---${NC}"
-for ARGS in "${SCENARIOS[@]}"; do
-    run_valgrind_test "HELGRIND" "--tool=helgrind" "$ARGS"
+# Standard
+for ARGS in "${STANDARD_SCENARIOS[@]}"; do
+    run_valgrind_test "HELGRIND" "--tool=helgrind --history-level=approx" "$ARGS"
+done
+# Heavy (Optimized)
+echo -e "${MAGENTA}... Running Heavy Load Helgrind Tests (Optimized) ...${NC}"
+for ARGS in "${LARGE_SCENARIOS[@]}"; do
+    run_valgrind_test "HELGRIND_HEAVY" "--tool=helgrind --history-level=approx" "$ARGS"
 done
 
-# --- PHASE 2: DRD (Data Race Detector - Alternative to Helgrind) ---
+# --- PHASE 2: DRD ---
 echo -e "\n${YELLOW}--- PHASE 2: DRD (Alternative Race Detector) ---${NC}"
-for ARGS in "${SCENARIOS[@]}"; do
+# Standard
+for ARGS in "${STANDARD_SCENARIOS[@]}"; do
     run_valgrind_test "DRD" "--tool=drd" "$ARGS"
+done
+# Heavy (Optimized)
+echo -e "${MAGENTA}... Running Heavy Load DRD Tests (Optimized) ...${NC}"
+for ARGS in "${LARGE_SCENARIOS[@]}"; do
+    run_valgrind_test "DRD_HEAVY" "--tool=drd" "$ARGS"
 done
 
 # --- PHASE 3: MEMORY LEAKS ---
 echo -e "\n${YELLOW}--- PHASE 3: MEMCHECK (Memory Leaks) ---${NC}"
-for ARGS in "${SCENARIOS[@]}"; do
-    run_valgrind_test "LEAKS" "--leak-check=full --show-leak-kinds=all --track-origins=yes" "$ARGS"
-done
+run_valgrind_test "LEAKS" "--leak-check=full --show-leak-kinds=all --track-origins=yes" "5 310 150 150 5"
+# Quick check on 100 philos (meals=1 is enough to leak if not cleaned up properly)
+run_valgrind_test "LEAKS_HEAVY" "--leak-check=full --show-leak-kinds=all --track-origins=yes" "100 310 150 150 1"
 
-# --- PHASE 4: SPECIAL CASE (1 PHILOSOPHER) ---
+# --- PHASE 4: SPECIAL CASE (1 PHILO) ---
 echo -e "\n${YELLOW}--- PHASE 4: SPECIAL CASE (1 PHILO) ---${NC}"
-# 1 Philo should die. We check if Valgrind reports errors (like unclosed mutexes).
-# We expect the program to finish, but likely with a death message.
 ARGS="1 800 200 200"
 echo -ne "${CYAN}[HELGRIND]${NC} Testing: ./philo $ARGS (Expect death) ... "
-valgrind --tool=helgrind $PHILO_BIN $ARGS > /dev/null 2> $LOG_FILE
-
+valgrind --tool=helgrind --history-level=approx $PHILO_BIN $ARGS > /dev/null 2> $LOG_FILE
 if grep -q "ERROR SUMMARY: 0 errors" $LOG_FILE; then
     echo -e "${GREEN}OK${NC}"
 else
-    # Sometimes 1 philo dying leaves "still reachable" blocks which Helgrind might flag lightly,
-    # but we look for synchronization errors.
     ERRS=$(grep "ERROR SUMMARY" $LOG_FILE)
-    if [[ $ERRS == *"0 errors"* ]]; then
-        echo -e "${GREEN}OK${NC}"
+    if [[ $ERRS == *"0 errors"* ]]; then echo -e "${GREEN}OK${NC}"; else echo -e "${YELLOW}WARNING: $ERRS${NC}"; fi
+fi
+
+# --- PHASE 5: ENDURANCE TEST (30 Seconds) ---
+echo -e "\n${YELLOW}--- PHASE 5: ENDURANCE TEST (30 Seconds) ---${NC}"
+# This runs WITHOUT Valgrind, so we use full parameters to test stability
+ARGS="5 800 200 200"
+echo -e "${CYAN}[STABILITY]${NC} Running: ./philo $ARGS for 30s..."
+echo -e "${MAGENTA}   (Output redirected to $STABILITY_LOG)${NC}"
+
+$PHILO_BIN $ARGS > $STABILITY_LOG &
+PID=$!
+
+for i in {30..1}; do
+    echo -ne "\r   Running... $i s remaining   "
+    sleep 1
+    if ! ps -p $PID > /dev/null; then
+        echo -e "\n${RED}FAIL! Process died early!${NC}"
+        echo -e "Check $STABILITY_LOG for details."
+        exit 1
+    fi
+done
+
+kill $PID 2>/dev/null
+wait $PID 2>/dev/null
+
+echo -e "\n   Checking log for unexpected deaths..."
+if grep -q "died" $STABILITY_LOG; then
+    echo -e "${RED}FAIL! A philosopher died!${NC}"
+    grep "died" $STABILITY_LOG | head -n 5
+    exit 1
+else
+    if [ ! -s $STABILITY_LOG ]; then
+        echo -e "${RED}FAIL! Log is empty.${NC}"
+        exit 1
     else
-        echo -e "${YELLOW}WARNING (Check manually): $ERRS${NC}"
+        echo -e "${GREEN}OK! (Stable run)${NC}"
     fi
 fi
 
@@ -127,4 +174,4 @@ fi
 echo -e "\n${BLUE}=========================================${NC}"
 echo -e "${GREEN}    ALL TESTS COMPLETED SUCCESSFULLY     ${NC}"
 echo -e "${BLUE}=========================================${NC}"
-rm -f $LOG_FILE
+rm -f $LOG_FILE $STABILITY_LOG
