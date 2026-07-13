@@ -4,33 +4,113 @@
 
 int match_space(FILE *f)
 {
-    // You may insert code here
-    return (0);
+    int c;
+    while ((c = fgetc(f)) != EOF && isspace(c))
+        ;
+
+    if (c != EOF)
+    {
+        ungetc(c, f);
+        return 0;
+    }
+    else {
+        return -1;
+    }
 }
 
 int match_char(FILE *f, char c)
 {
-    // You may insert code here
-    return (0);
+    int ch = fgetc(f);
+    if (ch == c)
+        return 1;
+    if (ch != EOF)
+    {
+        ungetc(ch, f);
+    }
+    return 0;
+
 }
 
 int scan_char(FILE *f, va_list ap)
 {
-    // You may insert code here
-    return (0);
-}
-
-int scan_int(FILE *f, va_list ap)
-{
-    // You may insert code here
-    return (0);
+    int c = fgetc(f);
+    if (c == EOF)
+    {
+        return 0;
+    }
+    char *ptr = va_arg(ap, char*);
+    *ptr = (char)c;
+    return 1;
 }
 
 int scan_string(FILE *f, va_list ap)
 {
-    // You may insert code here
-    return (0);
+    int c = fgetc(f);
+
+    if (c == EOF || isspace(c))
+    {
+        if (c != EOF)
+        {
+            ungetc(c,f);
+        }
+        return 0;
+    }
+    char *ptr = va_arg(ap, char *);
+    int i = 0;
+
+    while(c != EOF && !isspace(c))
+    {
+        ptr[i] = (char)c;
+        c = fgetc(f);
+        i++;
+    }
+    ptr[i] = '\0';
+    if (c != EOF)
+    {
+        ungetc(c, f);
+    }
+
+    return 1;
 }
+
+int scan_int(FILE *f, va_list ap)
+{
+    int c = fgetc(f);
+    int sign = 1;
+
+    if (c == '-' || c == '+')
+    {
+        if (c == '-')
+            sign = -1;
+        c = fgetc(f);
+    }
+
+    if (!isdigit(c))
+    {
+        if (c != EOF)
+            ungetc(c, f);
+        return 0;
+    }
+
+    int result = 0;
+
+    while( c != EOF && isdigit(c))
+    {
+        result = result * 10 + (c - '0');
+        c = fgetc(f);
+    }
+    if (c != EOF)
+    {
+        ungetc(c,f);
+    }
+
+    int *ptr = va_arg(ap, int *);
+    *ptr = result * sign;
+    return 1;
+
+}
+
+
 
 
 int	match_conv(FILE *f, const char **format, va_list ap)
@@ -98,8 +178,12 @@ int ft_scanf(const char *format, ...)
 
 int main(void)
 {
-	FILE *f = fopen("space.txt", "r");
-	int space = match_space(f);
-	printf("%d", space);
-	return 0;
+    int d = 0;
+    char s[100] = {0};
+    char c = 0;
+
+    int ret = ft_scanf(" %d %s %c", &d, s, &c);
+
+    printf("ret: %d | d: %d | s: %s | c: %c\n", ret, d, s, c);
+    return 0;
 }
