@@ -5,84 +5,71 @@
 int match_space(FILE *f)
 {
     int c;
-    while((c = fgetc(f)) != EOF && isspace(c))
+    while((c = fgetc(f))!= EOF && isspace(c))
         ;
-
-    if(c != EOF)
-    {
-        ungetc(c,f);
-        return 0;
-    }
-    else {
+    if (c == EOF)
         return -1;
-    }
+    else
+        ungetc(c,f);
+
+    return (0);
 }
 
 int match_char(FILE *f, char expected)
 {
     int c = fgetc(f);
-    if ( c == EOF)
-        return 0;
-
-    if ( c == expected)
+    if (c == expected)
         return 1;
 
     if (c != EOF)
-    {
-        ungetc(c,f);
-    }
+        ungetc(c, f);
+
     return (0);
 }
 
 int scan_char(FILE *f, va_list ap)
 {
     int c = fgetc(f);
-
     if ( c == EOF)
         return 0;
 
-    char* ptr = va_arg(ap, char*);
+    char *ptr = va_arg(ap, char*);
     *ptr = (char)c;
-
-    return (1);
+    return 1;
 }
 
 int scan_string(FILE *f, va_list ap)
 {
     int c = fgetc(f);
-
-    if (c == EOF || isspace(c))
+    if ( c == EOF || isspace(c))
     {
         if (c != EOF)
-            ungetc(c,f);
+            ungetc(c, f);
         return 0;
     }
 
     int i = 0;
-    char *ptr = va_arg(ap, char*);
-    while(c != EOF && !isspace(c))
+    char* ptr = va_arg(ap, char*);
+    while(c!=EOF && !isspace(c))
     {
         ptr[i] = (char)c;
         c = fgetc(f);
         i++;
     }
-
     ptr[i] = '\0';
-
-    if(c != EOF)
+    if(c!=EOF)
     {
-        ungetc(c,f);
+        ungetc(c, f);
     }
+    return 1;
 
-    return (1);
 }
 
 int scan_int(FILE *f, va_list ap)
 {
     int c = fgetc(f);
-    if (c == EOF)
+    if(c ==EOF)
         return 0;
-
     int sign = 1;
     if (c == '-' || c == '+')
     {
@@ -90,28 +77,26 @@ int scan_int(FILE *f, va_list ap)
             sign = -1;
         c = fgetc(f);
     }
-
     if (!isdigit(c))
     {
-        if (c != EOF)
+        if(c!=EOF)
             ungetc(c, f);
         return 0;
     }
-
     int result = 0;
-
-    while ( c != EOF && isdigit(c))
+    while(c != EOF && isdigit(c))
     {
         result = result * 10 + (c - '0');
         c = fgetc(f);
     }
+
     result = result * sign;
-    if ( c != EOF)
-    {
-        ungetc(c, f);
-    }
-    int *ptr = va_arg(ap, int* );
+    int *ptr = va_arg(ap, int*);
     *ptr = (int)result;
+    if(c != EOF)
+    {
+        ungetc(c,f);
+    }
     return 1;
 }
 
@@ -174,11 +159,13 @@ int ft_vfscanf(FILE *f, const char *format, va_list ap)
 int ft_scanf(const char *format, ...)
 {
     va_list ap;
-    va_start(ap, format);
+    va_start(ap,format);
 	int ret = ft_vfscanf(stdin, format, ap);
 	va_end(ap);
+
 	return ret;
 }
+
 
 
 #include <string.h>
