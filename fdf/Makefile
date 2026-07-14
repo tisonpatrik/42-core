@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 # Project configuration
-PROJECT		:= fdf
+PROJECT     := fdf
 BIN_DIR     := bin
 NAME        := $(PROJECT)
 MAKEFLAGS   += --silent
@@ -40,7 +40,8 @@ LIBFT_DIR   := lib/libft
 LIBFT       := $(LIBFT_DIR)/bin/libft.a
 
 # Source files organization
-APP_SRCS    := src/app/app..c \
+# Fixed typo: changed app..c to app.c
+APP_SRCS    := src/app/app.c \
                src/app/hook.c
 
 GRID_SRCS   := src/grid/file_analyzer.c \
@@ -88,9 +89,10 @@ $(MLX42_DIR):
 	git clone https://github.com/codam-coding-college/MLX42.git $(MLX42_DIR)
 
 # Build MLX42
+# Added -Wno-policy to suppress CMake warnings on newer versions
 $(MLX42_LIB): $(MLX42_DIR)
 	@echo "Building MLX42..."
-	@cd $(MLX42_DIR) && cmake -B build
+	@cd $(MLX42_DIR) && cmake -Wno-policy -B build
 	@cd $(MLX42_DIR) && cmake --build build -j4
 
 # Compile source files
@@ -105,7 +107,6 @@ bin/%.o: src/%.c | $(BIN_DIR)
 debug:
 	@echo "Building debug version..."
 	@$(MAKE) CFLAGS="$(CFLAGS) $(DEBUG_FLAGS)" all
-
 
 # Clean build artifacts
 clean:
