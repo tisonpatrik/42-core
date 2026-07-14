@@ -1,22 +1,21 @@
-#include <stdbool.h>
-#include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <stdbool.h>
 
 #define MAX 2048
 
-void print_board(int board[], int n)
+void print_solution(int board[], int n)
 {
-    int i = 0;
-    while (i < n)
+    for (int i = 0; i < n; i++)
     {
         fprintf(stdout, "%d", board[i]);
-        if (i < n - 1)
+        if (i < n -1)
             fprintf(stdout, " ");
-        i++;
     }
     fprintf(stdout, "\n");
 }
+
 
 bool is_match(int board[], int col, int test_row)
 {
@@ -25,12 +24,10 @@ bool is_match(int board[], int col, int test_row)
         int row = board[prev_col];
         if (row == test_row)
             return false;
-
         int distance = col - prev_col;
-
-        if (test_row == row - distance)
+        if ( test_row == row - distance)
             return false;
-        if (test_row == row + distance)
+        if ( test_row == row + distance)
             return false;
     }
     return true;
@@ -38,13 +35,13 @@ bool is_match(int board[], int col, int test_row)
 
 void solve(int board[], int cur_col, int n)
 {
-    if (cur_col == n)
+    if(cur_col == n)
     {
-        print_board(board, n);
+        print_solution(board, n);
         return;
     }
 
-    for (int row = 0; row < n; row++)
+    for(int row = 0; row < n; row ++)
     {
         if (is_match(board, cur_col, row))
         {
@@ -54,12 +51,13 @@ void solve(int board[], int cur_col, int n)
     }
 }
 
-int main(int ac, char* av[])
+
+int main (int ac, char* av[])
 {
-    if (ac == 2)
+    if(ac == 2 && av[1] != NULL)
     {
         int n = atoi(av[1]);
-        if (n > 0 && n < MAX)
+        if ( 0 < n && n < MAX)
         {
             int board[MAX];
             solve(board, 0, n);
