@@ -18,13 +18,14 @@ bool is_balanced(char* str)
     return (balance == 0);
 }
 
-/* Prints the string, skipping the spaces (removed parentheses) */
-void print_clean(char* str)
+/* Prints the string exactly as is, keeping the spaces */
+void print_solution(char* str)
 {
-    for (int i = 0; str[i]; i++)
+    int i = 0;
+    while (str[i])
     {
-        if (str[i] != ' ')
-            write(1, &str[i], 1);
+        write(1, &str[i], 1);
+        i++;
     }
     write(1, "\n", 1);
 }
@@ -34,16 +35,12 @@ void solve(char* str, int start, int left, int right)
     if (left == 0 && right == 0)
     {
         if (is_balanced(str))
-            print_clean(str);
+            print_solution(str);
         return;
     }
 
     for (int i = start; str[i]; i++)
     {
-        // Skip duplicates to guarantee unique output combinations
-        if (i > start && str[i] == str[i - 1])
-            continue;
-
         char c = str[i];
         if (c == '(' && left > 0)
         {
@@ -62,9 +59,12 @@ void solve(char* str, int start, int left, int right)
 
 int main(int ac, char* av[])
 {
-    // Clean and safe argument check
-    if (ac != 2 || av[1][0] == '\0')
-        return 1;
+    // If arguments are wrong, standard 42 behavior is printing a newline
+    if (ac != 2)
+    {
+        write(1, "\n", 1);
+        return 0;
+    }
 
     char* str = av[1];
     int left = 0;
@@ -83,7 +83,8 @@ int main(int ac, char* av[])
         }
         else
         {
-            return 1; // Reject any invalid characters
+            write(1, "\n", 1);
+            return 0;
         }
     }
 
