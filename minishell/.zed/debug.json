@@ -1,0 +1,32 @@
+[
+  {
+    "label": "Debug Main (gcc)",
+    "adapter": "CodeLLDB",
+    "request": "launch",
+    "program": "$ZED_WORKTREE_ROOT/main",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "args": [],
+    "env": {
+      "RUST_BACKTRACE": "1",
+    },
+    "build": {
+      "command": "gcc",
+      "args": ["-g", "main.c", "-o", "main"],
+    },
+  },
+  {
+    "label": "Debug Minishell (Make)",
+    "adapter": "CodeLLDB",
+    "request": "launch",
+    "program": "$ZED_WORKTREE_ROOT/bin/minishell",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "args": [],
+    "env": {
+      "PATH": "/usr/bin:/bin:/usr/sbin:/sbin",
+    },
+    "build": {
+      "command": "make",
+      "args": ["fclean", "debug"],
+    },
+  },
+]
