@@ -1,0 +1,70 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strnstr.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/21 21:12:25 by ptison            #+#    #+#             */
+/*   Updated: 2025/09/27 11:37:36 by ptison           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "str.h"
+#include <stdlib.h>
+
+static int	within_len(size_t i, size_t j, size_t len)
+{
+	return ((i + j) < len);
+}
+
+static int	not_null_terminated(const char *s, size_t index)
+{
+	return (s[index] != '\0');
+}
+
+static int	chars_match(const char *big, const char *little, size_t i, size_t j)
+{
+	return (big[i + j] == little[j]);
+}
+
+static int	is_little_ended(const char *little, size_t j)
+{
+	return (little[j + 1] == '\0');
+}
+
+/**
+ * @brief Locates a substring in a string with length limit
+ *
+ * This function locates the first occurrence of the null-terminated string
+ * little in the string big, where not more than len characters are searched.
+ * Characters that appear after a '\0' character are not searched.
+ * It mimics the behavior of the BSD strnstr function.
+ *
+ * @param big The string to search in
+ * @param little The substring to search for
+ * @param len The maximum number of characters to search
+ * @return Pointer to the first occurrence of little, or NULL if not found
+ */
+char	*ft_strnstr(const char *big, const char *little, size_t len)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	if (little[0] == '\0')
+		return ((char *)big);
+	while (i < len && not_null_terminated(big, i))
+	{
+		j = 0;
+		while (within_len(i, j, len) && not_null_terminated(big, i + j)
+			&& chars_match(big, little, i, j))
+		{
+			if (is_little_ended(little, j))
+				return ((char *)&big[i]);
+			j++;
+		}
+		i++;
+	}
+	return (NULL);
+}

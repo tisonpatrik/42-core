@@ -1,0 +1,20 @@
+
+NO       ./assets/cub3d/acacia_planks.png
+
+SO ./assets/cub3d/bookshelf_02.png
+
+		WE ./assets/cub3d/bricks_02.png
+
+ EA ./assets/cub3d/honeycomb_block.png
+
+F   139,69,19
+C 135,206,235
+
+
+
+ 11111111
+ 10000001
+ 10011101
+ 1001 101
+ 1N011101
+ 11111111

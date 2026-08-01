@@ -1,0 +1,17 @@
+-xc
+-Wall
+-Wextra
+-Werror
+-Iinclude
+-Isrc/app
+-Isrc/fire
+-Isrc/orb
+-Isrc/player
+-Isrc/render
+-Isrc/render/wall
+-Isrc/render/fire
+-Isrc/render/orb
+-Isrc/render/minimap
+-iquote
+lib/libft/include
+-Ilib/MLX42/include/MLX42

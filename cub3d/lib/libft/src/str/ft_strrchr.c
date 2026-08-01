@@ -1,0 +1,42 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strrchr.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ptison <ptison@student.42prague.com>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/21 21:12:25 by ptison            #+#    #+#             */
+/*   Updated: 2025/09/27 11:37:36 by ptison           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "str.h"
+#include <stdlib.h>
+
+/**
+ * @brief Locates the last occurrence of a character in a string
+ *
+ * This function returns a pointer to the last occurrence of the character c
+ * in the string str. The terminating null byte is considered part of the string,
+ * so if c is '\0', the function returns a pointer to the terminator.
+ * It mimics the behavior of the standard strrchr function.
+ *
+ * @param str The string to search
+ * @param c The character to locate
+ * @return Pointer to the last occurrence of c, or NULL if not found
+ */
+char	*ft_strrchr(const char *str, int c)
+{
+	size_t	i;
+
+	i = ft_strlen(str);
+	while (1)
+	{
+		if (str[i] == (char)c)
+			return ((char *)&str[i]);
+		if (i == 0)
+			break ;
+		i--;
+	}
+	return (NULL);
+}
