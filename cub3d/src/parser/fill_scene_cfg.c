@@ -1,4 +1,16 @@
-#include "parsing.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fill_scene_cfg.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jakrajic <jakrajic@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/06 17:40:41 by jakrajic          #+#    #+#             */
+/*   Updated: 2026/08/07 13:19:01 by jakrajic         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "parser.h"
 #include "world.h"
 
 static	int	convert_player_camera(t_map *map, t_scene_config *cfg)
@@ -60,29 +72,25 @@ static uint8_t	*convert_grid(t_map *map)
 	uint8_t	*raw;
 	int		y;
 	int		x;
-	int		index;
 
 	raw = malloc(sizeof(uint8_t) * (map->rows * map->max_cols));
 	if (!raw)
 		return (NULL);
-	y = 0;
-	while (y < map->rows)
+	y = -1;
+	while (++y < map->rows)
 	{
-		x = 0;
-		while (x < map->max_cols)
+		x = -1;
+		while (++x < map->max_cols)
 		{
-			index = (y * map->max_cols) + x;
 			if (map->grid[y][x] == '1')
-				raw[index] = TILE_WALL;
+				raw[(y * map->max_cols) + x] = TILE_WALL;
 			else if (map->grid[y][x] == '2')
-				raw[index] = TILE_FIRE;
+				raw[(y * map->max_cols) + x] = TILE_FIRE;
 			else if (map->grid[y][x] == ' ')
-				raw[index] = TILE_VOID;
+				raw[(y * map->max_cols) + x] = TILE_VOID;
 			else
-				raw[index] = TILE_EMPTY;
-			x++;
+				raw[(y * map->max_cols) + x] = TILE_EMPTY;
 		}
-		y++;
 	}
 	return (raw);
 }

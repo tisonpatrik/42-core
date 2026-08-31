@@ -50,6 +50,7 @@ MKDIR_P     := mkdir -p
 # Source files
 PARSER_SRCS := src/parser/check_store_player.c \
                src/parser/check_walls.c \
+               src/parser/check_duplicates.c \
                src/parser/errors.c \
                src/parser/fill_scene_cfg.c \
                src/parser/free_structs.c \
@@ -77,6 +78,7 @@ WORLD_SRCS  := src/world/world.c \
                src/world/collision.c
 
 PLAYER_SRCS := src/player/input.c \
+               src/player/mouse.c \
                src/player/movement.c \
                src/player/interaction.c
 

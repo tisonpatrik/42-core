@@ -1,4 +1,16 @@
-#include "parsing.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_store_config.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jakrajic <jakrajic@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/06 18:16:01 by jakrajic          #+#    #+#             */
+/*   Updated: 2026/08/07 19:17:17 by jakrajic         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "parser.h"
 
 int	is_config_complete(t_scene_config *cfg)
 {
@@ -75,11 +87,11 @@ int	parse_store_config(char *line, t_scene_config *cfg, t_file *file)
 					cfg, file);
 			error_free_exit("Missing texture or rgb!", cfg, file);
 		}
-		if (validate_texture_path(cfg) == -1)
+		if (check_duplicates(cfg) == -1 || validate_texture_path(cfg) == -1)
 			error_free_exit(NULL, cfg, file);
 		return (0);
 	}
 	if (status == -1)
-		error_free_exit("Invalid line format in text/rgb section!", cfg, file);
+		error_free_exit("Invalid line format in tex/rgb section!", cfg, file);
 	return (1);
 }

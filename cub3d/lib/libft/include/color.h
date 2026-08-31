@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   color.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/10 13:36:50 by ptison            #+#    #+#             */
+/*   Updated: 2026/08/10 13:36:51 by ptison           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef COLOR_H
 # define COLOR_H
 
@@ -8,7 +20,6 @@
 # define FT_RGBA_CHANNEL_COUNT 4
 # define FT_COLOR_CHANNEL_MAX 255
 
-/* Named color value and mutable view over RGBA byte storage. */
 typedef struct s_rgba
 {
 	uint8_t	red;
@@ -36,7 +47,6 @@ t_rgba_ref	ft_rgba_ref(uint8_t *bytes);
 t_rgba_view	ft_rgba_view(uint8_t *bytes, size_t width, size_t height,
 				size_t stride);
 bool		ft_rgba_view_contains(const t_rgba_view *view, int x, int y);
-/* Unchecked hot-path access; validate coordinates at the caller boundary. */
 t_rgba_ref	ft_rgba_view_pixel(const t_rgba_view *view, int x, int y);
 t_rgba		ft_rgba_read(t_rgba_ref source);
 void		ft_rgba_write(t_rgba_ref destination, t_rgba color);

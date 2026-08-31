@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   setup_memory.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/10 13:28:08 by ptison            #+#    #+#             */
+/*   Updated: 2026/08/10 13:28:09 by ptison           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdint.h>
 #include <stdlib.h>
 #include "allocator.h"
 #include "config.h"
 #include "game.h"
 #include "mem.h"
-#include "parsing.h"
+#include "parser.h"
 
 static size_t	tile_count(const t_scene_config *config)
 {

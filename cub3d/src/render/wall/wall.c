@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   wall.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/10 13:29:39 by ptison            #+#    #+#             */
+/*   Updated: 2026/08/10 13:29:42 by ptison           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "renderer.h"
 #include "config.h"
 #include "ft_math.h"
@@ -21,18 +33,17 @@ void	calc_wall_projection(t_draw *draw, double distance)
 			WINDOW_HEIGHT - 1);
 }
 
-/* The face normal points opposite to the ray's direction of travel. */
 mlx_texture_t	*get_wall_texture(t_game *game, t_ray *ray)
 {
 	if (ray->wall.side == HIT_X)
 	{
 		if (ray->dir.x < 0.0)
-			return (game->rom->textures.wall[TEX_EAST]);
-		return (game->rom->textures.wall[TEX_WEST]);
+			return (game->rom->textures.wall[TEX_WEST]);
+		return (game->rom->textures.wall[TEX_EAST]);
 	}
 	if (ray->dir.y < 0.0)
-		return (game->rom->textures.wall[TEX_SOUTH]);
-	return (game->rom->textures.wall[TEX_NORTH]);
+		return (game->rom->textures.wall[TEX_NORTH]);
+	return (game->rom->textures.wall[TEX_SOUTH]);
 }
 
 int	texture_column(const t_ray_hit *hit, t_v2d direction, int width)

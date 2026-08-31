@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   frame_buffer.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/10 13:29:45 by ptison            #+#    #+#             */
+/*   Updated: 2026/08/10 13:30:04 by ptison           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stddef.h>
 #include "color.h"
 #include "game.h"
@@ -16,7 +28,6 @@ void	render_background(t_game *game)
 		game->rom->floor_color);
 }
 
-/* Composites a source texel over the already opaque frame buffer. */
 void	blend_pixel(t_rgba_ref destination, t_rgba source)
 {
 	t_rgba	result;

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   engine.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/10 13:27:59 by ptison            #+#    #+#             */
+/*   Updated: 2026/08/10 13:28:01 by ptison           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "game.h"
 #include <stdlib.h>
 #include "config.h"
@@ -52,6 +64,8 @@ static int	engine_init(t_game *game)
 		|| mlx_image_to_window(game->mlx, game->frame_buffer, 0, 0) < 0
 		|| !mlx_loop_hook(game->mlx, game_loop, game))
 		return (engine_error(game, "frame buffer initialization"));
+	mouse_look_init(game);
+	mlx_key_hook(game->mlx, &tab_key_hook, game);
 	return (EXIT_SUCCESS);
 }
 

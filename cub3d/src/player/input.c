@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   input.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/10 13:29:00 by ptison            #+#    #+#             */
+/*   Updated: 2026/08/10 13:29:01 by ptison           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "input.h"
 #include "ft_math.h"
 #include "game.h"
@@ -37,12 +49,14 @@ static void	rotate_player(t_player *player, double angle)
 void	handle_input(t_game *game, double delta_time)
 {
 	int		rotation_axis;
+	double	rotation;
 	double	step;
 
 	delta_time = ft_clamp_double(delta_time, 0.0, MAX_SIMULATION_STEP);
 	rotation_axis = key_axis(game, MLX_KEY_RIGHT, MLX_KEY_LEFT);
-	rotate_player(&game->ram->player,
-		rotation_axis * ROTATION_SPEED * delta_time);
+	rotation = rotation_axis * ROTATION_SPEED * delta_time;
+	rotation += mouse_look_angle(game);
+	rotate_player(&game->ram->player, rotation);
 	step = MOVE_SPEED * delta_time;
 	move_player(game, ft_v2d_scale(movement_direction(game), step));
 	if (game->rom->bonus_enabled)

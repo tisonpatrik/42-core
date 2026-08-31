@@ -1,7 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   textures.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/10 13:28:23 by ptison            #+#    #+#             */
+/*   Updated: 2026/08/10 13:28:23 by ptison           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdlib.h>
 #include "rom.h"
 #include "io.h"
-#include "parsing.h"
+#include "parser.h"
 
 bool	texture_load_png(mlx_texture_t **destination, const char *path,
 	const char *name)

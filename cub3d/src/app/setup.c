@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   setup.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/10 13:28:16 by ptison            #+#    #+#             */
+/*   Updated: 2026/08/10 13:28:17 by ptison           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdlib.h>
 #include "allocator.h"
 #include "build_profile.h"
@@ -5,7 +17,7 @@
 #include "fire.h"
 #include "io.h"
 #include "orb.h"
-#include "parsing.h"
+#include "parser.h"
 
 static int	setup_rom(t_game *game, const t_scene_config *config,
 	bool bonus_enabled)

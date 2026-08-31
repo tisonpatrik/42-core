@@ -1,5 +1,17 @@
-#ifndef PARSING_H
-# define PARSING_H
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jakrajic <jakrajic@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/06 20:44:05 by jakrajic          #+#    #+#             */
+/*   Updated: 2026/08/10 13:27:32 by jakrajic         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef PARSER_H
+# define PARSER_H
 
 # include <errno.h>
 # include <fcntl.h>
@@ -14,9 +26,14 @@
 # define WHITE " \t\n\r\v\f"
 # define SPACE " "
 # define EOFCHARS "\n\r"
-# define MAPCHARS "012NSEW "
 # define PLAYER "NSEW"
 # define TEXRGBSTART "NSWEFC"
+
+# ifdef BONUS_BUILD
+#  define MAPCHARS "012NSEW "
+# else
+#  define MAPCHARS "01NSEW "
+# endif
 
 typedef struct s_map
 {
@@ -26,7 +43,7 @@ typedef struct s_map
 	int		p_y;
 	int		p_x;
 	char	p_dir;
-}t_map;
+}	t_map;
 
 typedef struct s_file
 {
@@ -34,7 +51,7 @@ typedef struct s_file
 	int		line_count;
 	int		index;
 	t_map	map;
-}t_file;
+}	t_file;
 
 typedef struct s_wall_paths
 {
@@ -42,7 +59,7 @@ typedef struct s_wall_paths
 	char	*south;
 	char	*west;
 	char	*east;
-}t_wall_paths;
+}	t_wall_paths;
 
 /* Parser-owned fields are released by free_scene_cfg after game_setup. */
 typedef struct s_scene_config
@@ -55,9 +72,10 @@ typedef struct s_scene_config
 	t_wall_paths	wall_paths;
 	t_rgba			floor_color;
 	t_rgba			ceiling_color;
-}t_scene_config;
+}	t_scene_config;
 
 int		check_store_player(t_map *map);
+int		check_duplicates(t_scene_config *cfg);
 int		check_walls(t_map *map);
 int		empty_line(char *line);
 void	erase_white_eof(char *line, char *macro_type);

@@ -1,0 +1,71 @@
+{
+   ignore_glfw_and_mlx42_leaks
+   Memcheck:Leak
+   match-leak-kinds: reachable,definite,indirect,possible
+   ...
+   obj:*libglfw*
+}
+
+{
+   ignore_mesa_dri_drivers
+   Memcheck:Leak
+   match-leak-kinds: reachable,definite,indirect,possible
+   ...
+   obj:*dri*
+}
+
+{
+   ignore_libgl_and_opengl
+   Memcheck:Leak
+   match-leak-kinds: reachable,definite,indirect,possible
+   ...
+   obj:*libGL*
+}
+
+{
+   ignore_llvm_leaks
+   Memcheck:Leak
+   match-leak-kinds: reachable,definite,indirect,possible
+   ...
+   obj:*libLLVM*
+}
+
+{
+   ignore_libx11_locales
+   Memcheck:Leak
+   match-leak-kinds: reachable,definite,indirect,possible
+   ...
+   obj:*libX11*
+}
+
+{
+   ignore_x11_xcb_internal_params
+   Memcheck:Param
+   writev(vector[0])
+   fun:writev
+   ...
+   obj:*libxcb*
+}
+
+{
+   ignore_system_dlopen_allocations
+   Memcheck:Leak
+   match-leak-kinds: reachable,definite,indirect,possible
+   ...
+   fun:_dl_open
+}
+
+{
+   ignore_dl_load_strncmp_addr8
+   Memcheck:Addr8
+   fun:strncmp
+   fun:is_dst
+}
+
+{
+   ignore_dl_load_expand_dst_addr8
+   Memcheck:Addr8
+   fun:strncmp
+   ...
+   fun:_dl_dst_substitute
+}

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   raycast.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/10 13:29:36 by ptison            #+#    #+#             */
+/*   Updated: 2026/08/10 13:30:12 by ptison           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "renderer.h"
 #include <math.h>
 #include "config.h"
@@ -18,7 +30,6 @@ static void	init_ray(t_ray *ray, t_player *player, int screen_x)
 		ray->delta_dist.y = fabs(1.0 / ray->dir.y);
 }
 
-/* Precomputes the distance from the player to the first X/Y grid boundary. */
 static void	init_steps(t_ray *ray, t_player *player)
 {
 	ray->step = (t_v2i){1, 1};
@@ -75,7 +86,6 @@ static t_ray_hit	make_hit(t_ray *ray, t_player *player, t_hit_side side)
 	return (hit);
 }
 
-/* DDA visits one map cell at a time and cannot escape world_tile bounds. */
 void	cast_ray(t_game *game, int screen_x, t_ray *ray, t_hit_buffer *hits)
 {
 	t_hit_side	side;

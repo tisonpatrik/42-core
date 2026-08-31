@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   world.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/10 13:31:35 by ptison            #+#    #+#             */
+/*   Updated: 2026/08/10 13:31:42 by ptison           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef WORLD_H
 # define WORLD_H
 
@@ -16,7 +28,6 @@ typedef enum e_tile
 	TILE_VOID
 }	t_tile;
 
-/* All coordinate and tile access is centralized here for bounds safety. */
 bool		world_contains(const struct s_game *game, t_v2i map);
 bool		world_index(const struct s_game *game, t_v2i map, size_t *index);
 size_t		world_cell_count(const struct s_game *game);

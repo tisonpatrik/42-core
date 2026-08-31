@@ -1,4 +1,16 @@
-#include "parsing.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   check_walls.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jakrajic <jakrajic@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/06 17:40:09 by jakrajic          #+#    #+#             */
+/*   Updated: 2026/08/10 13:26:30 by jakrajic         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "parser.h"
 
 static char	get_cell(char **grid, int y, int x, t_map *map)
 {
@@ -49,39 +61,3 @@ int	check_walls(t_map *map)
 	}
 	return (0);
 }
-
-// static int check_surrounding(t_map *map, int y, int x)
-// {
-// 	if (y == 0 || y == map->rows - 1 ||
-// 		x == 0 || x == map->max_cols - 1)
-// 		return (-1);
-// 	if (map->grid[y - 1][x] == ' ' ||
-// 		map->grid[y + 1][x] == ' ' ||
-// 		map->grid[y][x - 1] == ' ' ||
-// 		map->grid[y][x + 1] == ' ')
-// 		return (-1);
-// 	return (0);
-// }
-
-// int check_walls(t_map *map)
-// {
-// 	int	y;
-// 	int	x;
-
-// 	y = 0;
-// 	while (y < map->rows)
-// 	{
-// 		x = 0;
-// 		while (x < map->max_cols)
-// 		{
-// 			if (map->grid[y][x] == '0')
-// 			{
-// 				if (check_surrounding(map, y, x) == -1)
-// 					return(display_error("Map is not closed!"), -1);
-// 			}
-// 			x++;
-// 		}
-// 		y++;
-// 	}
-// 	return (0);
-// }

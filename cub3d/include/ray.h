@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ray.h                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/10 13:31:23 by ptison            #+#    #+#             */
+/*   Updated: 2026/08/10 13:31:24 by ptison           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef RAY_H
 # define RAY_H
 
@@ -15,7 +27,6 @@ typedef enum e_hit_side
 typedef struct s_ray_hit
 {
 	t_v2i		map;
-	/* DDA distance is perpendicular to the camera plane, not Euclidean. */
 	double		distance;
 	t_hit_side	side;
 	double		wall_x;
@@ -32,7 +43,6 @@ typedef struct s_ray
 {
 	t_v2d		dir;
 	t_v2i		map;
-	/* Distance to the next grid boundary and between equal-side crossings. */
 	t_v2d		side_dist;
 	t_v2d		delta_dist;
 	t_v2i		step;

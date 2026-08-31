@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   orb.h                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/10 13:31:12 by ptison            #+#    #+#             */
+/*   Updated: 2026/08/10 13:31:12 by ptison           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef ORB_H
 # define ORB_H
 
@@ -36,7 +48,6 @@ typedef struct s_orb_system
 	t_step_cycle	animation;
 }	t_orb_system;
 
-/* Orbs are bonus runtime objects and never become parser-owned map tiles. */
 int			orb_init(struct s_game *game);
 void		orb_update(struct s_game *game, double delta_time);
 uint32_t	orb_seed(struct s_game *game);

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   orb.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/10 13:29:32 by ptison            #+#    #+#             */
+/*   Updated: 2026/08/10 13:30:17 by ptison           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "renderer.h"
 #include <math.h>
 #include "config.h"
@@ -51,7 +63,6 @@ static void	sort_farthest_first(t_orb **orbs, size_t count, t_v2d origin)
 	}
 }
 
-/* Applies the inverse camera matrix to obtain screen X and camera depth. */
 static bool	project_orb(t_game *game, t_orb *orb, t_orb_projection *draw)
 {
 	t_player	*player;

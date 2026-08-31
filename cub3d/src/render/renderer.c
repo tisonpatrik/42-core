@@ -1,9 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   renderer.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ptison <ptison@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/10 13:29:48 by ptison            #+#    #+#             */
+/*   Updated: 2026/08/10 13:29:52 by ptison           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "renderer.h"
 #include "config.h"
 #include "game.h"
 #include "fire.h"
 
-/* Camera height is half a tile, hence 0.5 * screen height. */
 static void	init_floor_distances(double *distances)
 {
 	int	i;
@@ -34,7 +45,6 @@ static void	render_fire_hits(t_game *game, int x, t_ray *ray)
 	}
 }
 
-/* Closed fire gates join walls in the orb's per-column depth test. */
 static double	nearest_sprite_occluder(t_game *game, t_ray *ray)
 {
 	double	depth;
