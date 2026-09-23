@@ -1,22 +1,50 @@
-NAME = phonebook
+# Project configuration
+NAME        := phonebook
+BIN_DIR     := bin
 
-CXX = c++
-CXXFLAGS = -Wall -Wextra -Werror -std=c++98
+# Compiler settings
+CXX         := c++
+CXXFLAGS    := -Wall -Wextra -Werror -std=c++98
+DEPFLAGS    := -MMD -MP
 
-SRCS = main.cpp Contact.cpp PhoneBook.cpp
-OBJS = $(SRCS:.cpp=.o)
+# Build tools
+RM          := rm -f
+RM_RF       := rm -rf
+MKDIR_P     := mkdir -p
+
+# --------------------------- Sources ----------------------------------------
+
+SRCS        := main.cpp \
+               Contact.cpp \
+               PhoneBook.cpp
+OBJS        := $(SRCS:%.cpp=$(BIN_DIR)/%.o)
+DEPS        := $(OBJS:.o=.d)
+
+# --------------------------- Targets ----------------------------------------
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CXX) $(CXXFLAGS) $(OBJS) -o $(NAME)
+	@$(CXX) $(CXXFLAGS) $(LDFLAGS) $(OBJS) $(LDLIBS) -o $@
+	@printf 'Successfully built: %s\n' "$(NAME)"
+
+# --------------------------- Compile rules ----------------------------------
+
+$(BIN_DIR)/%.o: %.cpp Makefile
+	@$(MKDIR_P) $(dir $@)
+	@$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(DEPFLAGS) -c $< -o $@
+
+# --------------------------- Cleaning ---------------------------------------
 
 clean:
-	rm -f $(OBJS)
+	@$(RM_RF) $(BIN_DIR)
 
 fclean: clean
-	rm -f $(NAME)
+	@$(RM) $(NAME)
 
-re: fclean all
+re: fclean
+	@$(MAKE) --no-print-directory all
+
+-include $(DEPS)
 
 .PHONY: all clean fclean re
