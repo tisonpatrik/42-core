@@ -1,5 +1,5 @@
 # Project configuration
-NAME        := zombies
+NAME        := harlFilter
 BIN_DIR     := bin
 
 # Compiler settings
@@ -15,7 +15,7 @@ MKDIR_P     := mkdir -p
 # --------------------------- Sources ----------------------------------------
 
 SRCS        := main.cpp \
-               Zombie.cpp
+               Harl.cpp
 OBJS        := $(SRCS:%.cpp=$(BIN_DIR)/%.o)
 DEPS        := $(OBJS:.o=.d)
 
