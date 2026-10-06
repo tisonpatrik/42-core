@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-HumanB::HumanB( std::string &name) : name(name), weapon(0)
+HumanB::HumanB(const std::string &name) : name(name), weapon(0)
 {
 }
 
