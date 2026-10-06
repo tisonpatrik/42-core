@@ -2,13 +2,11 @@
 
 int main()
 {
-    // Heap: this zombie survives the function that created it.
-    Zombie *heapZombie = newZombie("Foo");
-    heapZombie->announce();
+    Zombie *zombie = newZombie("Foo");
+    zombie->announce();
 
-    // Stack: this zombie is destroyed when randomChump returns.
     randomChump("Bar");
 
-    delete heapZombie;
+    delete zombie;
     return 0;
 }

@@ -19,7 +19,6 @@ static bool testHorde(int count, const std::string &name)
     for (int i = 0; i < count; ++i)
         horde[i].announce();
 
-    // delete[] destroys every zombie in the array.
     delete[] horde;
     return true;
 }

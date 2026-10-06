@@ -14,7 +14,6 @@ Zombie *zombieHorde(int N, std::string name)
     }
     catch (...)
     {
-        // Release the array if initializing a name fails.
         delete[] horde;
         throw;
     }
