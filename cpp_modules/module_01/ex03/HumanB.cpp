@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-HumanB::HumanB(const std::string &name) : name(name), weapon(0)
+HumanB::HumanB( std::string &name) : name(name), weapon(0)
 {
 }
 
@@ -11,7 +11,7 @@ void HumanB::setWeapon(Weapon &weapon)
     this->weapon = &weapon;
 }
 
-void HumanB::attack(void) const
+void HumanB::attack(void)
 {
     if (weapon == 0)
     {

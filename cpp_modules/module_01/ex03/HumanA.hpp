@@ -12,9 +12,9 @@ private:
     Weapon &weapon;
 
 public:
-    HumanA(const std::string &name, Weapon &weapon);
+    HumanA( std::string &name, Weapon &weapon);
 
-    void attack(void) const;
+    void attack(void) ;
 };
 
 #endif
