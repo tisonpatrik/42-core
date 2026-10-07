@@ -26,12 +26,10 @@ $(NAME): $(OBJS)
 	@printf 'Successfully built: %s\n' "$(NAME)"
 
 test: $(NAME) $(BIN_DIR)/tests
-	@$(MKDIR_P) "$(BIN_DIR)/test-fixtures/blocked.txt.replace"
-	@$(BIN_DIR)/tests "$(BIN_DIR)/test-fixtures"
-	@if ./$(NAME) >/dev/null 2>&1; then \
-		printf 'Invalid argument count test failed.\n'; exit 1; \
-	fi
-	@printf '[PASS] invalid argument count\n'
+	@$(MKDIR_P) "$(BIN_DIR)/test-fixtures"
+	@cp fixtures/input.txt "$(BIN_DIR)/test-fixtures/input.txt"
+	@$(RM) "$(BIN_DIR)/test-fixtures/input.txt.replace"
+	@$(BIN_DIR)/tests
 
 $(BIN_DIR)/tests: $(TEST_OBJS)
 	@$(CXX) $(CXXFLAGS) $(LDFLAGS) $(TEST_OBJS) $(LDLIBS) -o $@

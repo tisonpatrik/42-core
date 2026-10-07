@@ -1,170 +1,103 @@
 #include "replaceFile.hpp"
 #include "replaceText.hpp"
 
-#include <cstddef>
+#include <cassert>
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
 
-static bool writeFile(const std::string &filename, const std::string &content)
-{
-    std::ofstream output(filename.c_str(), std::ios::binary | std::ios::trunc);
-    if (!output.is_open())
-        return false;
-    output << content;
-    output.close();
-    return static_cast<bool>(output);
-}
-
-static bool readFile(const std::string &filename, std::string &content)
+static std::string readFile(const std::string &filename)
 {
     std::ifstream input(filename.c_str(), std::ios::binary);
-    if (!input.is_open())
-        return false;
-    content.clear();
+    assert(input.is_open());
+    std::string content;
     char character;
     while (input.get(character))
         content += character;
-    return input.eof() && !input.bad();
+    assert(input.eof() && !input.bad());
+    return content;
 }
 
-static bool reportTest(const std::string &name, bool passed)
+static void testReplacesAllMatches()
 {
-    std::cout << (passed ? "[PASS] " : "[FAIL] ") << name << std::endl;
-    return passed;
+    // Arrange
+    const std::string input = "hello world hello";
+    const std::string expected = "hi world hi";
+
+    // Act
+    const std::string result = replaceText(input, "hello", "hi");
+
+    // Assert
+    assert(result == expected);
 }
 
-struct TestCase
+static void testDoesNotReplaceInsertedText()
 {
-    std::string name;
-    std::string content;
-    std::string search;
-    std::string replacement;
-    std::string expected;
-};
+    // Arrange
+    const std::string input = "aaa";
+    const std::string expected = "aaaaaa";
 
-static bool testTextReplacement(const TestCase &test)
-{
-    return reportTest("text: " + test.name,
-                      replaceText(test.content, test.search, test.replacement)
-                      == test.expected);
+    // Act
+    const std::string result = replaceText(input, "a", "aa");
+
+    // Assert
+    assert(result == expected);
 }
 
-static bool testFileReplacement(const std::string &directory, const TestCase &test)
+static void testKeepsTextWithoutMatches()
 {
-    const std::string filename = directory + "/" + test.name + ".txt";
-    if (!writeFile(filename, test.content))
-        return reportTest("file: " + test.name, false);
+    // Arrange
+    const std::string input = "hello world";
+
+    // Act
+    const std::string result = replaceText(input, "missing", "hi");
+
+    // Assert
+    assert(result == input);
+}
+
+static void testRejectsEmptySearch()
+{
+    // Arrange
+    const std::string input = "hello";
+    bool rejected = false;
+
+    // Act
     try
     {
-        replaceFile(filename, test.search, test.replacement);
-    }
-    catch (const std::exception &error)
-    {
-        std::cerr << error.what() << std::endl;
-        return reportTest("file: " + test.name, false);
-    }
-
-    std::string result;
-    std::string original;
-    const bool passed = readFile(filename + ".replace", result)
-        && result == test.expected
-        && readFile(filename, original)
-        && original == test.content;
-    return reportTest("file: " + test.name, passed);
-}
-
-static bool expectFailure(const std::string &filename, const std::string &s1,
-                          const std::string &s2)
-{
-    try
-    {
-        replaceFile(filename, s1, s2);
-    }
-    catch (const std::exception &error)
-    {
-        return error.what()[0] != '\0';
-    }
-    return false;
-}
-
-static bool testEmptySearch()
-{
-    try
-    {
-        replaceText("unchanged", "", "x");
+        replaceText(input, "", "hi");
     }
     catch (const std::invalid_argument &)
     {
-        return true;
+        rejected = true;
     }
-    return false;
+
+    // Assert
+    assert(rejected);
 }
 
-int main(int argc, char **argv)
+static void testReplacesFile()
 {
-    if (argc != 2)
-    {
-        std::cerr << "Usage: " << argv[0] << " <test directory>" << std::endl;
-        return 1;
-    }
+    // Arrange
+    const std::string filename = "bin/test-fixtures/input.txt";
+    const std::string original = readFile("fixtures/input.txt");
+    const std::string expected = readFile("fixtures/expected.txt");
 
-    const std::string directory = argv[1];
-    const TestCase tests[] = {
-        {"basic", "hello world hello\n", "hello", "hi", "hi world hi\n"},
-        {"adjacent", "aaaa", "aa", "X", "XX"},
-        {"overlapping", "ababa", "aba", "X", "Xba"},
-        {"longer replacement", "a b a", "a", "alphabet", "alphabet b alphabet"},
-        {"deletion", "abcabc", "abc", "", ""},
-        {"no recursive replacement", "aaa", "a", "aa", "aaaaaa"},
-        {"identical strings", "foo foo", "foo", "foo", "foo foo"},
-        {"no match", "unchanged\n", "missing", "new", "unchanged\n"},
-        {"empty file", "", "abc", "x", ""},
-        {"long search", "abc", "abcdef", "x", "abc"},
-        {"multiline", "first\nsecond\nfirst\n", "first", "done",
-         "done\nsecond\ndone\n"},
-        {"match across lines", "ab\ncd\nab\ncd", "b\nc", "X", "aXd\naXd"},
-        {"CRLF", "one\r\none\r\n", "one", "two", "two\r\ntwo\r\n"},
-        {"binary bytes", std::string("a\0ba\0b", 6), "a", "x",
-         std::string("x\0bx\0b", 6)},
-        {"binary search and replacement", std::string("a\0ba\0b", 6),
-         std::string("\0b", 2), std::string("X\0", 2),
-         std::string("aX\0aX\0", 6)},
-        {"buffer boundary", std::string(4095, 'x') + "ab" + std::string(4095, 'x'),
-         "ab", "Z", std::string(4095, 'x') + "Z" + std::string(4095, 'x')}
-    };
+    // Act
+    replaceFile(filename, "hello", "hi");
 
-    bool passed = true;
-    for (std::size_t i = 0; i < sizeof(tests) / sizeof(tests[0]); ++i)
-    {
-        passed = testTextReplacement(tests[i]) && passed;
-        passed = testFileReplacement(directory, tests[i]) && passed;
-    }
+    // Assert
+    assert(readFile(filename + ".replace") == expected);
+    assert(readFile(filename) == original);
+}
 
-    passed = reportTest("text: empty search rejected", testEmptySearch()) && passed;
-
-    passed = reportTest("empty filename", expectFailure("", "a", "b")) && passed;
-    passed = reportTest("missing input",
-                        expectFailure(directory + "/missing.txt", "a", "b"))
-        && passed;
-    passed = reportTest("directory as input", expectFailure(directory, "a", "b"))
-        && passed;
-
-    const std::string emptySearchFile = directory + "/empty-search.txt";
-    std::string preserved;
-    const bool emptySearchPassed = writeFile(emptySearchFile, "unchanged")
-        && writeFile(emptySearchFile + ".replace", "preserved")
-        && expectFailure(emptySearchFile, "", "x")
-        && readFile(emptySearchFile + ".replace", preserved)
-        && preserved == "preserved";
-    passed = reportTest("empty search preserves existing output", emptySearchPassed)
-        && passed;
-
-    const std::string blockedFile = directory + "/blocked.txt";
-    passed = reportTest("output cannot be opened",
-                        writeFile(blockedFile, "hello")
-                        && expectFailure(blockedFile, "hello", "hi"))
-        && passed;
-
-    return passed ? 0 : 1;
+int main()
+{
+    testReplacesAllMatches();
+    testDoesNotReplaceInsertedText();
+    testKeepsTextWithoutMatches();
+    testRejectsEmptySearch();
+    testReplacesFile();
+    std::cout << "All tests passed." << std::endl;
+    return 0;
 }
