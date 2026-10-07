@@ -3,6 +3,13 @@
 #include <cstddef>
 #include <iostream>
 
+const Harl::Complaint Harl::complaints[] = {
+    {"DEBUG", &Harl::debug},
+    {"INFO", &Harl::info},
+    {"WARNING", &Harl::warning},
+    {"ERROR", &Harl::error}
+};
+
 void Harl::debug(void)
 {
     std::cout << "I love having extra bacon for my "
@@ -32,17 +39,13 @@ void Harl::error(void)
 
 void Harl::complain(std::string level)
 {
-    const std::string levels[] = {"DEBUG", "INFO", "WARNING", "ERROR"};
-    typedef void (Harl::*Complaint)(void);
-    const Complaint complaints[] = {
-        &Harl::debug, &Harl::info, &Harl::warning, &Harl::error
-    };
+    const std::size_t count = sizeof(complaints) / sizeof(complaints[0]);
 
-    for (std::size_t i = 0; i < sizeof(levels) / sizeof(levels[0]); ++i)
+    for (std::size_t i = 0; i < count; ++i)
     {
-        if (level == levels[i])
+        if (level == complaints[i].level)
         {
-            (this->*complaints[i])();
+            (this->*complaints[i].handler)();
             return;
         }
     }

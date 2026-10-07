@@ -6,6 +6,16 @@
 class Harl
 {
 private:
+    typedef void (Harl::*ComplaintHandler)(void);
+
+    struct Complaint
+    {
+        const char *level;
+        ComplaintHandler handler;
+    };
+
+    static const Complaint complaints[];
+
     void debug(void);
     void info(void);
     void warning(void);

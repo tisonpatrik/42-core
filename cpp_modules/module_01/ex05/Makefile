@@ -17,7 +17,8 @@ MKDIR_P     := mkdir -p
 SRCS        := main.cpp \
                Harl.cpp
 OBJS        := $(SRCS:%.cpp=$(BIN_DIR)/%.o)
-DEPS        := $(OBJS:.o=.d)
+TEST_OBJS   := $(BIN_DIR)/tests.o $(BIN_DIR)/Harl.o
+DEPS        := $(sort $(OBJS:.o=.d) $(TEST_OBJS:.o=.d))
 
 # --------------------------- Targets ----------------------------------------
 
@@ -27,8 +28,11 @@ $(NAME): $(OBJS)
 	@$(CXX) $(CXXFLAGS) $(LDFLAGS) $(OBJS) $(LDLIBS) -o $@
 	@printf 'Successfully built: %s\n' "$(NAME)"
 
-test: $(NAME)
-	@./$(NAME)
+test: $(NAME) $(BIN_DIR)/tests
+	@$(BIN_DIR)/tests
+
+$(BIN_DIR)/tests: $(TEST_OBJS)
+	@$(CXX) $(CXXFLAGS) $(LDFLAGS) $(TEST_OBJS) $(LDLIBS) -o $@
 
 # --------------------------- Compile rules ----------------------------------
 
