@@ -1,9 +1,10 @@
 #include "replaceFile.hpp"
+#include "replaceText.hpp"
 
 #include <cstddef>
 #include <fstream>
 #include <iostream>
-#include <sstream>
+#include <stdexcept>
 
 static bool writeFile(const std::string &filename, const std::string &content)
 {
@@ -42,28 +43,62 @@ struct TestCase
     std::string expected;
 };
 
-static bool testReplacement(const std::string &directory, const TestCase &test)
+static bool testTextReplacement(const TestCase &test)
+{
+    return reportTest("text: " + test.name,
+                      replaceText(test.content, test.search, test.replacement)
+                      == test.expected);
+}
+
+static bool testFileReplacement(const std::string &directory, const TestCase &test)
 {
     const std::string filename = directory + "/" + test.name + ".txt";
+    if (!writeFile(filename, test.content))
+        return reportTest("file: " + test.name, false);
+    try
+    {
+        replaceFile(filename, test.search, test.replacement);
+    }
+    catch (const std::exception &error)
+    {
+        std::cerr << error.what() << std::endl;
+        return reportTest("file: " + test.name, false);
+    }
+
     std::string result;
     std::string original;
-    const bool passed = writeFile(filename, test.content)
-        && replaceFile(filename, test.search, test.replacement)
-        && readFile(filename + ".replace", result)
+    const bool passed = readFile(filename + ".replace", result)
         && result == test.expected
         && readFile(filename, original)
         && original == test.content;
-    return reportTest(test.name, passed);
+    return reportTest("file: " + test.name, passed);
 }
 
 static bool expectFailure(const std::string &filename, const std::string &s1,
                           const std::string &s2)
 {
-    std::ostringstream errors;
-    std::streambuf *original = std::cerr.rdbuf(errors.rdbuf());
-    const bool result = replaceFile(filename, s1, s2);
-    std::cerr.rdbuf(original);
-    return !result && !errors.str().empty();
+    try
+    {
+        replaceFile(filename, s1, s2);
+    }
+    catch (const std::exception &error)
+    {
+        return error.what()[0] != '\0';
+    }
+    return false;
+}
+
+static bool testEmptySearch()
+{
+    try
+    {
+        replaceText("unchanged", "", "x");
+    }
+    catch (const std::invalid_argument &)
+    {
+        return true;
+    }
+    return false;
 }
 
 int main(int argc, char **argv)
@@ -92,13 +127,21 @@ int main(int argc, char **argv)
         {"CRLF", "one\r\none\r\n", "one", "two", "two\r\ntwo\r\n"},
         {"binary bytes", std::string("a\0ba\0b", 6), "a", "x",
          std::string("x\0bx\0b", 6)},
+        {"binary search and replacement", std::string("a\0ba\0b", 6),
+         std::string("\0b", 2), std::string("X\0", 2),
+         std::string("aX\0aX\0", 6)},
         {"buffer boundary", std::string(4095, 'x') + "ab" + std::string(4095, 'x'),
          "ab", "Z", std::string(4095, 'x') + "Z" + std::string(4095, 'x')}
     };
 
     bool passed = true;
     for (std::size_t i = 0; i < sizeof(tests) / sizeof(tests[0]); ++i)
-        passed = testReplacement(directory, tests[i]) && passed;
+    {
+        passed = testTextReplacement(tests[i]) && passed;
+        passed = testFileReplacement(directory, tests[i]) && passed;
+    }
+
+    passed = reportTest("text: empty search rejected", testEmptySearch()) && passed;
 
     passed = reportTest("empty filename", expectFailure("", "a", "b")) && passed;
     passed = reportTest("missing input",

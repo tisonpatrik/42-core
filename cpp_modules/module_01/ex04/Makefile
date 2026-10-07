@@ -15,9 +15,11 @@ MKDIR_P     := mkdir -p
 # --------------------------- Sources ----------------------------------------
 
 SRCS        := main.cpp \
-               replaceFile.cpp
+               replaceFile.cpp \
+               replaceText.cpp
 OBJS        := $(SRCS:%.cpp=$(BIN_DIR)/%.o)
-TEST_OBJS   := $(BIN_DIR)/tests.o $(BIN_DIR)/replaceFile.o
+TEST_OBJS   := $(BIN_DIR)/tests.o $(BIN_DIR)/replaceFile.o \
+               $(BIN_DIR)/replaceText.o
 DEPS        := $(sort $(OBJS:.o=.d) $(TEST_OBJS:.o=.d))
 
 # --------------------------- Targets ----------------------------------------

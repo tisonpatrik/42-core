@@ -1,25 +1,23 @@
 #include "replaceFile.hpp"
+#include "replaceText.hpp"
 
 #include <fstream>
-#include <iostream>
+#include <stdexcept>
 
-static bool reportError(const std::string &message)
-{
-    std::cerr << "Error: " << message << std::endl;
-    return false;
-}
-
-bool replaceFile(const std::string &filename, const std::string &s1,
-                 const std::string &s2)
+static void validateArguments(const std::string &filename,
+                              const std::string &search)
 {
     if (filename.empty())
-        return reportError("the filename must not be empty.");
-    if (s1.empty())
-        return reportError("the search string must not be empty.");
+        throw std::invalid_argument("the filename must not be empty.");
+    if (search.empty())
+        throw std::invalid_argument("the search string must not be empty.");
+}
 
+static std::string readFile(const std::string &filename)
+{
     std::ifstream input(filename.c_str(), std::ios::binary);
     if (!input.is_open())
-        return reportError("cannot open input file '" + filename + "'.");
+        throw std::runtime_error("cannot open input file '" + filename + "'.");
 
     std::string content;
     char buffer[4096];
@@ -30,27 +28,28 @@ bool replaceFile(const std::string &filename, const std::string &s1,
                        static_cast<std::string::size_type>(input.gcount()));
     }
     if (input.bad() || !input.eof())
-        return reportError("cannot read input file '" + filename + "'.");
+        throw std::runtime_error("cannot read input file '" + filename + "'.");
+    return content;
+}
 
-    const std::string outputName = filename + ".replace";
-    std::ofstream output(outputName.c_str(), std::ios::binary | std::ios::trunc);
+static void writeFile(const std::string &filename, const std::string &content)
+{
+    std::ofstream output(filename.c_str(), std::ios::binary | std::ios::trunc);
     if (!output.is_open())
-        return reportError("cannot open output file '" + outputName + "'.");
+        throw std::runtime_error("cannot open output file '" + filename + "'.");
 
-    std::string::size_type position = 0;
-    std::string::size_type match = content.find(s1, position);
-    while (match != std::string::npos)
-    {
-        output << content.substr(position, match - position) << s2;
-        position = match + s1.size();
-        match = content.find(s1, position);
-    }
-    output << content.substr(position);
-
+    output << content;
     // Closing flushes buffered data, so delayed write errors are checked too.
     output.close();
     if (!output)
-        return reportError("cannot write output file '" + outputName + "'.");
+        throw std::runtime_error("cannot write output file '" + filename + "'.");
+}
 
-    return true;
+void replaceFile(const std::string &filename, const std::string &search,
+                 const std::string &replacement)
+{
+    validateArguments(filename, search);
+    const std::string content = readFile(filename);
+    const std::string result = replaceText(content, search, replacement);
+    writeFile(filename + ".replace", result);
 }

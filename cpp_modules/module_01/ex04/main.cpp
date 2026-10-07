@@ -14,8 +14,7 @@ int main(int argc, char **argv)
 
     try
     {
-        if (!replaceFile(argv[1], argv[2], argv[3]))
-            return 1;
+        replaceFile(argv[1], argv[2], argv[3]);
     }
     catch (const std::exception &error)
     {
