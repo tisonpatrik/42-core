@@ -6,20 +6,34 @@
 // Round to the nearest raw unit, with halfway values rounded away from zero.
 static int roundRawBits(double value)
 {
-    return static_cast<int>(value + (value < 0.0 ? -0.5 : 0.5));
+    const double halfUnit = 0.5;
+
+    // Conversion to int truncates toward zero; adjust by half a unit first.
+    if (value < 0.0)
+        value -= halfUnit;
+    else
+        value += halfUnit;
+
+    return static_cast<int>(value);
 }
 
 Fixed::Fixed(void) : rawBits(0)
 {
 }
 
-Fixed::Fixed(const int value) : rawBits(value * (1 << fractionalBits))
+Fixed::Fixed(const int value) : rawBits(0)
 {
+    const int scale = 1 << fractionalBits;
+    rawBits = value * scale;
 }
 
-Fixed::Fixed(const float value)
-    : rawBits(static_cast<int>(roundf(value * (1 << fractionalBits))))
+Fixed::Fixed(const float value) : rawBits(0)
 {
+    const int scale = 1 << fractionalBits; // 2^8 = 256 raw units per whole number.
+    const float scaledValue = value * scale;
+    const float roundedValue = roundf(scaledValue);
+
+    rawBits = static_cast<int>(roundedValue);
 }
 
 Fixed::Fixed(const Fixed &other) : rawBits(other.rawBits)
@@ -49,12 +63,15 @@ void Fixed::setRawBits(int const raw)
 
 float Fixed::toFloat(void) const
 {
-    return static_cast<float>(rawBits) / (1 << fractionalBits);
+    const int scale = 1 << fractionalBits;
+    const float value = static_cast<float>(rawBits);
+    return value / scale;
 }
 
 int Fixed::toInt(void) const
 {
-    return rawBits / (1 << fractionalBits);
+    const int scale = 1 << fractionalBits;
+    return rawBits / scale;
 }
 
 bool Fixed::operator>(const Fixed &other) const
@@ -103,9 +120,14 @@ Fixed Fixed::operator-(const Fixed &other) const
 
 Fixed Fixed::operator*(const Fixed &other) const
 {
+    const int scale = 1 << fractionalBits;
+    const double leftRawValue = rawBits;
+    const double rightRawValue = other.rawBits;
+    const double product = leftRawValue * rightRawValue;
+    const double scaledProduct = product / scale;
+
     Fixed result;
-    result.rawBits = roundRawBits(static_cast<double>(rawBits)
-                                 * other.rawBits / (1 << fractionalBits));
+    result.rawBits = roundRawBits(scaledProduct);
     return result;
 }
 
@@ -114,9 +136,13 @@ Fixed Fixed::operator/(const Fixed &other) const
     if (other.rawBits == 0)
         throw std::domain_error("division by zero");
 
+    const int scale = 1 << fractionalBits;
+    const double rawValue = rawBits;
+    const double scaledDividend = rawValue * scale;
+    const double quotient = scaledDividend / other.rawBits;
+
     Fixed result;
-    result.rawBits = roundRawBits(static_cast<double>(rawBits)
-                                 * (1 << fractionalBits) / other.rawBits);
+    result.rawBits = roundRawBits(quotient);
     return result;
 }
 
@@ -148,22 +174,30 @@ Fixed Fixed::operator--(int)
 
 Fixed &Fixed::min(Fixed &first, Fixed &second)
 {
-    return first <= second ? first : second;
+    if (first <= second)
+        return first;
+    return second;
 }
 
 const Fixed &Fixed::min(const Fixed &first, const Fixed &second)
 {
-    return first <= second ? first : second;
+    if (first <= second)
+        return first;
+    return second;
 }
 
 Fixed &Fixed::max(Fixed &first, Fixed &second)
 {
-    return first >= second ? first : second;
+    if (first >= second)
+        return first;
+    return second;
 }
 
 const Fixed &Fixed::max(const Fixed &first, const Fixed &second)
 {
-    return first >= second ? first : second;
+    if (first >= second)
+        return first;
+    return second;
 }
 
 std::ostream &operator<<(std::ostream &output, const Fixed &value)

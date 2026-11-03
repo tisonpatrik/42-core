@@ -8,14 +8,20 @@ Fixed::Fixed(void) : rawBits(0)
     std::cout << "Default constructor called" << std::endl;
 }
 
-Fixed::Fixed(const int value) : rawBits(value * (1 << fractionalBits))
+Fixed::Fixed(const int value) : rawBits(0)
 {
+    const int scale = 1 << fractionalBits;
+    rawBits = value * scale;
     std::cout << "Int constructor called" << std::endl;
 }
 
-Fixed::Fixed(const float value)
-    : rawBits(static_cast<int>(roundf(value * (1 << fractionalBits))))
+Fixed::Fixed(const float value) : rawBits(0)
 {
+    const int scale = 1 << fractionalBits; // 2^8 = 256 raw units per whole number.
+    const float scaledValue = value * scale;
+    const float roundedValue = roundf(scaledValue);
+
+    rawBits = static_cast<int>(roundedValue);
     std::cout << "Float constructor called" << std::endl;
 }
 
@@ -50,12 +56,15 @@ void Fixed::setRawBits(int const raw)
 
 float Fixed::toFloat(void) const
 {
-    return static_cast<float>(rawBits) / (1 << fractionalBits);
+    const int scale = 1 << fractionalBits;
+    const float value = static_cast<float>(rawBits);
+    return value / scale;
 }
 
 int Fixed::toInt(void) const
 {
-    return rawBits / (1 << fractionalBits);
+    const int scale = 1 << fractionalBits;
+    return rawBits / scale;
 }
 
 std::ostream &operator<<(std::ostream &output, const Fixed &value)
