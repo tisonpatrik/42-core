@@ -6,29 +6,25 @@
 ClapTrap::ClapTrap(void)
     : name("default"), hitPoints(10), energyPoints(10), attackDamage(0)
 {
-    std::cout << "ClapTrap " << this->name
-              << " created by default constructor" << std::endl;
+    std::cout << "ClapTrap " << this->name << " created by default constructor" << std::endl;
 }
 
 ClapTrap::ClapTrap(const std::string &name)
     : name(name), hitPoints(10), energyPoints(10), attackDamage(0)
 {
-    std::cout << "ClapTrap " << this->name
-              << " created by name constructor" << std::endl;
+    std::cout << "ClapTrap " << this->name << " created by name constructor" << std::endl;
 }
 
 ClapTrap::ClapTrap(const ClapTrap &other)
     : name(other.name), hitPoints(other.hitPoints),
       energyPoints(other.energyPoints), attackDamage(other.attackDamage)
 {
-    std::cout << "ClapTrap " << this->name
-              << " created by copy constructor" << std::endl;
+    std::cout << "ClapTrap " << this->name << " created by copy constructor" << std::endl;
 }
 
 ClapTrap &ClapTrap::operator=(const ClapTrap &other)
 {
-    std::cout << "ClapTrap " << this->name << " assigned from ClapTrap "
-              << other.name << std::endl;
+    std::cout << "ClapTrap " << this->name << " assigned from ClapTrap " << other.name << std::endl;
     if (this != &other)
     {
         this->name = other.name;
@@ -63,17 +59,14 @@ void ClapTrap::takeDamage(unsigned int amount)
 {
     if (this->hitPoints == 0)
     {
-        std::cout << "ClapTrap " << this->name
-                  << " has no hit points left and can't take more damage!"
-                  << std::endl;
+        std::cout << "ClapTrap " << this->name << " has no hit points left and can't take more damage!" << std::endl;
         return;
     }
     if (amount >= this->hitPoints)
         this->hitPoints = 0;
     else
         this->hitPoints -= amount;
-    std::cout << "ClapTrap " << this->name << " takes " << amount
-              << " points of damage and now has " << this->hitPoints
+    std::cout << "ClapTrap " << this->name << " takes " << amount << " points of damage and now has " << this->hitPoints
               << " hit points!" << std::endl;
 }
 
