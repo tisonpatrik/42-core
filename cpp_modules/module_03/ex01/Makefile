@@ -11,7 +11,9 @@ MKDIR_P     := mkdir -p
 
 
 SRCS        := main.cpp \
-               ClapTrap.cpp
+               ClapTrap.cpp \
+               ScavTrap.cpp
+
 OBJS        := $(SRCS:%.cpp=$(BIN_DIR)/%.o)
 DEPS        := $(OBJS:.o=.d)
 
