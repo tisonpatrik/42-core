@@ -6,9 +6,9 @@ class ClapTrap
 {
     private:
         std::string name;
-        static const int hitPoints = 10;
-        static const int energyPoints = 10;
-        static const int attack_damage = 0;
+        int hitPoints = 10;
+        int energyPoints = 10;
+        int attack_damage = 0;
 
     public:
         ClapTrap(void);
@@ -17,6 +17,8 @@ class ClapTrap
         ClapTrap &operator=(const ClapTrap &other);
         ~ClapTrap(void);
 
+        std::string getName();
+        void setName();
         void attack(const std::string& target);
         void takeDamage(unsigned int amount);
         void beRepaired(unsigned int amount);
