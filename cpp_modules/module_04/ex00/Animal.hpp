@@ -3,36 +3,18 @@
 
 #include <string>
 
-class Animal{
+class Animal {
 protected:
-    std::string type;
+  std::string type;
 
 public:
-    Animal(void);
-    Animal(const Animal &other);
-    Animal &operator=(const Animal &other);
-    virtual ~Animal(void);
-    void makeSound();
-};
+  Animal(void);
+  Animal(const Animal &other);
+  Animal &operator=(const Animal &other);
+  virtual ~Animal(void);
 
-class Dog: public Animal {
-    public:
-    Dog(void);
-    Dog(const Dog &other);
-    Dog &operator = (const Dog &other);
-    virtual ~Dog(void);
-    void makeSound();
-
-};
-
-class Cat: public Animal {
-    public:
-    Cat(void);
-    Cat(const Cat &other);
-    Cat &operator = (const Cat &other);
-    virtual ~Cat(void);
-    void makeSound();
-
+  const std::string &getType(void) const;
+  virtual void makeSound(void) const;
 };
 
 #endif

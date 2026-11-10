@@ -12,6 +12,10 @@ MKDIR_P     := mkdir -p
 
 SRCS        := main.cpp \
                Animal.cpp \
+               Dog.cpp \
+               Cat.cpp \
+               WrongAnimal.cpp \
+               WrongCat.cpp
 
 OBJS        := $(SRCS:%.cpp=$(BIN_DIR)/%.o)
 DEPS        := $(OBJS:.o=.d)
