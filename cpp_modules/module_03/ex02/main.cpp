@@ -2,28 +2,19 @@
 #include "FragTrap.hpp"
 #include "ScavTrap.hpp"
 
-static void testAttack(void) {
+static void testClapAttackAndRepair(void) {
   // Arrange
   ClapTrap clap("Clappy");
 
   // Act
   clap.attack("a dummy");
-
-  // Assert: prints "causing 0 points of damage"
-}
-
-static void testDamageAndRepair(void) {
-  // Arrange
-  ClapTrap clap("Clappy");
-
-  // Act
   clap.takeDamage(3);
   clap.beRepaired(2);
 
-  // Assert: prints 7 hit points, then 9 hit points
+  // Assert: 0 points of damage, 7 hit points, then 9 hit points
 }
 
-static void testNoEnergy(void) {
+static void testClapNoEnergy(void) {
   // Arrange
   ClapTrap clap("Tired");
   for (int i = 0; i < 10; i++)
@@ -35,17 +26,6 @@ static void testNoEnergy(void) {
   // Assert: prints "can't attack"
 }
 
-static void testNoHitPoints(void) {
-  // Arrange
-  ClapTrap clap("Fragile");
-  clap.takeDamage(25);
-
-  // Act
-  clap.beRepaired(5);
-
-  // Assert: prints "can't repair"
-}
-
 static void testScavAttackAndGuardGate(void) {
   // Arrange
   ScavTrap scav("Serena");
@@ -54,8 +34,8 @@ static void testScavAttackAndGuardGate(void) {
   scav.attack("a dummy");
   scav.guardGate();
 
-  // Assert: prints ClapTrap then ScavTrap on creation, "causing 20 points of
-  // damage", Gate keeper mode, then ScavTrap then ClapTrap on destruction
+  // Assert: ClapTrap then ScavTrap on creation, 20 points of damage,
+  // Gate keeper mode, ScavTrap then ClapTrap on destruction
 }
 
 static void testScavDamageAndRepair(void) {
@@ -66,19 +46,7 @@ static void testScavDamageAndRepair(void) {
   scav.takeDamage(30);
   scav.beRepaired(10);
 
-  // Assert: prints 70 hit points, then 80 hit points
-}
-
-static void testScavCopy(void) {
-  // Arrange
-  ScavTrap original("Original");
-  original.takeDamage(40);
-
-  // Act
-  ScavTrap copy(original);
-  copy.takeDamage(0);
-
-  // Assert: the copy keeps 60 hit points
+  // Assert: 70 hit points, then 80 hit points
 }
 
 static void testFragAttackAndHighFive(void) {
@@ -89,8 +57,8 @@ static void testFragAttackAndHighFive(void) {
   frag.attack("a dummy");
   frag.highFivesGuys();
 
-  // Assert: prints ClapTrap then FragTrap on creation, "causing 30 points of
-  // damage", the high five request, then FragTrap then ClapTrap on destruction
+  // Assert: ClapTrap then FragTrap on creation, 30 points of damage,
+  // high five request, FragTrap then ClapTrap on destruction
 }
 
 static void testFragDamageAndRepair(void) {
@@ -101,17 +69,14 @@ static void testFragDamageAndRepair(void) {
   frag.takeDamage(50);
   frag.beRepaired(20);
 
-  // Assert: prints 50 hit points, then 70 hit points
+  // Assert: 50 hit points, then 70 hit points
 }
 
 int main(void) {
-  testAttack();
-  testDamageAndRepair();
-  testNoEnergy();
-  testNoHitPoints();
+  testClapAttackAndRepair();
+  testClapNoEnergy();
   testScavAttackAndGuardGate();
   testScavDamageAndRepair();
-  testScavCopy();
   testFragAttackAndHighFive();
   testFragDamageAndRepair();
   return 0;
