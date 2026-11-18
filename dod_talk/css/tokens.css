@@ -1,0 +1,73 @@
+/* ==========================================================================
+   Design tokens
+   Everything visual is derived from these. Dark is the default theme,
+   `T` toggles light (data-theme="light" on <html>).
+   ========================================================================== */
+
+:root {
+	/* surface */
+	--bg: #0e1014;
+	--panel: #171a21;
+	--line: #2a2f3a;
+	--fg: #ebe9e4;
+	--muted: #9aa0ab;
+
+	/* meaning */
+	--hot: #ff5d73;      /* slow / bad / the point */
+	--ok: #4ade80;       /* saved / good */
+	--cold: #3a404c;     /* neutral data */
+	--c: #5ab0ff;        /* C track, "fast" bars */
+	--py: #ffd43b;       /* Python track */
+
+	/* syntax */
+	--k-kw: #c792ea;
+	--k-ty: #82aaff;
+	--k-str: #c3e88d;
+	--k-com: #6b7385;
+	--k-num: #f78c6c;
+
+	/* type */
+	--sans: "Inter", system-ui, sans-serif;
+	--mono: "JetBrains Mono", ui-monospace, monospace;
+	--fs-display: 104px;
+	--fs-h2: 56px;
+	--fs-statement: 64px;
+	--fs-lead: 46px;
+	--fs-body: 30px;
+	--fs-card: 24px;
+	--fs-small: 22px;
+	--fs-label: 20px;
+	--fs-caption: 15px;
+
+	/* space & shape */
+	--slide-w: 1600px;
+	--slide-h: 900px;
+	--slide-pad: 72px 96px;
+	--gap: 28px;
+	--gap-lg: 48px;
+	--radius: 16px;
+	--radius-sm: 8px;
+
+	/* motion */
+	--ease-out: cubic-bezier(.2, .8, .2, 1);
+	--grow-time: .9s;
+	--draw-time: 1.4s;
+}
+
+:root[data-theme="light"] {
+	--bg: #fbfaf7;
+	--panel: #f0eee9;
+	--line: #d9d6cf;
+	--fg: #16181d;
+	--muted: #5d6470;
+	--hot: #d6304a;
+	--ok: #15803d;
+	--cold: #cfcbc2;
+	--c: #1f6fd1;
+	--py: #a87d00;
+	--k-kw: #7c3aed;
+	--k-ty: #1d4ed8;
+	--k-str: #3f7f1a;
+	--k-com: #8a8f99;
+	--k-num: #c2410c;
+}

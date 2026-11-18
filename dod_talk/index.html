@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mechanical Sympathy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+
+<main class="deck"></main>
+
+<div class="progress"><div class="progress__bar"></div></div>
+<div class="counter"></div>
+<div class="keys">← → · T téma · F fullscreen</div>
+
+<!-- core -->
+<script src="js/core/talk.js"></script>
+<!-- data -->
+<script src="data/casey.js"></script>
+<script src="data/hardware.js"></script>
+<script src="data/aws.js"></script>
+<!-- components -->
+<script src="js/components/code.js"></script>
+<script src="js/components/bars.js"></script>
+<script src="js/components/diagrams.js"></script>
+<script src="js/components/timeline.js"></script>
+<script src="js/components/cost.js"></script>
+<!-- slides, in order -->
+<script src="slides/0-intro.js"></script>
+<script src="slides/1-hardware.js"></script>
+<script src="slides/2-layout.js"></script>
+<script src="slides/3-lifetimes.js"></script>
+<script src="slides/4-end.js"></script>
+<!-- boot -->
+<script src="js/core/deck.js"></script>
+</body>
+</html>

@@ -1,0 +1,239 @@
+/* ==========================================================================
+   Components
+   Naming: .block, .block__part, .block--variant. Colour comes from tone
+   classes (.tone-*) that set --tone, so every component colours the same way.
+   ========================================================================== */
+
+.tone-c    { --tone: var(--c); }
+.tone-py   { --tone: var(--py); }
+.tone-hot  { --tone: var(--hot); }
+.tone-ok   { --tone: var(--ok); }
+.tone-cold { --tone: var(--cold); }
+.tone-fg   { --tone: var(--fg); }
+
+/* ---------- motion: elements animate when their slide is entered ---------- */
+
+[data-grow] { width: 0; transition: width var(--grow-time) var(--ease-out); }
+[data-draw] { transition: stroke-dashoffset var(--draw-time) var(--ease-out); }
+
+/* ---------- card ---------- */
+
+.card {
+	background: var(--panel);
+	border: 1px solid var(--line);
+	border-radius: var(--radius);
+	padding: 28px 32px;
+}
+.card p, .card li { font-size: var(--fs-card); }
+.card--accent { border-color: var(--hot); }
+.card__value { display: block; font-size: 40px; font-weight: 800; line-height: 1.2; }
+.card__value + span { color: var(--muted); }
+
+/* ---------- pill ---------- */
+
+.pill {
+	display: inline-block;
+	margin-right: 10px;
+	padding: 7px 12px;
+	border-radius: 999px;
+	font: 700 18px/1 var(--mono);
+	vertical-align: middle;
+	color: var(--tone);
+	background: color-mix(in srgb, var(--tone) 18%, transparent);
+}
+
+/* ---------- code block (highlighted by js/components/code.js) ---------- */
+
+.code {
+	margin: 0;
+	padding: 22px 26px;
+	overflow: hidden;
+	background: var(--panel);
+	border: 1px solid var(--line);
+	border-radius: 14px;
+	font: 400 21px/1.5 var(--mono);
+	font-variant-ligatures: none;
+	tab-size: 4;
+	white-space: pre;
+}
+.code--sm { font-size: 18px; }
+.code .kw { color: var(--k-kw); }
+.code .ty { color: var(--k-ty); }
+.code .st { color: var(--k-str); }
+.code .cm { color: var(--k-com); font-style: italic; }
+.code .nu { color: var(--k-num); }
+
+/* ---------- legend ---------- */
+
+.legend { display: flex; gap: 28px; align-items: center; font-size: 20px; color: var(--muted); }
+.legend__swatch {
+	display: inline-block;
+	width: 18px; height: 18px;
+	margin-right: 8px;
+	border-radius: 4px;
+	vertical-align: -2px;
+	background: var(--tone);
+}
+
+/* ---------- bars: horizontal bar chart (js/components/bars.js) ---------- */
+
+.bars { display: grid; grid-template-columns: max-content 1fr; gap: 14px 20px; align-items: center; }
+.bars__label { font: 400 22px var(--mono); color: var(--muted); text-align: right; }
+.bars__track { position: relative; height: 44px; }
+.bars__fill { height: 100%; border-radius: 6px; background: var(--tone); }
+.bars__value {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	padding-left: 12px;
+	font: 700 22px var(--mono);
+	white-space: nowrap;
+}
+.bars__delta { margin-left: 10px; color: var(--ok); }
+
+/* ---------- title manifesto ---------- */
+
+.manifesto { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap); margin-top: 20px; }
+.manifesto__item { display: flex; gap: 18px; align-items: baseline; padding-top: 20px; border-top: 3px solid var(--line); }
+.manifesto__num { font: 700 30px/1 var(--mono); color: var(--muted); }
+.manifesto__item p { font-size: 27px; line-height: 1.35; }
+.manifesto__item--bonus { border-top-color: var(--hot); }
+.manifesto__item--bonus .manifesto__num { color: var(--hot); }
+
+/* ---------- agenda ---------- */
+
+.agenda { display: grid; gap: 4px; margin-top: 8px; }
+.agenda__row {
+	display: grid;
+	grid-template-columns: 110px 1fr max-content;
+	gap: var(--gap);
+	align-items: center;
+	padding: 14px 24px;
+	border-radius: 12px;
+	border-left: 4px solid transparent;
+}
+.agenda__num { font: 700 40px/1 var(--mono); color: var(--muted); }
+.agenda__title { font-size: 36px; font-weight: 800; line-height: 1.1; }
+.agenda__sub { margin-top: 4px; font-size: 22px; color: var(--muted); }
+.agenda__time { font: 400 22px var(--mono); color: var(--muted); }
+.agenda__row--pillar { background: var(--panel); border-left-color: var(--hot); }
+.agenda__row--pillar .agenda__num { color: var(--hot); }
+.agenda__row--qa .agenda__title { font-weight: 600; color: var(--muted); }
+
+/* ---------- rules (Casey's whiteboard) ---------- */
+
+.rules { display: grid; gap: 18px; padding-left: 1.4em; font-size: 26px; }
+.rules li { margin: 0; padding-left: 6px; }
+.rules li::marker { font: 700 26px var(--mono); color: var(--hot); }
+.rules b { display: block; font-weight: 600; line-height: 1.25; }
+.rules span { display: block; margin-top: 2px; font-size: 21px; color: var(--muted); }
+.rules__keep::marker { color: var(--ok) !important; }
+.rules__keep b { color: var(--muted); }
+
+/* ---------- latency table ---------- */
+
+.latency { display: grid; grid-template-columns: 1fr max-content max-content; gap: 10px 48px; margin-top: 20px; font-size: 32px; align-items: baseline; }
+.latency__head { font: 600 18px var(--mono); color: var(--muted); text-transform: uppercase; letter-spacing: .1em; }
+.latency__real { font-family: var(--mono); color: var(--muted); text-align: right; }
+.latency__human { font-weight: 800; }
+
+/* ---------- cache line cells (js/components/cacheline.js) ---------- */
+
+.cacheline { display: grid; grid-template-columns: repeat(16, 1fr); gap: 4px; }
+.cacheline i { height: 34px; border-radius: 4px; background: var(--cold); }
+.cacheline i.is-hot { background: var(--hot); }
+.cacheline i.is-split { box-shadow: inset 3px 0 0 var(--fg); }
+
+/* ---------- object boxes (Python object layout) ---------- */
+
+.objects { display: flex; gap: 40px; align-items: flex-start; }
+.objbox { border: 2px solid var(--line); border-radius: 10px; font: 400 19px/1 var(--mono); }
+.objbox > div { padding: 10px 14px; border-top: 1px solid var(--line); }
+.objbox > div:first-child { border-top: 0; }
+.objbox--row { display: flex; }
+.objbox--row > div { border-top: 0; border-left: 1px solid var(--line); }
+.objbox--row > div:first-child { border-left: 0; }
+.objbox__type { font-size: 16px; color: var(--muted); }
+
+/* ---------- lifetimes (js/components/lifetimes.js fills ticked lanes) ---------- */
+
+.lifetimes { display: grid; grid-template-columns: 330px 1fr; gap: 16px 24px; align-items: center; margin-top: 20px; }
+.lifetimes__name { font-size: 22px; }
+.lifetimes__name small { display: block; font: 400 17px var(--mono); color: var(--muted); }
+.lifetimes__lane { position: relative; height: 40px; background: var(--panel); border-radius: var(--radius-sm); }
+.lifetimes__seg {
+	position: absolute;
+	top: 6px; bottom: 6px;
+	left: var(--from);
+	width: var(--len);
+	border-radius: 5px;
+	background: var(--tone);
+}
+
+/* ---------- arena memory map ---------- */
+
+.memmap { display: flex; height: 120px; overflow: hidden; border: 2px solid var(--fg); border-radius: 12px; }
+.memmap__seg {
+	flex: var(--w, 1);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding: 0 14px;
+	border-right: 2px solid var(--bg);
+	background: var(--tone);
+	color: #0e1014;
+	font: 700 18px/1.3 var(--mono);
+}
+.memmap__seg small { font-weight: 400; font-size: 15px; }
+
+/* ---------- timeline (js/components/timeline.js) ---------- */
+
+.timeline { display: block; width: 100%; height: auto; }
+.timeline .grid-line { stroke: var(--line); stroke-width: 1; }
+.timeline .base-line { stroke: var(--muted); stroke-width: 1.5; }
+.timeline .axis { fill: var(--muted); font: 400 18px var(--mono); }
+.timeline .series { fill: none; stroke: var(--tone); stroke-width: 4; stroke-linejoin: round; }
+.timeline .dot { fill: var(--tone); }
+.timeline .threshold { stroke: var(--tone); stroke-width: 2; stroke-dasharray: 8 6; }
+.timeline .threshold-label { fill: var(--tone); font: 700 20px var(--mono); }
+.timeline .ring { fill: none; stroke: var(--fg); stroke-width: 3; }
+.timeline .ref { fill: var(--fg); stroke: var(--bg); stroke-width: 3; }
+.timeline .note { fill: var(--fg); font: 700 18px var(--sans); }
+
+.rewind { display: grid; gap: 6px; }
+.rewind__row {
+	display: grid;
+	grid-template-columns: 78px 104px 1fr 92px;
+	gap: 12px;
+	align-items: baseline;
+	padding: 14px 18px;
+	background: var(--panel);
+	border-left: 4px solid var(--tone);
+	border-radius: 10px;
+}
+.rewind__factor { font: 700 26px var(--mono); color: var(--tone); }
+.rewind__year { font-size: 34px; font-weight: 800; }
+.rewind__chip { font-size: 19px; color: var(--muted); white-space: nowrap; }
+.rewind__back { font: 700 20px var(--mono); text-align: right; }
+.rewind__row--head { padding: 0 18px; background: none; border: 0; }
+.rewind__row--head > * { font: 600 15px var(--mono); color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+
+/* ---------- cost table (js/components/cost.js) ---------- */
+
+.cost { display: grid; gap: 8px; }
+.cost__row { display: grid; grid-template-columns: 210px 1fr 110px 150px 150px; gap: 20px; align-items: center; }
+.cost__name { font: 700 22px var(--mono); }
+.cost__track { position: relative; height: 40px; }
+.cost__fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 6px; background: var(--tone); }
+.cost__servers { font: 400 22px var(--mono); color: var(--muted); text-align: right; }
+.cost__price { font-size: 28px; font-weight: 800; text-align: right; }
+.cost__saved { font: 700 22px var(--mono); color: var(--ok); }
+.cost__row--head > * { font: 600 14px var(--mono); color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+.cost__row--head .cost__track { height: auto; }
+.cost__summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 8px; }
+
+/* ---------- lists ---------- */
+
+.checklist { display: grid; gap: 14px; padding-left: 1.3em; }
+.checklist li { margin: 0; }
+.reading { line-height: 1.45; }

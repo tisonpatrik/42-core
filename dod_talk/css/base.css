@@ -1,0 +1,122 @@
+/* ==========================================================================
+   Base: reset, deck frame, typography, layout primitives, utilities, chrome
+   ========================================================================== */
+
+* { box-sizing: border-box; }
+
+html, body {
+	margin: 0;
+	height: 100%;
+	overflow: hidden;
+	background: var(--bg);
+	color: var(--fg);
+	font-family: var(--sans);
+}
+
+/* ---------- deck & slide frame ---------- */
+
+.deck { position: fixed; inset: 0; }
+
+.slide {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: var(--slide-w);
+	height: var(--slide-h);
+	transform: translate(-50%, -50%) scale(var(--scale, 1));
+	padding: var(--slide-pad);
+	display: none;
+	flex-direction: column;
+	gap: var(--gap);
+	font-size: var(--fs-body);
+	line-height: 1.4;
+}
+.slide.is-active { display: flex; }
+.slide--center { justify-content: center; }
+
+/* ---------- typography ---------- */
+
+h1, h2, h3, p, ul, ol { margin: 0; }
+h1 { font-size: var(--fs-display); line-height: 1; font-weight: 800; letter-spacing: -.02em; }
+h2 { font-size: var(--fs-h2); line-height: 1.1; font-weight: 800; letter-spacing: -.01em; }
+h3 { font-size: 30px; font-weight: 600; margin-bottom: 12px; }
+ul, ol { padding-left: 1.1em; }
+li { margin: 8px 0; }
+
+.kicker {
+	font: 600 var(--fs-label)/1 var(--mono);
+	letter-spacing: .12em;
+	text-transform: uppercase;
+	color: var(--muted);
+}
+.statement { font-size: var(--fs-statement); font-weight: 800; line-height: 1.25; }
+.lead { font-size: var(--fs-lead); line-height: 1.25; font-weight: 600; }
+.lead--light { font-weight: 400; }
+.small { font-size: var(--fs-small); }
+.caption { font: 400 var(--fs-caption) var(--mono); color: var(--muted); }
+.mono { font-family: var(--mono); }
+
+.muted { color: var(--muted); }
+.hot { color: var(--hot); }
+.ok { color: var(--ok); }
+
+code {
+	font-family: var(--mono);
+	font-variant-ligatures: none;
+	font-size: .88em;
+	background: var(--panel);
+	padding: 2px 8px;
+	border-radius: 6px;
+}
+
+a.link { color: var(--c); font-family: var(--mono); }
+
+/* source line at the bottom of a slide */
+.source { font-size: var(--fs-small); color: var(--muted); margin-top: auto; }
+.source a.link { font-size: .95em; }
+
+/* ---------- layout primitives ---------- */
+
+.grid { display: grid; gap: var(--gap-lg); align-items: start; }
+.grid--fill { flex: 1; min-height: 0; }
+.grid--center { align-items: center; }
+.grid--tight { gap: var(--gap); }
+.cols-2 { grid-template-columns: 1fr 1fr; }
+.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.cols-wide-left { grid-template-columns: 3fr 2fr; }
+.cols-chart { grid-template-columns: 1fr 540px; }
+
+.stack { display: grid; gap: 20px; align-content: start; }
+.stack--sm { gap: 12px; }
+.stack--lg { gap: 34px; }
+
+.push-bottom { margin-top: auto; }
+.mt-sm { margin-top: 12px; }
+.mt { margin-top: 24px; }
+.mb-sm { margin-bottom: 12px; }
+
+/* ---------- deck chrome ---------- */
+
+.progress { position: fixed; left: 0; right: 0; bottom: 0; height: 4px; background: var(--line); z-index: 5; }
+.progress__bar { height: 100%; width: 0; background: var(--hot); transition: width .25s; }
+
+.counter, .keys {
+	position: fixed;
+	bottom: 12px;
+	font: 400 13px var(--mono);
+	color: var(--muted);
+	z-index: 5;
+}
+.counter { right: 18px; font-size: 14px; }
+.keys { left: 18px; opacity: .6; }
+
+/* ---------- print / PDF ---------- */
+
+@media print {
+	@page { size: 1600px 900px; margin: 0; }
+	html, body { overflow: visible; height: auto; }
+	.deck { position: static; }
+	.slide { display: flex !important; position: relative; left: 0; top: 0; transform: none; page-break-after: always; }
+	[data-grow] { transition: none !important; }
+	.progress, .counter, .keys { display: none; }
+}
