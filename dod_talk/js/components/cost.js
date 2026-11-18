@@ -5,6 +5,16 @@
 (() => {
 	const usd = n => `${Talk.fmt.int(n)} $`;
 
+	Talk.component('cost-lede', {
+		mount(el) {
+			const aws = Talk.source(el);
+			const yearly = aws.hourly * aws.hoursPerYear;
+			el.textContent = `Služba, které při clean code verzi stačí ${aws.baseServers} serverů `
+				+ `${aws.instance} (${aws.vcpu} vCPU, ${aws.cpu}, ${Talk.fmt.dec(aws.hourly, 4)} $/h, ${usd(yearly)} za rok). `
+				+ 'Stejná práce, jen jinak napsaný kód.';
+		},
+	});
+
 	Talk.component('cost', {
 		mount(el) {
 			const aws = Talk.source(el);
@@ -31,9 +41,6 @@
 			const extra = worst - worst / target.factor;
 
 			el.innerHTML = `
-				<p class="small muted">Služba, které při clean code verzi stačí ${aws.baseServers} serverů
-					${aws.instance} (${aws.vcpu} vCPU, ${aws.cpu}, ${Talk.fmt.dec(aws.hourly, 4)} $/h, ${usd(yearly)} za rok).
-					Stejná práce, jen jinak napsaný kód.</p>
 				<div class="cost">
 					<div class="cost__row cost__row--head">
 						<span>verze</span><span class="cost__track"></span><span class="cost__servers">serverů</span>
@@ -41,10 +48,10 @@
 					</div>
 					${rows}
 				</div>
-				<div class="cost__summary">
-					<div class="card"><p><b class="card__value">${usd(extra)}</b><span>ročně navíc za clean code proti verzi ${target.short}</span></p></div>
-					<div class="card"><p><b class="card__value">${Talk.fmt.factor(target.factor)}×</b><span>víc serverů = ${Talk.fmt.factor(target.factor)}× větší účet, cena roste lineárně s vCPU</span></p></div>
-					<div class="card"><p><b class="card__value">${usd(extra * aws.horizonYears)}</b><span>za ${aws.horizonYears} let provozu jedné takové služby</span></p></div>
+				<div class="cards cards--3">
+					<div class="card card--compact tone-hot"><b class="card__value">${usd(extra)}</b><p class="card__body">ročně navíc za clean code proti verzi ${target.short}</p></div>
+					<div class="card card--compact tone-hot"><b class="card__value">${Talk.fmt.factor(target.factor)}×</b><p class="card__body">víc serverů = ${Talk.fmt.factor(target.factor)}× větší účet, cena roste lineárně s vCPU</p></div>
+					<div class="card card--compact tone-hot"><b class="card__value">${usd(extra * aws.horizonYears)}</b><p class="card__body">za ${aws.horizonYears} let provozu jedné takové služby</p></div>
 				</div>`;
 		},
 	});

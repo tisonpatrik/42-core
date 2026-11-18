@@ -1,7 +1,6 @@
 /* ==========================================================================
    Design tokens
-   Everything visual is derived from these. Dark is the default theme,
-   `T` toggles light (data-theme="light" on <html>).
+   Everything visual is derived from these. Dark theme only.
    ========================================================================== */
 
 :root {
@@ -44,6 +43,8 @@
 	--slide-h: 900px;
 	--slide-pad: 72px 96px;
 	--gap: 28px;
+	--head-h: 112px;   /* kicker + title; grows if a lede is present */
+	--foot-h: 36px;    /* one line of sources */
 	--gap-lg: 48px;
 	--radius: 16px;
 	--radius-sm: 8px;
@@ -54,20 +55,3 @@
 	--draw-time: 1.4s;
 }
 
-:root[data-theme="light"] {
-	--bg: #fbfaf7;
-	--panel: #f0eee9;
-	--line: #d9d6cf;
-	--fg: #16181d;
-	--muted: #5d6470;
-	--hot: #d6304a;
-	--ok: #15803d;
-	--cold: #cfcbc2;
-	--c: #1f6fd1;
-	--py: #a87d00;
-	--k-kw: #7c3aed;
-	--k-ty: #1d4ed8;
-	--k-str: #3f7f1a;
-	--k-com: #8a8f99;
-	--k-num: #c2410c;
-}

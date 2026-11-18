@@ -1,9 +1,9 @@
 /* ==========================================================================
-   Deck: navigation, scaling, theme, entry animations.
+   Deck: navigation, scaling, entry animations.
    Loaded last; renders the slides and boots once everything is registered.
 
-   Keys: → / space / enter next · ← / backspace prev · Home / End
-         T theme · F fullscreen. Click right 2/3 = next, left 1/3 = prev.
+   Keys: → next · ← prev · Home / End · F fullscreen.
+   Mouse clicks do not navigate.
    ========================================================================== */
 
 (() => {
@@ -12,7 +12,6 @@
 	const slides = [...document.querySelectorAll('.slide')];
 	const progress = document.querySelector('.progress__bar');
 	const counter = document.querySelector('.counter');
-	const THEME_KEY = 'dod-theme';
 	let current = 0;
 
 	/* ---------- entry animations ---------- */
@@ -66,18 +65,13 @@
 		animate(slide);
 	}
 
-	function toggleTheme() {
-		root.dataset.theme = root.dataset.theme === 'light' ? 'dark' : 'light';
-		try { localStorage.setItem(THEME_KEY, root.dataset.theme); } catch (_) { /* storage blocked */ }
-	}
-
 	function toggleFullscreen() {
 		if (document.fullscreenElement) document.exitFullscreen();
 		else if (root.requestFullscreen) root.requestFullscreen();
 	}
 
-	const NEXT = ['ArrowRight', 'PageDown', ' ', 'Enter'];
-	const PREV = ['ArrowLeft', 'PageUp', 'Backspace'];
+	const NEXT = ['ArrowRight'];
+	const PREV = ['ArrowLeft'];
 
 	addEventListener('keydown', e => {
 		if (e.metaKey || e.ctrlKey || e.altKey) return;
@@ -86,23 +80,12 @@
 		else if (PREV.includes(k)) { e.preventDefault(); go(current - 1); }
 		else if (k === 'Home') go(0);
 		else if (k === 'End') go(slides.length - 1);
-		else if (k === 't' || k === 'T') toggleTheme();
 		else if (k === 'f' || k === 'F') toggleFullscreen();
-	});
-
-	addEventListener('click', e => {
-		if (e.target.closest('a')) return;
-		go(current + (e.clientX > innerWidth / 3 ? 1 : -1));
 	});
 
 	addEventListener('resize', fit);
 
 	/* ---------- boot ---------- */
-
-	try {
-		const saved = localStorage.getItem(THEME_KEY);
-		if (saved) root.dataset.theme = saved;
-	} catch (_) { /* storage blocked */ }
 
 	Talk.mountAll();
 	fit();

@@ -43,6 +43,12 @@ Talk.data.hardware = {
 	],
 	/* when a threshold falls between two Pentium 4 clocks, name it plainly */
 	chipOverride: { onepass: 'Pentium 4' },
+	/* extra line under a threshold label, keyed by Casey step */
+	notes: { table: 'můj první „seriózní“ PC' },
+	/* single highlighted points, e.g. the machine the talk runs on */
+	markers: [
+		{ year: 2020, score: 2341, label: 'tenhle notebook', chip: 'Ryzen 5 PRO 4650U', dx: 18, dy: 28, anchor: 'start' },
+	],
 	sources: [
 		['cpubenchmark.net/single-thread', 'https://www.cpubenchmark.net/single-thread'],
 		['Pentium 4 3 GHz', 'https://www.cpubenchmark.net/cpu.php?cpu=Intel+Pentium+4+3.00GHz&id=1074'],

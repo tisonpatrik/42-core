@@ -78,7 +78,18 @@
 		for (const th of ths) {
 			const cx = x(th.exactYear), cy = y(th.ratio);
 			out.push(`<circle class="ring" cx="${cx}" cy="${cy}" r="10"/>`);
-			out.push(`<text class="note" x="${cx + 16}" y="${cy + 28}">${th.year} · ${Talk.esc(th.chip)}</text>`);
+			const extra = (hw.notes || {})[th.step.key];
+			const aside = extra ? `<tspan class="aside"> — ${Talk.esc(extra)}</tspan>` : '';
+			out.push(`<text class="note" x="${cx + 16}" y="${cy + 28}">${th.year} · ${Talk.esc(th.chip)}${aside}</text>`);
+		}
+
+		for (const m of hw.markers || []) {
+			const mx = x(m.year), my = y(m.score / hw.ref.score);
+			const pct = Math.round((m.score / hw.ref.score) * 100);
+			out.push(`<rect class="marker" x="${mx - 8}" y="${my - 8}" width="16" height="16" transform="rotate(45 ${mx} ${my})"><title>${Talk.esc(m.label)} (${m.year}): ${m.score}</title></rect>`);
+			const tx = mx + (m.dx || 16), ty = my + (m.dy || 6), anchor = m.anchor || 'start';
+			out.push(`<text class="note" x="${tx}" y="${ty}" text-anchor="${anchor}">${Talk.esc(m.label)}</text>`);
+			out.push(`<text class="aside" x="${tx}" y="${ty + 22}" text-anchor="${anchor}">${Talk.esc(m.chip)} · ${pct} %</text>`);
 		}
 
 		return `<svg class="timeline" viewBox="0 0 ${W} ${H}" role="img" aria-label="Výkon jednoho jádra ${YEAR_FROM}–2025 relativně k ${hw.ref.name}, logaritmická osa">${out.join('')}</svg>`;

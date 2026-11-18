@@ -17,6 +17,9 @@ html, body {
 
 .deck { position: fixed; inset: 0; }
 
+/* Every content slide has the same page skeleton:
+   head (kicker, title, optional lede) · body (vertically centred) · foot (sources).
+   Head has a fixed minimum height, so titles and content start at the same place on every slide. */
 .slide {
 	position: absolute;
 	left: 50%;
@@ -26,13 +29,20 @@ html, body {
 	transform: translate(-50%, -50%) scale(var(--scale, 1));
 	padding: var(--slide-pad);
 	display: none;
-	flex-direction: column;
-	gap: var(--gap);
+	grid-template-rows: minmax(var(--head-h), auto) minmax(0, 1fr) var(--foot-h);
+	row-gap: var(--gap);
 	font-size: var(--fs-body);
 	line-height: 1.4;
 }
-.slide.is-active { display: flex; }
-.slide--center { justify-content: center; }
+.slide.is-active { display: grid; }
+
+.slide__head { display: grid; align-content: start; gap: 14px; }
+.slide__body { display: flex; flex-direction: column; justify-content: safe center; gap: var(--gap); min-height: 0; }
+.slide__body > * { flex-shrink: 0; }
+.slide__foot { display: flex; align-items: flex-end; }
+
+/* statement slides (title, quote, big command) keep their own centred composition */
+.slide--statement { grid-template-rows: none; align-content: center; gap: var(--gap); }
 
 /* ---------- typography ---------- */
 
@@ -51,10 +61,9 @@ li { margin: 8px 0; }
 }
 .statement { font-size: var(--fs-statement); font-weight: 800; line-height: 1.25; }
 .lead { font-size: var(--fs-lead); line-height: 1.25; font-weight: 600; }
-.lead--light { font-weight: 400; }
 .small { font-size: var(--fs-small); }
-.caption { font: 400 var(--fs-caption) var(--mono); color: var(--muted); }
-.mono { font-family: var(--mono); }
+.lede { font-size: 24px; line-height: 1.4; color: var(--muted); }
+.nowrap { white-space: nowrap; }
 
 .muted { color: var(--muted); }
 .hot { color: var(--hot); }
@@ -71,29 +80,24 @@ code {
 
 a.link { color: var(--c); font-family: var(--mono); }
 
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
 /* source line at the bottom of a slide */
-.source { font-size: var(--fs-small); color: var(--muted); margin-top: auto; }
+.source { font-size: var(--fs-small); color: var(--muted); }
 .source a.link { font-size: .95em; }
 
 /* ---------- layout primitives ---------- */
 
 .grid { display: grid; gap: var(--gap-lg); align-items: start; }
-.grid--fill { flex: 1; min-height: 0; }
 .grid--center { align-items: center; }
-.grid--tight { gap: var(--gap); }
 .cols-2 { grid-template-columns: 1fr 1fr; }
-.cols-3 { grid-template-columns: repeat(3, 1fr); }
 .cols-wide-left { grid-template-columns: 3fr 2fr; }
 .cols-chart { grid-template-columns: 1fr 540px; }
 
 .stack { display: grid; gap: 20px; align-content: start; }
 .stack--sm { gap: 12px; }
-.stack--lg { gap: 34px; }
 
-.push-bottom { margin-top: auto; }
-.mt-sm { margin-top: 12px; }
 .mt { margin-top: 24px; }
-.mb-sm { margin-bottom: 12px; }
 
 /* ---------- deck chrome ---------- */
 
@@ -116,7 +120,7 @@ a.link { color: var(--c); font-family: var(--mono); }
 	@page { size: 1600px 900px; margin: 0; }
 	html, body { overflow: visible; height: auto; }
 	.deck { position: static; }
-	.slide { display: flex !important; position: relative; left: 0; top: 0; transform: none; page-break-after: always; }
+	.slide { display: grid !important; position: relative; left: 0; top: 0; transform: none; page-break-after: always; }
 	[data-grow] { transition: none !important; }
 	.progress, .counter, .keys { display: none; }
 }
