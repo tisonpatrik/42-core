@@ -61,18 +61,16 @@ Každý text na slidu patří do některé z těchto komponent. Žádné volné 
 | kostra stránky | každý obsahový slide | `<header class="slide__head">` (`.kicker`, `h2`, volitelně `.lede`) · `<div class="slide__body">` (obsah, svisle na střed) · `<footer class="slide__foot">` (`.source`) |
 | výrazový slide | titul, citát, push/swap | `.slide--statement` (vlastní kompozice na střed), CUB3D `.slide--full` |
 | `.card` | jakýkoli box s textem | `__brand` `__label` `__num` `__value` `__title` (`--mono`) `__quote` (`--sm`) `__body` `__link`; `--compact`; barva `.tone-*`; rozložení `.cards.cards--2/--3` |
-| `.snippet` | kód s popisem | `__head` (`__tag` `__file` `__note`), `.code`, `__stats` |
+| `.snippet` | kód s popisem | `__head` (`__tag` `__file` `__note`), `.code`, `__stats` nebo `__mem` (pruh paměti: `is-read`, `__more`) |
 | `.code` | samotný kód | `data-component="code" data-lang="c|py"`, `--sm` `--xs` |
 | `.bars` | sloupcový graf | data z markupu nebo `data-source` |
-| `.rw` | matice čtení / zápisu | `__col` `__row` `__cell` `__tag--r/--w` |
+| `.rw` | matice čtení / zápisu, ROM/RAM × hot/cold | `__col` `__row` `__cell` `__tag--r/--w` `__text`; `--2` = dva sloupce |
 | `.tally` + `.sites` | počty (velká čísla + tabulka) | `__label` `__num`; `__row` `__mod` `__n` |
 | `.tree` + `.rule` | strom projektu + jedno pravidlo vedle | `__dir` `__note` `__brace`; `__main` `__code` `__sub` |
 | `.abar` + `.flow` | stavy arény + „teď / lépe“ | `__head` `__step` `__track` `__seg` `__offset`; `__label` `__steps` |
 | `.hier` | hierarchie paměti (jádro → L1 → … → RAM) | `__item` (`--core`, `--size`) `__size` `__like`; `__axis` |
 | `.scale` | latence v lidském čase | `data-component="scale" data-source="latency"` |
-| `.lines` + `.cacheline` | cache line AoS vs SoA | `__row` `__label` `__stat`; `data-pattern="aos|soa"` |
-| `.mem` | ukazatele na rozházené bloky vs jeden blok | `__ptrs` `__scatter` (`--x`) `__block` (`--row`) |
-| `.lanes` | SIMD registr | `__row` (`--reg`) `__label` `__cells` `__arrow` |
+| `.lines` + `.cacheline` | cache line AoS vs SoA | `__row` `__label` `__stat`; `data-pattern="aos|soa"` nebo `data-fields` + `data-read` |
 | `.quote`, `.cmd`, `.arcade`, `.manifesto`, `.rules`, `.memmap`, `.facts`, `.outline` | jednorázové velké prvky (citát, push/swap, CUB3D, titul, …) | viz `css/components.css` |
 | `.source` | zdroj dole na slidu | odkazy přes `data-component="sources"` nebo `a.link` |
 
@@ -83,6 +81,7 @@ Barvy jen přes tónové třídy: `.tone-c` (modrá), `.tone-py` (žlutá), `.to
 ```bash
 make demos        # vše
 make particles    # AoS vs SoA v C a Pythonu (+ paměť)
+make hotcold      # jeden tlustý struct vs hot/cold split v C
 make lifetimes    # malloc/free vs aréna v C, out= v NumPy
 make shapes       # tvary: fn pointer/switch/tabulka v C + Python objekty/numpy
 ```

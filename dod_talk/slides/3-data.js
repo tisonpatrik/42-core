@@ -1,4 +1,4 @@
-/* Jak organizovat data: latence, cache line, cub3D mapa, Python list, SIMD, pravidla */
+/* Jak organizovat data: cache, latence, AoS/SoA v Pythonu a C, cache line, hot/cold, ROM/RAM × hot/cold */
 
 Talk.slides(`
 <section data-section="Jak organizovat data" class="slide" data-title="Co je cache">
@@ -38,14 +38,17 @@ Talk.slides(`
 
 <section class="slide" data-title="AoS vs SoA v kódu (Python)">
 	<header class="slide__head">
-		<div class="kicker">AoS vs SoA · Python · 1M částic</div>
+		<div class="kicker"><span class="keep-case">AoS vs SoA</span> · Python · 1M částic</div>
 		<h2>Stejná práce, jinak uložená data</h2>
 	</header>
 	<div class="slide__body">
 		<div class="grid cols-2">
 			<figure class="snippet tone-hot">
-				<figcaption class="snippet__head"><span class="snippet__tag">AoS</span><span class="snippet__file">demos/python/particles.py</span><span class="snippet__note">pole objektů</span></figcaption>
-<pre class="code code--sm" data-component="code" data-lang="py">class Particle:
+				<figcaption class="snippet__head"><span class="snippet__tag keep-case">AoS</span><span class="snippet__file">demos/python/particles.py</span><span class="snippet__note">pole objektů</span></figcaption>
+<pre class="code code--sm" data-component="code" data-lang="py">N = 1_000_000      # počet částic
+DT = 1 / 60        # jeden snímek při 60 FPS
+
+class Particle:
     def __init__(self):
         self.x = self.y = self.z = 0.0
         self.vx = self.vy = self.vz = 1.0
@@ -59,8 +62,11 @@ for p in ps:
 				<div class="snippet__stats"><span><b>188 ms</b>na krok</span><span><b>191 MiB</b>paměti</span></div>
 			</figure>
 			<figure class="snippet tone-ok">
-				<figcaption class="snippet__head"><span class="snippet__tag">SoA</span><span class="snippet__file">demos/python/particles.py</span><span class="snippet__note">pole na každý atribut</span></figcaption>
+				<figcaption class="snippet__head"><span class="snippet__tag keep-case">SoA</span><span class="snippet__file">demos/python/particles.py</span><span class="snippet__note">pole na každý atribut</span></figcaption>
 <pre class="code code--sm" data-component="code" data-lang="py">import numpy as np
+
+N = 1_000_000      # počet částic
+DT = 1 / 60        # jeden snímek při 60 FPS
 
 x  = np.zeros(N, np.float32)   # y, z stejně
 vx = np.ones(N, np.float32)    # vy, vz stejně
@@ -74,137 +80,204 @@ z += vz * DT</pre>
 	</div>
 </section>
 
+<section class="slide" data-title="AoS vs SoA v čistém C">
+	<header class="slide__head">
+		<div class="kicker"><span class="keep-case">AoS vs SoA</span> · čisté C · bez knihovny</div>
+		<h2>Totéž naplocho v C</h2>
+	</header>
+	<div class="slide__body">
+		<div class="grid cols-2">
+			<figure class="snippet tone-hot">
+				<figcaption class="snippet__head"><span class="snippet__tag keep-case">AoS</span><span class="snippet__note">pole structů</span></figcaption>
+<pre class="code code--xs" data-component="code" data-lang="c">#define N 1000000         /* počet částic */
+#define DT (1.0f / 60)    /* jeden snímek */
+
+typedef struct s_particle
+{
+	float	x;
+	float	y;
+	float	z;
+	float	vx;
+	float	vy;
+	float	vz;
+}	t_particle;
+
+t_particle	ps[N];
+i = 0;
+while (i &lt; N)
+{
+	ps[i].x += ps[i].vx * DT;
+	i++;
+}</pre>
+				<div class="snippet__mem"><i class="is-read">x</i><i>y</i><i>z</i><i class="is-read">vx</i><i>vy</i><i>vz</i><i class="is-read">x</i><i>y</i><i>z</i><i class="is-read">vx</i><i>vy</i><i>vz</i><i class="snippet__more">…</i></div>
+			</figure>
+			<figure class="snippet tone-ok">
+				<figcaption class="snippet__head"><span class="snippet__tag keep-case">SoA</span><span class="snippet__note">struct polí</span></figcaption>
+<pre class="code code--xs" data-component="code" data-lang="c">#define N 1000000         /* počet částic */
+#define DT (1.0f / 60)    /* jeden snímek */
+
+typedef struct s_particles
+{
+	float	x[N];
+	float	y[N];
+	float	z[N];
+	float	vx[N];
+	float	vy[N];
+	float	vz[N];
+}	t_particles;
+
+t_particles	ps;
+i = 0;
+while (i &lt; N)
+{
+	ps.x[i] += ps.vx[i] * DT;
+	i++;
+}</pre>
+				<div class="snippet__mem"><i class="is-read">x</i><i class="is-read">x</i><i class="is-read">x</i><i class="is-read">x</i><i class="is-read">x</i><i class="snippet__more">… y[N] z[N] …</i><i class="is-read">vx</i><i class="is-read">vx</i><i class="is-read">vx</i><i class="is-read">vx</i><i class="is-read">vx</i><i class="snippet__more">…</i></div>
+			</figure>
+		</div>
+	</div>
+</section>
+
 <section class="slide" data-title="Cache line: AoS vs SoA">
 	<header class="slide__head">
-		<div class="kicker">cache line · AoS vs SoA</div>
+		<div class="kicker">cache line · <span class="keep-case">AoS vs SoA</span> · kód z minulého slidu</div>
 		<h2>CPU nečte bajty, čte řádky po 64 B</h2>
 	</header>
 	<div class="slide__body">
 		<div class="lines">
 			<div class="lines__row tone-hot">
-				<div class="lines__label"><b>AoS</b><span>pole structů, 72 B na částici</span></div>
+				<div class="lines__label"><b>AoS</b><span>t_particle ps[N]</span></div>
 				<div class="cacheline" data-component="cacheline" data-pattern="aos"></div>
-				<div class="lines__stat"><b>38 %</b><span>načtených bajtů smyčka použije</span></div>
+				<div class="lines__stat"><b>33 %</b><span>načtených bajtů smyčka použije</span></div>
 			</div>
 			<div class="lines__row tone-ok">
-				<div class="lines__label"><b>SoA</b><span>struct polí: x[], vx[], …</span></div>
+				<div class="lines__label"><b>SoA</b><span>t_particles ps</span></div>
 				<div class="cacheline" data-component="cacheline" data-pattern="soa"></div>
 				<div class="lines__stat"><b>100 %</b><span>načtených bajtů smyčka použije</span></div>
 			</div>
 		</div>
 		<div class="legend">
-			<span><b class="legend__swatch tone-hot"></b>čte hot loop: x y z vx vy vz</span>
+			<span><b class="legend__swatch tone-hot"></b>čte smyčka: x a vx</span>
 			<span><b class="legend__swatch tone-cold"></b>načte se zbytečně</span>
 			<span>1 políčko = 4 B · 1 řádek = 64 B</span>
 		</div>
+		<div class="cards cards--3">
+			<div class="card card--compact tone-hot"><b class="card__value">377 000</b><p class="card__body">cache line na krok s AoS</p></div>
+			<div class="card card--compact tone-ok"><b class="card__value">128 000</b><p class="card__body">cache line na krok se SoA, 3× méně</p></div>
+			<div class="card card--compact tone-ok"><b class="card__value">4,3×</b><p class="card__body">rychlejší krok, 2,1 ms → 0,49 ms</p><span class="card__link">demos/c/particles.c · perf stat</span></div>
+		</div>
 	</div>
 </section>
 
-<section class="slide" data-title="Python: list je pole ukazatelů">
+<section class="slide" data-title="Hot/cold split: jak rozdělit struct">
 	<header class="slide__head">
-		<div class="kicker">Python · list vs NumPy</div>
-		<h2>Python list je pole ukazatelů</h2>
+		<div class="kicker">hot/cold split · co když struct potřebuje víc?</div>
+		<h2>Rozděl struct podle toho, kdo ho čte</h2>
 	</header>
 	<div class="slide__body">
+		<div class="grid cols-2">
+			<figure class="snippet tone-hot">
+				<figcaption class="snippet__head"><span class="snippet__tag">jeden struct</span><span class="snippet__file">demos/c/hotcold.c</span></figcaption>
+<pre class="code code--xs" data-component="code" data-lang="c">typedef struct s_particle
+{
+	float	x;
+	float	y;
+	float	z;
+	float	vx;
+	float	vy;
+	float	vz;
+	char	name[32];
+	int		color;
+	float	mass;
+	int		flags;
+	int		id;
+}	t_particle;
+t_particle	g_ps[N];</pre>
+				<div class="snippet__stats"><span><b>72 B</b>na částici</span><span><b>24 B</b>z nich čte smyčka</span></div>
+			</figure>
+			<figure class="snippet tone-ok">
+				<figcaption class="snippet__head"><span class="snippet__tag">hot + cold</span><span class="snippet__file">demos/c/hotcold.c</span></figcaption>
+<pre class="code code--xs" data-component="code" data-lang="c">typedef struct s_hot     /* každý snímek */
+{
+	float	x;
+	float	y;
+	float	z;
+	float	vx;
+	float	vy;
+	float	vz;
+}	t_hot;
+
+typedef struct s_cold    /* jen občas */
+{
+	char	name[32];
+	int		color;
+	float	mass;
+	int		flags;
+	int		id;
+}	t_cold;
+t_hot	g_hot[N];
+t_cold	g_cold[N];       /* stejné i = stejná částice */</pre>
+				<div class="snippet__stats"><span><b>24 B</b>hot, čte smyčka</span><span><b>48 B</b>cold, leží jinde</span></div>
+			</figure>
+		</div>
+	</div>
+</section>
+
+<section class="slide" data-title="Hot/cold split: měření">
+	<header class="slide__head">
+		<div class="kicker">hot/cold split · co to udělá s cache</div>
+		<h2>Co smyčka nečte, ať leží jinde</h2>
+	</header>
+	<div class="slide__body">
+		<div class="lines">
+			<div class="lines__row tone-hot">
+				<div class="lines__label"><b>1 struct</b><span>t_particle, 72 B</span></div>
+				<div class="cacheline" data-component="cacheline" data-fields="x y z vx vy vz name:8 color mass flags id" data-read="x y z vx vy vz"></div>
+				<div class="lines__stat"><b>33 %</b><span>načtených bajtů smyčka použije</span></div>
+			</div>
+			<div class="lines__row tone-ok">
+				<div class="lines__label"><b>hot + cold</b><span>t_hot[N], t_cold[N]</span></div>
+				<div class="cacheline" data-component="cacheline" data-fields="x y z vx vy vz" data-read="x y z vx vy vz"></div>
+				<div class="lines__stat"><b>100 %</b><span>načtených bajtů smyčka použije</span></div>
+			</div>
+		</div>
+		<div class="legend">
+			<span><b class="legend__swatch tone-hot"></b>hot: čte každý snímek</span>
+			<span><b class="legend__swatch tone-cold"></b>cold: name, color, mass, flags, id</span>
+			<span>1 políčko = 4 B · 1 řádek = 64 B</span>
+		</div>
+		<div class="cards cards--3">
+			<div class="card card--compact tone-ok"><b class="card__value">3× méně</b><p class="card__body">cache line na krok, 1 137 000 → 386 000</p></div>
+			<div class="card card--compact tone-ok"><b class="card__value">2–3×</b><p class="card__body">rychlejší krok, ≈ 8,5 ms → 3–5 ms (9 běhů)</p><span class="card__link">demos/c/hotcold.c · perf stat</span></div>
+			<div class="card card--compact tone-c"><b class="card__title">Stejný nápad jako ROM/RAM</b><p class="card__body">V cub3D dělíme data podle toho, kdo je mění. Tady podle toho, jak často je čteme.</p></div>
+		</div>
+	</div>
+</section>
+
+<section class="slide" data-title="ROM/RAM × hot/cold">
+	<header class="slide__head">
+		<div class="kicker">ROM/RAM × hot/cold · dvě nezávislé otázky</div>
+		<h2>Mění se to? Jak často to čteme?</h2>
+	</header>
+	<div class="slide__body">
+		<div class="rw rw--2">
+			<span></span>
+			<span class="rw__col tone-hot"><b>hot</b><small>čte se každý snímek</small></span>
+			<span class="rw__col"><b>cold</b><small>čte se jen občas</small></span>
+
+			<span class="rw__row tone-c"><b>ROM</b><small>po startu se nemění</small></span>
+			<span class="rw__cell"><span class="rw__text">textury, rozměry mapy</span></span>
+			<span class="rw__cell"><span class="rw__text">nastavení, cesty k souborům</span></span>
+
+			<span class="rw__row tone-py"><b>RAM</b><small>mění se za běhu</small></span>
+			<span class="rw__cell"><span class="rw__text">hráč, dlaždice, oheň</span></span>
+			<span class="rw__cell"><span class="rw__text">skóre, stav menu</span></span>
+		</div>
 		<div class="cards cards--2">
-			<div class="card tone-hot">
-				<span class="card__label">list · [1.0, 2.0, 3.0]</span>
-				<div class="mem">
-					<div class="mem__ptrs"><i>ptr</i><i>ptr</i><i>ptr</i></div>
-					<div class="mem__scatter mem__scatter--obj">
-						<i style="--x: 22%"><small>refcnt · type ·</small> 1.0</i>
-						<i style="--x: 2%"><small>refcnt · type ·</small> 2.0</i>
-						<i style="--x: 40%"><small>refcnt · type ·</small> 3.0</i>
-					</div>
-				</div>
-				<p class="card__body">Každé číslo je objekt na haldě: 8 B ukazatel + 24 B objekt = 32 B.</p>
-			</div>
-			<div class="card tone-ok">
-				<span class="card__label">NumPy · float32</span>
-				<div class="mem">
-					<div class="mem__block mem__block--row"><i>1.0</i><i>2.0</i><i>3.0</i><i>…</i></div>
-				</div>
-				<p class="card__body">Čísla za sebou jako pole v C: 4 B na číslo, žádné ukazatele.</p>
-			</div>
-		</div>
-		<div class="cards cards--3">
-			<div class="card card--compact tone-ok"><b class="card__value">8×</b><p class="card__body">méně paměti</p></div>
-			<div class="card card--compact tone-ok"><b class="card__value">≈ 50×</b><p class="card__body">rychlejší update pozic</p></div>
-			<div class="card card--compact tone-c"><b class="card__value">1M</b><p class="card__body">částic, x += vx · dt</p><span class="card__link">particles.py · Python 3.14 · NumPy 2.5</span></div>
+			<div class="card card--compact tone-c"><span class="card__label">ROM/RAM · správnost</span><p class="card__body">Co se nemění, nikdo omylem nerozbije. Restart hry = nová RAM.</p></div>
+			<div class="card card--compact tone-hot"><span class="card__label">hot/cold · výkon</span><p class="card__body">Smyčka tahá do cache jen to, co opravdu čte.</p></div>
 		</div>
 	</div>
-</section>
-
-<section class="slide" data-title="cub3D: mapa jako jeden blok">
-	<header class="slide__head">
-		<div class="kicker">cub3D · mapa</div>
-		<h2>Jeden blok, ne pole ukazatelů</h2>
-	</header>
-	<div class="slide__body">
-		<div class="cards cards--2">
-			<div class="card tone-hot">
-				<span class="card__label">parser · char **grid</span>
-				<div class="mem">
-					<div class="mem__ptrs"><i>ptr</i><i>ptr</i><i>ptr</i><i>ptr</i></div>
-					<div class="mem__scatter">
-						<i style="--x: 30%">1 1 1 1 1 1</i>
-						<i style="--x: 4%">1 0 0 N 0 1</i>
-						<i style="--x: 48%">1 0 1 0 0 1</i>
-						<i style="--x: 18%">1 1 1 1 1 1</i>
-					</div>
-				</div>
-				<p class="card__body">Každý řádek vlastní malloc, kdekoliv na haldě. Na buňku dva skoky v paměti.</p>
-			</div>
-			<div class="card tone-ok">
-				<span class="card__label">engine · uint8_t *tiles</span>
-				<div class="mem">
-					<div class="mem__block"><i>1 1 1 1 1 1</i><i>1 0 0 N 0 1</i><i>1 0 1 0 0 1</i><i>1 1 1 1 1 1</i></div>
-				</div>
-				<p class="card__body">Celá mapa v jednom bloku, řádek za řádkem. Buňka je jeden bajt a jeden přístup.</p>
-			</div>
-		</div>
-	</div>
-</section>
-
-<section class="slide" data-title="Ochutnávka: SIMD">
-	<header class="slide__head">
-		<div class="kicker">bonus · SIMD</div>
-		<h2>Jedna instrukce, osm čísel</h2>
-	</header>
-	<div class="slide__body">
-		<div class="lanes">
-			<div class="lanes__row">
-				<span class="lanes__label">x[] v paměti</span>
-				<div class="lanes__cells"><i>x0</i><i>x1</i><i>x2</i><i>x3</i><i>x4</i><i>x5</i><i>x6</i><i>x7</i></div>
-			</div>
-			<div class="lanes__arrow">↓ jedno načtení</div>
-			<div class="lanes__row lanes__row--reg">
-				<span class="lanes__label">AVX registr · 256 bitů</span>
-				<div class="lanes__cells"><i>x0</i><i>x1</i><i>x2</i><i>x3</i><i>x4</i><i>x5</i><i>x6</i><i>x7</i></div>
-			</div>
-		</div>
-		<div class="cards cards--3">
-			<div class="card card--compact tone-ok"><b class="card__value">8×</b><p class="card__body">float32 v jednom AVX registru</p></div>
-			<div class="card card--compact tone-c"><b class="card__value">SoA</b><p class="card__body">data už leží za sebou, kompilátor je umí načíst najednou</p></div>
-			<div class="card card--compact tone-hot"><b class="card__value">23,7×</b><p class="card__body">Casey s ručním AVX proti „clean“ verzi</p></div>
-		</div>
-	</div>
-</section>
-
-<section class="slide" data-title="Jak organizovat data: co si odnést">
-	<header class="slide__head">
-		<div class="kicker">jak organizovat data</div>
-		<h2>Co si odnést</h2>
-	</header>
-	<div class="slide__body">
-		<div class="cards cards--3">
-			<div class="card tone-c"><span class="card__num">1</span><b class="card__title">Co se čte spolu, leží spolu</b><p class="card__body">Hot loop chce svoje data za sebou. Zbytek ať leží jinde.</p></div>
-			<div class="card tone-c"><span class="card__num">2</span><b class="card__title">Kde je jeden, je jich hodně</b><p class="card__body">Nepiš kód pro jeden objekt. Piš ho pro pole.</p></div>
-			<div class="card tone-c"><span class="card__num">3</span><b class="card__title">Jeden blok, ne ukazatele</b><p class="card__body">Pole a indexy místo pole ukazatelů na rozházené kousky.</p></div>
-		</div>
-	</div>
-	<footer class="slide__foot">
-		<p class="source"><a class="link" href="https://www.dataorienteddesign.com/dodbook/" target="_blank" rel="noopener">Richard Fabian: Data-Oriented Design</a> · „Where there is one, there are many.“</p>
-	</footer>
 </section>
 `);

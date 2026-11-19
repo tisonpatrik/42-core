@@ -1,28 +1,36 @@
-/* AoS vs SoA: update positions of N particles.
-** cc -O2 particles.c -o particles && ./particles */
+/* AoS vs SoA, exactly the code from the slide: N particles, x += vx * DT.
+** cc -O2 particles.c -o particles && ./particles        (both, timed)
+** perf stat -e L1-dcache-load-misses ./particles aos    (one layout only) */
 #include <stdio.h>
-#include <stdlib.h>
+#include <string.h>
 #include <time.h>
 
-#define N 4000000
-#define STEPS 20
+#define N 1000000
+#define DT (1.0f / 60)
+#define STEPS 200
 
 typedef struct s_particle
 {
-	float	x, y, z;
-	float	vx, vy, vz;
-	char	name[32];
-	int		color;
-	float	mass;
-	int		flags;
-	int		id;
+	float	x;
+	float	y;
+	float	z;
+	float	vx;
+	float	vy;
+	float	vz;
 }	t_particle;
 
 typedef struct s_particles
 {
-	float	*x, *y, *z;
-	float	*vx, *vy, *vz;
+	float	x[N];
+	float	y[N];
+	float	z[N];
+	float	vx[N];
+	float	vy[N];
+	float	vz[N];
 }	t_particles;
+
+static t_particle	g_aos[N];
+static t_particles	g_soa;
 
 static double	now(void)
 {
@@ -32,42 +40,69 @@ static double	now(void)
 	return (t.tv_sec + t.tv_nsec * 1e-9);
 }
 
-int	main(void)
+static double	run_aos(void)
 {
-	t_particle	*aos = calloc(N, sizeof(t_particle));
-	t_particles	soa;
-	float		dt = 0.016f;
-	double		t0, t_aos, t_soa;
+	double	t0;
+	int		s;
+	int		i;
 
-	soa.x = calloc(N, 4); soa.y = calloc(N, 4); soa.z = calloc(N, 4);
-	soa.vx = calloc(N, 4); soa.vy = calloc(N, 4); soa.vz = calloc(N, 4);
-	for (int i = 0; i < N; i++)
+	t0 = now();
+	s = 0;
+	while (s++ < STEPS)
 	{
-		aos[i].vx = soa.vx[i] = (float)(i % 7);
-		aos[i].vy = soa.vy[i] = (float)(i % 5);
-		aos[i].vz = soa.vz[i] = (float)(i % 3);
+		i = 0;
+		while (i < N)
+		{
+			g_aos[i].x += g_aos[i].vx * DT;
+			i++;
+		}
 	}
+	return ((now() - t0) / STEPS);
+}
+
+static double	run_soa(void)
+{
+	double	t0;
+	int		s;
+	int		i;
+
 	t0 = now();
-	for (int s = 0; s < STEPS; s++)
-		for (int i = 0; i < N; i++)
+	s = 0;
+	while (s++ < STEPS)
+	{
+		i = 0;
+		while (i < N)
 		{
-			aos[i].x += aos[i].vx * dt;
-			aos[i].y += aos[i].vy * dt;
-			aos[i].z += aos[i].vz * dt;
+			g_soa.x[i] += g_soa.vx[i] * DT;
+			i++;
 		}
-	t_aos = now() - t0;
-	t0 = now();
-	for (int s = 0; s < STEPS; s++)
-		for (int i = 0; i < N; i++)
-		{
-			soa.x[i] += soa.vx[i] * dt;
-			soa.y[i] += soa.vy[i] * dt;
-			soa.z[i] += soa.vz[i] * dt;
-		}
-	t_soa = now() - t0;
-	printf("sizeof(t_particle) = %zu B, hot data = 24 B\n", sizeof(t_particle));
-	printf("AoS: %7.1f ms / step\n", t_aos / STEPS * 1e3);
-	printf("SoA: %7.1f ms / step  (%.1fx)\n", t_soa / STEPS * 1e3, t_aos / t_soa);
-	printf("check: %f %f\n", aos[N - 1].x, soa.x[N - 1]);
+	}
+	return ((now() - t0) / STEPS);
+}
+
+int	main(int argc, char **argv)
+{
+	double	t_aos;
+	double	t_soa;
+	int		i;
+
+	i = 0;
+	while (i < N)
+	{
+		g_aos[i].vx = (float)(i % 7);
+		g_soa.vx[i] = (float)(i % 7);
+		i++;
+	}
+	if (argc > 1 && !strcmp(argv[1], "aos"))
+		return (printf("AoS: %.2f ms / step\n", run_aos() * 1e3), 0);
+	if (argc > 1 && !strcmp(argv[1], "soa"))
+		return (printf("SoA: %.2f ms / step\n", run_soa() * 1e3), 0);
+	t_aos = run_aos();
+	t_soa = run_soa();
+	printf("sizeof(t_particle) = %zu B, the loop reads x and vx = 8 B\n",
+		sizeof(t_particle));
+	printf("AoS: %6.2f ms / step\n", t_aos * 1e3);
+	printf("SoA: %6.2f ms / step  (%.1fx)\n", t_soa * 1e3, t_aos / t_soa);
+	printf("check: %f %f\n", g_aos[N - 2].x, g_soa.x[N - 2]);
 	return (0);
 }

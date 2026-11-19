@@ -9,7 +9,7 @@ show:
 demos:
 	@$(MAKE) --no-print-directory -C demos run
 
-particles lifetimes shapes clean:
+particles hotcold lifetimes shapes clean:
 	@$(MAKE) --no-print-directory -C demos $@
 
-.PHONY: show demos particles lifetimes shapes clean
+.PHONY: show demos particles hotcold lifetimes shapes clean
