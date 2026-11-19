@@ -2,6 +2,7 @@
    Rows from markup:  <div class="bars" data-component="bars" data-unit=" ms">
                         <div data-label="AoS" data-value="27" data-tone="c" data-delta="4,6×"></div>
    or from data:      <div class="bars" data-component="bars" data-source="casey" data-unit="×">
+   data-max="3.5" fixes the scale, so two charts side by side are comparable.
    Bars grow when the slide is entered (see deck.js, [data-grow]). */
 
 (() => {
@@ -11,7 +12,7 @@
 		return [...el.children].map(r => ({
 			label: r.dataset.label,
 			value: Number(r.dataset.value),
-			shown: r.dataset.value.replace('.', ','),
+			shown: r.dataset.value,
 			tone: r.dataset.tone || 'c',
 			delta: r.dataset.delta || '',
 		}));
@@ -32,7 +33,7 @@
 			const data = Talk.source(el);
 			const rows = data ? rowsFromCasey(data) : rowsFromMarkup(el);
 			const unit = el.dataset.unit || '';
-			const max = Math.max(...rows.map(r => r.value));
+			const max = Number(el.dataset.max) || Math.max(...rows.map(r => r.value)); // data-max: shared scale across charts
 			el.innerHTML = rows.map(r => {
 				const pct = Math.max(0.6, (r.value / max) * MAX_WIDTH);
 				const shown = r.value < 0.05 ? '≈ 0' : r.shown;

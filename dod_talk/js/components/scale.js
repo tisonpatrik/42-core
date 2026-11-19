@@ -9,7 +9,7 @@
 	}
 
 	function humanTime(s) {
-		const units = [[31557600, 'roku', 'let'], [86400, 'dne', 'dní'], [3600, 'hodiny', 'hodin'], [60, 'min', 'min'], [1, 's', 's']];
+		const units = [[31557600, 'years'], [86400, 'days'], [3600, 'hours'], [60, 'min'], [1, 's']];
 		for (const [size, short] of units) {
 			if (s >= size) {
 				const v = s / size;

@@ -1,11 +1,14 @@
 CC      := cc
 CFLAGS  := -O2 -Wall -Wextra
-BINS    := c/shapes c/particles c/arena c/hotcold
+BINS    := c/shapes c/particles c/arena c/hotcold c/beyond c/division
 
 all: $(BINS)
 
 c/%: c/%.c
 	$(CC) $(CFLAGS) $< -o $@
+
+c/beyond: c/beyond.c
+	$(CC) $(CFLAGS) -pthread $< -o $@
 
 shapes: c/shapes
 	@echo "--- C" && ./c/shapes
@@ -22,9 +25,15 @@ lifetimes: c/arena
 hotcold: c/hotcold
 	@echo "--- C (N = 1M)" && ./c/hotcold
 
-run: shapes particles hotcold lifetimes
+beyond: c/beyond
+	@echo "--- C: SIMD and threads" && ./c/beyond
+
+division: c/division
+	@echo "--- C: division vs multiplication" && ./c/division
+
+run: shapes particles hotcold lifetimes beyond division
 
 clean:
 	rm -f $(BINS)
 
-.PHONY: all run shapes particles hotcold lifetimes clean
+.PHONY: all run shapes particles hotcold lifetimes beyond division clean

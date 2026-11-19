@@ -1,5 +1,5 @@
-# make        otevře prezentaci v prohlížeči
-# make demos  pustí všechny benchmarky (viz demos/Makefile)
+# make        open the slides in the browser
+# make demos  run every benchmark (see demos/Makefile)
 
 OPEN := $(shell command -v xdg-open || command -v open)
 
@@ -9,7 +9,7 @@ show:
 demos:
 	@$(MAKE) --no-print-directory -C demos run
 
-particles hotcold lifetimes shapes clean:
+particles hotcold lifetimes beyond division shapes clean:
 	@$(MAKE) --no-print-directory -C demos $@
 
-.PHONY: show demos particles hotcold lifetimes shapes clean
+.PHONY: show demos particles hotcold lifetimes beyond division shapes clean

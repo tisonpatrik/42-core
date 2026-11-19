@@ -88,6 +88,7 @@
 	/* ---------- boot ---------- */
 
 	Talk.mountAll();
+	Talk.typeset();
 	fit();
 	go((parseInt(location.hash.slice(1), 10) || 1) - 1);
 })();

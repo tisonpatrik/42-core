@@ -53,15 +53,38 @@ window.Talk = (() => {
 		return data[key];
 	}
 
-	const cs = 'cs-CZ';
+	const LOCALE = 'en-US';
 	const fmt = {
-		int: n => Math.round(n).toLocaleString(cs),
-		dec: (n, d = 1) => n.toLocaleString(cs, { minimumFractionDigits: d, maximumFractionDigits: d }),
-		/* slowdown factor as people say it: 1,8 · 10 · 15 · 24 */
+		int: n => Math.round(n).toLocaleString(LOCALE),
+		dec: (n, d = 1) => n.toLocaleString(LOCALE, { minimumFractionDigits: d, maximumFractionDigits: d }),
+		/* slowdown factor as people say it: 1.8 · 10 · 15 · 24 */
 		factor: f => (f < 2 ? fmt.dec(f, 1) : String(Math.round(f))),
 	};
 
 	const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
-	return { data, slides, render, component, mountAll, enter, source, fmt, esc };
+	/* Typography: no number torn from its unit, no "≈" alone at a line end.
+	   Runs once after components mount. Skips code, SVG and canvas text. */
+	const NBSP = '\u00a0';
+	const UNITS = 'B|KB|MB|GB|GB/s|ms|ns|µs|s|min|×|years|days|hours|threads|thread|instructions|instruction';
+	const RULES = [
+		[new RegExp(`(\\d) (?=(${UNITS})(?!\\w))`, 'g'), `$1${NBSP}`],
+		[/([≈~]) /g, `$1${NBSP}`],
+	];
+
+	function typeset(root = document) {
+		const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+			acceptNode: n => n.parentElement.closest('pre, code, svg, script, style, .tree')
+				? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT,
+		});
+		const nodes = [];
+		while (walker.nextNode()) nodes.push(walker.currentNode);
+		for (const node of nodes) {
+			let v = node.textContent;
+			for (const [re, to] of RULES) v = v.replace(re, to);
+			if (v !== node.textContent) node.textContent = v;
+		}
+	}
+
+	return { data, slides, render, component, mountAll, enter, source, fmt, esc, typeset };
 })();

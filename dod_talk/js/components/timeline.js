@@ -7,7 +7,7 @@
 	const W = 940, H = 520;
 	const X0 = 92, X1 = 900, Y_TOP = 28, Y_BASE = 470;
 	const YEAR_FROM = 2000, YEAR_TO = 2026;
-	const LOG_MIN = Math.log10(0.03); // bottom of the chart = 3 %
+	const LOG_MIN = Math.log10(0.03); // bottom of the chart = 3%
 
 	const x = year => X0 + ((year - YEAR_FROM) / (YEAR_TO - YEAR_FROM)) * (X1 - X0);
 	const y = ratio => Y_TOP + (-Math.log10(ratio) / -LOG_MIN) * (Y_BASE - Y_TOP);
@@ -46,7 +46,7 @@
 		const out = [];
 		for (const r of [1, 0.5, 0.2, 0.1, 0.05]) {
 			out.push(`<line x1="${X0}" x2="${X1}" y1="${y(r)}" y2="${y(r)}" class="grid-line"/>`);
-			out.push(`<text x="${X0 - 14}" y="${y(r) + 6}" class="axis" text-anchor="end">${r * 100} %</text>`);
+			out.push(`<text x="${X0 - 14}" y="${y(r) + 6}" class="axis" text-anchor="end">${r * 100}%</text>`);
 		}
 		for (let yr = YEAR_FROM; yr <= 2025; yr += 5)
 			out.push(`<text x="${x(yr)}" y="${Y_BASE + 34}" class="axis" text-anchor="middle">${yr}</text>`);
@@ -73,13 +73,13 @@
 
 		const rx = x(hw.ref.year), ry = y(1);
 		out.push(`<circle class="ref" cx="${rx}" cy="${ry}" r="9"><title>${hw.ref.name} (${hw.ref.year}): ${hw.ref.score}</title></circle>`);
-		out.push(`<text class="note" x="${rx - 16}" y="${ry + 6}" text-anchor="end">${hw.ref.name} = 100 %</text>`);
+		out.push(`<text class="note" x="${rx - 16}" y="${ry + 6}" text-anchor="end">${hw.ref.name} = 100%</text>`);
 
 		for (const th of ths) {
 			const cx = x(th.exactYear), cy = y(th.ratio);
 			out.push(`<circle class="ring" cx="${cx}" cy="${cy}" r="10"/>`);
 			const extra = (hw.notes || {})[th.step.key];
-			const aside = extra ? `<tspan class="aside"> — ${Talk.esc(extra)}</tspan>` : '';
+			const aside = extra ? `<tspan class="aside"> – ${Talk.esc(extra)}</tspan>` : '';
 			out.push(`<text class="note" x="${cx + 16}" y="${cy + 28}">${th.year} · ${Talk.esc(th.chip)}${aside}</text>`);
 		}
 
@@ -89,10 +89,10 @@
 			out.push(`<rect class="marker" x="${mx - 8}" y="${my - 8}" width="16" height="16" transform="rotate(45 ${mx} ${my})"><title>${Talk.esc(m.label)} (${m.year}): ${m.score}</title></rect>`);
 			const tx = mx + (m.dx || 16), ty = my + (m.dy || 6), anchor = m.anchor || 'start';
 			out.push(`<text class="note" x="${tx}" y="${ty}" text-anchor="${anchor}">${Talk.esc(m.label)}</text>`);
-			out.push(`<text class="aside" x="${tx}" y="${ty + 22}" text-anchor="${anchor}">${Talk.esc(m.chip)} · ${pct} %</text>`);
+			out.push(`<text class="aside" x="${tx}" y="${ty + 22}" text-anchor="${anchor}">${Talk.esc(m.chip)} · ${pct}%</text>`);
 		}
 
-		return `<svg class="timeline" viewBox="0 0 ${W} ${H}" role="img" aria-label="Výkon jednoho jádra ${YEAR_FROM}–2025 relativně k ${hw.ref.name}, logaritmická osa">${out.join('')}</svg>`;
+		return `<svg class="timeline" viewBox="0 0 ${W} ${H}" role="img" aria-label="Single-core performance ${YEAR_FROM}–2025 relative to ${hw.ref.name}, log scale">${out.join('')}</svg>`;
 	}
 
 	Talk.component('timeline', {
@@ -101,7 +101,7 @@
 			const legend = hw.series
 				.map(s => `<span><b class="legend__swatch tone-${s.tone}"></b>${Talk.esc(s.name)}</span>`)
 				.join('');
-			el.innerHTML = `${svg(hw)}<div class="legend">${legend}<span>osa Y je logaritmická</span></div>`;
+			el.innerHTML = `${svg(hw)}<div class="legend">${legend}<span>log scale</span></div>`;
 		},
 	});
 
@@ -113,10 +113,10 @@
 					<span class="rewind__factor">÷${Talk.fmt.factor(th.step.factor)}</span>
 					<span class="rewind__year">${th.year}</span>
 					<span class="rewind__chip">${Talk.esc(th.chip)}</span>
-					<span class="rewind__back">−${hw.ref.year - th.year} let</span>
+					<span class="rewind__back">−${hw.ref.year - th.year} years</span>
 				</div>`).join('');
 			el.innerHTML = `
-				<div class="rewind__row rewind__row--head"><span>pomaleji</span><span>rok</span><span>čip</span><span></span></div>
+				<div class="rewind__row rewind__row--head"><span></span><span>year</span><span>chip</span><span>back</span></div>
 				${rows}`;
 		},
 	});

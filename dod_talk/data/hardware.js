@@ -5,11 +5,11 @@ Talk.data.hardware = {
 	ref: { name: 'Apple M5', year: 2025, score: 5777 },
 	series: [
 		{
-			name: 'Intel desktop, top model roku',
+			name: 'Intel desktop, top model of the year',
 			tone: 'c',
 			crossings: true,  // Casey's thresholds are located on this line
 			points: [
-				[2000, 228, 'Pentium 4 1,5 GHz'],
+				[2000, 228, 'Pentium 4 1.5 GHz'],
 				[2001, 349, 'Pentium 4 2 GHz'],
 				[2003, 528, 'Pentium 4 3 GHz'],
 				[2006, 943, 'Core 2 Duo E6600'],
@@ -27,7 +27,7 @@ Talk.data.hardware = {
 			],
 		},
 		{
-			name: 'Apple iPhone (A-čipy)',
+			name: 'Apple iPhone (A chips)',
 			tone: 'py',
 			points: [
 				[2018, 2007, 'A12 · iPhone XS'],
@@ -44,15 +44,15 @@ Talk.data.hardware = {
 	/* when a threshold falls between two Pentium 4 clocks, name it plainly */
 	chipOverride: { onepass: 'Pentium 4' },
 	/* extra line under a threshold label, keyed by Casey step */
-	notes: { table: 'můj první „seriózní“ PC' },
+	notes: { table: 'my first “serious” PC' },
 	/* single highlighted points, e.g. the machine the talk runs on */
 	markers: [
-		{ year: 2020, score: 2341, label: 'tenhle notebook', chip: 'Ryzen 5 PRO 4650U', dx: 18, dy: 28, anchor: 'start' },
+		{ year: 2020, score: 2341, label: 'this laptop', chip: 'Ryzen 5 PRO 4650U', dx: 18, dy: 28, anchor: 'start' },
 	],
 	sources: [
 		['cpubenchmark.net/single-thread', 'https://www.cpubenchmark.net/single-thread'],
 		['Pentium 4 3 GHz', 'https://www.cpubenchmark.net/cpu.php?cpu=Intel+Pentium+4+3.00GHz&id=1074'],
 		['2 GHz', 'https://www.cpubenchmark.net/cpu.php?cpu=Intel+Pentium+4+2.00GHz&id=1064'],
-		['1,5 GHz', 'https://www.cpubenchmark.net/cpu.php?cpu=Intel+Pentium+4+1.50GHz&id=1053'],
+		['1.5 GHz', 'https://www.cpubenchmark.net/cpu.php?cpu=Intel+Pentium+4+1.50GHz&id=1053'],
 	],
 };

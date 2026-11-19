@@ -10,8 +10,8 @@ Talk.data.latency = {
 		{ name: 'L2 cache', ns: 3 },
 		{ name: 'L3 cache', ns: 9.5 },
 		{ name: 'RAM', ns: 75.5, hot: true },
-		{ name: 'SSD, náhodné čtení 4 KB', ns: 150000 },
-		{ name: 'síť Kalifornie ↔ Nizozemsko', ns: 150000000 },
+		{ name: 'SSD, random 4 KB read', ns: 150000 },
+		{ name: 'network California ↔ Netherlands', ns: 150000000 },
 	],
 	sources: [
 		['7-cpu.com · Zen 2', 'https://www.7-cpu.com/cpu/Zen2.html'],

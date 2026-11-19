@@ -35,6 +35,8 @@ html, body {
 	line-height: 1.4;
 }
 .slide.is-active { display: grid; }
+/* no footer: the body takes the footer row too, so content is not squeezed */
+.slide:not(.slide--statement):not(.slide--full):not(:has(.slide__foot)) { grid-template-rows: minmax(var(--head-h), auto) minmax(0, 1fr); }
 
 .slide__head { display: grid; align-content: start; gap: 14px; }
 .slide__body { display: flex; flex-direction: column; justify-content: safe center; gap: var(--gap); min-height: 0; }
@@ -73,8 +75,8 @@ code {
 	font-family: var(--mono);
 	font-variant-ligatures: none;
 	font-size: .88em;
-	background: var(--panel);
-	padding: 2px 8px;
+	background: color-mix(in srgb, var(--fg) 9%, transparent); /* visible on bg and on cards */
+	padding: 1px 6px;
 	border-radius: 6px;
 }
 
