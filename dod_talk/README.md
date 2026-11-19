@@ -6,7 +6,11 @@ Hlavní příklad je náš `cub3d` (flat `tiles[]`, ROM/RAM, jedna aréna, scrat
 
 ## Prezentace
 
-Otevři `index.html` v prohlížeči. Funguje přímo ze souboru, bez serveru.
+```bash
+make              # otevře index.html v prohlížeči
+```
+
+Funguje přímo ze souboru, bez serveru a bez buildu.
 
 | Klávesa | Akce |
 | --- | --- |
@@ -18,6 +22,7 @@ Export do PDF: tisk z Chromu (stránka 1600×900, animace se vypnou).
 ## Struktura
 
 ```
+Makefile                make = otevři prezentaci, make demos = benchmarky
 index.html              kostra: styly, skripty a pořadí sekcí
 slides/
   1-motivace.js         část 1: motivace (slidy 1–6)
@@ -76,8 +81,7 @@ Barvy jen přes tónové třídy: `.tone-c` (modrá), `.tone-py` (žlutá), `.to
 ## Dema
 
 ```bash
-cd demos
-make run          # vše
+make demos        # vše
 make particles    # AoS vs SoA v C a Pythonu (+ paměť)
 make lifetimes    # malloc/free vs aréna v C, out= v NumPy
 make shapes       # tvary: fn pointer/switch/tabulka v C + Python objekty/numpy
