@@ -22,6 +22,7 @@ index.html              kostra: styly, skripty a pořadí sekcí
 slides/
   1-motivace.js         část 1: motivace (slidy 1–6)
   2-areny.js            část 2: arény (slidy 7–19)
+  3-data.js             část 3: jak organizovat data (slidy 20–27)
 css/
   tokens.css            barvy, písma, velikosti, motion (jen tmavé téma)
   base.css              rám decku, typografie, layout (grid, stack), utility, chrome
@@ -62,6 +63,11 @@ Každý text na slidu patří do některé z těchto komponent. Žádné volné 
 | `.tally` + `.sites` | počty (velká čísla + tabulka) | `__label` `__num`; `__row` `__mod` `__n` |
 | `.tree` + `.rule` | strom projektu + jedno pravidlo vedle | `__dir` `__note` `__brace`; `__main` `__code` `__sub` |
 | `.abar` + `.flow` | stavy arény + „teď / lépe“ | `__head` `__step` `__track` `__seg` `__offset`; `__label` `__steps` |
+| `.hier` | hierarchie paměti (jádro → L1 → … → RAM) | `__item` (`--core`, `--size`) `__size` `__like`; `__axis` |
+| `.scale` | latence v lidském čase | `data-component="scale" data-source="latency"` |
+| `.lines` + `.cacheline` | cache line AoS vs SoA | `__row` `__label` `__stat`; `data-pattern="aos|soa"` |
+| `.mem` | ukazatele na rozházené bloky vs jeden blok | `__ptrs` `__scatter` (`--x`) `__block` (`--row`) |
+| `.lanes` | SIMD registr | `__row` (`--reg`) `__label` `__cells` `__arrow` |
 | `.quote`, `.cmd`, `.arcade`, `.manifesto`, `.rules`, `.memmap`, `.facts`, `.outline` | jednorázové velké prvky (citát, push/swap, CUB3D, titul, …) | viz `css/components.css` |
 | `.source` | zdroj dole na slidu | odkazy přes `data-component="sources"` nebo `a.link` |
 

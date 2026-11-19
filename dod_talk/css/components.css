@@ -509,3 +509,121 @@ a.card__link { color: var(--c); }
 .rw__tag--w { color: var(--hot); background: color-mix(in srgb, var(--hot) 16%, transparent); }
 .rw__cell:has(.rw__tag + .rw__tag) { grid-auto-flow: column; justify-content: center; }
 
+
+/* ---------- scale: latency in human time (js/components/scale.js) ---------- */
+
+.scale { display: grid; gap: 10px; }
+.scale__row {
+	display: grid;
+	grid-template-columns: 430px 120px 1fr 170px;
+	gap: 24px;
+	align-items: center;
+	padding: 14px 22px;
+	background: var(--panel);
+	border-left: 4px solid var(--tone);
+	border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+.scale__name { font-size: 26px; font-weight: 600; }
+.scale__real { font: 400 20px var(--mono); color: var(--muted); text-align: right; }
+.scale__track { height: 20px; }
+.scale__fill { display: block; height: 100%; border-radius: 4px; background: var(--tone); }
+.scale__human { font-size: 30px; font-weight: 800; color: var(--tone); text-align: right; }
+
+/* ---------- lines: two cache lines with stats (js/components/cacheline.js) ---------- */
+
+.lines { display: grid; gap: 28px; }
+.lines__row { display: grid; grid-template-columns: 220px 1fr 200px; gap: 24px; align-items: center; }
+.lines__label b { display: block; font: 700 30px var(--mono); color: var(--tone); }
+.lines__label span { font-size: 18px; color: var(--muted); }
+.lines__stat b { display: block; font-size: 48px; font-weight: 800; line-height: 1; color: var(--tone); }
+.lines__stat span { font-size: 17px; color: var(--muted); }
+.cacheline { display: grid; grid-template-columns: repeat(16, 1fr); gap: 4px; }
+.cacheline i {
+	display: grid;
+	place-items: center;
+	height: 52px;
+	border-radius: 5px;
+	background: var(--cold);
+	color: var(--muted);
+	font: 700 15px var(--mono);
+	font-style: normal;
+}
+.cacheline i.is-hot { background: var(--hot); color: #0e1014; }
+.lines__row.tone-ok .cacheline i.is-hot { background: var(--ok); }
+
+/* ---------- mem: pointers to scattered blocks vs one block ---------- */
+
+.mem { display: flex; gap: 22px; align-items: stretch; min-height: 210px; }
+.mem i { font-style: normal; }
+.mem__ptrs { display: grid; gap: 8px; align-content: center; }
+.mem__ptrs i { padding: 8px 14px; border: 2px solid var(--tone); border-radius: 6px; font: 700 18px var(--mono); color: var(--tone); }
+.mem__ptrs i::after { content: " →"; color: var(--muted); }
+.mem__scatter { position: relative; flex: 1; display: grid; gap: 14px; align-content: center; }
+.mem__scatter i {
+	justify-self: start;
+	margin-left: var(--x);
+	padding: 8px 14px;
+	background: color-mix(in srgb, var(--tone) 18%, var(--bg));
+	border: 1px solid var(--tone);
+	border-radius: 6px;
+	font: 400 18px var(--mono);
+	white-space: nowrap;
+}
+.mem__scatter i small { color: var(--muted); font-size: 14px; }
+.mem__block { flex: 1; display: grid; align-content: center; border: 2px solid var(--tone); border-radius: 8px; overflow: hidden; }
+.mem__block i {
+	padding: 8px 14px;
+	background: color-mix(in srgb, var(--tone) 18%, var(--bg));
+	border-top: 1px solid var(--line);
+	font: 400 18px var(--mono);
+}
+.mem__block i:first-child { border-top: 0; }
+.mem__block--row { display: flex; align-self: center; }
+.mem__block--row i { flex: 1; text-align: center; border-top: 0; border-left: 1px solid var(--line); }
+.mem__block--row i:first-child { border-left: 0; }
+
+/* ---------- lanes: SIMD register picture ---------- */
+
+.lanes { display: grid; gap: 14px; justify-items: center; }
+.lanes__row { display: grid; grid-template-columns: 300px auto; gap: 24px; align-items: center; }
+.lanes__label { font: 700 18px var(--mono); color: var(--muted); text-transform: uppercase; letter-spacing: .08em; text-align: right; }
+.lanes__cells { display: grid; grid-template-columns: repeat(8, 96px); gap: 6px; }
+.lanes__cells i {
+	display: grid;
+	place-items: center;
+	height: 64px;
+	border-radius: 6px;
+	background: var(--panel);
+	border: 1px solid var(--line);
+	font: 700 22px var(--mono);
+	font-style: normal;
+}
+.lanes__row--reg .lanes__cells { padding: 8px; gap: 4px; border: 3px solid var(--ok); border-radius: 12px; }
+.lanes__row--reg .lanes__cells i { background: color-mix(in srgb, var(--ok) 22%, var(--bg)); border-color: var(--ok); }
+.lanes__arrow { margin-left: 324px; font: 700 18px var(--mono); color: var(--ok); }
+
+/* ---------- hier: memory hierarchy, nearest to farthest ---------- */
+
+.hier { display: flex; align-items: center; gap: 18px; }
+.hier__item {
+	display: grid;
+	gap: 6px;
+	place-content: center;
+	justify-items: center;
+	flex: var(--size, 1) 1 0;
+	min-height: calc(120px + var(--size, 1) * 40px);
+	padding: 18px;
+	background: color-mix(in srgb, var(--tone, var(--fg)) 14%, var(--panel));
+	border: 2px solid var(--tone, var(--line));
+	border-radius: var(--radius);
+	text-align: center;
+}
+.hier__item b { font: 800 36px var(--mono); color: var(--tone, var(--fg)); }
+.hier__size { font: 700 24px var(--mono); }
+.hier__like { font-size: 20px; color: var(--muted); }
+.hier__item--core { flex: 0 0 170px; min-height: 120px; background: var(--fg); border-color: var(--fg); }
+.hier__item--core b { font-size: 24px; color: var(--bg); }
+.hier__item--core span { color: var(--bg); font-size: 18px; }
+.hier__axis { display: flex; justify-content: space-between; padding-left: 188px; font: 700 16px var(--mono); text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
+.hier__axis span:first-child::before { content: "← "; }
+.hier__axis span:last-child::after { content: " →"; }
