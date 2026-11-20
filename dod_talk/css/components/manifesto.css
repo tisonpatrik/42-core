@@ -1,0 +1,8 @@
+/* ---------- title manifesto ---------- */
+
+.manifesto { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap); margin-top: 20px; }
+.manifesto__item { display: flex; gap: 18px; align-items: baseline; padding-top: 20px; border-top: 3px solid var(--line); }
+.manifesto__num { font: 700 30px/1 var(--mono); color: var(--muted); }
+.manifesto__item p { font-size: 27px; line-height: 1.35; }
+.manifesto__item--bonus { border-top-color: var(--hot); }
+.manifesto__item--bonus .manifesto__num { color: var(--hot); }

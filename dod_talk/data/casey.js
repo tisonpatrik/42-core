@@ -1,6 +1,7 @@
 /* Casey Muratori, "Clean" Code, Horrible Performance (2023).
    Speed-ups vs. the clean (polymorphic) version, "corner area" variant,
-   read off the video at 19:35. Used by slides 2, 3 and 4. */
+   read off the video at 19:35. Used by slides/1-motivation: clean-code-rules,
+   hardware-timeline and cloud-cost. */
 
 Talk.data.casey = {
 	video: 'https://www.youtube.com/watch?v=tD5NrevFtbU',

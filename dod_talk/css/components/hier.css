@@ -1,0 +1,25 @@
+/* ---------- hier: memory hierarchy, nearest to farthest ---------- */
+
+.hier { display: flex; align-items: center; gap: 18px; }
+.hier__item {
+	display: grid;
+	gap: 6px;
+	place-content: center;
+	justify-items: center;
+	flex: var(--size, 1) 1 0;
+	min-height: calc(120px + var(--size, 1) * 40px);
+	padding: 18px;
+	background: color-mix(in srgb, var(--tone, var(--fg)) 14%, var(--panel));
+	border: 2px solid var(--tone, var(--line));
+	border-radius: var(--radius);
+	text-align: center;
+}
+.hier__item b { font: 800 36px var(--mono); color: var(--tone, var(--fg)); }
+.hier__size { font: 700 24px var(--mono); }
+.hier__like { font-size: 20px; color: var(--muted); }
+.hier__item--core { flex: 0 0 170px; min-height: 120px; background: var(--fg); border-color: var(--fg); }
+.hier__item--core b { font-size: 24px; color: var(--bg); }
+.hier__item--core span { color: var(--bg); font-size: 18px; }
+.hier__axis { display: flex; justify-content: space-between; padding-left: 188px; font: 700 16px var(--mono); text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
+.hier__axis span:first-child::before { content: "← "; }
+.hier__axis span:last-child::after { content: " →"; }

@@ -30,13 +30,10 @@
 	--mono: "JetBrains Mono", ui-monospace, monospace;
 	--fs-display: 104px;
 	--fs-h2: 56px;
-	--fs-statement: 64px;
 	--fs-lead: 46px;
 	--fs-body: 30px;
-	--fs-card: 24px;
 	--fs-small: 22px;
 	--fs-label: 20px;
-	--fs-caption: 15px;
 
 	/* space & shape */
 	--slide-w: 1600px;

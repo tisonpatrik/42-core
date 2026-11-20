@@ -1,0 +1,12 @@
+/* ---------- pill ---------- */
+
+.pill {
+	display: inline-block;
+	margin-right: 10px;
+	padding: 7px 12px;
+	border-radius: 999px;
+	font: 700 18px/1 var(--mono);
+	vertical-align: middle;
+	color: var(--tone);
+	background: color-mix(in srgb, var(--tone) 18%, transparent);
+}

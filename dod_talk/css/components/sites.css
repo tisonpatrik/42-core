@@ -1,0 +1,23 @@
+/* ---------- sites table (call sites per module) ---------- */
+
+.sites { display: grid; gap: 5px; }
+.sites__row {
+	display: grid;
+	grid-template-columns: 1fr repeat(6, 64px);
+	align-items: baseline;
+	padding: 6px 16px;
+	border-radius: var(--radius-sm);
+	background: var(--panel);
+}
+.sites__mod { font: 400 22px var(--mono); }
+.sites__n { font: 700 24px var(--mono); text-align: right; }
+.sites__n:nth-child(2), .sites__n:nth-child(3) { color: var(--hot); }
+.sites__n:nth-child(4), .sites__n:nth-child(5) { color: var(--py); }
+.sites__n:nth-child(6), .sites__n:nth-child(7) { color: var(--ok); }
+.sites__row--hl { box-shadow: inset 4px 0 0 var(--hot); }
+.sites__row--head, .sites__row--sub { background: none; }
+.sites__row--head > *, .sites__row--sub > * { font: 600 16px var(--mono); color: var(--muted); text-transform: uppercase; letter-spacing: .08em; text-align: right; }
+.sites__row--head > :first-child, .sites__row--sub > :first-child { text-align: left; }
+.sites__group { grid-column: span 2; padding-bottom: 6px; border-bottom: 1px solid var(--line); text-align: center !important; }
+.sites__row--total { margin-top: 6px; background: none; border-top: 2px solid var(--line); border-radius: 0; }
+.sites__row--total .sites__mod { font-weight: 700; }

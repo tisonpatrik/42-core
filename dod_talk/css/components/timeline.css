@@ -1,0 +1,34 @@
+/* ---------- timeline (js/components/timeline.js) ---------- */
+
+.timeline { display: block; width: 100%; height: auto; overflow: visible; }
+.timeline .grid-line { stroke: var(--line); stroke-width: 1; }
+.timeline .base-line { stroke: var(--muted); stroke-width: 1.5; }
+.timeline .axis { fill: var(--muted); font: 400 18px var(--mono); }
+.timeline .series { fill: none; stroke: var(--tone); stroke-width: 4; stroke-linejoin: round; }
+.timeline .dot { fill: var(--tone); }
+.timeline .threshold { stroke: var(--tone); stroke-width: 2; stroke-dasharray: 8 6; }
+.timeline .threshold-label { fill: var(--tone); font: 700 20px var(--mono); }
+.timeline .ring { fill: none; stroke: var(--fg); stroke-width: 3; }
+.timeline .ref { fill: var(--fg); stroke: var(--bg); stroke-width: 3; }
+.timeline .note { fill: var(--fg); font: 700 18px var(--sans); }
+.timeline .aside { fill: var(--muted); font: italic 400 17px var(--sans); }
+.timeline .note .aside { font-weight: 400; }
+.timeline .marker { fill: var(--ok); stroke: var(--bg); stroke-width: 3; }
+
+.rewind { display: grid; gap: 6px; }
+.rewind__row {
+	display: grid;
+	grid-template-columns: 78px 104px 1fr 116px;
+	gap: 12px;
+	align-items: baseline;
+	padding: 14px 18px;
+	background: var(--panel);
+	border-left: 4px solid var(--tone);
+	border-radius: 10px;
+}
+.rewind__factor { font: 700 26px var(--mono); color: var(--tone); }
+.rewind__year { font-size: 34px; font-weight: 800; }
+.rewind__chip { font-size: 19px; color: var(--muted); white-space: nowrap; }
+.rewind__back { font: 700 20px var(--mono); text-align: right; }
+.rewind__row--head { padding: 0 18px; background: none; border-left-color: transparent; }
+.rewind__row--head > * { font: 600 15px var(--mono); color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }

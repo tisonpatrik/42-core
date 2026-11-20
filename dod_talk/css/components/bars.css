@@ -1,0 +1,15 @@
+/* ---------- bars: horizontal bar chart (js/components/bars.js) ---------- */
+
+.bars { display: grid; grid-template-columns: max-content 1fr; gap: 14px 20px; align-items: center; }
+.bars__label { font: 400 22px var(--mono); color: var(--muted); text-align: right; }
+.bars__track { position: relative; height: 44px; }
+.bars__fill { height: 100%; border-radius: 6px; background: var(--tone); }
+.bars__value {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	padding-left: 12px;
+	font: 700 22px var(--mono);
+	white-space: nowrap;
+}
+.bars__delta { margin-left: 10px; color: var(--ok); }

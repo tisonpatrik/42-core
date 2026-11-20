@@ -1,0 +1,25 @@
+/* ---------- quote ---------- */
+
+.quote { margin: 0; display: grid; gap: 40px; }
+.quote__text { position: relative; margin: 0; padding-left: 96px; }
+.quote__text::before {
+	content: "“";
+	position: absolute;
+	left: 0;
+	top: -40px;
+	font: 800 160px/1 var(--sans);
+	color: var(--hot);
+}
+.quote__text p { font-size: 50px; font-weight: 800; line-height: 1.2; letter-spacing: -.01em; }
+.quote__text .quote__gap { margin: 18px 0; font: 400 26px var(--mono); color: var(--muted); letter-spacing: 0; }
+.quote__text .quote__turn { margin-top: 32px; } /* second sentence that turns the first around */
+.quote__end { position: relative; white-space: nowrap; }
+.quote__close {
+	position: absolute;
+	left: 100%;
+	top: -6px;
+	margin-left: 4px;
+	font: 800 160px/1 var(--sans);
+	color: var(--hot);
+}
+.quote__cite { padding-left: 96px; font: 400 var(--fs-label) var(--mono); color: var(--muted); }

@@ -1,0 +1,23 @@
+/* ---------- lanes: scalar vs SIMD (8 numbers, 8 instructions vs 1) ---------- */
+
+.lanes { display: grid; gap: 28px; }
+.lanes__row { display: grid; grid-template-columns: 260px 1fr 160px; gap: 28px; align-items: center; }
+.lanes__label b { display: block; font: 700 28px var(--mono); color: var(--tone); }
+.lanes__label span { display: block; margin-top: 6px; font: 400 17px/1.3 var(--mono); color: var(--muted); }
+.lanes__stat b { display: block; font-size: 52px; font-weight: 800; line-height: 1; color: var(--tone); }
+.lanes__stat span { display: block; margin-top: 4px; font-size: 18px; line-height: 1.2; color: var(--muted); }
+.lanes__cells { display: grid; grid-template-columns: repeat(8, 1fr); }
+.lanes__cells i {
+	display: grid;
+	place-items: center;
+	height: 64px;
+	font: 700 22px var(--mono);
+	font-style: normal;
+	background: color-mix(in srgb, var(--tone) 20%, var(--bg));
+}
+/* scalar: eight separate boxes, each its own instruction */
+.lanes__cells--apart { gap: 18px; }
+.lanes__cells--apart i { border: 2px solid var(--tone); border-radius: 8px; }
+/* SIMD: one register holding all eight */
+.lanes__cells--reg { gap: 4px; padding: 6px; border: 3px solid var(--tone); border-radius: 12px; }
+.lanes__cells--reg i { border-radius: 6px; }

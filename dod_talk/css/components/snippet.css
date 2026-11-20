@@ -1,0 +1,55 @@
+/* ---------- snippet: code with a header (what / where) and a footer (numbers) ---------- */
+
+.snippet {
+	display: flex;
+	flex-direction: column;
+	margin: 0;
+	overflow: hidden;
+	background: var(--panel);
+	border: 1px solid var(--line);
+	border-top: 4px solid var(--tone);
+	border-radius: 14px;
+}
+.snippet__head {
+	display: flex;
+	align-items: baseline;
+	gap: 16px;
+	padding: 14px 22px;
+	border-bottom: 1px solid var(--line);
+}
+.snippet__tag { font: 700 16px var(--mono); text-transform: uppercase; letter-spacing: .1em; color: var(--tone); }
+.snippet__file { font: 400 17px var(--mono); color: var(--fg); }
+.snippet__note { margin-left: auto; font: italic 400 18px var(--sans); color: var(--muted); }
+.snippet .code { flex: 1; border: 0; border-radius: 0; background: none; }
+.grid > .snippet { align-self: stretch; } /* side-by-side snippets share one height */
+.snippet__stats {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px 30px;
+	padding: 10px 22px;
+	border-top: 1px solid var(--line);
+}
+.snippet__stats span { font: 400 18px var(--mono); color: var(--muted); }
+.snippet__stats b { margin-right: 8px; font: 800 28px var(--sans); color: var(--tone); }
+
+/* ---------- snippet__mem: how the data lies in memory, cells the loop reads highlighted ---------- */
+
+.snippet__mem {
+	display: flex;
+	gap: 4px;
+	padding: 10px 22px;
+	border-top: 1px solid var(--line);
+}
+.snippet__mem i {
+	flex: 1 1 0;
+	display: grid;
+	place-items: center;
+	height: 32px;
+	border-radius: 5px;
+	background: var(--cold);
+	color: var(--muted);
+	font: 700 15px var(--mono);
+	font-style: normal;
+}
+.snippet__mem i.is-read { background: var(--tone); color: #0e1014; }
+.snippet__mem i.snippet__more { flex: 0 0 auto; padding: 0 6px; background: none; white-space: nowrap; }

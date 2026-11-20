@@ -61,7 +61,6 @@ li { margin: 8px 0; }
 	text-transform: uppercase;
 	color: var(--muted);
 }
-.statement { font-size: var(--fs-statement); font-weight: 800; line-height: 1.25; }
 .lead { font-size: var(--fs-lead); line-height: 1.25; font-weight: 600; }
 .small { font-size: var(--fs-small); }
 .lede { font-size: 24px; line-height: 1.4; color: var(--muted); }

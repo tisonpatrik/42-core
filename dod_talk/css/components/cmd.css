@@ -1,0 +1,14 @@
+/* ---------- command title (push / swap column) ---------- */
+
+.cmd {
+	display: grid;
+	grid-template-columns: repeat(4, max-content);
+	align-self: center;
+	font: 700 112px/1.2 var(--mono);
+	letter-spacing: -.02em;
+	white-space: pre;
+}
+.cmd__prompt { padding-right: .5ch; color: var(--muted); font-weight: 400; }
+.cmd__tool { padding-right: 1ch; color: var(--muted); font-weight: 400; }
+.cmd__rest { color: var(--muted); font-weight: 400; }
+.cmd__key { padding: 0 .12em; color: var(--hot); background: color-mix(in srgb, var(--hot) 14%, transparent); }

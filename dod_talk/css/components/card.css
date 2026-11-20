@@ -1,0 +1,47 @@
+/* ---------- card: the one box component ----------
+   Slots (all optional, in this order):
+   .card__brand (logo + label) · .card__label · .card__num · .card__value
+   .card__title (--mono) · .card__quote (--sm) · .card__body · .card__link
+   Variants: .card--compact. Colour: a .tone-* class on the card.
+   Lay cards out with .cards.cards--2 / .cards--3. */
+
+.cards { display: grid; gap: 20px; }
+.cards--2 { grid-template-columns: repeat(2, 1fr); }
+.cards--3 { grid-template-columns: repeat(3, 1fr); }
+
+.card {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	margin: 0;
+	padding: 28px 32px;
+	background: var(--panel);
+	border: 1px solid var(--line);
+	border-top: 4px solid var(--tone, var(--line));
+	border-radius: var(--radius);
+}
+.card--compact { gap: 8px; padding: 18px 24px; }
+
+.card__brand { display: flex; align-items: center; gap: 20px; }
+.card__logo { width: auto; height: 84px; }
+.card__logo--square { height: 72px; border-radius: 14px; }
+.card__label { font: 700 15px/1.5 var(--mono); text-transform: uppercase; letter-spacing: .1em; color: var(--tone, var(--muted)); }
+.card__num {
+	display: inline-grid;
+	place-items: center;
+	width: 52px;
+	height: 52px;
+	border-radius: 50%;
+	background: var(--tone, var(--fg));
+	color: var(--bg);
+	font: 800 26px var(--mono);
+}
+.card__value { font-size: 56px; font-weight: 800; line-height: 1; color: var(--tone, var(--fg)); }
+.card__title { font-size: 28px; font-weight: 800; line-height: 1.25; }
+.card__title--mono { font: 400 26px var(--mono); }
+.card__title--mono b { color: var(--tone, var(--fg)); }
+.card__quote { margin: 0; font-size: 34px; font-weight: 700; line-height: 1.3; }
+.card__quote--sm { font-size: 24px; }
+.card__body { font-size: 21px; line-height: 1.45; color: var(--muted); }
+.card__link { margin-top: auto; font: 400 16px var(--mono); color: var(--muted); }
+a.card__link { color: var(--c); }

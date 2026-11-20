@@ -1,0 +1,16 @@
+/* ---------- project tree ---------- */
+
+.tree {
+	padding: 28px 32px;
+	background: var(--panel);
+	border: 1px solid var(--line);
+	border-radius: 14px;
+	font: 400 22px/1.55 var(--mono);
+	white-space: pre;
+	color: var(--muted);
+}
+.tree__dir { color: var(--fg); font-weight: 700; }
+.tree__dir--mem { color: var(--hot); }
+.tree__note { color: var(--muted); font-style: italic; }
+.tree__note--mem { color: var(--hot); font-style: normal; font-weight: 700; }
+.tree__brace { color: var(--c); }

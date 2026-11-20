@@ -1,0 +1,15 @@
+/* ---------- tally (big counts) ---------- */
+
+.tally {
+	display: grid;
+	grid-template-columns: 1fr 210px 180px;
+	gap: 16px 20px;
+	align-items: baseline;
+	padding: 22px 30px;
+	background: var(--panel);
+	border-left: 6px solid var(--tone);
+	border-radius: var(--radius);
+}
+.tally__label { white-space: nowrap; font: 600 var(--fs-label) var(--mono); color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+.tally__num { white-space: nowrap; font-size: 76px; font-weight: 800; line-height: 1; color: var(--tone); }
+.tally__num small { margin-left: 6px; font: 400 20px var(--mono); color: var(--muted); }

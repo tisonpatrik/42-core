@@ -1,0 +1,15 @@
+/* ---------- flow (two-line before/after sequence) ---------- */
+
+.flow {
+	display: grid;
+	grid-template-columns: max-content 1fr;
+	gap: 12px 22px;
+	align-items: baseline;
+	padding: 18px 24px;
+	background: var(--panel);
+	border-radius: var(--radius-sm);
+}
+.flow__label { font: 700 16px var(--mono); text-transform: uppercase; letter-spacing: .1em; }
+.flow__steps { font: 700 21px var(--mono); }
+.flow__steps i { font-style: normal; font-weight: 400; color: var(--muted); }
+.flow__steps em { margin-left: 10px; font: italic 400 19px var(--sans); color: var(--hot); }

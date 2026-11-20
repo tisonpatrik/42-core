@@ -1,0 +1,18 @@
+/* ---------- scale: latency in human time (js/components/scale.js) ---------- */
+
+.scale { display: grid; gap: 10px; }
+.scale__row {
+	display: grid;
+	grid-template-columns: 430px 120px 1fr 170px;
+	gap: 24px;
+	align-items: center;
+	padding: 14px 22px;
+	background: var(--panel);
+	border-left: 4px solid var(--tone);
+	border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+.scale__name { font-size: 26px; font-weight: 600; }
+.scale__real { font: 400 20px var(--mono); color: var(--muted); text-align: right; }
+.scale__track { height: 20px; }
+.scale__fill { display: block; height: 100%; border-radius: 4px; background: var(--tone); }
+.scale__human { font-size: 30px; font-weight: 800; color: var(--tone); text-align: right; }

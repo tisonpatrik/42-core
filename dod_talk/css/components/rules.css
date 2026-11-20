@@ -1,0 +1,9 @@
+/* ---------- rules (Casey's whiteboard) ---------- */
+
+.rules { display: grid; gap: 18px; padding-left: 1.4em; font-size: 26px; }
+.rules li { margin: 0; padding-left: 6px; }
+.rules li::marker { font: 700 26px var(--mono); color: var(--hot); }
+.rules b { display: block; font-weight: 600; line-height: 1.25; }
+.rules span { display: block; margin-top: 2px; font-size: 21px; color: var(--muted); }
+.rules__keep::marker { color: var(--ok) !important; }
+.rules__keep b { color: var(--muted); }

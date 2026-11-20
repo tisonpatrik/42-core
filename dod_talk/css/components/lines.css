@@ -1,0 +1,21 @@
+/* ---------- lines: two cache lines with stats (js/components/cacheline.js) ---------- */
+
+.lines { display: grid; gap: 28px; }
+.lines__row { display: grid; grid-template-columns: 220px 1fr 200px; gap: 24px; align-items: center; }
+.lines__label b { display: block; font: 700 30px var(--mono); color: var(--tone); }
+.lines__label span { display: block; margin-top: 6px; font: 400 17px/1.3 var(--mono); color: var(--muted); }
+.lines__stat b { display: block; font-size: 48px; font-weight: 800; line-height: 1; color: var(--tone); }
+.lines__stat span { display: block; margin-top: 6px; font-size: 17px; line-height: 1.3; color: var(--muted); }
+.cacheline { display: grid; grid-template-columns: repeat(16, 1fr); gap: 4px; }
+.cacheline i {
+	display: grid;
+	place-items: center;
+	height: 52px;
+	border-radius: 5px;
+	background: var(--cold);
+	color: var(--muted);
+	font: 700 15px var(--mono);
+	font-style: normal;
+}
+.cacheline i.is-hot { background: var(--hot); color: #0e1014; }
+.lines__row.tone-ok .cacheline i.is-hot { background: var(--ok); }

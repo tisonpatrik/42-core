@@ -1,0 +1,4 @@
+/* ---------- motion: elements animate when their slide is entered ---------- */
+
+[data-grow] { width: 0; transition: width var(--grow-time) var(--ease-out); }
+[data-draw] { transition: stroke-dashoffset var(--draw-time) var(--ease-out); }

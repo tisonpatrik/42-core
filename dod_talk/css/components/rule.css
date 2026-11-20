@@ -1,0 +1,6 @@
+/* ---------- rule (one big statement next to a diagram) ---------- */
+
+.rule { display: grid; gap: 28px; padding-left: 36px; border-left: 4px solid var(--hot); }
+.rule__main { font-size: 54px; font-weight: 800; line-height: 1.2; }
+.rule__code { font-family: var(--mono); font-weight: 700; color: var(--hot); letter-spacing: -.02em; }
+.rule__sub { font-size: 30px; line-height: 1.35; color: var(--muted); }

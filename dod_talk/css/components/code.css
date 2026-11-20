@@ -1,0 +1,21 @@
+/* ---------- code block (highlighted by js/components/code.js) ---------- */
+
+.code {
+	margin: 0;
+	padding: 22px 26px;
+	overflow: hidden;
+	background: var(--panel);
+	border: 1px solid var(--line);
+	border-radius: 14px;
+	font: 400 21px/1.5 var(--mono);
+	font-variant-ligatures: none;
+	tab-size: 4;
+	white-space: pre;
+}
+.code--sm { font-size: 18px; }
+.code--xs { padding: 16px 22px; font-size: 16px; }
+.code .kw { color: var(--k-kw); }
+.code .ty { color: var(--k-ty); }
+.code .st { color: var(--k-str); }
+.code .cm { color: var(--k-com); font-style: italic; }
+.code .nu { color: var(--k-num); }

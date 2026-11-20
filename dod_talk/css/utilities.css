@@ -1,0 +1,3 @@
+/* ---------- utility that must beat component text-transform (loaded last) ---------- */
+
+.keep-case { text-transform: none; }

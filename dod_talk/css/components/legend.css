@@ -1,0 +1,11 @@
+/* ---------- legend ---------- */
+
+.legend { display: flex; gap: 28px; align-items: center; font-size: 20px; color: var(--muted); }
+.legend__swatch {
+	display: inline-block;
+	width: 18px; height: 18px;
+	margin-right: 8px;
+	border-radius: 4px;
+	vertical-align: -2px;
+	background: var(--tone);
+}

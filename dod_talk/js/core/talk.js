@@ -3,7 +3,8 @@
    - Talk.data       shared numbers (filled by data/*.js)
    - Talk.slides     add slide markup (called by slides/*.js, in load order)
    - Talk.component  register a component: { mount(el), enter(el) }
-   - Talk.fmt        Czech number formatting
+   - Talk.fmt        number formatting (en-US)
+   - Talk.typeset    keeps numbers and their units on one line
    Plain scripts (no ES modules) so the deck works straight from file://.
    ========================================================================== */
 

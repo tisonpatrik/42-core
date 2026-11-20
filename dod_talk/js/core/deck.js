@@ -47,8 +47,13 @@
 
 	/* ---------- navigation ---------- */
 
+	/* slide size lives in css/tokens.css (--slide-w, --slide-h) */
+	const token = name => parseFloat(getComputedStyle(root).getPropertyValue(name));
+	const SLIDE_W = token('--slide-w');
+	const SLIDE_H = token('--slide-h');
+
 	function fit() {
-		const scale = Math.min(innerWidth / 1600, innerHeight / 900);
+		const scale = Math.min(innerWidth / SLIDE_W, innerHeight / SLIDE_H);
 		root.style.setProperty('--scale', scale);
 	}
 

@@ -1,0 +1,24 @@
+/* ---------- rw: read/write matrix ---------- */
+
+.rw {
+	display: grid;
+	grid-template-columns: 360px repeat(3, 1fr);
+	gap: 8px;
+	margin-top: 8px;
+}
+.rw__col, .rw__row, .rw__cell { display: grid; align-content: center; padding: 16px 22px; border-radius: var(--radius-sm); }
+.rw__row, .rw__cell { min-height: 130px; }
+.rw__col { text-align: center; }
+.rw__col b { font: 700 24px var(--mono); }
+.rw__col small, .rw__row small { font-size: 18px; color: var(--muted); }
+.rw__row { background: var(--panel); border-left: 6px solid var(--tone); }
+.rw__row b { font: 700 28px var(--mono); color: var(--tone); }
+.rw__cell { justify-items: center; gap: 8px; background: var(--panel); grid-auto-flow: row; }
+.rw__cell small { font-size: 16px; color: var(--muted); }
+.rw__tag { padding: 6px 16px; border-radius: 999px; font: 700 20px var(--mono); font-style: normal; }
+.rw__tag--r { color: var(--c); background: color-mix(in srgb, var(--c) 16%, transparent); }
+.rw__tag--w { color: var(--hot); background: color-mix(in srgb, var(--hot) 16%, transparent); }
+.rw__cell:has(.rw__tag + .rw__tag) { grid-auto-flow: column; justify-content: center; }
+.rw--2 { grid-template-columns: 360px repeat(2, 1fr); }
+.rw__col b { color: var(--tone, var(--fg)); }
+.rw__text { font-size: 26px; font-weight: 600; text-align: center; }

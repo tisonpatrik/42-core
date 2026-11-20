@@ -1,0 +1,8 @@
+/* ---------- facts (short bullet line under code) ---------- */
+
+.facts { display: grid; gap: 8px; margin-top: 8px; font-size: 22px; color: var(--muted); }
+.facts b { color: var(--fg); font-family: var(--mono); font-weight: 700; }
+
+.facts--big { gap: 28px; font-size: 30px; }
+.facts--big span { display: grid; gap: 4px; }
+.facts--big b { font-size: 34px; color: var(--hot); }

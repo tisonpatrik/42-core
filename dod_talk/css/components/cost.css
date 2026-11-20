@@ -1,0 +1,12 @@
+/* ---------- cost table (js/components/cost.js) ---------- */
+
+.cost { display: grid; gap: 8px; }
+.cost__row { display: grid; grid-template-columns: 210px 1fr 110px 150px 150px; gap: 20px; align-items: center; }
+.cost__name { font: 700 22px var(--mono); }
+.cost__track { position: relative; height: 40px; }
+.cost__fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 6px; background: var(--tone); }
+.cost__servers { font: 400 22px var(--mono); color: var(--muted); text-align: right; }
+.cost__price { font-size: 28px; font-weight: 800; text-align: right; }
+.cost__saved { font-size: 22px; font-weight: 700; color: var(--ok); }
+.cost__row--head > * { font: 600 16px var(--mono); color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+.cost__row--head .cost__track { height: auto; }
