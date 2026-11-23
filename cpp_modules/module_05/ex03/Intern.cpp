@@ -28,22 +28,27 @@ AForm *Intern::createPardon(const std::string &target) const {
   return new PresidentialPardonForm(target);
 }
 
-// A lookup table of member function pointers instead of an if/else chain:
-// name i is built by creator i
+// A lookup table instead of an if/else chain: each form name sits next to
+// the member function that creates it
 AForm *Intern::makeForm(const std::string &name,
                         const std::string &target) const {
-  static const std::string names[] = {ShrubberyCreationForm::formName,
-                                      RobotomyRequestForm::formName,
-                                      PresidentialPardonForm::formName};
-  static AForm *(Intern::*const creators[])(const std::string &) const = {
-      &Intern::createShrubbery, &Intern::createRobotomy,
-      &Intern::createPardon};
-  static const int formCount = sizeof(names) / sizeof(names[0]);
+  struct FormType {
+    const char *formName;
+    AForm *(Intern::*create)(const std::string &target) const;
+  };
+
+  // Built once, on the first call
+  static const FormType formTypes[] = {
+      {ShrubberyCreationForm::formName, &Intern::createShrubbery},
+      {RobotomyRequestForm::formName, &Intern::createRobotomy},
+      {PresidentialPardonForm::formName, &Intern::createPardon}};
+  // Size of the whole table divided by the size of one entry
+  static const int formCount = sizeof(formTypes) / sizeof(formTypes[0]);
 
   for (int i = 0; i < formCount; i++) {
-    if (name == names[i]) {
+    if (name == formTypes[i].formName) {
       std::cout << "Intern creates " << name << std::endl;
-      return (this->*creators[i])(target);
+      return (this->*formTypes[i].create)(target);
     }
   }
   std::cout << "Intern can't create " << name << ": no such form"
