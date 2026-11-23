@@ -1,15 +1,15 @@
 #include "Form.hpp"
 
 static void validateGrade(int grade) {
-  if (grade < 1)
+  if (grade < Bureaucrat::highestGrade)
     throw Form::GradeTooHighException();
-  if (grade > 150)
+  if (grade > Bureaucrat::lowestGrade)
     throw Form::GradeTooLowException();
 }
 
 Form::Form(void)
-    : name("default"), isSigned(false), gradeToSign(150),
-      gradeToExecute(150) {}
+    : name("default"), isSigned(false), gradeToSign(Bureaucrat::lowestGrade),
+      gradeToExecute(Bureaucrat::lowestGrade) {}
 
 Form::Form(const std::string &name, int gradeToSign, int gradeToExecute)
     : name(name), isSigned(false), gradeToSign(gradeToSign),

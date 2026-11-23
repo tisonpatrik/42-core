@@ -32,8 +32,9 @@ AForm *Intern::createPardon(const std::string &target) const {
 // name i is built by creator i
 AForm *Intern::makeForm(const std::string &name,
                         const std::string &target) const {
-  static const std::string names[] = {
-      "shrubbery creation", "robotomy request", "presidential pardon"};
+  static const std::string names[] = {ShrubberyCreationForm::formName,
+                                      RobotomyRequestForm::formName,
+                                      PresidentialPardonForm::formName};
   static AForm *(Intern::*const creators[])(const std::string &) const = {
       &Intern::createShrubbery, &Intern::createRobotomy,
       &Intern::createPardon};

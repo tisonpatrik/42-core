@@ -13,6 +13,9 @@ private:
   int grade;
 
 public:
+  static const int highestGrade = 1;
+  static const int lowestGrade = 150;
+
   Bureaucrat(void);
   Bureaucrat(const std::string &name, int grade);
   Bureaucrat(const Bureaucrat &other);

@@ -2,11 +2,15 @@
 
 #include <iostream>
 
+const char *const PresidentialPardonForm::formName = "presidential pardon";
+const int PresidentialPardonForm::signGrade;
+const int PresidentialPardonForm::execGrade;
+
 PresidentialPardonForm::PresidentialPardonForm(void)
-    : AForm("presidential pardon", 25, 5), target("default") {}
+    : AForm(formName, signGrade, execGrade), target("default") {}
 
 PresidentialPardonForm::PresidentialPardonForm(const std::string &target)
-    : AForm("presidential pardon", 25, 5), target(target) {}
+    : AForm(formName, signGrade, execGrade), target(target) {}
 
 PresidentialPardonForm::PresidentialPardonForm(
     const PresidentialPardonForm &other)

@@ -2,11 +2,15 @@
 
 #include <fstream>
 
+const char *const ShrubberyCreationForm::formName = "shrubbery creation";
+const int ShrubberyCreationForm::signGrade;
+const int ShrubberyCreationForm::execGrade;
+
 ShrubberyCreationForm::ShrubberyCreationForm(void)
-    : AForm("shrubbery creation", 145, 137), target("default") {}
+    : AForm(formName, signGrade, execGrade), target("default") {}
 
 ShrubberyCreationForm::ShrubberyCreationForm(const std::string &target)
-    : AForm("shrubbery creation", 145, 137), target(target) {}
+    : AForm(formName, signGrade, execGrade), target(target) {}
 
 ShrubberyCreationForm::ShrubberyCreationForm(
     const ShrubberyCreationForm &other)

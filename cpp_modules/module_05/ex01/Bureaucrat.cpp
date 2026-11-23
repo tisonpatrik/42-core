@@ -3,14 +3,17 @@
 
 #include <iostream>
 
+const int Bureaucrat::highestGrade;
+const int Bureaucrat::lowestGrade;
+
 static void validateGrade(int grade) {
-  if (grade < 1)
+  if (grade < Bureaucrat::highestGrade)
     throw Bureaucrat::GradeTooHighException();
-  if (grade > 150)
+  if (grade > Bureaucrat::lowestGrade)
     throw Bureaucrat::GradeTooLowException();
 }
 
-Bureaucrat::Bureaucrat(void) : name("default"), grade(150) {}
+Bureaucrat::Bureaucrat(void) : name("default"), grade(lowestGrade) {}
 
 Bureaucrat::Bureaucrat(const std::string &name, int grade)
     : name(name), grade(grade) {

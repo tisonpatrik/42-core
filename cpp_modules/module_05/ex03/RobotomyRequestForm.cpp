@@ -4,11 +4,15 @@
 #include <ctime>
 #include <iostream>
 
+const char *const RobotomyRequestForm::formName = "robotomy request";
+const int RobotomyRequestForm::signGrade;
+const int RobotomyRequestForm::execGrade;
+
 RobotomyRequestForm::RobotomyRequestForm(void)
-    : AForm("robotomy request", 72, 45), target("default") {}
+    : AForm(formName, signGrade, execGrade), target("default") {}
 
 RobotomyRequestForm::RobotomyRequestForm(const std::string &target)
-    : AForm("robotomy request", 72, 45), target(target) {}
+    : AForm(formName, signGrade, execGrade), target(target) {}
 
 RobotomyRequestForm::RobotomyRequestForm(const RobotomyRequestForm &other)
     : AForm(other), target(other.target) {}

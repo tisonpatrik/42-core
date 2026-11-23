@@ -12,6 +12,10 @@ private:
   void executeAction(void) const;
 
 public:
+  static const char *const formName;
+  static const int signGrade = 72;
+  static const int execGrade = 45;
+
   RobotomyRequestForm(void);
   RobotomyRequestForm(const std::string &target);
   RobotomyRequestForm(const RobotomyRequestForm &other);
