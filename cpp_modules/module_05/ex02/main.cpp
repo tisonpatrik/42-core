@@ -60,10 +60,24 @@ static void testRobotomyIsRandom(void) {
   // Assert: a mix of successful and failed robotomies
 }
 
+static void testShrubberyFileError(void) {
+  // Arrange
+  Bureaucrat boss("Boss", 1);
+  ShrubberyCreationForm shrubbery("no_such_dir/home");
+  boss.signForm(shrubbery);
+
+  // Act
+  boss.executeForm(shrubbery);
+
+  // Assert: "Boss couldn't execute shrubbery creation because shrubbery file
+  // could not be opened."
+}
+
 int main(void) {
   testExecuteAllForms();
   testExecuteUnsigned();
   testExecuteGradeTooLow();
   testRobotomyIsRandom();
+  testShrubberyFileError();
   return 0;
 }
