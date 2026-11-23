@@ -10,8 +10,9 @@ static void testExecuteAllForms(void) {
   RobotomyRequestForm robotomy("Bender");
   PresidentialPardonForm pardon("Arthur Dent");
   AForm *forms[] = {&shrubbery, &robotomy, &pardon};
+  int formCount = sizeof(forms) / sizeof(forms[0]);
 
-  for (int i = 0; i < 3; i++) {
+  for (int i = 0; i < formCount; i++) {
     // Act
     boss.signForm(*forms[i]);
     boss.executeForm(*forms[i]);

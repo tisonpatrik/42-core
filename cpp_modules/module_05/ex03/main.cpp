@@ -24,8 +24,9 @@ static void testAllForms(void) {
   Intern intern;
   std::string names[] = {"shrubbery creation", "robotomy request",
                          "presidential pardon"};
+  int formCount = sizeof(names) / sizeof(names[0]);
 
-  for (int i = 0; i < 3; i++) {
+  for (int i = 0; i < formCount; i++) {
     // Act
     AForm *form = intern.makeForm(names[i], "office");
 

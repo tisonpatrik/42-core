@@ -22,7 +22,7 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	@$(CXX) $(CXXFLAGS) $(LDFLAGS) $(OBJS) $(LDLIBS) -o $@
-	@printf 'Successfully built: %s\n' "$(NAME)"
+	@echo "Successfully built: $(NAME)"
 
 
 $(BIN_DIR)/%.o: %.cpp Makefile

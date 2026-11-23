@@ -19,8 +19,9 @@ static void testValidBureaucrat(void) {
 static void testInvalidGradeInConstructor(void) {
   // Arrange
   int grades[] = {0, 151};
+  int gradeCount = sizeof(grades) / sizeof(grades[0]);
 
-  for (int i = 0; i < 2; i++) {
+  for (int i = 0; i < gradeCount; i++) {
     try {
       // Act
       Bureaucrat invalid("Invalid", grades[i]);

@@ -42,8 +42,9 @@ static void testExactGrade(void) {
 static void testInvalidFormGrades(void) {
   // Arrange
   int grades[][2] = {{0, 10}, {10, 151}};
+  int gradeCount = sizeof(grades) / sizeof(grades[0]);
 
-  for (int i = 0; i < 2; i++) {
+  for (int i = 0; i < gradeCount; i++) {
     try {
       // Act
       Form invalid("Invalid", grades[i][0], grades[i][1]);
