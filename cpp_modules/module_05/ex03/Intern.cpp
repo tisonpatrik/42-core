@@ -38,8 +38,9 @@ AForm *Intern::makeForm(const std::string &name,
   static AForm *(Intern::*const creators[])(const std::string &) const = {
       &Intern::createShrubbery, &Intern::createRobotomy,
       &Intern::createPardon};
+  static const int formCount = sizeof(names) / sizeof(names[0]);
 
-  for (int i = 0; i < 3; i++) {
+  for (int i = 0; i < formCount; i++) {
     if (name == names[i]) {
       std::cout << "Intern creates " << name << std::endl;
       return (this->*creators[i])(target);
