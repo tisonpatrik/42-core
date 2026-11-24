@@ -1,0 +1,69 @@
+#cloud-config
+# First-boot setup of the Inception VM (Debian 13). Used by vm/create.sh.
+# No passwords: ptison logs in automatically on tty1 and has passwordless sudo.
+
+hostname: inception
+timezone: Europe/Prague
+manage_etc_hosts: false
+
+users:
+  - name: ptison
+    shell: /bin/bash
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    lock_passwd: true
+
+apt:
+  conf: |
+    APT::Install-Recommends "false";
+
+package_update: true
+packages:
+  - docker.io
+  - docker-cli
+  - docker-compose
+  - docker-buildx
+  - make
+  - git
+  - curl
+  - ca-certificates
+  - xserver-xorg-core
+  - xserver-xorg-input-libinput
+  - xinit
+  - dbus-x11
+  - xfce4
+  - xfce4-terminal
+  - firefox-esr
+  - spice-vdagent
+  - qemu-guest-agent
+
+write_files:
+  # Log ptison in on tty1 without a password ...
+  - path: /etc/systemd/system/getty@tty1.service.d/autologin.conf
+    content: |
+      [Service]
+      ExecStart=
+      ExecStart=-/sbin/agetty --autologin ptison --noclear %I $TERM
+  # ... and start the desktop right away.
+  - path: /home/ptison/.bash_profile
+    owner: ptison:ptison
+    defer: true
+    content: |
+      [ -f ~/.bashrc ] && . ~/.bashrc
+      if [ -z "$DISPLAY" ] && [ "$(tty)" = /dev/tty1 ]; then
+        exec startx
+      fi
+  - path: /home/ptison/.xinitrc
+    owner: ptison:ptison
+    defer: true
+    content: |
+      exec startxfce4
+
+runcmd:
+  - usermod -aG docker ptison
+  - echo "127.0.0.1 ptison.42.fr" >> /etc/hosts
+  - apt-get clean
+
+# Reboot once everything is installed, so tty1 autologin starts the desktop.
+power_state:
+  mode: reboot
+  condition: true
