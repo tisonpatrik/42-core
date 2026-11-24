@@ -72,8 +72,10 @@ static LiteralType detectNumber(const std::string &literal) {
   }
   if (digits == 0)
     return INVALID;
+  if (i == literal.length() && hasDot)
+    return DOUBLE;
   if (i == literal.length())
-    return hasDot ? DOUBLE : INT;
+    return INT;
   if (literal[i] == 'f' && hasDot && i + 1 == literal.length())
     return FLOAT;
   return INVALID;
@@ -170,7 +172,10 @@ static void printAll(double value, int precision) {
 void ScalarConverter::convert(const std::string &literal) {
   switch (detectType(literal)) {
   case CHAR: {
-    char c = literal.length() == 3 ? literal[1] : literal[0];
+    // Either a or 'a'
+    char c = literal[0];
+    if (literal.length() == 3)
+      c = literal[1];
     printAll(static_cast<double>(c), std::numeric_limits<double>::digits10);
     break;
   }
